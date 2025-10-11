@@ -1,3 +1,124 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "fantasy-castle-1",
+      "description": "A majestic fantasy castle on a mountain.",
+      "imageUrl": "https://picsum.photos/seed/fc1/1280/720",
+      "imageHint": "fantasy castle"
+    },
+    {
+      "id": "enchanted-forest-1",
+      "description": "An enchanted forest with glowing mushrooms.",
+      "imageUrl": "https://picsum.photos/seed/ef1/1280/720",
+      "imageHint": "enchanted forest"
+    },
+    {
+      "id": "dragon-1",
+      "description": "A dragon flying over a valley.",
+      "imageUrl": "https://picsum.photos/seed/d1/1280/720",
+      "imageHint": "dragon valley"
+    },
+    {
+      "id": "glowing-gem-1",
+      "description": "A glowing gem in a dark cave.",
+      "imageUrl": "https://picsum.photos/seed/gg1/1280/720",
+      "imageHint": "glowing gem"
+    },
+    {
+      "id": "fantasy-landscape-1",
+      "description": "A beautiful fantasy landscape with floating islands.",
+      "imageUrl": "https://picsum.photos/seed/fl1/1280/720",
+      "imageHint": "fantasy landscape"
+    },
+    {
+      "id": "fantasy-landscape-2",
+      "description": "A beautiful fantasy landscape with a waterfall.",
+      "imageUrl": "https://picsum.photos/seed/fl2/1280/720",
+      "imageHint": "fantasy waterfall"
+    },
+    {
+      "id": "fantasy-landscape-3",
+      "description": "A beautiful fantasy landscape with a crystal cave.",
+      "imageUrl": "https://picsum.photos/seed/fl3/1280/720",
+      "imageHint": "crystal cave"
+    },
+    {
+      "id": "fantasy-landscape-4",
+      "description": "A beautiful fantasy landscape with an ancient tree.",
+      "imageUrl": "https://picsum.photos/seed/fl4/1280/720",
+      "imageHint": "ancient tree"
+    },
+    {
+      "id": "fantasy-landscape-5",
+      "description": "A beautiful fantasy landscape with a mystical portal.",
+      "imageUrl": "https://picsum.photos/seed/fl5/1280/720",
+      "imageHint": "mystical portal"
+    },
+    {
+      "id": "fantasy-landscape-6",
+      "description": "A beautiful fantasy landscape with a sky city.",
+      "imageUrl": "https://picsum.photos/seed/fl6/1280/720",
+      "imageHint": "sky city"
+    },
+    {
+      "id": "socialive-preview",
+      "description": "People in a virtual social room.",
+      "imageUrl": "https://picsum.photos/seed/sp1/600/400",
+      "imageHint": "virtual hangout"
+    },
+    {
+      "id": "entertainment-preview",
+      "description": "A stage with musical instruments and lights.",
+      "imageUrl": "https://picsum.photos/seed/ep1/600/400",
+      "imageHint": "concert stage"
+    },
+    {
+      "id": "shopping-preview",
+      "description": "A magical marketplace with various stalls.",
+      "imageUrl": "https://picsum.photos/seed/shp1/600/400",
+      "imageHint": "fantasy market"
+    },
+    {
+      "id": "member-zone-preview",
+      "description": "An exclusive, ornate door with glowing runes.",
+      "imageUrl": "https://picsum.photos/seed/mzp1/600/400",
+      "imageHint": "magic door"
+    },
+    {
+      "id": "feature-1",
+      "description": "A diagram showing social connections.",
+      "imageUrl": "https://picsum.photos/seed/f1/400/300",
+      "imageHint": "social network"
+    },
+    {
+      "id": "feature-2",
+      "description": "An AI generating art.",
+      "imageUrl": "https://picsum.photos/seed/f2/400/300",
+      "imageHint": "AI art"
+    },
+    {
+      "id": "feature-3",
+      "description": "A person shopping online.",
+      "imageUrl": "https://picsum.photos/seed/f3/400/300",
+      "imageHint": "online shopping"
+    },
+    {
+      "id": "member-plan-video",
+      "description": "A placeholder for a video about member plans.",
+      "imageUrl": "https://picsum.photos/seed/mpv1/800/450",
+      "imageHint": "presentation video"
+    },
+    {
+      "id": "default-avatar",
+      "description": "Default user avatar.",
+      "imageUrl": "https://picsum.photos/seed/avatar1/200/200",
+      "imageHint": "fantasy character"
+    },
+    {
+      "id": "auth-background",
+      "description": "A fantasy-themed background for the authentication pages.",
+      "imageUrl": "https://picsum.photos/seed/authbg/1200/1600",
+      "imageHint": "fantasy background"
+    }
+  ]
 }
