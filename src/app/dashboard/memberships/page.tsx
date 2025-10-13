@@ -1,5 +1,5 @@
 import { MembershipTable } from "@/components/dashboard/membership-table"
-import { IncomeCalculator } from "@/components/dashboard/income-calculator"
+import { IncomeChart } from "@/components/dashboard/income-chart"
 
 export default function MembershipsPage() {
   return (
@@ -16,7 +16,7 @@ export default function MembershipsPage() {
           <MembershipTable />
         </div>
         <div className="lg:col-span-2">
-          <IncomeCalculator />
+          <IncomeChart />
         </div>
       </div>
     </div>
