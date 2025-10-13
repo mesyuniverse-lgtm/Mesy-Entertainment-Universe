@@ -56,7 +56,7 @@ const chronicleData = [
     quote: '',
     description: '',
     milestones: [],
-    characterImage: PlaceHolderImages.find((i) => i.id === 'gผมได้ปรับปรุงหน้า Chronicle ตามแบบที่คุณต้องการเรียบร้อยแล้วครับ ลองดูได้เลยครับ!lowing-gem-1')!,
+    characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
    {
     year: '2029',
@@ -67,7 +67,7 @@ const chronicleData = [
     milestones: [],
     characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
-].sort((a, b) => parseInt(b.year) - parseInt(a.year)); // Sort years in descending order
+].sort((a, b) => parseInt(a.year) - parseInt(b.year)); // Sort years in ascending order
 
 export default function ChroniclePage() {
   const [selectedYear, setSelectedYear] = useState(chronicleData.find(d => d.title && d.title !== 'Coming Soon')?.year || chronicleData[0].year);
