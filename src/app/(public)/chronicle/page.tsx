@@ -6,26 +6,38 @@ import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { ArrowUp } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 const chronicleData = [
   {
     year: '2025',
-    chapter: 'Chapter 20',
-    title: 'ขุนศึก',
-    quote: '"ในตอนจบของการต่อสู้อันดุเดือด จะมอบความหวังให้แก่พันธมิตร และจะมอบฝันร้ายให้แก่ศัตรู"',
-    description: 'หมัดของเขาคือความรอดที่ยกพันธมิตรขึ้น และเป็นการพิพากษาที่น่าความสิ้นหวังมาสู่ศัตรู',
-    classTitle: 'คลาสใหม่, "ขุนศึก"',
-    classDescription: 'แสวงหาศิลปะการต่อสู้ที่แท้จริง นักรบจากดินแดนตะวันตกที่ละทิ้งดาบ เขาเชี่ยวชาญในศิลปะการต่อสู้และเวทมนตร์ ควบคุมการไหลของสนามรบด้วยการโจมตีที่ดุดัน, การรักษาพันธมิตร และการทำให้ศัตรูไร้ความสามารถ',
-    characterImage: PlaceHolderImages.find((i) => i.id === 'fighter-character')!,
+    chapter: 'Chapter 1: The Foundation',
+    title: 'แผนพัฒนาระบบตัวอย่าง',
+    quote: '"ช่วงเวลาทองในการทดลอง พิสูจน์ และวางรากฐานสำหรับ MESY UNIVERSE"',
+    description: 'การวางแผนพัฒนา “ระบบตัวอย่าง” ภายใน 3 เดือนสุดท้ายของปี 2025 คือช่วงเวลาทองในการทดลอง พิสูจน์ และวางรากฐานสำหรับ MESY UNIVERSE ก่อนเข้าสู่ปีแห่งการขยายตัวใน 2026',
+    milestones: [
+      {
+        title: 'เดือนตุลาคม: “พิธีเปิดจักรวาล”',
+        details: 'สร้างโครงสร้างพื้นฐาน, ระบบสมาชิกลงทะเบียน (Email/Google), หน้า Welcome Page, และตาราง Member Plan Level 0-5',
+      },
+      {
+        title: 'เดือนพฤศจิกายน: “การปลุกพลังสมาชิก”',
+        details: 'พัฒนาระบบ Level (0-10), Dashboard, หน้า CHRONICLE, และระบบ Daily Rewards เพื่อให้สมาชิกเห็นสถานะและติดตามการพัฒนาได้',
+      },
+      {
+        title: 'เดือนธันวาคม: “การเฉลิมฉลองแห่งการเชื่อมโยง”',
+        details: 'เชื่อมต่อ AI Hub (Prompt Generator), Wallet Mockup, Shopping Hub ตัวอย่าง, และระบบสิทธิ์ Guest/Member เพื่อสาธิตและทดสอบ',
+      }
+    ],
+    characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
   {
     year: '2026',
-    chapter: 'Chapter 21',
+    chapter: '',
     title: 'Coming Soon',
     quote: 'อนาคตที่ยังมาไม่ถึง',
     description: 'การอัปเดตครั้งใหญ่กำลังจะมา โปรดติดตาม!',
-    classTitle: '',
-    classDescription: '',
+    milestones: [],
     characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
   {
@@ -34,8 +46,7 @@ const chronicleData = [
     title: 'Coming Soon',
     quote: '',
     description: '',
-    classTitle: '',
-    classDescription: '',
+    milestones: [],
     characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
   {
@@ -44,8 +55,7 @@ const chronicleData = [
     title: 'Coming Soon',
     quote: '',
     description: '',
-    classTitle: '',
-    classDescription: '',
+    milestones: [],
     characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
    {
@@ -54,8 +64,7 @@ const chronicleData = [
     title: 'Coming Soon',
     quote: '',
     description: '',
-    classTitle: '',
-    classDescription: '',
+    milestones: [],
     characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
 ].sort((a, b) => parseInt(a.year) - parseInt(b.year)); // Sort years chronologically
@@ -157,13 +166,19 @@ export default function ChroniclePage() {
                 <p className="mt-4 text-muted-foreground">
                   {selectedData.description}
                 </p>
-
-                {selectedData.classTitle && (
-                  <div className='mt-12 pt-8 border-t border-white/10'>
-                      <h3 className="text-lg font-bold">{selectedData.classTitle}</h3>
-                      <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto lg:mx-0">
-                         {selectedData.classDescription}
-                      </p>
+              
+                {selectedData.milestones && selectedData.milestones.length > 0 && (
+                  <div className='mt-12 space-y-4 pt-8 border-t border-white/10'>
+                    {selectedData.milestones.map((milestone, index) => (
+                      <Card key={index} className="bg-card/50 backdrop-blur-sm">
+                        <CardHeader className='p-4'>
+                          <CardTitle className='text-base text-primary'>{milestone.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent className='p-4 pt-0'>
+                          <p className="text-sm text-muted-foreground">{milestone.details}</p>
+                        </CardContent>
+                      </Card>
+                    ))}
                   </div>
                 )}
             </div>
