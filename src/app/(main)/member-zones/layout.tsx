@@ -16,6 +16,7 @@ import {
   Map,
   LogOut,
   Gem,
+  History,
 } from 'lucide-react';
 
 import {
@@ -52,6 +53,7 @@ export default function MemberZoneLayout({
     { title: 'Wallet', href: '/member-zones/wallet', icon: Wallet, description: 'ขุมทรัพย์แห่งการเติบโต' },
     { title: 'Mesy Cloud', href: '/member-zones/mesy-cloud', icon: Cloud, description: 'ห้องสมุดแห่งความทรงจำ' },
     { title: 'Quest', href: '/member-zones/quests', icon: Map, description: 'ภารกิจแห่งการเติบโต' },
+    { title: 'ประวัติ', href: '/member-zones/history', icon: History, description: 'บันทึกการเดินทางของคุณ' },
   ];
 
   return (
