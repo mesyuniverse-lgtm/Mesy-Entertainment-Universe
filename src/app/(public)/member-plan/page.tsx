@@ -1,5 +1,5 @@
 import { MembershipTable } from "@/components/dashboard/membership-table"
-import { IncomeChart } from "@/components/dashboard/income-chart"
+import { IncomeCalculator } from "@/components/dashboard/income-chart"
 import Image from "next/image"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
 import { Button } from "@/components/ui/button"
@@ -32,7 +32,7 @@ export default function MemberPlanPage() {
                   <h2 className="text-3xl font-bold text-white" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.9)'}}>The MESY Vision</h2>
               </div>
           </div>
-          <IncomeChart />
+          <IncomeCalculator />
         </div>
       </div>
       
