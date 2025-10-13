@@ -9,16 +9,6 @@ import { cn } from '@/lib/utils';
 
 const chronicleData = [
   {
-    year: '2021',
-    chapter: 'Chapter 20',
-    title: 'ขุนศึก',
-    quote: '"ในตอนจบของการต่อสู้อันดุเดือด จะมอบความหวังให้แก่พันธมิตร และจะมอบฝันร้ายให้แก่ศัตรู"',
-    description: 'หมัดของเขาคือความรอดที่ยกพันธมิตรขึ้น และเป็นการพิพากษาที่น่าความสิ้นหวังมาสู่ศัตรู',
-    classTitle: 'คลาสใหม่, "ขุนศึก"',
-    classDescription: 'แสวงหาศิลปะการต่อสู้ที่แท้จริง นักรบจากดินแดนตะวันตกที่ละทิ้งดาบ เขาเชี่ยวชาญในศิลปะการต่อสู้และเวทมนตร์ ควบคุมการไหลของสนามรบด้วยการโจมตีที่ดุดัน, การรักษาพันธมิตร และการทำให้ศัตรูไร้ความสามารถ',
-    characterImage: PlaceHolderImages.find((i) => i.id === 'fighter-character')!,
-  },
-  {
     year: '2022',
     chapter: 'Chapter 20',
     title: 'ขุนศึก',
@@ -26,7 +16,7 @@ const chronicleData = [
     description: 'หมัดของเขาคือความรอดที่ยกพันธมิตรขึ้น และเป็นการพิพากษาที่น่าความสิ้นหวังมาสู่ศัตรู',
     classTitle: 'คลาสใหม่, "ขุนศึก"',
     classDescription: 'แสวงหาศิลปะการต่อสู้ที่แท้จริง นักรบจากดินแดนตะวันตกที่ละทิ้งดาบ เขาเชี่ยวชาญในศิลปะการต่อสู้และเวทมนตร์ ควบคุมการไหลของสนามรบด้วยการโจมตีที่ดุดัน, การรักษาพันธมิตร และการทำให้ศัตรูไร้ความสามารถ',
-    characterImage: PlaceHolderImages.find((i) => i.id === 'knight-1')!,
+    characterImage: PlaceHolderImages.find((i) => i.id === 'fighter-character')!,
   },
   {
     year: '2023',
@@ -37,6 +27,17 @@ const chronicleData = [
     classTitle: '',
     classDescription: '',
     characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
+  },
+  // Add other years here, ensuring selectedYear default is in the data
+   {
+    year: '2021',
+    chapter: '',
+    title: '',
+    quote: '',
+    description: '',
+    classTitle: '',
+    classDescription: '',
+    characterImage: PlaceHolderImages.find((i) => i.id === 'knight-1')!,
   },
   {
     year: '2024',
@@ -58,10 +59,10 @@ const chronicleData = [
     classDescription: '',
     characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
-];
+].sort((a, b) => parseInt(a.year) - parseInt(b.year)); // Sort years chronologically
 
 export default function ChroniclePage() {
-  const [selectedYear, setSelectedYear] = useState(chronicleData[0].year);
+  const [selectedYear, setSelectedYear] = useState(chronicleData.find(d => d.title)?.year || chronicleData[0].year);
 
   const selectedData = chronicleData.find((d) => d.year === selectedYear) || chronicleData[0];
 
@@ -104,30 +105,28 @@ export default function ChroniclePage() {
             {/* Timeline */}
             <div className="lg:col-span-3">
               <div className="relative flex lg:flex-col items-start justify-center lg:space-y-6">
-                 <div className="absolute left-[calc(4rem+1.25rem)] top-0 bottom-0 w-0.5 bg-white/10 hidden lg:block" />
+                 <div className="absolute left-1/2 lg:left-14 lg:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-white/10" />
                   {chronicleData.map((item) => (
-                    <div key={item.year} className="relative z-10 flex items-center mb-6 lg:mb-0">
-                        <div 
-                          className="flex items-center cursor-pointer group"
-                          onClick={() => setSelectedYear(item.year)}
-                        >
-                          <div className='w-16 text-right'>
-                            <p className={cn("text-lg font-semibold transition-colors", selectedYear === item.year ? 'text-white' : 'text-white/50 group-hover:text-white')}>
-                              {item.year}
-                            </p>
-                          </div>
-                           <div className="w-10 h-3 flex items-center justify-center">
-                             {selectedYear === item.year && <div className="h-0.5 w-full bg-primary" />}
-                           </div>
-                           <div className="w-3 h-3 rounded-full bg-background border-2 border-white/20 relative">
-                             {selectedYear === item.year && <div className="absolute inset-0 m-auto w-1.5 h-1.5 rounded-full bg-primary"/>}
-                           </div>
+                    <div 
+                      key={item.year}
+                      className="relative z-10 w-full flex justify-center lg:justify-start items-center mb-6 lg:mb-0 cursor-pointer group"
+                      onClick={() => setSelectedYear(item.year)}
+                    >
+                        <div className='w-16 text-right pr-4'>
+                          <p className={cn("text-lg font-semibold transition-colors", selectedYear === item.year ? 'text-white' : 'text-white/50 group-hover:text-white')}>
+                            {item.year}
+                          </p>
+                        </div>
+                        
+                        <div className="flex-shrink-0 w-3 h-3 rounded-full bg-background border-2 border-white/20 relative">
+                            {item.title && <div className="absolute inset-0 m-auto w-1.5 h-1.5 rounded-full bg-white"/>}
+                             {selectedYear === item.year && <div className="absolute inset-[-4px] m-auto w-4 h-4 rounded-full border-2 border-primary"/>}
                         </div>
 
                         {item.title && (
-                          <div className={cn("pl-6 transition-opacity", selectedYear === item.year ? "opacity-100" : "opacity-0 lg:opacity-100 text-white/30")}>
+                          <div className={cn("pl-4 transition-opacity", selectedYear === item.year ? "opacity-100" : "opacity-50 group-hover:opacity-100")}>
                             <p className="text-xs text-primary">{item.chapter}</p>
-                            <p className="font-semibold text-sm">{item.title}</p>
+                            <p className={cn("font-semibold text-sm", selectedYear === item.year ? "text-primary" : "text-white")}>{item.title}</p>
                           </div>
                         )}
                     </div>
@@ -160,12 +159,14 @@ export default function ChroniclePage() {
                   {selectedData.description}
                 </p>
 
-                <div className='mt-12 pt-8 border-t border-white/10'>
-                    <h3 className="text-lg font-bold">{selectedData.classTitle}</h3>
-                    <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto lg:mx-0">
-                       {selectedData.classDescription}
-                    </p>
-                </div>
+                {selectedData.classTitle && (
+                  <div className='mt-12 pt-8 border-t border-white/10'>
+                      <h3 className="text-lg font-bold">{selectedData.classTitle}</h3>
+                      <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto lg:mx-0">
+                         {selectedData.classDescription}
+                      </p>
+                  </div>
+                )}
             </div>
         </div>
       </div>
