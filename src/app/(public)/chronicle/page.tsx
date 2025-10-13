@@ -71,6 +71,7 @@ const chronicleData = [
 
 export default function ChroniclePage() {
   const [selectedYear, setSelectedYear] = useState(chronicleData[0].year);
+  const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
 
   const selectedData = chronicleData.find((d) => d.year === selectedYear) || chronicleData[0];
 
@@ -107,51 +108,60 @@ export default function ChroniclePage() {
 
             {/* Timeline Selector */}
             <aside className="w-full lg:w-1/3 lg:sticky top-24">
-                <div className="relative pl-8">
-                     {/* The line */}
-                    <div className="absolute left-[3px] top-0 h-full w-px bg-white/20"></div>
+              <div className="flex gap-8 items-start">
+                  {/* Year Selector */}
+                  <div className="flex flex-col items-center gap-4">
+                      {chronicleData.map((item) => (
+                          <button 
+                              key={item.year}
+                              onClick={() => {
+                                setSelectedYear(item.year)
+                                setSelectedChapterIndex(0);
+                              }}
+                              className={cn(
+                                  "font-headline font-bold text-2xl transition-colors duration-300",
+                                  selectedYear === item.year ? 'text-primary' : 'text-white/60 hover:text-white'
+                              )}
+                          >
+                              {item.year}
+                          </button>
+                      ))}
+                  </div>
 
-                    {chronicleData.map((item, index) => (
-                         <button 
-                            key={item.year}
-                            onClick={() => setSelectedYear(item.year)}
-                            className={cn(
-                                "relative w-full text-left p-4 transition-all duration-300 flex items-start gap-4 group",
-                            )}
-                        >
-                            {/* Dot and connecting line */}
-                            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 h-2.5 w-2.5 rounded-full bg-white/30 group-hover:bg-primary transition-colors duration-300 z-10">
-                                 {selectedYear === item.year && (
-                                    <div className="absolute inset-0 rounded-full bg-primary ring-4 ring-primary/30"></div>
-                                 )}
-                            </div>
-                            
-                            <p className={cn(
-                                "text-2xl font-bold font-headline transition-colors duration-300",
-                                selectedYear === item.year ? 'text-primary' : 'text-white/60 group-hover:text-white'
-                            )}>
-                                {item.year}
-                            </p>
-                            
-                            {item.title && item.title !== 'Coming Soon' && (
-                                <div className="pt-1.5">
-                                    <p className={cn(
-                                        "text-sm font-semibold transition-colors duration-300",
-                                        selectedYear === item.year ? "text-white/90" : "text-muted-foreground group-hover:text-white/80"
-                                    )}>
-                                        Chapter {index + 1}
-                                    </p>
-                                    <p className={cn(
-                                        "text-sm transition-colors duration-300",
-                                        selectedYear === item.year ? "text-white/80" : "text-muted-foreground/80 group-hover:text-white/70"
-                                    )}>
-                                        {item.milestones[0]?.title.split(':')[0] || "Update"}
-                                    </p>
+                  {/* Chapter Selector */}
+                  {selectedData.milestones.length > 0 && (
+                    <div className="relative pl-8 pt-2">
+                        <div className="absolute left-[3px] top-0 bottom-0 w-px bg-white/20"></div>
+
+                        {selectedData.milestones.map((milestone, index) => (
+                            <button 
+                                key={index}
+                                onClick={() => setSelectedChapterIndex(index)}
+                                className="relative w-full text-left mb-6 transition-all duration-300 group"
+                            >
+                                <div className="absolute left-0 top-1.5 -translate-y-1/2 -translate-x-1/2 h-2.5 w-2.5 rounded-full bg-white/30 group-hover:bg-primary transition-colors duration-300 z-10">
+                                    {selectedChapterIndex === index && (
+                                        <div className="absolute inset-0 rounded-full bg-primary ring-4 ring-primary/30"></div>
+                                    )}
                                 </div>
-                            )}
-                        </button>
-                    ))}
-                </div>
+                                
+                                <p className={cn(
+                                    "text-sm font-semibold transition-colors duration-300",
+                                    selectedChapterIndex === index ? "text-white/90" : "text-muted-foreground group-hover:text-white/80"
+                                )}>
+                                    Chapter {index + 1}
+                                </p>
+                                <p className={cn(
+                                    "text-sm transition-colors duration-300",
+                                    selectedChapterIndex === index ? "text-white/80" : "text-muted-foreground/80 group-hover:text-white/70"
+                                )}>
+                                    {milestone.title}
+                                </p>
+                            </button>
+                        ))}
+                    </div>
+                  )}
+              </div>
             </aside>
 
             {/* Content Details */}
@@ -174,7 +184,7 @@ export default function ChroniclePage() {
                         {selectedData.milestones && selectedData.milestones.length > 0 && (
                           <div className='mt-8 pt-6 border-t border-white/10 space-y-4'>
                             {selectedData.milestones.map((milestone, index) => (
-                              <div key={index} className="p-4 rounded-md bg-background/50 border border-border">
+                              <div key={index} className={cn("p-4 rounded-md bg-background/50 border border-border", selectedChapterIndex === index ? "block" : "hidden")}>
                                 <h4 className='font-bold text-lg text-primary'>{milestone.title}</h4>
                                 <p className="text-sm text-muted-foreground mt-1">{milestone.details}</p>
                               </div>
