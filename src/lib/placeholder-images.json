@@ -119,6 +119,24 @@
       "description": "A fantasy-themed background for the authentication pages.",
       "imageUrl": "https://picsum.photos/seed/authbg/1200/1600",
       "imageHint": "fantasy background"
+    },
+    {
+      "id": "female-archer-1",
+      "description": "A female archer in a fantasy setting.",
+      "imageUrl": "https://picsum.photos/seed/fa1/1280/720",
+      "imageHint": "female archer"
+    },
+    {
+      "id": "knight-1",
+      "description": "A knight in shining armor.",
+      "imageUrl": "https://picsum.photos/seed/k1/1280/720",
+      "imageHint": "fantasy knight"
+    },
+    {
+      "id": "explorer-1",
+      "description": "An explorer in a fantasy world.",
+      "imageUrl": "https://picsum.photos/seed/ex1/1280/720",
+      "imageHint": "fantasy explorer"
     }
   ]
 }
