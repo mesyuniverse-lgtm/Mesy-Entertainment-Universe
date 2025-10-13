@@ -56,7 +56,7 @@ const chronicleData = [
     quote: '',
     description: '',
     milestones: [],
-    characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
+    characterImage: PlaceHolderImages.find((i) => i.id === 'gผมได้ปรับปรุงหน้า Chronicle ตามแบบที่คุณต้องการเรียบร้อยแล้วครับ ลองดูได้เลยครับ!lowing-gem-1')!,
   },
    {
     year: '2029',
@@ -67,7 +67,7 @@ const chronicleData = [
     milestones: [],
     characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
-].sort((a, b) => parseInt(a.year) - parseInt(b.year)); // Sort years chronologically
+].sort((a, b) => parseInt(b.year) - parseInt(a.year)); // Sort years in descending order
 
 export default function ChroniclePage() {
   const [selectedYear, setSelectedYear] = useState(chronicleData.find(d => d.title && d.title !== 'Coming Soon')?.year || chronicleData[0].year);
@@ -86,118 +86,111 @@ export default function ChroniclePage() {
       
       {/* Background Image and Overlays */}
       <div className="absolute inset-0 z-0">
-        {characterSilhouette && (
+        {bgImage && (
            <Image
-            src={characterSilhouette.imageUrl}
-            alt={characterSilhouette.description}
-            data-ai-hint={characterSilhouette.imageHint}
+            src={bgImage.imageUrl}
+            alt={bgImage.description}
+            data-ai-hint={bgImage.imageHint}
             fill
-            className="object-cover object-center opacity-20"
+            className="object-cover object-center opacity-10"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background" />
       </div>
-      
-      {/* Red accent shape */}
-      <div className="absolute bottom-0 right-0 h-full w-1/3 bg-primary/80 clip-path-trapezoid hidden lg:block" />
 
       {/* Main Content */}
-      <div className="container relative z-10 flex min-h-screen flex-col justify-center py-16 md:py-24">
-        
-        <div className="absolute top-16 left-4 md:left-10">
-          <h2 className="text-2xl font-bold tracking-widest text-white/80">CHRONICLE</h2>
-        </div>
+      <div className="container relative z-10 mx-auto px-4 py-16 md:py-24">
+        <header className="text-center mb-16">
+          <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-widest text-white uppercase" style={{textShadow: '2px 2px 8px rgba(var(--primary), 0.5)'}}>Chronicle</h1>
+          <p className="text-lg text-muted-foreground mt-2">The history and future of the MESY Universe.</p>
+        </header>
 
-        <div className="grid lg:grid-cols-12 gap-8 items-center">
-            {/* Timeline */}
-            <div className="lg:col-span-3">
-              <div className="relative flex lg:flex-col items-start justify-center lg:space-y-6">
-                 <div className="absolute left-14 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-white/10 hidden lg:block" />
-                  {chronicleData.map((item) => (
-                    <div 
-                      key={item.year}
-                      className="relative z-10 w-full flex justify-start items-center mb-6 lg:mb-0 cursor-pointer group"
-                      onClick={() => setSelectedYear(item.year)}
-                    >
-                        <div className='w-16 text-right pr-4'>
-                          <p className={cn("text-lg font-semibold transition-colors", selectedYear === item.year ? 'text-white' : 'text-white/50 group-hover:text-white')}>
-                            {item.year}
-                          </p>
-                        </div>
-                        
-                        <div className="flex-shrink-0 w-3 h-3 rounded-full bg-background border-2 border-white/20 relative">
-                            {item.title && item.title !== 'Coming Soon' && <div className="absolute inset-0 m-auto w-1.5 h-1.5 rounded-full bg-white"/>}
-                             {selectedYear === item.year && <div className="absolute inset-[-4px] m-auto w-4 h-4 rounded-full border-2 border-primary"/>}
-                        </div>
+        <div className="flex flex-col lg:flex-row items-start gap-12">
 
-                        {item.title && item.title !== 'Coming Soon' && (
-                          <div className={cn("pl-4 transition-opacity", selectedYear === item.year ? "opacity-100" : "opacity-50 group-hover:opacity-100")}>
-                            <p className="text-xs text-primary">{item.chapter}</p>
-                            <p className={cn("font-semibold text-sm", selectedYear === item.year ? "text-primary" : "text-white")}>{item.title}</p>
-                          </div>
-                        )}
-                    </div>
-                  ))}
-              </div>
-            </div>
-
-            {/* Character Image */}
-            <div className="lg:col-span-4 relative h-96 lg:h-[60vh] -mt-8 lg:mt-0">
-               {bgImage && (
-                <Image
-                  src={bgImage.imageUrl}
-                  alt={bgImage.description}
-                  data-ai-hint={bgImage.imageHint}
-                  fill
-                  className="object-contain object-bottom drop-shadow-[0_20px_20px_rgba(0,0,0,0.7)]"
-                />
-              )}
-            </div>
+            {/* Timeline Selector */}
+            <aside className="w-full lg:w-1/4 lg:sticky top-24">
+                <div className="space-y-2">
+                    {chronicleData.map((item) => (
+                        <button 
+                            key={item.year}
+                            onClick={() => setSelectedYear(item.year)}
+                            className={cn(
+                                "w-full text-left p-4 rounded-lg transition-all duration-300 border-l-4",
+                                selectedYear === item.year 
+                                    ? 'bg-primary/10 border-primary shadow-lg' 
+                                    : 'bg-card/50 border-transparent hover:bg-card/80'
+                            )}
+                        >
+                            <p className={cn(
+                                "text-2xl font-bold font-headline",
+                                selectedYear === item.year ? 'text-primary' : 'text-white/80'
+                            )}>
+                                {item.year}
+                            </p>
+                            {item.title && item.title !== 'Coming Soon' && (
+                                <p className={cn(
+                                    "text-sm",
+                                    selectedYear === item.year ? "text-primary-foreground/90" : "text-muted-foreground"
+                                )}>
+                                    {item.chapter || "Update"}
+                                </p>
+                            )}
+                        </button>
+                    ))}
+                </div>
+            </aside>
 
             {/* Content Details */}
-            <div className="lg:col-span-5 text-center lg:text-left">
-                <h1 className="text-4xl font-bold text-primary tracking-wider" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.5)'}}>
-                  {selectedData.title}
-                </h1>
-                <blockquote className="mt-4 text-xl font-semibold italic">
-                  "{selectedData.quote}"
-                </blockquote>
-                <p className="mt-4 text-muted-foreground">
-                  {selectedData.description}
-                </p>
-              
-                {selectedData.milestones && selectedData.milestones.length > 0 && (
-                  <div className='mt-12 space-y-4 pt-8 border-t border-white/10'>
-                    {selectedData.milestones.map((milestone, index) => (
-                      <Card key={index} className="bg-card/50 backdrop-blur-sm">
-                        <CardHeader className='p-4'>
-                          <CardTitle className='text-base text-primary'>{milestone.title}</CardTitle>
-                        </CardHeader>
-                        <CardContent className='p-4 pt-0'>
-                          <p className="text-sm text-muted-foreground">{milestone.details}</p>
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                )}
-            </div>
+            <main className="w-full lg:w-3/4">
+                <Card className="bg-card/70 backdrop-blur-sm border-primary/20 shadow-2xl shadow-primary/10">
+                    <CardHeader>
+                        <div className="relative aspect-video mb-6 rounded-lg overflow-hidden">
+                             {selectedData.characterImage && (
+                                <Image
+                                  src={selectedData.characterImage.imageUrl}
+                                  alt={selectedData.characterImage.description}
+                                  data-ai-hint={selectedData.characterImage.imageHint}
+                                  fill
+                                  className="object-cover"
+                                />
+                              )}
+                              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent" />
+                        </div>
+
+                        <p className="text-primary font-semibold">{selectedData.chapter}</p>
+                        <CardTitle className="text-4xl !mt-0 font-bold tracking-wider" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.5)'}}>
+                          {selectedData.title}
+                        </CardTitle>
+                        <blockquote className="mt-2 text-lg font-semibold italic text-muted-foreground border-l-4 border-primary/50 pl-4">
+                          "{selectedData.quote}"
+                        </blockquote>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="mt-4 text-foreground/90">
+                          {selectedData.description}
+                        </p>
+                      
+                        {selectedData.milestones && selectedData.milestones.length > 0 && (
+                          <div className='mt-8 pt-6 border-t border-white/10 space-y-4'>
+                            {selectedData.milestones.map((milestone, index) => (
+                              <div key={index} className="p-4 rounded-md bg-background/50 border border-border">
+                                <h4 className='font-bold text-lg text-primary'>{milestone.title}</h4>
+                                <p className="text-sm text-muted-foreground mt-1">{milestone.details}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </main>
         </div>
       </div>
       
        {/* Scroll to top button */}
-       <div className="absolute bottom-4 right-4 z-20">
+       <div className="fixed bottom-4 right-4 z-20">
         <Button variant="outline" size="icon" onClick={handleScrollToTop} className="bg-background/50 backdrop-blur-sm">
           <ArrowUp />
         </Button>
-      </div>
-
-       {/* Scroll down indicator */}
-       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 hidden md:block">
-        <div className="animate-bounce">
-          <div className="w-5 h-5 border-b-2 border-r-2 border-white/50 transform rotate-45 -mb-2" />
-          <div className="w-5 h-5 border-b-2 border-r-2 border-white/50 transform rotate-45" />
-        </div>
       </div>
     </div>
   );
