@@ -29,7 +29,7 @@ const chronicleData = [
         details: 'เชื่อมต่อ AI Hub (Prompt Generator), Wallet Mockup, Shopping Hub ตัวอย่าง, และระบบสิทธิ์ Guest/Member เพื่อสาธิตและทดสอบ',
       }
     ],
-    characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
+    characterImage: PlaceHolderImages.find((i) => i.id === 'fighter-character')!,
   },
   {
     year: '2026',
@@ -70,7 +70,7 @@ const chronicleData = [
 ].sort((a, b) => parseInt(a.year) - parseInt(b.year)); // Sort years in ascending order
 
 export default function ChroniclePage() {
-  const [selectedYear, setSelectedYear] = useState(chronicleData.find(d => d.title && d.title !== 'Coming Soon')?.year || chronicleData[0].year);
+  const [selectedYear, setSelectedYear] = useState(chronicleData[0].year);
 
   const selectedData = chronicleData.find((d) => d.year === selectedYear) || chronicleData[0];
 
@@ -78,8 +78,7 @@ export default function ChroniclePage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   
-  const bgImage = selectedData.characterImage;
-  const characterSilhouette = PlaceHolderImages.find((i) => i.id === 'fighter-silhouette');
+  const bgImage = PlaceHolderImages.find((i) => i.id === 'fighter-silhouette');
 
   return (
     <div className="relative min-h-screen w-full bg-background text-white overflow-hidden">
@@ -92,48 +91,63 @@ export default function ChroniclePage() {
             alt={bgImage.description}
             data-ai-hint={bgImage.imageHint}
             fill
-            className="object-cover object-center opacity-10"
+            className="object-cover object-center opacity-20"
           />
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-background" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
       </div>
 
       {/* Main Content */}
       <div className="container relative z-10 mx-auto px-4 py-16 md:py-24">
-        <header className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-widest text-white uppercase" style={{textShadow: '2px 2px 8px rgba(var(--primary), 0.5)'}}>Chronicle</h1>
-          <p className="text-lg text-muted-foreground mt-2">The history and future of the MESY Universe.</p>
+        <header className="mb-16">
+          <h1 className="text-5xl md:text-7xl font-headline font-bold tracking-widest text-white uppercase" style={{textShadow: '2px 2px 8px rgba(0,0,0, 0.5)'}}>Chronicle</h1>
         </header>
 
         <div className="flex flex-col lg:flex-row items-start gap-12">
 
             {/* Timeline Selector */}
-            <aside className="w-full lg:w-1/4 lg:sticky top-24">
-                <div className="space-y-2">
-                    {chronicleData.map((item) => (
-                        <button 
+            <aside className="w-full lg:w-1/3 lg:sticky top-24">
+                <div className="relative pl-8">
+                     {/* The line */}
+                    <div className="absolute left-[3px] top-0 h-full w-px bg-white/20"></div>
+
+                    {chronicleData.map((item, index) => (
+                         <button 
                             key={item.year}
                             onClick={() => setSelectedYear(item.year)}
                             className={cn(
-                                "w-full text-left p-4 rounded-lg transition-all duration-300 border-l-4",
-                                selectedYear === item.year 
-                                    ? 'bg-primary/10 border-primary shadow-lg' 
-                                    : 'bg-card/50 border-transparent hover:bg-card/80'
+                                "relative w-full text-left p-4 transition-all duration-300 flex items-start gap-4 group",
                             )}
                         >
+                            {/* Dot and connecting line */}
+                            <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 h-2.5 w-2.5 rounded-full bg-white/30 group-hover:bg-primary transition-colors duration-300 z-10">
+                                 {selectedYear === item.year && (
+                                    <div className="absolute inset-0 rounded-full bg-primary ring-4 ring-primary/30"></div>
+                                 )}
+                            </div>
+                            
                             <p className={cn(
-                                "text-2xl font-bold font-headline",
-                                selectedYear === item.year ? 'text-primary' : 'text-white/80'
+                                "text-2xl font-bold font-headline transition-colors duration-300",
+                                selectedYear === item.year ? 'text-primary' : 'text-white/60 group-hover:text-white'
                             )}>
                                 {item.year}
                             </p>
+                            
                             {item.title && item.title !== 'Coming Soon' && (
-                                <p className={cn(
-                                    "text-sm",
-                                    selectedYear === item.year ? "text-primary-foreground/90" : "text-muted-foreground"
-                                )}>
-                                    {item.chapter || "Update"}
-                                </p>
+                                <div className="pt-1.5">
+                                    <p className={cn(
+                                        "text-sm font-semibold transition-colors duration-300",
+                                        selectedYear === item.year ? "text-white/90" : "text-muted-foreground group-hover:text-white/80"
+                                    )}>
+                                        Chapter {index + 1}
+                                    </p>
+                                    <p className={cn(
+                                        "text-sm transition-colors duration-300",
+                                        selectedYear === item.year ? "text-white/80" : "text-muted-foreground/80 group-hover:text-white/70"
+                                    )}>
+                                        {item.milestones[0]?.title.split(':')[0] || "Update"}
+                                    </p>
+                                </div>
                             )}
                         </button>
                     ))}
@@ -141,28 +155,15 @@ export default function ChroniclePage() {
             </aside>
 
             {/* Content Details */}
-            <main className="w-full lg:w-3/4">
+            <main className="w-full lg:w-2/3">
                 <Card className="bg-card/70 backdrop-blur-sm border-primary/20 shadow-2xl shadow-primary/10">
                     <CardHeader>
-                        <div className="relative aspect-video mb-6 rounded-lg overflow-hidden">
-                             {selectedData.characterImage && (
-                                <Image
-                                  src={selectedData.characterImage.imageUrl}
-                                  alt={selectedData.characterImage.description}
-                                  data-ai-hint={selectedData.characterImage.imageHint}
-                                  fill
-                                  className="object-cover"
-                                />
-                              )}
-                              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent" />
-                        </div>
-
                         <p className="text-primary font-semibold">{selectedData.chapter}</p>
                         <CardTitle className="text-4xl !mt-0 font-bold tracking-wider" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.5)'}}>
                           {selectedData.title}
                         </CardTitle>
                         <blockquote className="mt-2 text-lg font-semibold italic text-muted-foreground border-l-4 border-primary/50 pl-4">
-                          "{selectedData.quote}"
+                          {selectedData.quote}
                         </blockquote>
                     </CardHeader>
                     <CardContent>
