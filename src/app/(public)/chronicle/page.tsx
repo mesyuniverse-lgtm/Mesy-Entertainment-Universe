@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 
 const chronicleData = [
   {
-    year: '2022',
+    year: '2025',
     chapter: 'Chapter 20',
     title: 'ขุนศึก',
     quote: '"ในตอนจบของการต่อสู้อันดุเดือด จะมอบความหวังให้แก่พันธมิตร และจะมอบฝันร้ายให้แก่ศัตรู"',
@@ -19,7 +19,7 @@ const chronicleData = [
     characterImage: PlaceHolderImages.find((i) => i.id === 'fighter-character')!,
   },
   {
-    year: '2023',
+    year: '2026',
     chapter: 'Chapter 21',
     title: 'Coming Soon',
     quote: 'อนาคตที่ยังมาไม่ถึง',
@@ -28,21 +28,20 @@ const chronicleData = [
     classDescription: '',
     characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
-  // Add other years here, ensuring selectedYear default is in the data
-   {
-    year: '2021',
+  {
+    year: '2027',
     chapter: '',
-    title: '',
+    title: 'Coming Soon',
     quote: '',
     description: '',
     classTitle: '',
     classDescription: '',
-    characterImage: PlaceHolderImages.find((i) => i.id === 'knight-1')!,
+    characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
   {
-    year: '2024',
+    year: '2028',
     chapter: '',
-    title: '',
+    title: 'Coming Soon',
     quote: '',
     description: '',
     classTitle: '',
@@ -50,9 +49,9 @@ const chronicleData = [
     characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
    {
-    year: '2025',
+    year: '2029',
     chapter: '',
-    title: '',
+    title: 'Coming Soon',
     quote: '',
     description: '',
     classTitle: '',
@@ -62,7 +61,7 @@ const chronicleData = [
 ].sort((a, b) => parseInt(a.year) - parseInt(b.year)); // Sort years chronologically
 
 export default function ChroniclePage() {
-  const [selectedYear, setSelectedYear] = useState(chronicleData.find(d => d.title)?.year || chronicleData[0].year);
+  const [selectedYear, setSelectedYear] = useState(chronicleData.find(d => d.title && d.title !== 'Coming Soon')?.year || chronicleData[0].year);
 
   const selectedData = chronicleData.find((d) => d.year === selectedYear) || chronicleData[0];
 
@@ -105,11 +104,11 @@ export default function ChroniclePage() {
             {/* Timeline */}
             <div className="lg:col-span-3">
               <div className="relative flex lg:flex-col items-start justify-center lg:space-y-6">
-                 <div className="absolute left-1/2 lg:left-14 lg:-translate-x-1/2 top-0 bottom-0 w-0.5 bg-white/10" />
+                 <div className="absolute left-14 -translate-x-1/2 top-0 bottom-0 w-0.5 bg-white/10 hidden lg:block" />
                   {chronicleData.map((item) => (
                     <div 
                       key={item.year}
-                      className="relative z-10 w-full flex justify-center lg:justify-start items-center mb-6 lg:mb-0 cursor-pointer group"
+                      className="relative z-10 w-full flex justify-start items-center mb-6 lg:mb-0 cursor-pointer group"
                       onClick={() => setSelectedYear(item.year)}
                     >
                         <div className='w-16 text-right pr-4'>
@@ -119,11 +118,11 @@ export default function ChroniclePage() {
                         </div>
                         
                         <div className="flex-shrink-0 w-3 h-3 rounded-full bg-background border-2 border-white/20 relative">
-                            {item.title && <div className="absolute inset-0 m-auto w-1.5 h-1.5 rounded-full bg-white"/>}
+                            {item.title && item.title !== 'Coming Soon' && <div className="absolute inset-0 m-auto w-1.5 h-1.5 rounded-full bg-white"/>}
                              {selectedYear === item.year && <div className="absolute inset-[-4px] m-auto w-4 h-4 rounded-full border-2 border-primary"/>}
                         </div>
 
-                        {item.title && (
+                        {item.title && item.title !== 'Coming Soon' && (
                           <div className={cn("pl-4 transition-opacity", selectedYear === item.year ? "opacity-100" : "opacity-50 group-hover:opacity-100")}>
                             <p className="text-xs text-primary">{item.chapter}</p>
                             <p className={cn("font-semibold text-sm", selectedYear === item.year ? "text-primary" : "text-white")}>{item.title}</p>
