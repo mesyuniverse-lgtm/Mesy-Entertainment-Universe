@@ -71,3 +71,7 @@
     @apply font-headline;
   }
 }
+
+.clip-path-trapezoid {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 15% 100%);
+}

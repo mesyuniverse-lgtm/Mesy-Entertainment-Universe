@@ -137,6 +137,18 @@
       "description": "An explorer in a fantasy world.",
       "imageUrl": "https://picsum.photos/seed/ex1/1280/720",
       "imageHint": "fantasy explorer"
+    },
+    {
+      "id": "fighter-character",
+      "description": "A powerful fighter character with glowing fists.",
+      "imageUrl": "https://picsum.photos/seed/fighter1/800/1200",
+      "imageHint": "fantasy fighter"
+    },
+    {
+      "id": "fighter-silhouette",
+      "description": "A silhouette of a powerful fighter character.",
+      "imageUrl": "https://picsum.photos/seed/fighter-sil/1920/1080",
+      "imageHint": "fighter silhouette"
     }
   ]
 }
