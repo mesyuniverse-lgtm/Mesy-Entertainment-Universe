@@ -104,19 +104,21 @@ export default function ChroniclePage() {
             {/* Timeline */}
             <div className="lg:col-span-3">
               <div className="relative flex lg:flex-col items-start justify-center lg:space-y-6">
-                 <div className="absolute left-12 top-0 bottom-0 w-0.5 bg-white/10 hidden lg:block" />
+                 <div className="absolute left-[calc(4rem+1.25rem)] top-0 bottom-0 w-0.5 bg-white/10 hidden lg:block" />
                   {chronicleData.map((item) => (
                     <div key={item.year} className="relative z-10 flex items-center mb-6 lg:mb-0">
                         <div 
                           className="flex items-center cursor-pointer group"
                           onClick={() => setSelectedYear(item.year)}
                         >
-                          <div className='w-16 text-right pr-4'>
+                          <div className='w-16 text-right'>
                             <p className={cn("text-lg font-semibold transition-colors", selectedYear === item.year ? 'text-white' : 'text-white/50 group-hover:text-white')}>
                               {item.year}
                             </p>
-                            {selectedYear === item.year && <div className="h-0.5 w-full bg-primary mt-1" />}
                           </div>
+                           <div className="w-10 h-3 flex items-center justify-center">
+                             {selectedYear === item.year && <div className="h-0.5 w-full bg-primary" />}
+                           </div>
                            <div className="w-3 h-3 rounded-full bg-background border-2 border-white/20 relative">
                              {selectedYear === item.year && <div className="absolute inset-0 m-auto w-1.5 h-1.5 rounded-full bg-primary"/>}
                            </div>
