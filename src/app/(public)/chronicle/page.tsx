@@ -87,25 +87,25 @@ export default function ChroniclePage() {
         <div className="grid md:grid-cols-3 gap-16 items-center">
           {/* Timeline */}
           <div className="md:col-span-1">
-            <div className="relative pl-8">
-              <div className="absolute left-0 top-0 bottom-0 w-0.5 bg-white/20" />
+            <div className="relative pl-12 md:pl-16">
+              <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-white/20" />
               {chronicleData.map((item, index) => (
                 <div key={item.year} className="relative mb-8 last:mb-0">
                   <div
                     className={cn(
-                      'absolute left-[-2.3rem] top-1/2 -translate-y-1/2 text-lg font-bold transition-colors duration-300 cursor-pointer',
+                      'absolute left-[-3.5rem] md:left-[-4.5rem] top-1/2 -translate-y-1/2 text-lg font-bold transition-colors duration-300 cursor-pointer',
                       selectedYear === item.year ? 'text-primary' : 'text-white/50 hover:text-white'
                     )}
                     onClick={() => setSelectedYear(item.year)}
                   >
                     {item.year}
                   </div>
-                   <div className="absolute left-[-0.5rem] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-background border-2 border-white/20">
+                   <div className="absolute left-[0.75rem] top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-background border-2 border-white/20">
                      {selectedYear === item.year && <div className="w-full h-full rounded-full bg-primary ring-4 ring-primary/30"/>}
                    </div>
                   <div
                     className={cn(
-                      'transition-all duration-300 cursor-pointer pl-4',
+                      'transition-all duration-300 cursor-pointer pl-8',
                       selectedYear === item.year ? 'opacity-100' : 'opacity-50 hover:opacity-100'
                     )}
                      onClick={() => setSelectedYear(item.year)}
