@@ -103,27 +103,27 @@ export default function ChroniclePage() {
         <div className="grid lg:grid-cols-12 gap-8 items-center">
             {/* Timeline */}
             <div className="lg:col-span-3">
-              <div className="relative flex lg:block items-center justify-center space-x-8 lg:space-x-0 lg:space-y-6">
-                 <div className="absolute left-1/2 -translate-x-1/2 lg:left-12 lg:top-0 lg:bottom-0 w-0.5 h-full lg:h-full bg-white/10" />
+              <div className="relative flex lg:flex-col items-start justify-center lg:space-y-6">
+                 <div className="absolute left-12 top-0 bottom-0 w-0.5 bg-white/10 hidden lg:block" />
                   {chronicleData.map((item) => (
-                    <div key={item.year} className="relative z-10 flex lg:block items-center">
+                    <div key={item.year} className="relative z-10 flex items-center mb-6 lg:mb-0">
                         <div 
                           className="flex items-center cursor-pointer group"
                           onClick={() => setSelectedYear(item.year)}
                         >
-                          <div className='text-right pr-6'>
+                          <div className='w-16 text-right pr-4'>
                             <p className={cn("text-lg font-semibold transition-colors", selectedYear === item.year ? 'text-white' : 'text-white/50 group-hover:text-white')}>
                               {item.year}
                             </p>
-                            {selectedYear === item.year && <div className="h-0.5 w-4 bg-primary ml-auto mt-1" />}
+                            {selectedYear === item.year && <div className="h-0.5 w-full bg-primary mt-1" />}
                           </div>
-                           <div className="absolute left-1/2 lg:left-12 -translate-x-1/2 w-3 h-3 rounded-full bg-background border border-white/20 hidden lg:block">
-                             {selectedYear === item.year && <div className="w-full h-full rounded-full bg-primary/80 ring-2 ring-primary/30"/>}
+                           <div className="w-3 h-3 rounded-full bg-background border-2 border-white/20 relative">
+                             {selectedYear === item.year && <div className="absolute inset-0 m-auto w-1.5 h-1.5 rounded-full bg-primary"/>}
                            </div>
                         </div>
 
                         {item.title && (
-                          <div className={cn("pl-6 lg:pl-20 transition-opacity", selectedYear === item.year ? "opacity-100" : "opacity-0 lg:opacity-100 text-white/30")}>
+                          <div className={cn("pl-6 transition-opacity", selectedYear === item.year ? "opacity-100" : "opacity-0 lg:opacity-100 text-white/30")}>
                             <p className="text-xs text-primary">{item.chapter}</p>
                             <p className="font-semibold text-sm">{item.title}</p>
                           </div>
