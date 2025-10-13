@@ -38,7 +38,7 @@ export default function HomePage() {
         {
             title: "Member Zones",
             description: "Preview of exclusive member-only content and areas.",
-            href: "/member-zones",
+            href: "/member-zones-portal",
             image: PlaceHolderImages.find((i) => i.id === "member-zone-preview"),
             locked: true,
         },
