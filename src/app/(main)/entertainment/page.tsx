@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Music, Video, Gamepad2, Mic, Clapperboard } from "lucide-react";
+import { Music, Video, Gamepad2, Mic, Clapperboard, MapPin } from "lucide-react";
 
 export default function EntertainmentPage() {
   const sections = [
@@ -24,6 +24,11 @@ export default function EntertainmentPage() {
       description: "Explore a universe of games. Subscribe to game packages from various publishers with your MESY Coins.",
       icon: <Gamepad2 className="h-8 w-8 text-primary" />,
     },
+    {
+      title: "Places & Events",
+      description: "Connect with real-world venues. Promote your business, create quests, and offer exclusive rewards to members.",
+      icon: <MapPin className="h-8 w-8 text-primary" />,
+    },
   ];
 
   return (
@@ -31,7 +36,7 @@ export default function EntertainmentPage() {
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Entertainment Hub</h1>
         <p className="max-w-3xl mx-auto mt-4 text-muted-foreground text-lg">
-          Your portal to a universe of music, film, games, and artist showcases. The future of entertainment is being built.
+          Your portal to a universe of music, film, games, and real-world experiences. The future of entertainment is being built.
         </p>
       </div>
       
@@ -40,7 +45,7 @@ export default function EntertainmentPage() {
           <CardTitle className="text-3xl">Launching Soon!</CardTitle>
           <p className="text-muted-foreground">The MESY Entertainment Universe is expanding. Here's a glimpse of what's to come:</p>
         </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-8">
+        <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sections.map((section) => (
               <div key={section.title} className="flex gap-4 items-start">
                   <div className="p-3 bg-secondary rounded-lg">
