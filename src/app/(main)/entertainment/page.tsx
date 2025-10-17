@@ -1,26 +1,57 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Music, Video, Gamepad2 } from "lucide-react";
+import { Music, Video, Gamepad2, Mic, Clapperboard } from "lucide-react";
 
 export default function EntertainmentPage() {
+  const sections = [
+    {
+      title: "Artist Hub",
+      description: "A space for music labels and members to promote their work, build their brand, and connect with fans.",
+      icon: <Mic className="h-8 w-8 text-primary" />,
+    },
+    {
+      title: "Music",
+      description: "Discover new tracks from established artists and emerging talent within the MESY community.",
+      icon: <Music className="h-8 w-8 text-primary" />,
+    },
+    {
+      title: "Movies & Series",
+      description: "Access curated movie packages from top providers using MESY Coins. Your next binge-watch awaits.",
+      icon: <Clapperboard className="h-8 w-8 text-primary" />,
+    },
+    {
+      title: "Games",
+      description: "Explore a universe of games. Subscribe to game packages from various publishers with your MESY Coins.",
+      icon: <Gamepad2 className="h-8 w-8 text-primary" />,
+    },
+  ];
+
   return (
     <div className="container py-12 md:py-20">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Entertainment Hub</h1>
         <p className="max-w-3xl mx-auto mt-4 text-muted-foreground text-lg">
-          Your destination for music, videos, artist showcases, and games.
+          Your portal to a universe of music, film, games, and artist showcases. The future of entertainment is being built.
         </p>
       </div>
-      <Card>
+      
+      <Card className="bg-card/50">
         <CardHeader>
-          <CardTitle className="flex items-center gap-4">
-            <Music className="text-primary"/> 
-            <Video className="text-primary"/> 
-            <Gamepad2 className="text-primary"/> 
-            Entertainment Content Coming Soon
-          </CardTitle>
+          <CardTitle className="text-3xl">Launching Soon!</CardTitle>
+          <p className="text-muted-foreground">The MESY Entertainment Universe is expanding. Here's a glimpse of what's to come:</p>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">We are curating an amazing collection of content from talented artists and creators. The Entertainment Hub will be your source for the best music, videos, and games in the MESY Universe. Stay tuned for launch!</p>
+        <CardContent className="grid md:grid-cols-2 gap-8">
+            {sections.map((section) => (
+              <div key={section.title} className="flex gap-4 items-start">
+                  <div className="p-3 bg-secondary rounded-lg">
+                      {section.icon}
+                  </div>
+                  <div>
+                      <h3 className="text-xl font-semibold">{section.title}</h3>
+                      <p className="text-muted-foreground mt-1">{section.description}</p>
+                  </div>
+              </div>
+            ))}
         </CardContent>
       </Card>
     </div>
