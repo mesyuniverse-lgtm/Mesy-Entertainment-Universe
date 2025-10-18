@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Music, Video, Gamepad2, Mic, Clapperboard, MapPin } from "lucide-react";
+import { Music, Video, Gamepad2, Mic, Clapperboard, MapPin, Handshake } from "lucide-react";
 
 export default function EntertainmentPage() {
   const sections = [
@@ -29,6 +29,11 @@ export default function EntertainmentPage() {
       description: "Connect with real-world venues. Promote your business, create quests, and offer exclusive rewards to members.",
       icon: <MapPin className="h-8 w-8 text-primary" />,
     },
+    {
+      title: "Talent Hub",
+      description: "Find companions, guides, tutors, or bodyguards. Offer your skills and services to the community.",
+      icon: <Handshake className="h-8 w-8 text-primary" />,
+    }
   ];
 
   return (
