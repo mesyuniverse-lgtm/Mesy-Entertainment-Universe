@@ -17,6 +17,7 @@ import {
   LogOut,
   Gem,
   History,
+  Box,
 } from 'lucide-react';
 
 import {
@@ -50,6 +51,7 @@ export default function MemberZoneLayout({
     { title: 'อัปเกรดระดับ', href: '/member-zones/upgrade', icon: ChevronUp, description: 'พิธีการเปลี่ยนผ่าน' },
     { title: 'โปรไฟล์ของฉัน', href: '/member-zones/profile', icon: User, description: 'สะท้อนตัวตน' },
     { title: 'Gift Box', href: '/member-zones/gift-box', icon: Gift, description: 'พิธีแห่งการให้' },
+    { title: 'Item Box', href: '/member-zones/item-box', icon: Box, description: 'ช่องเก็บของรางวัล' },
     { title: 'Wallet', href: '/member-zones/wallet', icon: Wallet, description: 'ขุมทรัพย์แห่งการเติบโต' },
     { title: 'Mesy Cloud', href: '/member-zones/mesy-cloud', icon: Cloud, description: 'ห้องสมุดแห่งความทรงจำ' },
     { title: 'Quest', href: '/member-zones/quests', icon: Map, description: 'ภารกิจแห่งการเติบโต' },
