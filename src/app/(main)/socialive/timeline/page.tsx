@@ -1,10 +1,7 @@
 
-
 import { CreatePost } from "@/components/socialive/create-post";
 import { PostCard } from "@/components/socialive/post-card";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Card } from "@/components/ui/card";
-import { Clapperboard } from "lucide-react";
 
 export default function TimelinePage() {
   const posts = [
@@ -53,13 +50,10 @@ export default function TimelinePage() {
 
   return (
     <div className="space-y-6">
-       <Card className="flex items-center justify-center min-h-[600px] bg-secondary/20">
-            <div className="text-center p-6">
-                <Clapperboard className="mx-auto h-16 w-16 text-muted-foreground" />
-                <h3 className="mt-4 text-xl font-medium">Timeline Feed Coming Soon</h3>
-                <p className="mt-1 text-sm text-muted-foreground">The familiar post-style feed will be available here.</p>
-            </div>
-        </Card>
+      <CreatePost />
+      {posts.map((post) => (
+        <PostCard key={post.id} post={post} />
+      ))}
     </div>
   );
 }
