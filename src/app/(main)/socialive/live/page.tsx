@@ -16,39 +16,69 @@ import { Separator } from '@/components/ui/separator';
 export default function LiveStudioPage() {
     const { toast } = useToast();
     const videoRef = useRef<HTMLVideoElement>(null);
+    const [stream, setStream] = useState<MediaStream | null>(null);
     const [hasCameraPermission, setHasCameraPermission] = useState<boolean | null>(null);
     const [isMicOn, setIsMicOn] = useState(true);
     const [isCameraOn, setIsCameraOn] = useState(true);
     const [destination, setDestination] = useState("socialive");
 
-    useEffect(() => {
-        const getCameraPermission = async () => {
-            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                console.error('Media Devices API not supported.');
-                setHasCameraPermission(false);
-                return;
-            }
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                setHasCameraPermission(true);
-                if (videoRef.current) {
-                    videoRef.current.srcObject = stream;
-                }
-            } catch (error) {
-                console.error('Error accessing camera:', error);
-                setHasCameraPermission(false);
-                toast({
+    const getMediaStream = async (audio: boolean, video: boolean) => {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            console.error('Media Devices API not supported.');
+            setHasCameraPermission(false);
+            toast({
+                variant: 'destructive',
+                title: 'Device Not Supported',
+                description: 'Your browser does not support the necessary media device APIs.',
+            });
+            return null;
+        }
+        try {
+            const newStream = await navigator.mediaDevices.getUserMedia({ audio, video });
+            setHasCameraPermission(true);
+            return newStream;
+        } catch (error) {
+            console.error('Error accessing media devices:', error);
+            setHasCameraPermission(false);
+            if (!stream) { // Only show toast if it's the initial load/failure
+                 toast({
                     variant: 'destructive',
-                    title: 'Camera Access Denied',
-                    description: 'Please enable camera permissions in your browser settings to use the Live Studio.',
+                    title: 'Media Access Denied',
+                    description: 'Please enable camera and microphone permissions in your browser settings.',
                 });
             }
-        };
-        getCameraPermission();
-    }, [toast]);
+            return null;
+        }
+    };
+    
+    const stopMediaStream = (currentStream: MediaStream | null) => {
+        currentStream?.getTracks().forEach(track => track.stop());
+    };
 
-    const toggleCamera = () => setIsCameraOn(!isCameraOn);
-    const toggleMic = () => setIsMicOn(!isMicOn);
+    useEffect(() => {
+        const setupStream = async () => {
+            if (isCameraOn || isMicOn) {
+                const newStream = await getMediaStream(isMicOn, isCameraOn);
+                stopMediaStream(stream); // Stop previous stream before setting new one
+                setStream(newStream);
+            } else {
+                stopMediaStream(stream);
+                setStream(null);
+            }
+        };
+        setupStream();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isCameraOn, isMicOn]);
+
+     useEffect(() => {
+        if (videoRef.current) {
+            videoRef.current.srcObject = stream;
+        }
+    }, [stream]);
+
+
+    const toggleCamera = () => setIsCameraOn(prev => !prev);
+    const toggleMic = () => setIsMicOn(prev => !prev);
 
 
     return (
@@ -65,21 +95,23 @@ export default function LiveStudioPage() {
                     <CardContent>
                         <div className="aspect-video bg-secondary/30 rounded-lg flex items-center justify-center relative border">
                            <video ref={videoRef} className="w-full aspect-video rounded-md" autoPlay muted playsInline />
-                            {hasCameraPermission === false && (
+                            {(!stream || !isCameraOn) && (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
                                      <VideoOff className="h-16 w-16 text-muted-foreground" />
-                                     <p className="mt-4 font-semibold">Camera Not Available</p>
-                                     <p className="text-sm text-muted-foreground">Please grant camera and microphone access to begin.</p>
+                                     <p className="mt-4 font-semibold">Camera is Off</p>
+                                     <p className="text-sm text-muted-foreground">
+                                        {hasCameraPermission === false ? "Please grant camera and microphone access to begin." : "Your camera is currently turned off."}
+                                     </p>
                                 </div>
                             )}
                             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-2">
-                                <Button variant="secondary" size="icon" onClick={toggleMic}>
+                                <Button variant="secondary" size="icon" onClick={toggleMic} disabled={hasCameraPermission === false}>
                                     {isMicOn ? <Mic className="h-5 w-5" /> : <MicOff className="h-5 w-5 text-destructive" />}
                                 </Button>
-                                 <Button variant="destructive" size="lg" className="px-8">
+                                 <Button variant="destructive" size="lg" className="px-8" disabled={hasCameraPermission === false}>
                                     <Radio className="mr-2 h-5 w-5 animate-pulse"/> Go Live
                                 </Button>
-                                <Button variant="secondary" size="icon" onClick={toggleCamera}>
+                                <Button variant="secondary" size="icon" onClick={toggleCamera} disabled={hasCameraPermission === false}>
                                     {isCameraOn ? <Video className="h-5 w-5" /> : <VideoOff className="h-5 w-5 text-destructive" />}
                                 </Button>
                             </div>
