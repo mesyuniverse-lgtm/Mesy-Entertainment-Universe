@@ -142,6 +142,14 @@ export default function AiHubPage() {
                 </div>
             </section>
 
+            <div className="my-16">
+                <div className="text-center mb-8">
+                    <h2 className="text-3xl font-bold">Try Our Native Generator</h2>
+                    <p className="text-muted-foreground mt-2">Get a glimpse of our integrated AI capabilities. Full access is granted to members.</p>
+                </div>
+                <GeneratorDemo />
+            </div>
+
             <AiPlatforms />
 
             <Card className="mt-16 bg-card/50">
@@ -159,13 +167,6 @@ export default function AiHubPage() {
                 </CardContent>
             </Card>
 
-            <div className="mt-16">
-                <div className="text-center mb-8">
-                    <h2 className="text-3xl font-bold">Try Our Native Generator</h2>
-                    <p className="text-muted-foreground mt-2">Get a glimpse of our integrated AI capabilities. Full access is granted to members.</p>
-                </div>
-                <GeneratorDemo />
-            </div>
         </div>
     )
 }
