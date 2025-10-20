@@ -1,7 +1,7 @@
 import { GeneratorDemo } from "@/components/ai-hub/generator-demo";
 import { AiPlatforms } from "@/components/ai-hub/ai-platforms";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Store, Cpu, Bot, Star, PlayCircle } from "lucide-react";
+import { Store, Cpu, Bot, Star, PlayCircle, Image as ImageIcon, Video, GalleryHorizontal, Film, Mic, AudioLines, Code } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -21,6 +21,17 @@ export default function AiHubPage() {
     const sponsoredAds = [
         { title: "Stable Diffusion XL", imageId: "glowing-gem-1" },
         { title: "Llama 3 on Mobile", imageId: "fantasy-landscape-3" }
+    ];
+
+    const aiTools = [
+        { title: "Text to Image", icon: <ImageIcon className="h-6 w-6 text-primary" />, href: "#" },
+        { title: "Text to Video", icon: <Video className="h-6 w-6 text-primary" />, href: "#" },
+        { title: "Image to Image", icon: <GalleryHorizontal className="h-6 w-6 text-primary" />, href: "#" },
+        { title: "Image to Video", icon: <Film className="h-6 w-6 text-primary" />, href: "#" },
+        { title: "Speech to Text", icon: <Mic className="h-6 w-6 text-primary" />, href: "#" },
+        { title: "Text to Speech", icon: <AudioLines className="h-6 w-6 text-primary" />, href: "#" },
+        { title: "AI Coder", icon: <Code className="h-6 w-6 text-primary" />, href: "#" },
+        { title: "AI Assistant", icon: <Bot className="h-6 w-6 text-primary" />, href: "#" },
     ];
 
     return (
@@ -116,6 +127,21 @@ export default function AiHubPage() {
                 </aside>
             </section>
             
+            {/* AI Tools Section */}
+            <section className="mb-16">
+                <h2 className="text-3xl font-bold tracking-tight mb-6 text-center">Explore AI Tools</h2>
+                <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+                    {aiTools.map((tool) => (
+                        <Link key={tool.title} href={tool.href}>
+                            <Card className="h-full flex flex-col items-center justify-center p-4 text-center hover:bg-secondary/50 hover:shadow-primary/10 hover:shadow-lg transition-all transform hover:-translate-y-1">
+                                {tool.icon}
+                                <p className="mt-2 text-xs font-semibold">{tool.title}</p>
+                            </Card>
+                        </Link>
+                    ))}
+                </div>
+            </section>
+
             <AiPlatforms />
 
             <Card className="mt-16 bg-card/50">
