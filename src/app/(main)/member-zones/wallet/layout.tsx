@@ -4,7 +4,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { DollarSign, Gem, Award, Star } from 'lucide-react';
+import { DollarSign, Gem, Award, Star, History, Bell } from 'lucide-react';
 
 export default function WalletLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
@@ -14,6 +14,9 @@ export default function WalletLayout({ children }: { children: React.ReactNode }
         { href: '/member-zones/wallet/mesy-coin', label: 'MESY Coin', icon: Gem },
         { href: '/member-zones/wallet/point', label: 'Point', icon: Award },
         { href: '/member-zones/wallet/star', label: 'Star', icon: Star },
+        { href: '/member-zones/wallet/history', label: 'History', icon: History },
+        { href: '/member-zones/wallet/notifications', label: 'Notifications', icon: Bell },
+        { href: '/member-zones/wallet/favorites', label: 'Favorites', icon: Star },
     ];
 
     return (
@@ -30,7 +33,7 @@ export default function WalletLayout({ children }: { children: React.ReactNode }
                             href={item.href}
                             className={cn(
                                 'flex items-center gap-2 shrink-0 border-b-2 px-1 pb-4 text-sm font-medium',
-                                pathname === item.href
+                                pathname.startsWith(item.href)
                                     ? 'border-primary text-primary'
                                     : 'border-transparent text-muted-foreground hover:text-foreground'
                             )}
