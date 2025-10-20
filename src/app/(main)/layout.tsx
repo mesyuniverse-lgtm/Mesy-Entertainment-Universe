@@ -5,7 +5,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle } from 'lucide-react';
+import { Menu, LogOut, LayoutDashboard, UserCircle, Code } from 'lucide-react';
 
 export default function MainLayout({
   children,
@@ -18,6 +18,7 @@ export default function MainLayout({
     { name: 'AI Hub', href: '/ai-hub' },
     { name: 'Shopping Hub', href: '/shopping' },
     { name: 'Member Zones', href: '/member-zones-portal' },
+    { name: 'Developers Zone', href: '/dashboard/admin' },
   ];
 
   return (
