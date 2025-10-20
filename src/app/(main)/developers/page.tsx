@@ -24,7 +24,7 @@ export default function DevelopersPage() {
     return (
         <div className="container py-12 md:py-20">
              <div className="text-center mb-12">
-                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Developers Zone</h1>
+                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">DEVELOPERS ZONE</h1>
                 <p className="max-w-3xl mx-auto mt-4 text-muted-foreground text-lg">
                     The heart of innovation in the MESY Universe. Collaborate, create, and earn by shaping the future of the platform.
                 </p>
@@ -77,7 +77,7 @@ export default function DevelopersPage() {
                                 </Badge>
                             </div>
                             <div className="space-y-2">
-                                <h2 className="text-2xl font-bold" style={{textShadow: '1px 1px 4px #000'}}>Become a MESY Developer</h2>
+                                <h2 className="text-2xl font-bold" style={{textShadow: '1px 1px 4px #000'}}>BECOME A MESY DEVELOPER</h2>
                                 <p className="text-sm max-w-md" style={{textShadow: '1px 1px 3px #000'}}>Join our team of creators. Take the quest, prove your skills, and start earning by building the universe.</p>
                                 <div className="flex gap-2 pt-2">
                                     <Button size="sm" asChild>
