@@ -4,15 +4,15 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Button } from "@/components/ui/button";
-import { UploadCloud, File, Image as ImageIcon } from "lucide-react";
+import { File, Image as ImageIcon } from "lucide-react";
 import { cn } from '@/lib/utils';
 
 export default function MesyCloudLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
 
     const navItems = [
-        { href: '/member-zones/mesy-cloud/files', label: 'All Scrolls', icon: <File className="mr-2 h-4 w-4" /> },
-        { href: '/member-zones/mesy-cloud/images', label: 'Gallery', icon: <ImageIcon className="mr-2 h-4 w-4" /> },
+        { href: '/member-zones/mesy-cloud/files', label: 'All Scrolls', icon: File },
+        { href: '/member-zones/mesy-cloud/images', label: 'Gallery', icon: ImageIcon },
     ];
 
     return (
@@ -23,9 +23,6 @@ export default function MesyCloudLayout({ children }: { children: React.ReactNod
                         <h1 className="text-3xl font-bold tracking-tight font-headline">Mesy Cloud</h1>
                         <p className="text-muted-foreground">ห้องสมุดแห่งความทรงจำ: พื้นที่จัดเก็บข้อมูลส่วนตัวของคุณ</p>
                     </div>
-                    <Button>
-                        <UploadCloud className="mr-2" /> Upload
-                    </Button>
                 </div>
                  <div className="border-b">
                     <nav className="flex gap-4">
@@ -35,12 +32,12 @@ export default function MesyCloudLayout({ children }: { children: React.ReactNod
                                 href={item.href}
                                 className={cn(
                                     "flex items-center px-3 py-2 border-b-2 font-medium text-sm",
-                                    pathname === item.href
+                                    pathname.startsWith(item.href)
                                         ? "border-primary text-primary"
                                         : "border-transparent text-muted-foreground hover:text-foreground"
                                 )}
                             >
-                                {item.icon}
+                                <item.icon className="mr-2 h-4 w-4" />
                                 {item.label}
                             </Link>
                         ))}
