@@ -1,24 +1,52 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, Store, Wallet } from "lucide-react";
 
 export default function ShoppingPage() {
+
+  const futureFeatures = [
+    {
+      title: "Mesy Shop",
+      description: "ร้านค้าอย่างเป็นทางการจาก MESY Universe ที่คุณสามารถซื้อไอเท็มพิเศษ, แพ็คเกจเริ่มต้น, และสินค้า Limited Edition ได้ด้วย Mesy Coin หรือสกุลเงิน USD",
+      icon: <ShoppingCart className="h-8 w-8 text-primary" />
+    },
+    {
+      title: "Mesy Market",
+      description: "ตลาดกลางสำหรับสมาชิก ที่คุณสามารถนำไอเท็มมาลงขาย, ตั้งราคา, และแลกเปลี่ยนกับผู้เล่นอื่นได้อย่างอิสระ พร้อมระบบค่าธรรมเนียมเพื่อความสมดุลของเศรษฐกิจ",
+      icon: <Store className="h-8 w-8 text-primary" />
+    },
+    {
+      title: "Wallet & Currencies",
+      description: "กระเป๋าเงินดิจิทัลส่วนตัวสำหรับจัดการ Mesy Coin, Point ที่ได้จากเควส, และ Star ที่ได้รับจากเพื่อนๆ เพื่อใช้จ่ายและแลกเปลี่ยนในจักรวาล MESY",
+      icon: <Wallet className="h-8 w-8 text-primary" />
+    }
+  ]
+
   return (
     <div className="container py-12 md:py-20">
       <div className="text-center mb-12">
         <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Shopping Hub</h1>
         <p className="max-w-3xl mx-auto mt-4 text-muted-foreground text-lg">
-          Discover unique products, open your own store, and enjoy exclusive member rewards.
+          ศูนย์กลางเศรษฐกิจแห่งจักรวาล MESY ที่ซึ่งการค้าขาย, การแลกเปลี่ยน, และการสร้างความมั่งคั่งเริ่มต้นขึ้น
         </p>
       </div>
-      <Card>
+      
+      <Card className="bg-card/50">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <ShoppingCart className="text-primary"/> 
-            Marketplace Launching Soon
-          </CardTitle>
+          <CardTitle className="text-3xl">จักรวาลแห่งการค้าที่กำลังจะเปิดตัว</CardTitle>
+          <p className="text-muted-foreground">เตรียมพบกับระบบเศรษฐกิจเต็มรูปแบบของ MESY Universe ที่กำลังจะมาถึง:</p>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">The Shopping Hub is in development. Soon you'll be able to browse a marketplace of unique goods, enjoy promotions and cashback with MESY Coin, and even open your own storefront. Get ready for a new commerce experience!</p>
+        <CardContent className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {futureFeatures.map((feature) => (
+              <div key={feature.title} className="flex gap-4 items-start">
+                  <div className="p-3 bg-secondary rounded-lg">
+                      {feature.icon}
+                  </div>
+                  <div>
+                      <h3 className="text-xl font-semibold">{feature.title}</h3>
+                      <p className="text-muted-foreground mt-1">{feature.description}</p>
+                  </div>
+              </div>
+            ))}
         </CardContent>
       </Card>
     </div>
