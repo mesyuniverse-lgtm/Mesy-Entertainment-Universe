@@ -3,152 +3,158 @@
     {
       "id": "fantasy-castle-1",
       "description": "A majestic fantasy castle on a mountain.",
-      "imageUrl": "https://picsum.photos/seed/fc1/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1544037943-afd8fa64efbf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmYW50YXN5JTIwY2FzdGxlfGVufDB8fHx8MTc2MDk1OTM5OXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy castle"
     },
     {
       "id": "enchanted-forest-1",
       "description": "An enchanted forest with glowing mushrooms.",
-      "imageUrl": "https://picsum.photos/seed/ef1/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1597201423947-3e0028337902?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxlbmNoYW50ZWQlMjBmb3Jlc3R8ZW58MHx8fHwxNzYwOTQ4MDg1fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "enchanted forest"
     },
     {
       "id": "dragon-1",
       "description": "A dragon flying over a valley.",
-      "imageUrl": "https://picsum.photos/seed/d1/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1654932174732-33dc12907982?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxkcmFnb24lMjB2YWxsZXl8ZW58MHx8fHwxNzYwOTY2NjgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "dragon valley"
     },
     {
       "id": "glowing-gem-1",
       "description": "A glowing gem in a dark cave.",
-      "imageUrl": "https://picsum.photos/seed/gg1/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1746420800164-6f136e8a446c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxnbG93aW5nJTIwZ2VtfGVufDB8fHx8MTc2MDg0OTgyN3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "glowing gem"
     },
     {
       "id": "fantasy-landscape-1",
       "description": "A beautiful fantasy landscape with floating islands.",
-      "imageUrl": "https://picsum.photos/seed/fl1/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmYW50YXN5JTIwbGFuZHNjYXBlfGVufDB8fHx8MTc2MDkyMTQ1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy landscape"
     },
     {
       "id": "fantasy-landscape-2",
       "description": "A beautiful fantasy landscape with a waterfall.",
-      "imageUrl": "https://picsum.photos/seed/fl2/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1728267014569-95f5ad67569f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmYW50YXN5JTIwd2F0ZXJmYWxsfGVufDB8fHx8MTc2MDk2NjY4Mnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy waterfall"
     },
     {
       "id": "fantasy-landscape-3",
       "description": "A beautiful fantasy landscape with a crystal cave.",
-      "imageUrl": "https://picsum.photos/seed/fl3/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1737358055126-4fbd38ec00a4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjcnlzdGFsJTIwY2F2ZXxlbnwwfHx8fDE3NjA5NDg5MjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "crystal cave"
     },
     {
       "id": "fantasy-landscape-4",
       "description": "A beautiful fantasy landscape with an ancient tree.",
-      "imageUrl": "https://picsum.photos/seed/fl4/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1601979142879-ad5896cb0617?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxhbmNpZW50JTIwdHJlZXxlbnwwfHx8fDE3NjA5NDI0NDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "ancient tree"
     },
     {
       "id": "fantasy-landscape-5",
       "description": "A beautiful fantasy landscape with a mystical portal.",
-      "imageUrl": "https://picsum.photos/seed/fl5/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1642435167910-f12fcc261e71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bXlzdGljYWwlMjBwb3J0YWx8ZW58MHx8fHwxNzYwOTY2NjgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "mystical portal"
     },
     {
       "id": "fantasy-landscape-6",
       "description": "A beautiful fantasy landscape with a sky city.",
-      "imageUrl": "https://picsum.photos/seed/fl6/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1600178503558-5ecdf7f854ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxza3klMjBjaXR5fGVufDB8fHx8MTc2MDk2NjY4Mnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "sky city"
     },
     {
       "id": "socialive-preview",
       "description": "People in a virtual social room.",
-      "imageUrl": "https://picsum.photos/seed/sp1/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1758598305779-8b8465d47e37?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx2aXJ0dWFsJTIwaGFuZ291dHxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "virtual hangout"
     },
     {
       "id": "entertainment-preview",
       "description": "A stage with musical instruments and lights.",
-      "imageUrl": "https://picsum.photos/seed/ep1/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1551043692-fc37bc4676b1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y29uY2VydCUyMHN0YWdlfGVufDB8fHx8MTc2MDk2NjY4Mnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "concert stage"
     },
     {
       "id": "shopping-preview",
       "description": "A magical marketplace with various stalls.",
-      "imageUrl": "https://picsum.photos/seed/shp1/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1734526743138-3f3a428cf632?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmYW50YXN5JTIwbWFya2V0fGVufDB8fHx8MTc2MDkxNTIzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy market"
     },
     {
       "id": "member-zone-preview",
       "description": "An exclusive, ornate door with glowing runes.",
-      "imageUrl": "https://picsum.photos/seed/mzp1/600/400",
+      "imageUrl": "https://images.unsplash.com/photo-1607541768316-3d51083eabdd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxtYWdpYyUyMGRvb3J8ZW58MHx8fHwxNzYwOTY2NjgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "magic door"
     },
     {
       "id": "feature-1",
       "description": "A diagram showing social connections.",
-      "imageUrl": "https://picsum.photos/seed/f1/400/300",
+      "imageUrl": "https://images.unsplash.com/photo-1603145733146-ae562a55031e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzb2NpYWwlMjBuZXR3b3JrfGVufDB8fHx8MTc2MDg2NjkxMXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "social network"
     },
     {
       "id": "feature-2",
       "description": "An AI generating art.",
-      "imageUrl": "https://picsum.photos/seed/f2/400/300",
+      "imageUrl": "https://images.unsplash.com/photo-1636690498207-d7b393423b9a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxBSSUyMGFydHxlbnwwfHx8fDE3NjA4NjMyMzZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "AI art"
     },
     {
       "id": "feature-3",
       "description": "A person shopping online.",
-      "imageUrl": "https://picsum.photos/seed/f3/400/300",
+      "imageUrl": "https://images.unsplash.com/photo-1713646778050-2213b4140e6b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxvbmxpbmUlMjBzaG9wcGluZ3xlbnwwfHx8fDE3NjA4NjMxMzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "online shopping"
     },
     {
       "id": "member-plan-video",
       "description": "A placeholder for a video about member plans.",
-      "imageUrl": "https://picsum.photos/seed/mpv1/800/450",
+      "imageUrl": "https://images.unsplash.com/photo-1673767298248-b128f17f89af?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwcmVzZW50YXRpb24lMjB2aWRlb3xlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "presentation video"
     },
     {
       "id": "default-avatar",
       "description": "Default user avatar.",
-      "imageUrl": "https://picsum.photos/seed/avatar1/200/200",
+      "imageUrl": "https://images.unsplash.com/photo-1660756574208-550a9f60bb32?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmYW50YXN5JTIwY2hhcmFjdGVyfGVufDB8fHx8MTc2MDg3NDIyMXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy character"
     },
     {
       "id": "auth-background",
       "description": "A fantasy-themed background for the authentication pages.",
-      "imageUrl": "https://picsum.photos/seed/authbg/1200/1600",
+      "imageUrl": "https://images.unsplash.com/photo-1534447677768-be436bb09401?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmYW50YXN5JTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy background"
     },
     {
       "id": "female-archer-1",
       "description": "A female archer in a fantasy setting.",
-      "imageUrl": "https://picsum.photos/seed/fa1/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1686747517763-f9d694bda04d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmZW1hbGUlMjBhcmNoZXJ8ZW58MHx8fHwxNzYwOTM5OTE4fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "female archer"
     },
     {
       "id": "knight-1",
       "description": "A knight in shining armor.",
-      "imageUrl": "https://picsum.photos/seed/k1/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1654592200845-f5d22b8da331?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmYW50YXN5JTIwa25pZ2h0fGVufDB8fHx8MTc2MDg2MTkzMnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy knight"
     },
     {
       "id": "explorer-1",
       "description": "An explorer in a fantasy world.",
-      "imageUrl": "https://picsum.photos/seed/ex1/1280/720",
+      "imageUrl": "https://images.unsplash.com/photo-1639234911987-e1cddda4b7cc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmYW50YXN5JTIwZXhwbG9yZXJ8ZW58MHx8fHwxNzYwOTY2NjgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy explorer"
     },
     {
       "id": "fighter-character",
       "description": "A powerful fighter character with glowing fists.",
-      "imageUrl": "https://picsum.photos/seed/fighter1/800/1200",
+      "imageUrl": "https://images.unsplash.com/photo-1667419675013-e5f883eb3bc0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmYW50YXN5JTIwZmlnaHRlcnxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy fighter"
     },
     {
       "id": "fighter-silhouette",
       "description": "A silhouette of a powerful fighter character.",
-      "imageUrl": "https://picsum.photos/seed/fighter-sil/1920/1080",
+      "imageUrl": "https://images.unsplash.com/photo-1648564733383-8b1ad7fe6bed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmaWdodGVyJTIwc2lsaG91ZXR0ZXxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "fighter silhouette"
+    },
+    {
+      "id": "developer-portal-bg",
+      "description": "A background for the developer portal, with a digital/code theme.",
+      "imageUrl": "https://images.unsplash.com/photo-1669023414162-8b0573b9c6b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxtYXRyaXglMjBjb2RlfGVufDB8fHx8MTc2MDk2NjY4Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "matrix code"
     }
   ]
 }
