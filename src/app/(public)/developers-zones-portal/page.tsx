@@ -61,7 +61,7 @@ export default function DevelopersZonePortalPage() {
                             <p className="text-muted-foreground">For certified developers. Access your dashboard and ongoing projects.</p>
                         </div>
                         <Button asChild className="mt-4 w-full">
-                           <Link href="/dashboard">Developer Login <ArrowRight className="ml-2"/></Link>
+                           <Link href="/login">Developer Login <ArrowRight className="ml-2"/></Link>
                         </Button>
                     </Card>
 
