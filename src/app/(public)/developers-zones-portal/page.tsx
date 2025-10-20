@@ -71,7 +71,7 @@ export default function DevelopersZonePortalPage() {
                             <p className="text-muted-foreground">Your journey starts here. Are you worthy? (Level 1 Member Required)</p>
                         </div>
                         <Button asChild className="mt-4 w-full" variant="secondary">
-                           <Link href="/developers">View the Path</Link>
+                           <Link href="/developers-zone">View the Path</Link>
                         </Button>
                     </Card>
                     

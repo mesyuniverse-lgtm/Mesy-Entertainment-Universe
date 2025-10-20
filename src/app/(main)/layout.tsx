@@ -18,7 +18,7 @@ export default function MainLayout({
     { name: 'AI Hub', href: '/ai-hub' },
     { name: 'Shopping Hub', href: '/shopping' },
     { name: 'Member Zones', href: '/member-zones-portal' },
-    { name: 'Developers Zone', href: '/developers' },
+    { name: 'Developers Zone', href: '/developers-zone' },
   ];
 
   return (
