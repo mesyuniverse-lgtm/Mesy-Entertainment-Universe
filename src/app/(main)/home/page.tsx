@@ -45,7 +45,7 @@ export default function HomePage() {
         {
             title: "Developer Zone",
             description: "Ranking, Sponsor, Vote, Join Team, Forum, Roadmap.",
-            href: "/dashboard/admin",
+            href: "/developers-zones-portal",
             image: PlaceHolderImages.find((i) => i.id === "glowing-gem-1"),
             locked: true,
         },
