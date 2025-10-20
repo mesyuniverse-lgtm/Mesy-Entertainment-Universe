@@ -42,13 +42,6 @@ export default function HomePage() {
             image: PlaceHolderImages.find((i) => i.id === "member-zone-preview"),
             locked: true,
         },
-        {
-            title: "Developer Zone",
-            description: "Ranking, Sponsor, Vote, Join Team, Forum, Roadmap.",
-            href: "/developers-zone-portal",
-            image: PlaceHolderImages.find((i) => i.id === "glowing-gem-1"),
-            locked: true,
-        },
     ];
 
     return (
