@@ -1,5 +1,6 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ShoppingCart, Store, Wallet } from "lucide-react";
+import { ShoppingCart, Store, Wallet, Handshake, CreditCard } from "lucide-react";
 
 export default function ShoppingPage() {
 
@@ -15,9 +16,19 @@ export default function ShoppingPage() {
       icon: <Store className="h-8 w-8 text-primary" />
     },
     {
+      title: "Open Shop",
+      description: "เปิดร้านค้าของคุณเอง! สมาชิกสามารถเปิดร้าน, ลงขายสินค้า, และสร้างแบรนด์ของตัวเองได้ มีแพ็กเกจหลากหลายให้เลือกเพื่อรองรับการเติบโต",
+      icon: <Handshake className="h-8 w-8 text-primary" />
+    },
+    {
       title: "Wallet & Currencies",
-      description: "กระเป๋าเงินดิจิทัลส่วนตัวสำหรับจัดการ Mesy Coin, Point ที่ได้จากเควส, และ Star ที่ได้รับจากเพื่อนๆ เพื่อใช้จ่ายและแลกเปลี่ยนในจักรวาล MESY",
+      description: "กระเป๋าเงินดิจิทัลส่วนตัวสำหรับจัดการ Mesy Coin, Point, และ Star เพื่อใช้จ่ายและแลกเปลี่ยนในจักรวาล MESY",
       icon: <Wallet className="h-8 w-8 text-primary" />
+    },
+    {
+      title: "Mesy Pay",
+      description: "ระบบชำระเงินที่เชื่อมต่อกับโลกจริง ช่วยให้การฝาก-ถอน และการใช้จ่ายผ่านบัตรเครดิตและธนาคารเป็นไปได้อย่างสะดวกและปลอดภัย",
+      icon: <CreditCard className="h-8 w-8 text-primary" />
     }
   ]
 
