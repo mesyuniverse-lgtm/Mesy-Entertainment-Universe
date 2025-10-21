@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import placeholderImages from '@/lib/placeholder-images.json';
-import { Clapperboard, Gem, ShoppingCart, Star, Users } from "lucide-react";
+import { Gem } from "lucide-react";
 
 export default function WelcomePage() {
   return (
@@ -69,10 +69,6 @@ export default function WelcomePage() {
                 <Card key={feature.title} className="bg-card/60 border-border/40 backdrop-blur-sm">
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium">{feature.title}</CardTitle>
-                    {feature.title === 'Socialive' && <Users className="w-4 h-4 text-muted-foreground" />}
-                    {feature.title === 'Entertainment' && <Clapperboard className="w-4 h-4 text-muted-foreground" />}
-                    {feature.title === 'Shopping' && <ShoppingCart className="w-4 h-4 text-muted-foreground" />}
-                    {feature.title === 'Member Zones' && <Star className="w-4 h-4 text-muted-foreground" />}
                   </CardHeader>
                   <CardContent>
                     <div className="relative aspect-video rounded-md overflow-hidden">
