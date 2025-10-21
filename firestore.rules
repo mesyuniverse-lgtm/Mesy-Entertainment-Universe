@@ -1,0 +1,267 @@
+/**
+ * @fileoverview Firestore Security Rules for the Mesy Entertainment Universe platform.
+ *
+ * Core Philosophy:
+ * This ruleset enforces a strict user-ownership model for private data, complemented by
+ * role-based access control for administrative functions.  Authorization decisions are
+ * based on the authenticated user's identity (`request.auth.uid`) and denormalized data.
+ *
+ * Data Structure:
+ * - /users/{userId}: Stores core user data including roles.
+ * - /users/{userId}/profile: User profile information.
+ * - /users/{userId}/wallet: User's wallet data.
+ * - /users/{userId}/downline/{downlineId}: Downline member data for a user.
+ * - /users/{userId}/notifications/{notificationId}: User-specific notifications.
+ * - /quests/{questId}: Public quest data.
+ * - /rewards/{rewardId}: Public reward data.
+ * - /stores/{storeId}: Store data.
+ * - /products/{productId}: Product data.
+ * - /users/{userId}/ai_sessions/{aiSessionId}: AI session data for a user.
+ *
+ * Key Security Decisions:
+ * - User data is strictly controlled by the owning user.
+ * - Public collections are readable by all, but writes may be restricted based on
+ *   ownership or administrative roles.
+ * - Data validation is minimized in this prototyping phase.
+ *
+ * Denormalization for Authorization:
+ * The `User` document at `/users/{userId}` includes a `role` field, which is used for
+ * role-based access control. This avoids the need to perform additional reads to
+ * determine a user's permissions. All user-owned data is nested under the
+ * `/users/{userId}` path, enabling simple path-based ownership checks.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Grants access to user documents based on ownership and role.
+     * @path /users/{userId}
+     * @allow (create) - If the user ID matches the authenticated user's ID (self-creation).
+     * @allow (get, list, update, delete) - If the user ID matches the authenticated user's ID (owner).
+     * @deny (create) - If the user ID does not match the authenticated user's ID (not self).
+     * @deny (update, delete) - If the user ID does not match the authenticated user's ID and the document does not exist.
+     * @principle Enforces user-ownership for data access and self-creation for user documents.
+     */
+    match /users/{userId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      // Allow the user to create their own user document
+      allow create: if isSignedIn() && isOwner(userId)
+                      && request.resource.data.id == userId;
+
+      allow get: if isOwner(userId);
+      allow list: if false;
+
+      // Only the owner can update their user document.
+      allow update: if isExistingOwner(userId)
+                      && request.resource.data.id == resource.data.id;
+
+      // Only the owner can delete their user document.
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Grants access to user profile documents based on ownership.
+     * @path /users/{userId}/profile
+     * @allow (create, get, update, delete) - If the user ID matches the authenticated user's ID (owner).
+     * @deny (create, get, update, delete) - If the user ID does not match the authenticated user's ID.
+     * @principle Enforces user-ownership for profile data.
+     */
+    match /users/{userId}/profile {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow create: if isSignedIn() && isOwner(userId)
+                      && request.resource.data.userId == userId;
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow update: if isExistingOwner(userId)
+                      && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Grants access to user wallet documents based on ownership.
+     * @path /users/{userId}/wallet
+     * @allow (create, get, update, delete) - If the user ID matches the authenticated user's ID (owner).
+     * @deny (create, get, update, delete) - If the user ID does not match the authenticated user's ID.
+     * @principle Enforces user-ownership for wallet data.
+     */
+    match /users/{userId}/wallet {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow create: if isSignedIn() && isOwner(userId)
+                      && request.resource.data.userId == userId;
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow update: if isExistingOwner(userId)
+                      && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Grants access to downline documents based on ownership.
+     * @path /users/{userId}/downline/{downlineId}
+     * @allow (create, get, update, delete) - If the user ID matches the authenticated user's ID (owner).
+     * @deny (create, get, update, delete) - If the user ID does not match the authenticated user's ID.
+     * @principle Enforces user-ownership for downline data.
+     */
+    match /users/{userId}/downline/{downlineId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+       function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow create: if isSignedIn() && isOwner(userId)
+                      && request.resource.data.memberId == userId;
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow update: if isExistingOwner(userId)
+                      && request.resource.data.memberId == resource.data.memberId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Grants access to notification documents based on ownership.
+     * @path /users/{userId}/notifications/{notificationId}
+     * @allow (create, get, update, delete) - If the user ID matches the authenticated user's ID (owner).
+     * @deny (create, get, update, delete) - If the user ID does not match the authenticated user's ID.
+     * @principle Enforces user-ownership for notification data.
+     */
+    match /users/{userId}/notifications/{notificationId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow create: if isSignedIn() && isOwner(userId)
+                      && request.resource.data.userId == userId;
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow update: if isExistingOwner(userId)
+                      && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Grants public read access to quest documents, but restricts write access.
+     * @path /quests/{questId}
+     * @allow (get, list) - Public read access.
+     * @deny (create, update, delete) - No write access allowed.
+     * @principle Grants public read access while restricting write access.
+     */
+    match /quests/{questId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Grants public read access to reward documents, but restricts write access.
+     * @path /rewards/{rewardId}
+     * @allow (get, list) - Public read access.
+     * @deny (create, update, delete) - No write access allowed.
+     * @principle Grants public read access while restricting write access.
+     */
+    match /rewards/{rewardId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Grants public read access to store documents, but restricts write access.
+     * @path /stores/{storeId}
+     * @allow (get, list) - Public read access.
+     * @deny (create, update, delete) - No write access allowed.
+     * @principle Grants public read access while restricting write access.
+     */
+    match /stores/{storeId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Grants public read access to product documents, but restricts write access.
+     * @path /products/{productId}
+     * @allow (get, list) - Public read access.
+     * @deny (create, update, delete) - No write access allowed.
+     * @principle Grants public read access while restricting write access.
+     */
+    match /products/{productId} {
+      allow get, list: if true;
+      allow create, update, delete: if false;
+    }
+
+    /**
+     * @description Grants access to AI session documents based on ownership.
+     * @path /users/{userId}/ai_sessions/{aiSessionId}
+     * @allow (create, get, update, delete) - If the user ID matches the authenticated user's ID (owner).
+     * @deny (create, get, update, delete) - If the user ID does not match the authenticated user's ID.
+     * @principle Enforces user-ownership for AI session data.
+     */
+    match /users/{userId}/ai_sessions/{aiSessionId} {
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource != null;
+      }
+
+      allow create: if isSignedIn() && isOwner(userId)
+                      && request.resource.data.userId == userId;
+      allow get: if isOwner(userId);
+      allow list: if isOwner(userId);
+      allow update: if isExistingOwner(userId)
+                      && request.resource.data.userId == resource.data.userId;
+      allow delete: if isExistingOwner(userId);
+    }
+  }
+}
