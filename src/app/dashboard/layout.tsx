@@ -67,7 +67,6 @@ export default function DashboardLayout({
     { title: 'Dashboard', href: '/dashboard', icon: Home },
     { title: 'Public Profile', href: '/dashboard/profile', icon: User },
     { title: 'Private Profile', href: '/dashboard/settings/private-profile', icon: FileLock },
-    { title: 'Memberships', href: '/dashboard/memberships', icon: Star },
     { title: 'Payment', href: '/dashboard/payment', icon: Wallet },
     { title: 'Daily Rewards', href: '/dashboard/daily-rewards', icon: Calendar },
     { title: 'Notifications', href: '/dashboard/notifications', icon: Bell },
