@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Music, Video, Gamepad2, Mic, Clapperboard, MapPin, Handshake } from "lucide-react";
 
