@@ -3,15 +3,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
 import placeholderImages from '@/lib/placeholder-images.json';
-import { ClapperboardIcon, Gem, ShoppingCartIcon, StarIcon, UsersIcon } from "lucide-react";
+import { Clapperboard, Gem, ShoppingCart, Star, Users } from "lucide-react";
 
 export default function WelcomePage() {
   return (
     <div className="flex flex-col min-h-screen bg-background text-foreground">
       <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center">
-          <Link href="#" className="flex items-center font-headline text-xl font-bold" prefetch={false}>
-            <Gem className="w-6 h-6 mr-2 text-primary" />
+          <Link href="#" className="flex items-center font-headline text-xl font-bold text-primary" prefetch={false}>
+            <Gem className="w-6 h-6 mr-2" />
             Mesy
           </Link>
           <nav className="ml-auto flex items-center gap-4">
@@ -69,10 +69,10 @@ export default function WelcomePage() {
                 <Card key={feature.title} className="bg-card/60 border-border/40 backdrop-blur-sm">
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium">{feature.title}</CardTitle>
-                    {feature.title === 'Socialive' && <UsersIcon className="w-4 h-4 text-muted-foreground" />}
-                    {feature.title === 'Entertainment' && <ClapperboardIcon className="w-4 h-4 text-muted-foreground" />}
-                    {feature.title === 'Shopping' && <ShoppingCartIcon className="w-4 h-4 text-muted-foreground" />}
-                    {feature.title === 'Member Zones' && <StarIcon className="w-4 h-4 text-muted-foreground" />}
+                    {feature.title === 'Socialive' && <Users className="w-4 h-4 text-muted-foreground" />}
+                    {feature.title === 'Entertainment' && <Clapperboard className="w-4 h-4 text-muted-foreground" />}
+                    {feature.title === 'Shopping' && <ShoppingCart className="w-4 h-4 text-muted-foreground" />}
+                    {feature.title === 'Member Zones' && <Star className="w-4 h-4 text-muted-foreground" />}
                   </CardHeader>
                   <CardContent>
                     <div className="relative aspect-video rounded-md overflow-hidden">

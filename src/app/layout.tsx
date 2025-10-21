@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat, Cinzel } from "next/font/google";
+import { Montserrat, Cinzel_Decorative } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -8,8 +8,9 @@ const montserrat = Montserrat({
   variable: "--font-montserrat",
 });
 
-const cinzel = Cinzel({
+const cinzel = Cinzel_Decorative({
   subsets: ["latin"],
+  weight: "400",
   variable: "--font-cinzel",
 });
 
