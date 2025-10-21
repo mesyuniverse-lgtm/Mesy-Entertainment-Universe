@@ -1,5 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Lock } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function MemberZonesPage() {
   return (
@@ -17,8 +19,15 @@ export default function MemberZonesPage() {
             This Area is for Members Only
           </CardTitle>
         </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">The content you are trying to access is exclusive to members of the MESY Universe. By joining, you'll unlock special zones, content, and features. This is just a preview of what awaits inside!</p>
+        <CardContent className="text-center">
+          <p className="text-muted-foreground mb-6">The content you are trying to access is exclusive to members of the MESY Universe. By joining, you'll unlock special zones, content, and features. This is just a preview of what awaits inside!</p>
+          <div className="flex justify-center">
+            <Button asChild size="lg">
+                <Link href="/member-zones/member-login">
+                    Login to Member Zone
+                </Link>
+            </Button>
+          </div>
         </CardContent>
       </Card>
     </div>
