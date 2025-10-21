@@ -17,6 +17,7 @@ import {
   User,
   UserPlus,
   Settings,
+  FileLock,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
@@ -64,7 +65,8 @@ export default function DashboardLayout({
 
   const sidebarNav = [
     { title: 'Dashboard', href: '/dashboard', icon: Home },
-    { title: 'Profile', href: '/dashboard/profile', icon: User },
+    { title: 'Public Profile', href: '/dashboard/profile', icon: User },
+    { title: 'Private Profile', href: '/dashboard/settings/private-profile', icon: FileLock },
     { title: 'Memberships', href: '/dashboard/memberships', icon: Star },
     { title: 'Payment', href: '/dashboard/payment', icon: Wallet },
     { title: 'Daily Rewards', href: '/dashboard/daily-rewards', icon: Calendar },
