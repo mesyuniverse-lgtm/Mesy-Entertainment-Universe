@@ -1,141 +1,582 @@
 {
   "entities": {
     "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "User",
-      "description": "Represents a registered user in the application.",
       "type": "object",
+      "description": "Represents a user within the Mesy Entertainment Universe platform.",
       "properties": {
-        "uid": {
+        "id": {
           "type": "string",
-          "description": "The unique ID of the user, from Firebase Authentication."
-        },
-        "email": {
-          "type": "string",
-          "format": "email",
-          "description": "The user's email address."
-        },
-        "displayName": {
-          "type": "string",
-          "description": "The user's public display name or nickname."
-        },
-        "photoURL": {
-          "type": "string",
-          "format": "uri",
-          "description": "URL for the user's avatar image."
+          "description": "Unique identifier for the user entity."
         },
         "role": {
           "type": "string",
-          "description": "The user's role in the system.",
-          "enum": ["User", "Member", "Admin", "Super-admin", "Developer"]
+          "description": "The user's role (User, Member, Admin, Super-admin, Developer)."
         },
         "level": {
-            "type": "number",
-            "description": "The user's current membership level (0-50)."
+          "type": "number",
+          "description": "The user's membership level (0-50)."
         },
-        "uplineUid": {
-            "type": "string",
-            "description": "The UID of the user who referred this user."
+        "profileId": {
+          "type": "string",
+          "description": "Reference to UserProfile. (Relationship: User 1:1 UserProfile)"
         },
-        "referralCode": {
-            "type": "string",
-            "description": "The user's unique referral code."
+        "walletId": {
+          "type": "string",
+          "description": "Reference to Wallet. (Relationship: User 1:1 Wallet)"
+        },
+        "permissions": {
+          "type": "array",
+          "description": "List of permissions granted to the user.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "role",
+        "level",
+        "profileId",
+        "walletId",
+        "permissions"
+      ]
+    },
+    "UserProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserProfile",
+      "type": "object",
+      "description": "Stores profile information for a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user profile entity."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:1 UserProfile)"
+        },
+        "nickname": {
+          "type": "string",
+          "description": "User's display name or alias."
         },
         "bio": {
-            "type": "string",
-            "description": "A short biography of the user."
+          "type": "string",
+          "description": "A short biography or description of the user."
+        },
+        "personalInfo": {
+          "type": "string",
+          "description": "Additional personal information (e.g., location, interests)."
+        },
+        "socialLinks": {
+          "type": "array",
+          "description": "Links to the user's social media profiles.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "avatar": {
+          "type": "string",
+          "description": "URL of the user's avatar image."
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "nickname"
+      ]
+    },
+    "Downline": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Downline",
+      "type": "object",
+      "description": "Represents a user's downline members in the membership system.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the downline member."
+        },
+        "memberId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Downline)"
+        },
+        "username": {
+          "type": "string",
+          "description": "Username of the downline member."
+        },
+        "avatar": {
+          "type": "string",
+          "description": "URL of the downline member's avatar."
+        },
+        "level": {
+          "type": "number",
+          "description": "Membership level of the downline member."
+        },
+        "joinDate": {
+          "type": "string",
+          "description": "Date when the downline member joined.",
+          "format": "date-time"
+        },
+        "stars": {
+          "type": "number",
+          "description": "Number of stars or points earned by the downline member."
+        },
+        "income": {
+          "type": "number",
+          "description": "Income generated by the downline member."
+        }
+      },
+      "required": [
+        "id",
+        "memberId",
+        "username",
+        "level",
+        "joinDate"
+      ]
+    },
+    "Notification": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Notification",
+      "type": "object",
+      "description": "Represents a notification for a user.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the notification."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Notification)"
+        },
+        "message": {
+          "type": "string",
+          "description": "The content of the notification."
         },
         "createdAt": {
           "type": "string",
-          "format": "date-time",
-          "description": "The timestamp when the user account was created."
+          "description": "Timestamp of when the notification was created.",
+          "format": "date-time"
         },
-        "updatedAt": {
-          "type": "string",
-          "format": "date-time",
-          "description": "The timestamp when the user profile was last updated."
+        "read": {
+          "type": "boolean",
+          "description": "Indicates whether the notification has been read."
         }
       },
-      "required": ["uid", "email", "role", "level", "createdAt"]
+      "required": [
+        "id",
+        "userId",
+        "message",
+        "createdAt",
+        "read"
+      ]
     },
-    "Transaction": {
-      "title": "Transaction",
-      "description": "Represents a financial transaction in a user's wallet.",
+    "Quest": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Quest",
       "type": "object",
+      "description": "Represents a quest or task for users to complete.",
       "properties": {
-        "type": {
+        "id": {
           "type": "string",
-          "enum": ["income", "withdrawal", "deposit", "fee"]
+          "description": "Unique identifier for the quest."
         },
-        "amount": {
-          "type": "number"
+        "title": {
+          "type": "string",
+          "description": "Title of the quest."
         },
         "description": {
-          "type": "string"
+          "type": "string",
+          "description": "Detailed description of the quest."
+        },
+        "rewardId": {
+          "type": "string",
+          "description": "Reference to Reward. (Relationship: Quest 1:1 Reward)"
         },
         "status": {
           "type": "string",
-          "enum": ["pending", "completed", "failed"]
-        },
-        "createdAt": {
-          "type": "string",
-          "format": "date-time"
+          "description": "Current status of the quest (e.g., active, completed, failed)."
         }
       },
-      "required": ["type", "amount", "status", "createdAt"]
+      "required": [
+        "id",
+        "title",
+        "description",
+        "rewardId",
+        "status"
+      ]
     },
-    "Notification": {
-      "title": "Notification",
-      "description": "A notification for a user.",
+    "Reward": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Reward",
       "type": "object",
+      "description": "Represents a reward that users can earn.",
       "properties": {
-        "title": {
-          "type": "string"
-        },
-        "description": {
-          "type": "string"
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the reward."
         },
         "type": {
           "type": "string",
-          "enum": ["system", "reward", "network", "quest"]
+          "description": "Type of reward (e.g., coins, experience points, items)."
         },
-        "isRead": {
-          "type": "boolean"
+        "value": {
+          "type": "number",
+          "description": "Value of the reward."
         },
-        "createdAt": {
+        "expiry": {
           "type": "string",
+          "description": "Expiration date of the reward, if any.",
           "format": "date-time"
         }
       },
-       "required": ["title", "type", "isRead", "createdAt"]
+      "required": [
+        "id",
+        "type",
+        "value"
+      ]
+    },
+    "Store": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Store",
+      "type": "object",
+      "description": "Represents a store or marketplace where users can buy and sell items.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the store."
+        },
+        "ownerId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N Store).  The user ID of the store owner."
+        },
+        "productIds": {
+          "type": "array",
+          "description": "References to Products. (Relationship: Store 1:N Product). List of product IDs available in the store.",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "type": "string",
+          "description": "Status of the store (e.g., open, closed, suspended)."
+        }
+      },
+      "required": [
+        "id",
+        "ownerId",
+        "productIds",
+        "status"
+      ]
+    },
+    "Product": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Product",
+      "type": "object",
+      "description": "Represents a product available in the marketplace.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the product."
+        },
+        "storeId": {
+          "type": "string",
+          "description": "Reference to Store. (Relationship: Store 1:N Product)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the product."
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description of the product."
+        },
+        "price": {
+          "type": "number",
+          "description": "Price of the product."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the product's image."
+        }
+      },
+      "required": [
+        "id",
+        "storeId",
+        "name",
+        "description",
+        "price",
+        "imageUrl"
+      ]
+    },
+    "AiSession": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AiSession",
+      "type": "object",
+      "description": "Represents an AI session for content generation.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the AI session."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N AiSession)"
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of AI session (e.g., content generation, avatar generation)."
+        },
+        "input": {
+          "type": "string",
+          "description": "Input provided to the AI for content generation."
+        },
+        "output": {
+          "type": "string",
+          "description": "Output generated by the AI."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "Timestamp of when the AI session occurred.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "type",
+        "input",
+        "output",
+        "timestamp"
+      ]
+    },
+    "Wallet": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Wallet",
+      "type": "object",
+      "description": "Represents a user's digital wallet for managing MESY Coins and other assets.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the wallet."
+        },
+        "userId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:1 Wallet)"
+        },
+        "mesyCoinBalance": {
+          "type": "number",
+          "description": "Balance of MESY Coins in the wallet."
+        },
+        "cashbackBalance": {
+          "type": "number",
+          "description": "Cashback balance in the wallet."
+        },
+        "otherAssets": {
+          "type": "array",
+          "description": "Other digital assets held in the wallet.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "userId",
+        "mesyCoinBalance",
+        "cashbackBalance"
+      ]
     }
   },
   "auth": {
-    "providers": ["email", "google"]
+    "providers": [
+      "password",
+      "anonymous"
+    ]
   },
   "firestore": {
-    "/users/{userId}": {
-      "schema": {
-        "$ref": "#/entities/User"
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user information, including role and level. 'role' and 'level' are used for authorization.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            }
+          ]
+        }
       },
-      "description": "Stores the public and private profile data for each user."
-    },
-    "/users/{userId}/downline/{downlineUserId}": {
-        "schema": {
-            "$ref": "#/entities/User"
-        },
-        "description": "A subcollection storing users who are in the direct downline of the parent user."
-    },
-    "/users/{userId}/transactions/{transactionId}": {
-      "schema": {
-        "$ref": "#/entities/Transaction"
+      {
+        "path": "/users/{userId}/profile/{profileId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": {
+            "$ref": "#/backend/entities/UserProfile"
+          },
+          "description": "Stores user profile information. Subcollection of users for private data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "profileId",
+              "description": "The unique identifier for the user profile."
+            }
+          ]
+        }
       },
-      "description": "Stores all financial transactions for a user."
-    },
-    "/users/{userId}/notifications/{notificationId}": {
-      "schema": {
-        "$ref": "#/entities/Notification"
+      {
+        "path": "/users/{userId}/downline/{memberId}",
+        "definition": {
+          "entityName": "Downline",
+          "schema": {
+            "$ref": "#/backend/entities/Downline"
+          },
+          "description": "Stores user's downline members. Subcollection of users for private data. Includes denormalized 'level' from the parent user document for authorization.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "memberId",
+              "description": "The unique identifier for the downline member."
+            }
+          ]
+        }
       },
-      "description": "Stores notifications for a specific user."
-    }
+      {
+        "path": "/users/{userId}/notifications/{notificationId}",
+        "definition": {
+          "entityName": "Notification",
+          "schema": {
+            "$ref": "#/backend/entities/Notification"
+          },
+          "description": "Stores notifications for a user. Subcollection of users for private data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "notificationId",
+              "description": "The unique identifier for the notification."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/quests/{questId}",
+        "definition": {
+          "entityName": "Quest",
+          "schema": {
+            "$ref": "#/backend/entities/Quest"
+          },
+          "description": "Stores global quest information. Publicly accessible.",
+          "params": [
+            {
+              "name": "questId",
+              "description": "The unique identifier for the quest."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/rewards/{rewardId}",
+        "definition": {
+          "entityName": "Reward",
+          "schema": {
+            "$ref": "#/backend/entities/Reward"
+          },
+          "description": "Stores global reward information. Publicly accessible.",
+          "params": [
+            {
+              "name": "rewardId",
+              "description": "The unique identifier for the reward."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/stores/{storeId}",
+        "definition": {
+          "entityName": "Store",
+          "schema": {
+            "$ref": "#/backend/entities/Store"
+          },
+          "description": "Stores store information, including the ownerId. 'ownerId' is used for authorization.",
+          "params": [
+            {
+              "name": "storeId",
+              "description": "The unique identifier for the store."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/products/{productId}",
+        "definition": {
+          "entityName": "Product",
+          "schema": {
+            "$ref": "#/backend/entities/Product"
+          },
+          "description": "Stores product information. 'storeId' is included for listing products by store.",
+          "params": [
+            {
+              "name": "productId",
+              "description": "The unique identifier for the product."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/ai_sessions/{aiSessionId}",
+        "definition": {
+          "entityName": "AiSession",
+          "schema": {
+            "$ref": "#/backend/entities/AiSession"
+          },
+          "description": "Stores AI session information for a user. Subcollection of users for private data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "aiSessionId",
+              "description": "The unique identifier for the AI session."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/wallet/{walletId}",
+        "definition": {
+          "entityName": "Wallet",
+          "schema": {
+            "$ref": "#/backend/entities/Wallet"
+          },
+          "description": "Stores wallet information for a user. Subcollection of users for private data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "walletId",
+              "description": "The unique identifier for the wallet."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to ensure security, scalability, and ease of debugging, while adhering to the principles of Authorization Independence, Clarity of Intent, DBAC (Database-Based Access Control), and QAPs (Rules are not Filters). Authorization Independence is achieved by denormalizing authorization-related data (e.g., user roles, membership levels) into subcollections where needed. This eliminates the need for `get()` calls in security rules. Structural Segregation is applied by storing data with different access requirements in separate collections (e.g., user profiles vs. public store products). Access Modeling follows consistent patterns: private user data is stored under `/users/{userId}`, and collaborative data uses membership maps. QAPs are supported by using structural segregation to avoid filtering within rules. User roles are stored directly within the user document, enabling straightforward authorization based on `request.auth.uid` and document content.\n\nSpecifically:\n\n*   **User Data:** User profiles, wallets, AI sessions, and notifications are stored as subcollections under `/users/{userId}`. This ensures that only the user or an admin can access this data. The `role` and `level` are directly stored inside the `/users/{userId}` document to avoid calling get() to check roles.\n*   **Downline Data:** Downline members are also stored as a subcollection under `/users/{userId}/downline/{memberId}`. Since the downline information is specific to each user, this structure provides secure access. Note: the downline information includes `username`, `avatar`, `level`, `joinDate`, `stars`, and `income`. The `level` is particularly important because it impacts authorization in other parts of the application. The role and level will be replicated from the parent. Downline documents contain memberId.\n*   **Quests and Rewards:** Quests and rewards are global. Quest documents contain `title`, `description`, `rewardId`, and `status`. Rewards documents contain `type`, `value`, and `expiry`. These are made global to simplify listing. Since quests are global, all users have access to quests. If we had to control access to quests, then membership models would be applied.\n*   **Store and Product Data:** Stores are top level collections. OwnerId is stored in the store. This supports QAPs and easy store listing. Each product includes the storeId. The products are top-level. Note, products cannot be subcollections of stores, because it is impossible to securely list all the products across all stores if the products are children of stores. Each product includes the `name`, `description`, `price`, and `imageUrl`.\n\nThis structure promotes secure and efficient data access while simplifying security rule creation and maintenance."
   }
 }
