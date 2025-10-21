@@ -17,8 +17,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        body: ['Montserrat', 'sans-serif'],
-        headline: ['"Cinzel"', 'serif'],
+        body: ['var(--font-montserrat)', 'sans-serif'],
+        headline: ['var(--font-cinzel)', 'serif'],
       },
       colors: {
         border: 'hsl(var(--border))',
