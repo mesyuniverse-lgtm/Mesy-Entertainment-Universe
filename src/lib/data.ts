@@ -1,0 +1,62 @@
+export type MembershipLevel = {
+    level: number;
+    members: number;
+    totalIncome: number;
+    serviceFee: number;
+    netIncome: number;
+  };
+  
+  export const membershipData: MembershipLevel[] = [
+    { level: 0, members: 999, totalIncome: 999, serviceFee: 29.97, netIncome: 969.03 },
+    { level: 1, members: 1000, totalIncome: 1000, serviceFee: 30.00, netIncome: 970.00 },
+    { level: 2, members: 2000, totalIncome: 2000, serviceFee: 60.00, netIncome: 1940.00 },
+    { level: 3, members: 3000, totalIncome: 3000, serviceFee: 90.00, netIncome: 2910.00 },
+    { level: 4, members: 4000, totalIncome: 4000, serviceFee: 120.00, netIncome: 3880.00 },
+    { level: 5, members: 5000, totalIncome: 5000, serviceFee: 150.00, netIncome: 4850.00 },
+    { level: 6, members: 6000, totalIncome: 6000, serviceFee: 180.00, netIncome: 5820.00 },
+    { level: 7, members: 7000, totalIncome: 7000, serviceFee: 210.00, netIncome: 6790.00 },
+    { level: 8, members: 8000, totalIncome: 8000, serviceFee: 240.00, netIncome: 7760.00 },
+    { level: 9, members: 9000, totalIncome: 9000, serviceFee: 270.00, netIncome: 8730.00 },
+    { level: 10, members: 10000, totalIncome: 10000, serviceFee: 300.00, netIncome: 9700.00 },
+    { level: 11, members: 11000, totalIncome: 11000, serviceFee: 330.00, netIncome: 10670.00 },
+    { level: 12, members: 12000, totalIncome: 12000, serviceFee: 360.00, netIncome: 11640.00 },
+    { level: 13, members: 13000, totalIncome: 13000, serviceFee: 390.00, netIncome: 12610.00 },
+    { level: 14, members: 14000, totalIncome: 14000, serviceFee: 420.00, netIncome: 13580.00 },
+    { level: 15, members: 15000, totalIncome: 15000, serviceFee: 450.00, netIncome: 14550.00 },
+    { level: 16, members: 16000, totalIncome: 16000, serviceFee: 480.00, netIncome: 15520.00 },
+    { level: 17, members: 17000, totalIncome: 17000, serviceFee: 510.00, netIncome: 16490.00 },
+    { level: 18, members: 18000, totalIncome: 18000, serviceFee: 540.00, netIncome: 17460.00 },
+    { level: 19, members: 19000, totalIncome: 19000, serviceFee: 570.00, netIncome: 18430.00 },
+    { level: 20, members: 20000, totalIncome: 20000, serviceFee: 600.00, netIncome: 19400.00 },
+    { level: 21, members: 21000, totalIncome: 21000, serviceFee: 630.00, netIncome: 20370.00 },
+    { level: 22, members: 22000, totalIncome: 22000, serviceFee: 660.00, netIncome: 21340.00 },
+    { level: 23, members: 23000, totalIncome: 23000, serviceFee: 690.00, netIncome: 22310.00 },
+    { level: 24, members: 24000, totalIncome: 24000, serviceFee: 720.00, netIncome: 23280.00 },
+    { level: 25, members: 25000, totalIncome: 25000, serviceFee: 750.00, netIncome: 24250.00 },
+    { level: 26, members: 26000, totalIncome: 26000, serviceFee: 780.00, netIncome: 25220.00 },
+    { level: 27, members: 27000, totalIncome: 27000, serviceFee: 810.00, netIncome: 26190.00 },
+    { level: 28, members: 28000, totalIncome: 28000, serviceFee: 840.00, netIncome: 27160.00 },
+    { level: 29, members: 29000, totalIncome: 29000, serviceFee: 870.00, netIncome: 28130.00 },
+    { level: 30, members: 30000, totalIncome: 30000, serviceFee: 900.00, netIncome: 29100.00 },
+    { level: 31, members: 31000, totalIncome: 31000, serviceFee: 930.00, netIncome: 30070.00 },
+    { level: 32, members: 32000, totalIncome: 32000, serviceFee: 960.00, netIncome: 31040.00 },
+    { level: 33, members: 33000, totalIncome: 33000, serviceFee: 990.00, netIncome: 32010.00 },
+    { level: 34, members: 34000, totalIncome: 34000, serviceFee: 1020.00, netIncome: 32980.00 },
+    { level: 35, members: 35000, totalIncome: 35000, serviceFee: 1050.00, netIncome: 33950.00 },
+    { level: 36, members: 36000, totalIncome: 36000, serviceFee: 1080.00, netIncome: 34920.00 },
+    { level: 37, members: 37000, totalIncome: 37000, serviceFee: 1110.00, netIncome: 35890.00 },
+    { level: 38, members: 38000, totalIncome: 38000, serviceFee: 1140.00, netIncome: 36860.00 },
+    { level: 39, members: 39000, totalIncome: 39000, serviceFee: 1170.00, netIncome: 37830.00 },
+    { level: 40, members: 40000, totalIncome: 40000, serviceFee: 1200.00, netIncome: 38800.00 },
+    { level: 41, members: 41000, totalIncome: 41000, serviceFee: 1230.00, netIncome: 39770.00 },
+    { level: 42, members: 42000, totalIncome: 42000, serviceFee: 1260.00, netIncome: 40740.00 },
+    { level: 43, members: 43000, totalIncome: 43000, serviceFee: 1290.00, netIncome: 41710.00 },
+    { level: 44, members: 44000, totalIncome: 44000, serviceFee: 1320.00, netIncome: 42680.00 },
+    { level: 45, members: 45000, totalIncome: 45000, serviceFee: 1350.00, netIncome: 43650.00 },
+    { level: 46, members: 46000, totalIncome: 46000, serviceFee: 1380.00, netIncome: 44620.00 },
+    { level: 47, members: 47000, totalIncome: 47000, serviceFee: 1410.00, netIncome: 45590.00 },
+    { level: 48, members: 48000, totalIncome: 48000, serviceFee: 1440.00, netIncome: 46560.00 },
+    { level: 49, members: 49000, totalIncome: 49000, serviceFee: 1470.00, netIncome: 47530.00 },
+    { level: 50, members: 50000, totalIncome: 50000, serviceFee: 1500.00, netIncome: 48500.00 },
+  ];
+  
