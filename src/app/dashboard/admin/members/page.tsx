@@ -74,8 +74,10 @@ export default function AdminMembersPage() {
                     <CardDescription>Start the process of adding a new Member ID to your network.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                     <Button size="lg" disabled={!isUserVerified}>
-                        Register New Member ID
+                     <Button size="lg" disabled={!isUserVerified} asChild>
+                        <Link href="/dashboard/admin/members/register">
+                            Register New Member ID
+                        </Link>
                     </Button>
                      {!isUserVerified && <p className="text-sm text-red-500 mt-2">You must verify your account before you can register members.</p>}
                 </CardContent>
