@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import {
   Bell,
@@ -24,6 +25,7 @@ import {
   SidebarFooter,
   SidebarTrigger,
   SidebarInset,
+  SidebarSeparator,
 } from '@/components/ui/sidebar';
 
 import { Button } from '@/components/ui/button';
@@ -51,6 +53,11 @@ export default function DashboardLayout({
     { title: 'Daily Rewards', href: '/dashboard/daily-rewards', icon: Calendar },
     { title: 'Notifications', href: '/dashboard/notifications', icon: Bell },
   ];
+
+  const adminNav = [
+    { title: 'Overview', href: '/dashboard/admin', icon: Shield },
+    { title: 'Users', href: '/dashboard/admin/users', icon: Users },
+  ]
 
   return (
     <SidebarProvider>
@@ -80,17 +87,23 @@ export default function DashboardLayout({
               </SidebarMenuItem>
             ))}
           </SidebarMenu>
+          
+          <SidebarSeparator />
 
-          <SidebarMenu className="mt-auto">
-             <SidebarMenuItem>
-                <SidebarMenuButton tooltip="Admin Panel" asChild variant="outline">
-                    <Link href="/dashboard/admin">
-                        <Shield />
-                        <span>Admin Panel</span>
-                    </Link>
+          <SidebarMenu>
+             <p className="px-4 text-xs text-muted-foreground uppercase tracking-wider mb-2">Admin</p>
+            {adminNav.map((item) => (
+               <SidebarMenuItem key={item.href}>
+                <SidebarMenuButton tooltip={item.title} asChild>
+                  <Link href={item.href}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </Link>
                 </SidebarMenuButton>
-             </SidebarMenuItem>
+              </SidebarMenuItem>
+            ))}
           </SidebarMenu>
+
         </SidebarContent>
         <SidebarFooter>
            <SidebarMenu>

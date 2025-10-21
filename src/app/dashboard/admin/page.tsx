@@ -1,23 +1,53 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Shield } from "lucide-react";
+import { Users, Shield, Bell } from "lucide-react";
+import Link from 'next/link';
 
 export default function AdminPage() {
+    const adminCards = [
+        {
+            title: "User Management",
+            description: "View and manage all users in the system.",
+            href: "/dashboard/admin/users",
+            icon: <Users className="h-8 w-8 text-primary" />
+        },
+        {
+            title: "System Settings",
+            description: "Configure platform-wide settings and parameters.",
+            href: "#",
+            icon: <Shield className="h-8 w-8 text-primary" />
+        },
+        {
+            title: "Broadcast Notifications",
+            description: "Send announcements to all users.",
+            href: "#",
+            icon: <Bell className="h-8 w-8 text-primary" />
+        }
+    ];
+
     return (
-        <div className="container py-12 md:py-20">
-             <div className="text-center mb-12">
-                <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Admin Panel</h1>
-                <p className="max-w-3xl mx-auto mt-4 text-muted-foreground text-lg">
-                    System administration and management tools.
+        <div>
+             <div className="mb-6">
+                <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
+                <p className="text-muted-foreground">
+                    An overview of your system and management tools.
                 </p>
             </div>
-             <Card className="flex items-center justify-center min-h-[400px]">
-                <CardContent className="text-center p-6">
-                    <Shield className="mx-auto h-12 w-12 text-muted-foreground" />
-                    <h3 className="mt-4 text-lg font-medium">Administration Tools</h3>
-                    <p className="mt-1 text-sm text-muted-foreground">Content management and system settings will appear here.</p>
-                </CardContent>
-            </Card>
+             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {adminCards.map(card => (
+                    <Link key={card.title} href={card.href}>
+                        <Card className="hover:bg-secondary/50 hover:shadow-lg transition-all h-full">
+                            <CardHeader className="flex flex-row items-center gap-4 space-y-0">
+                                {card.icon}
+                                <div>
+                                    <CardTitle>{card.title}</CardTitle>
+                                    <CardDescription>{card.description}</CardDescription>
+                                </div>
+                            </CardHeader>
+                        </Card>
+                    </Link>
+                ))}
+             </div>
         </div>
     );
 }
