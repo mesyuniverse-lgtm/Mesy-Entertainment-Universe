@@ -21,10 +21,15 @@ export default function MemberZonesPage() {
         </CardHeader>
         <CardContent className="text-center">
           <p className="text-muted-foreground mb-6">The content you are trying to access is exclusive to members of the MESY Universe. By joining, you'll unlock special zones, content, and features. This is just a preview of what awaits inside!</p>
-          <div className="flex justify-center">
+          <div className="flex justify-center gap-4">
             <Button asChild size="lg">
                 <Link href="/member-zones/member-login">
                     Login to Member Zone
+                </Link>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+                <Link href="/member-zones/member-register">
+                    Register Now
                 </Link>
             </Button>
           </div>
