@@ -1,8 +1,6 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
-import { FirebaseClientProvider } from '@/firebase/client-provider';
-import { FirebaseErrorListener } from '@/components/firebase-error-listener';
 
 export const metadata: Metadata = {
   title: 'Mesy Entertainment Universe',
@@ -22,10 +20,7 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
       </head>
       <body className="font-body">
-        <FirebaseClientProvider>
-            {children}
-            <FirebaseErrorListener />
-        </FirebaseClientProvider>
+        {children}
         <Toaster />
       </body>
     </html>
