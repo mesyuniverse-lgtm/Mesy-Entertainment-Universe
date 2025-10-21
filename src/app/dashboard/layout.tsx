@@ -46,8 +46,7 @@ export default function DashboardLayout({
 }) {
   const sidebarNav = [
     { title: 'Dashboard', href: '/dashboard', icon: Home },
-    { title: 'Profile', href: '/dashboard/users/profile', icon: User },
-    { title: 'Memberships', href: '/dashboard/memberships', icon: Star },
+    { title: 'Profile', href: '/dashboard/users/profile', icon: User }, 
     { title: 'Payment', href: '/dashboard/payment', icon: Wallet },
     { title: 'Daily Rewards', href: '/dashboard/daily-rewards', icon: Calendar },
     { title: 'Notifications', href: '/dashboard/notifications', icon: Bell },
