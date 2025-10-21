@@ -90,6 +90,9 @@ export default function MainLayout({
                 </Button>
               )
             )}
+            <Button asChild>
+                            <Link href="/signup">Register</Link>
+            </Button>
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant="outline" size="icon" className="md:hidden">

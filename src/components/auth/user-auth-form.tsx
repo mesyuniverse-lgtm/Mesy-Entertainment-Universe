@@ -12,7 +12,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
-  signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
 } from "firebase/auth";
 import { useToast } from "@/hooks/use-toast";
 
@@ -28,6 +29,22 @@ export function UserAuthForm({ className, action, ...props }: UserAuthFormProps)
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+
+  React.useEffect(() => {
+    const handleRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          // This is the signed-in user
+          router.push('/dashboard');
+        }
+      } catch (error: any) {
+        handleAuthError(error);
+      }
+    };
+    handleRedirectResult();
+  }, [auth, router]);
+
 
   const handleAuthError = (error: any) => {
     console.error(error);
@@ -89,11 +106,10 @@ export function UserAuthForm({ className, action, ...props }: UserAuthFormProps)
     setIsLoading(true);
     try {
       const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-      router.push('/dashboard');
+      await signInWithRedirect(auth, provider);
+      // No need to push to dashboard here, the redirect result handler will do it.
     } catch (error: any) {
       handleAuthError(error);
-    } finally {
       setIsLoading(false);
     }
   }
