@@ -14,6 +14,7 @@ import {
   LogOut,
   Gem,
   User,
+  UserPlus,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
@@ -71,6 +72,7 @@ export default function DashboardLayout({
   const adminNav = [
     { title: 'Overview', href: '/dashboard/admin', icon: Shield },
     { title: 'Users', href: '/dashboard/admin/users', icon: Users },
+    { title: 'Members', href: '/dashboard/admin/members', icon: UserPlus },
   ]
 
   return (
