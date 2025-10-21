@@ -1,4 +1,5 @@
 
+
 'use client';
 
 import Link from 'next/link';
@@ -15,6 +16,7 @@ import {
   Gem,
   User,
   UserPlus,
+  Settings,
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import {
@@ -67,6 +69,7 @@ export default function DashboardLayout({
     { title: 'Payment', href: '/dashboard/payment', icon: Wallet },
     { title: 'Daily Rewards', href: '/dashboard/daily-rewards', icon: Calendar },
     { title: 'Notifications', href: '/dashboard/notifications', icon: Bell },
+    { title: 'Settings', href: '/dashboard/settings', icon: Settings },
   ];
 
   const adminNav = [
