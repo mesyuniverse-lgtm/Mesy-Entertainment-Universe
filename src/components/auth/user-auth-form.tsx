@@ -1,28 +1,101 @@
 "use client"
 
 import * as React from "react"
+import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Chrome } from "lucide-react"
+import { useAuth } from "@/firebase";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+} from "firebase/auth";
+import { useToast } from "@/hooks/use-toast";
+
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     action: "login" | "signup";
 }
 
 export function UserAuthForm({ className, action, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const auth = useAuth();
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const handleAuthError = (error: any) => {
+    console.error(error);
+    let title = "An error occurred";
+    let description = "Please try again.";
+
+    switch (error.code) {
+      case 'auth/user-not-found':
+        title = "Login Failed";
+        description = "No account found with this email address.";
+        break;
+      case 'auth/wrong-password':
+        title = "Login Failed";
+        description = "Incorrect password. Please try again.";
+        break;
+      case 'auth/email-already-in-use':
+        title = "Signup Failed";
+        description = "This email is already associated with an account.";
+        break;
+      case 'auth/weak-password':
+        title = "Signup Failed";
+        description = "The password is too weak. Please use at least 6 characters.";
+        break;
+      case 'auth/popup-closed-by-user':
+        title = 'Sign-in Cancelled';
+        description = 'The Google sign-in window was closed.';
+        break;
+       default:
+        title = "Authentication Error"
+        description = error.message;
+    }
+
+    toast({
+      variant: "destructive",
+      title: title,
+      description: description,
+    });
+  }
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
     setIsLoading(true)
 
-    setTimeout(() => {
-      setIsLoading(false)
-      // In a real app, you'd redirect based on success
-      window.location.href = '/dashboard';
-    }, 2000)
+    try {
+      if (action === 'signup') {
+        await createUserWithEmailAndPassword(auth, email, password);
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+      }
+      router.push('/dashboard');
+    } catch (error: any) {
+      handleAuthError(error);
+    } finally {
+        setIsLoading(false);
+    }
+  }
+
+  async function onGoogleSignIn() {
+    setIsLoading(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(auth, provider);
+      router.push('/dashboard');
+    } catch (error: any) {
+      handleAuthError(error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -41,6 +114,8 @@ export function UserAuthForm({ className, action, ...props }: UserAuthFormProps)
               autoComplete="email"
               autoCorrect="off"
               disabled={isLoading}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="grid gap-2">
@@ -52,6 +127,8 @@ export function UserAuthForm({ className, action, ...props }: UserAuthFormProps)
               placeholder="Your password"
               type="password"
               disabled={isLoading}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <Button disabled={isLoading}>
@@ -75,7 +152,7 @@ export function UserAuthForm({ className, action, ...props }: UserAuthFormProps)
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
+      <Button variant="outline" type="button" disabled={isLoading} onClick={onGoogleSignIn}>
         {isLoading ? (
           <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
