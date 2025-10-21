@@ -1,22 +1,27 @@
+'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useCollection } from "@/firebase";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// Mock data simulating users from Firestore
-const users = [
-    { uid: "user-001", displayName: "The Chronicler", email: "chronicler@mesy.io", role: "Super-admin", level: 50, createdAt: "2025-10-01", avatarId: "knight-1" },
-    { uid: "user-002", displayName: "Aria", email: "aria@mesy.io", role: "Admin", level: 48, createdAt: "2025-10-02", avatarId: "female-archer-1" },
-    { uid: "user-003", displayName: "Kael", email: "kael@mesy.io", role: "Admin", level: 47, createdAt: "2025-10-03", avatarId: "fighter-character" },
-    { uid: "user-004", displayName: "User", email: "user@mesy.io", role: "Member", level: 5, createdAt: "2025-11-15", avatarId: "default-avatar" },
-    { uid: "user-005", displayName: "Seraphina", email: "seraphina@mesy.io", role: "User", level: 5, createdAt: "2025-11-16", avatarId: "explorer-1" },
-];
+interface UserProfile {
+    id: string;
+    uid: string;
+    displayName: string;
+    email: string;
+    role: string;
+    level: number;
+    createdAt: string;
+    photoURL?: string;
+}
 
 export default function AdminUsersPage() {
+    const { data: users, loading, error } = useCollection<UserProfile>('users');
 
     return (
         <div>
@@ -38,25 +43,36 @@ export default function AdminUsersPage() {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {users.map((user) => (
+                            {loading && Array.from({ length: 5 }).map((_, index) => (
+                                <TableRow key={index}>
+                                    <TableCell><div className="flex items-center gap-3"><Skeleton className="h-10 w-10 rounded-full" /><Skeleton className="h-4 w-[100px]" /></div></TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[150px]" /></TableCell>
+                                    <TableCell><Skeleton className="h-6 w-[80px] rounded-full" /></TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[30px]" /></TableCell>
+                                    <TableCell><Skeleton className="h-4 w-[100px]" /></TableCell>
+                                    <TableCell><Skeleton className="h-8 w-8 rounded-md" /></TableCell>
+                                </TableRow>
+                            ))}
+                            {error && <TableRow><TableCell colSpan={6} className="text-center text-destructive">Failed to load users.</TableCell></TableRow>}
+                            {users && users.map((user) => (
                                 <TableRow key={user.uid}>
                                     <TableCell>
                                         <div className="flex items-center gap-3">
                                             <Avatar>
-                                                <AvatarImage src={PlaceHolderImages.find(i => i.id === user.avatarId)?.imageUrl} alt={user.displayName} />
-                                                <AvatarFallback>{user.displayName.charAt(0)}</AvatarFallback>
+                                                <AvatarImage src={user.photoURL} alt={user.displayName} />
+                                                <AvatarFallback>{user.displayName?.charAt(0)}</AvatarFallback>
                                             </Avatar>
                                             <span className="font-medium">{user.displayName}</span>
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-muted-foreground">{user.email}</TableCell>
                                     <TableCell>
-                                        <Badge variant={user.role.includes("admin") ? "destructive" : "outline"}>
+                                        <Badge variant={user.role?.toLowerCase().includes("admin") ? "destructive" : "outline"}>
                                             {user.role}
                                         </Badge>
                                     </TableCell>
                                     <TableCell>{user.level}</TableCell>
-                                    <TableCell className="text-muted-foreground">{user.createdAt}</TableCell>
+                                    <TableCell className="text-muted-foreground">{new Date(user.createdAt).toLocaleDateString()}</TableCell>
                                     <TableCell>
                                         <Button variant="ghost" size="icon">
                                             <MoreHorizontal className="h-4 w-4" />

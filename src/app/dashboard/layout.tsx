@@ -1,4 +1,6 @@
 
+'use client';
+
 import Link from 'next/link';
 import {
   Bell,
@@ -13,7 +15,7 @@ import {
   Gem,
   User,
 } from 'lucide-react';
-
+import { useRouter } from 'next/navigation';
 import {
   SidebarProvider,
   Sidebar,
@@ -30,7 +32,6 @@ import {
 
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -39,12 +40,25 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { useAuth, useUser } from '@/firebase';
+import { signOut } from 'firebase/auth';
 
 export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { user, loading } = useUser();
+  const auth = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    if (auth) {
+      await signOut(auth);
+      router.push('/welcome');
+    }
+  };
+
   const sidebarNav = [
     { title: 'Dashboard', href: '/dashboard', icon: Home },
     { title: 'Profile', href: '/dashboard/profile', icon: User },
@@ -108,11 +122,11 @@ export default function DashboardLayout({
         <SidebarFooter>
            <SidebarMenu>
             <SidebarMenuItem>
-              <SidebarMenuButton tooltip="Logout" asChild>
-                <Link href="/welcome">
+              <SidebarMenuButton tooltip="Logout" asChild onClick={handleLogout}>
+                <button>
                   <LogOut />
                   <span>Logout</span>
-                </Link>
+                </button>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>
@@ -122,31 +136,35 @@ export default function DashboardLayout({
         <header className="sticky top-0 z-40 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
             <SidebarTrigger className="sm:hidden"/>
             <div className="flex-1" />
+            {loading ? (
+                 <div className="h-9 w-9 rounded-full bg-muted animate-pulse" />
+            ) : user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="relative h-9 w-9 rounded-full">
                   <Avatar className="h-9 w-9">
-                    <AvatarImage src={PlaceHolderImages.find(i => i.id === 'default-avatar')?.imageUrl} alt="User Avatar" />
-                    <AvatarFallback>U</AvatarFallback>
+                    <AvatarImage src={user.photoURL || undefined} alt={user.displayName || 'User Avatar'} />
+                    <AvatarFallback>{user.displayName ? user.displayName.charAt(0).toUpperCase() : user.email?.charAt(0).toUpperCase()}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end" forceMount>
                 <DropdownMenuLabel className="font-normal">
                   <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">Super-admin</p>
+                    <p className="text-sm font-medium leading-none">{user.displayName || 'Admin'}</p>
                     <p className="text-xs leading-none text-muted-foreground">
-                      admin@mesy.io
+                      {user.email}
                     </p>
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild><Link href="/dashboard/profile">Profile</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link href="/member-zones/profile">Profile</Link></DropdownMenuItem>
                 <DropdownMenuItem disabled>Settings</DropdownMenuItem>
                 <DropdownMenuSeparator />
-                 <DropdownMenuItem asChild><Link href="/welcome">Logout</Link></DropdownMenuItem>
+                 <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            ) : null}
         </header>
         <main className="flex-1 p-4 sm:px-6 sm:py-0 space-y-6">{children}</main>
       </SidebarInset>

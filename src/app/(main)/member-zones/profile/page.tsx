@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,6 +14,8 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import { moderateContent } from "@/ai/flows/ai-content-moderation";
 import { useToast } from "@/hooks/use-toast";
+import { useUser, useFirestore } from "@/firebase";
+import { doc, setDoc } from "firebase/firestore";
 
 const presetAvatars = [
     PlaceHolderImages.find(i => i.id === 'female-archer-1'),
@@ -28,12 +30,35 @@ const presetAvatars = [
 
 export default function ProfilePage() {
     const { toast } = useToast();
+    const { user, loading: userLoading } = useUser();
+    const firestore = useFirestore();
+    
     const [isLoading, setIsLoading] = useState(false);
-    const [nickname, setNickname] = useState("User");
-    const [bio, setBio] = useState("The journey of a thousand miles begins with a single step.");
-    const [avatarUrl, setAvatarUrl] = useState(PlaceHolderImages.find(i => i.id === 'default-avatar')?.imageUrl || '');
+    const [nickname, setNickname] = useState("");
+    const [bio, setBio] = useState("");
+    const [avatarUrl, setAvatarUrl] = useState("");
+
+    useEffect(() => {
+        if (user) {
+            setNickname(user.displayName || "");
+            // Here you would fetch the user's full profile from Firestore
+            // For now, we'll use a placeholder bio
+            setBio("The journey of a thousand miles begins with a single step.");
+            setAvatarUrl(user.photoURL || PlaceHolderImages.find(i => i.id === 'default-avatar')?.imageUrl || '');
+        }
+    }, [user]);
+
 
     const handleSaveChanges = async () => {
+        if (!user || !firestore) {
+             toast({
+                variant: "destructive",
+                title: "Error",
+                description: "You must be logged in to save your profile.",
+            });
+            return;
+        }
+
         setIsLoading(true);
         try {
             // Step 1: Moderate the bio content
@@ -50,9 +75,14 @@ export default function ProfilePage() {
                 return; // Stop the save process
             }
 
-            // Step 3: If compliant, proceed with saving (simulated for now)
-            console.log("Profile changes are compliant and being saved.");
-            // TODO: Implement actual saving logic here
+            // Step 3: If compliant, proceed with saving
+            const userRef = doc(firestore, `users/${user.uid}`);
+            await setDoc(userRef, {
+                displayName: nickname,
+                photoURL: avatarUrl,
+                bio: bio,
+                updatedAt: new Date().toISOString(),
+            }, { merge: true });
             
             toast({
                 title: "Profile Saved!",
@@ -71,6 +101,10 @@ export default function ProfilePage() {
         }
     };
 
+    if (userLoading) {
+        return <div>Loading profile...</div>; // Or a skeleton loader
+    }
+
 
     return (
         <div>
@@ -86,7 +120,7 @@ export default function ProfilePage() {
                             <div className="relative w-48 h-48 mx-auto mb-4 group">
                                 <Avatar className="w-full h-full text-5xl">
                                     <AvatarImage src={avatarUrl} alt={nickname} className="object-cover"/>
-                                    <AvatarFallback>{nickname.charAt(0).toUpperCase()}</AvatarFallback>
+                                    <AvatarFallback>{nickname ? nickname.charAt(0).toUpperCase() : 'U'}</AvatarFallback>
                                 </Avatar>
                                 <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
                                     <ImageIcon className="text-white h-12 w-12"/>
@@ -152,7 +186,7 @@ export default function ProfilePage() {
                             </div>
                             
                             <div className="flex justify-start">
-                                <Button onClick={handleSaveChanges} disabled={isLoading}>
+                                <Button onClick={handleSaveChanges} disabled={isLoading || userLoading}>
                                      {isLoading ? (
                                         <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
                                     ) : (
