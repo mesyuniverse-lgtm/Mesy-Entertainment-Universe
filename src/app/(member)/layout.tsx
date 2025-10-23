@@ -82,12 +82,12 @@ export default function MemberLayout({
       
       // Re-enable authorization check
       if (!user.email || !authorizedTestEmails.includes(user.email)) {
-        router.replace('/member-zones/member-inside/access-denied');
+        router.replace('/member-zones/access-denied');
       }
     }
   }, [user, isUserLoading, router]);
 
-  if (isUserLoading || !user) {
+  if (isUserLoading || !user || (user.email && !authorizedTestEmails.includes(user.email))) {
     return (
       <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background text-white">
         <div className="flex-grow flex items-center justify-center">
