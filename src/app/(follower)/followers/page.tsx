@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Search, Clapperboard, Video, UserPlus, Rss, UsersRound, CalendarClock, Crown, Gift, Users, UserCheck } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 
 
@@ -29,6 +30,9 @@ export default function FollowersPage() {
         { name: 'Silas', level: 22, avatar: PlaceHolderImages.find(i => i.id === 'fighter-silhouette')?.imageUrl },
         { name: 'Nia', level: 19, avatar: PlaceHolderImages.find(i => i.id === 'default-avatar')?.imageUrl },
     ];
+    
+    const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
+
 
     return (
         <div className="min-h-screen bg-background text-foreground p-4 lg:p-6">
@@ -183,6 +187,26 @@ export default function FollowersPage() {
 
                 {/* Right Sidebar */}
                 <aside className="lg:col-span-3 space-y-6">
+                    <Card className="bg-card/50 border-primary/50 shadow-lg shadow-primary/10">
+                        <CardHeader className="p-0">
+                           {videoAdImage && (
+                            <div className="relative aspect-video">
+                                <Image src={videoAdImage.imageUrl} alt={videoAdImage.description} data-ai-hint={videoAdImage.imageHint} fill className="object-cover rounded-t-lg"/>
+                                <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                    <Button variant="ghost" size="icon" className="h-16 w-16 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm">
+                                        <Video className="h-8 w-8 text-white"/>
+                                    </Button>
+                                </div>
+                            </div>
+                           )}
+                        </CardHeader>
+                        <CardContent className="p-4">
+                           <CardTitle className="text-lg">Featured Promotion</CardTitle>
+                           <p className="text-muted-foreground text-sm mt-1">Discover the new 'Chrono Blade' in the marketplace!</p>
+                           <Button className="w-full mt-3">Watch Trailer</Button>
+                        </CardContent>
+                    </Card>
+
                     <Card className="bg-card/50">
                         <CardHeader>
                             <CardTitle className="text-base">Follow Requests</CardTitle>
