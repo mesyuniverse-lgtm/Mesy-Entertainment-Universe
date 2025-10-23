@@ -38,14 +38,14 @@ export default function HomePage() {
         {
             title: "Member Zones",
             description: "Preview of exclusive member-only content and areas.",
-            href: "/member-zones",
+            href: "/dashboard",
             image: PlaceHolderImages.find((i) => i.id === "member-zone-preview"),
             locked: true,
         },
         {
             title: "Developer Zone",
             description: "Ranking, Sponsor, Vote, Join Team, Forum, Roadmap.",
-            href: "/dashboard/admin",
+            href: "/developer-zone",
             image: PlaceHolderImages.find((i) => i.id === "glowing-gem-1"),
             locked: true,
         },

@@ -20,7 +20,7 @@ export default function MainLayout({
     { name: 'Entertainment', href: '/entertainment' },
     { name: 'AI Hub', href: '/ai-hub' },
     { name: 'Shopping Hub', href: '/shopping' },
-    { name: 'Member Zones', href: '/member-zones' },
+    { name: 'Member Zones', href: '/dashboard' },
     { name: 'Developer Zone', href: '/developer-zone' },
   ];
 
@@ -82,7 +82,7 @@ export default function MainLayout({
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild><Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard</Link></DropdownMenuItem>
-                    <DropdownMenuItem asChild><Link href="/dashboard/profile"><UserCircle className="mr-2 h-4 w-4"/>Profile</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/profile"><UserCircle className="mr-2 h-4 w-4"/>Profile</Link></DropdownMenuItem>
                     <DropdownMenuSeparator />
                      <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
                   </DropdownMenuContent>

@@ -38,22 +38,32 @@ import {
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
+import { Loader } from 'lucide-react';
 
-export default function DashboardLayout({
+const authorizedTestEmails = [
+  'testuser@mesy.io',
+  'member@mesy.io',
+  'admin@mesy.io',
+  'developer@mesy.io'
+];
+
+export default function MemberLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const sidebarNav = [
     { title: 'Dashboard', href: '/dashboard', icon: Home },
-    { title: 'Profile', href: '/dashboard/users/profile', icon: User }, 
-    { title: 'Payment', href: '/dashboard/payment', icon: Wallet },
-    { title: 'Daily Rewards', href: '/dashboard/daily-rewards', icon: Calendar },
-    { title: 'Notifications', href: '/dashboard/notifications', icon: Bell },
+    { title: 'Profile', href: '/profile', icon: User },
+    { title: 'Memberships', href: '/memberships', icon: Star },
+    { title: 'Payment', href: '/payment', icon: Wallet },
+    { title: 'Daily Rewards', href: '/daily-rewards', icon: Calendar },
+    { title: 'Notifications', href: '/notifications', icon: Bell },
   ];
   
   const auth = useAuth();
-  const { user } = useUser();
+  const { user, isUserLoading } = useUser();
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -61,6 +71,31 @@ export default function DashboardLayout({
     router.push('/welcome');
   };
 
+  useEffect(() => {
+    if (!isUserLoading) {
+      if (!user) {
+        router.replace('/login');
+        return;
+      }
+      
+      if (!user.email || !authorizedTestEmails.includes(user.email)) {
+        router.replace('/member-zones/member-inside/access-denied');
+      }
+    }
+  }, [user, isUserLoading, router]);
+
+  if (isUserLoading || !user || (user.email && !authorizedTestEmails.includes(user.email))) {
+    return (
+      <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-background text-white">
+        <div className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <Loader className="h-12 w-12 animate-spin mx-auto mb-4 text-primary" />
+            <p className="text-muted-foreground">Verifying access...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <SidebarProvider>
@@ -94,7 +129,7 @@ export default function DashboardLayout({
           <SidebarMenu className="mt-auto">
              <SidebarMenuItem>
                 <SidebarMenuButton tooltip="Admin Panel" asChild variant="outline">
-                    <Link href="/dashboard/admin">
+                    <Link href="/admin">
                         <Shield />
                         <span>Admin Panel</span>
                     </Link>
@@ -136,7 +171,7 @@ export default function DashboardLayout({
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem asChild><Link href="/dashboard/users/profile">Profile</Link></DropdownMenuItem>
+                <DropdownMenuItem asChild><Link href="/profile">Profile</Link></DropdownMenuItem>
                 <DropdownMenuItem disabled>Settings</DropdownMenuItem>
                 <DropdownMenuSeparator />
                  <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
