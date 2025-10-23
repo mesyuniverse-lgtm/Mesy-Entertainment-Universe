@@ -54,7 +54,7 @@ export default function MainLayout({
                   {item.name}
                 </Link>
               ))}
-                 <Button asChild variant="link">
+                 <Button asChild variant="link" className="text-lg">
                     <Link href="/welcome">Back🎉</Link>
                 </Button>
             </nav>
@@ -113,7 +113,7 @@ export default function MainLayout({
                           {item.name}
                         </Link>
                       ))}
-                      <Button asChild variant="link">
+                      <Button asChild variant="link" className="text-lg">
                         <Link href="/welcome">Back🎉</Link>
                       </Button>
                     </nav>
