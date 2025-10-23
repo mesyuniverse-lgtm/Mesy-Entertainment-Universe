@@ -1,5 +1,6 @@
 import { MembershipTable } from "@/components/dashboard/membership-table"
 import { IncomeCalculator } from "@/components/dashboard/income-chart"
+import { DownlineTable } from "@/components/dashboard/downline-table"
 
 export default function MembershipsPage() {
   return (
@@ -10,6 +11,8 @@ export default function MembershipsPage() {
           Track your downline, income, and calculate your potential earnings.
         </p>
       </div>
+
+      <DownlineTable />
 
       <div className="grid lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
