@@ -23,12 +23,12 @@ export default function SocialivePage() {
   const userAvatar = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
   return (
-    <div className="min-h-screen bg-background text-foreground p-4 lg:p-6">
+    <div className="min-h-screen bg-background/90 text-foreground p-4 lg:p-6" style={{background: 'radial-gradient(ellipse at bottom, hsl(var(--primary)/0.1), hsl(var(--background)) 70%)'}}>
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
         {/* Left Sidebar */}
         <aside className="lg:col-span-3 hidden lg:block space-y-6">
-          <Card className="bg-card/50">
+          <Card className="bg-card/50 border border-primary/20 shadow-lg">
             <CardHeader className="flex-row items-center gap-4 space-y-0">
               <Users className="h-6 w-6 text-primary" />
               <CardTitle>Community</CardTitle>
@@ -39,7 +39,7 @@ export default function SocialivePage() {
             </CardContent>
           </Card>
 
-          <Card className="bg-card/50">
+          <Card className="bg-card/50 border border-primary/20 shadow-lg">
             <CardHeader className="flex-row items-center gap-4 space-y-0">
               <Crown className="h-6 w-6 text-yellow-400" />
               <CardTitle>Popular Members</CardTitle>
@@ -66,16 +66,16 @@ export default function SocialivePage() {
         {/* Main Content */}
         <main className="lg:col-span-6 space-y-4">
           {/* Marquee */}
-          <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2">
+          <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 shadow-inner shadow-primary/10">
             <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
-              <span className="mx-4">Aria has received a Legendary Item: Shadowfire Bow! ✨</span>
-              <span className="mx-4">Kael reached Level 15! 🚀</span>
-              <span className="mx-4">New Quest Available: The Crystal Caverns! 💎</span>
+              <span className="mx-4 tracking-wider">Aria has received a Legendary Item: Shadowfire Bow! ✨</span>
+              <span className="mx-4 tracking-wider">Kael reached Level 15! 🚀</span>
+              <span className="mx-4 tracking-wider">New Quest Available: The Crystal Caverns! 💎</span>
             </div>
              <div className="absolute top-0 animate-marquee2 whitespace-nowrap text-primary font-semibold">
-              <span className="mx-4">Aria has received a Legendary Item: Shadowfire Bow! ✨</span>
-              <span className="mx-4">Kael reached Level 15! 🚀</span>
-              <span className="mx-4">New Quest Available: The Crystal Caverns! 💎</span>
+              <span className="mx-4 tracking-wider">Aria has received a Legendary Item: Shadowfire Bow! ✨</span>
+              <span className="mx-4 tracking-wider">Kael reached Level 15! 🚀</span>
+              <span className="mx-4 tracking-wider">New Quest Available: The Crystal Caverns! 💎</span>
             </div>
             <style jsx>{`
               @keyframes marquee {
@@ -97,26 +97,26 @@ export default function SocialivePage() {
 
           {/* Content Tabs */}
           <Tabs defaultValue="video" className="w-full">
-            <TabsList className="h-auto flex-wrap justify-center">
-              <TabsTrigger value="video"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</TabsTrigger>
-              <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</TabsTrigger>
-              <TabsTrigger asChild>
+             <TabsList className="h-auto flex-wrap justify-center">
+              <TabsTrigger value="video" asChild><Link href="/socialive"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
+              <TabsTrigger value="live" asChild><Link href="/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
+              <TabsTrigger value="friends" asChild>
                 <Link href="/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
               </TabsTrigger>
-              <TabsTrigger asChild>
+              <TabsTrigger value="followers" asChild>
                 <Link href="/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link>
               </TabsTrigger>
-              <TabsTrigger asChild>
+              <TabsTrigger value="groups" asChild>
                 <Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link>
               </TabsTrigger>
               <TabsTrigger value="timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</TabsTrigger>
             </TabsList>
             <TabsContent value="video" className="mt-4">
-              <Card className="overflow-hidden">
+              <Card className="overflow-hidden bg-card/50 border border-primary/20 shadow-lg">
                 <CardContent className="p-0">
                   {videoImage && (
                     <div className="relative aspect-video bg-black">
-                        <Image src={videoImage.imageUrl} alt={videoImage.description} fill objectFit="cover" />
+                        <Image src={videoImage.imageUrl} alt={videoImage.description} data-ai-hint={videoImage.imageHint} fill objectFit="cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                         <div className="absolute bottom-4 left-4 text-white">
                             <div className="flex items-center gap-3">
