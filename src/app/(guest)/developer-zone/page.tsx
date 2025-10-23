@@ -1,10 +1,20 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Bot } from "lucide-react";
+import { ArrowRight, Bot, BookOpen, Code } from "lucide-react";
 import Link from "next/link";
 
 export default function DeveloperZonePage() {
   const devFeatures = [
+     {
+      title: "Getting Started",
+      description: "Your first steps into the MESY Universe. Learn the basics of our platform and start building right away.",
+      icon: <BookOpen className="h-8 w-8 text-primary" />,
+    },
+    {
+      title: "API Reference",
+      description: "Detailed documentation for all our available APIs. Integrate MESY features into your own applications.",
+      icon: <Code className="h-8 w-8 text-primary" />,
+    },
     {
       title: "AI Content Moderation",
       description: "Integrate our AI to automatically moderate user-generated text, ensuring a safe and compliant community environment.",
