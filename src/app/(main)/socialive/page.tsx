@@ -13,7 +13,7 @@ const popularMembers = [
   { name: 'Aria', level: 15, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
   { name: 'Kael', level: 12, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
   { name: 'Lyra', level: 10, avatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
-  { name: 'Zane', level: 9, avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
+  { name: 'Zane', level: 20, avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
 ];
 
 export default function SocialivePage() {
