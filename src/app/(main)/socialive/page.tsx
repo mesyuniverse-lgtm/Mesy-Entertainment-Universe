@@ -106,7 +106,9 @@ export default function SocialivePage() {
               <TabsTrigger asChild>
                 <Link href="/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link>
               </TabsTrigger>
-              <TabsTrigger value="groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</TabsTrigger>
+              <TabsTrigger asChild>
+                <Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link>
+              </TabsTrigger>
               <TabsTrigger value="timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</TabsTrigger>
             </TabsList>
             <TabsContent value="video" className="mt-4">
