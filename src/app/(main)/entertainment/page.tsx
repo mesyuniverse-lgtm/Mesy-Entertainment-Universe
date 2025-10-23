@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Music, Video, Gamepad2, Mic, Ticket, Map, Store } from "lucide-react";
+import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv } from "lucide-react";
 import Link from "next/link";
 
 export default function EntertainmentPage() {
@@ -8,8 +8,8 @@ export default function EntertainmentPage() {
   const entertainmentSections = [
     {
       title: "Artists & Music",
-      description: "Discover new music from labels and members. Promote your own brand and sound.",
-      icon: <div className="flex gap-2"><Music className="text-primary"/><Video className="text-primary"/><Mic className="text-primary"/></div>,
+      description: "Discover new music, videos, and live streams. Promote your own brand, sound, and host events.",
+      icon: <div className="flex gap-2"><Music className="text-primary"/><Video className="text-primary"/><Mic className="text-primary"/><Tv className="text-primary"/></div>,
       href: "/entertainment/artists",
       comingSoon: true,
     },
