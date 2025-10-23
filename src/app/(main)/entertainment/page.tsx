@@ -16,7 +16,7 @@ export default function EntertainmentPage() {
     {
       title: "Movies & Streaming",
       description: "Browse movie packages from Netflix, WeTV, and more. Subscribe using MESY Coins.",
-      icon: <div className="flex gap-2"><Video className="text-primary"/><Ticket className="text-primary"/></div>,
+      icon: <div className="flex gap-2"><Video className="text-primary"/><Ticket className="text-primary"/><Mic className="text-primary"/></div>,
       href: "/entertainment/movies",
       comingSoon: true,
     },
