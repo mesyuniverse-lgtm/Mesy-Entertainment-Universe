@@ -6,8 +6,11 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Check, Gift, Search, UserPlus, Users, X, MessageSquare, Video } from "lucide-react";
+import { Check, Gift, Search, UserPlus, Users, X, MessageSquare, Video, Clapperboard, Rss, UsersRound, CalendarClock } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+
 
 export default function FriendsPage() {
     const frequentlyContacted = [
@@ -141,35 +144,54 @@ export default function FriendsPage() {
                         .animate-marquee2 { animation: marquee2 30s linear infinite; }
                     `}</style>
                     
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Friends Hub</CardTitle>
-                            <CardDescription>Your connections in the MESY Universe.</CardDescription>
-                             <div className="relative pt-2">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                <Input placeholder="Search friends..." className="pl-10" />
-                            </div>
-                        </CardHeader>
-                        <CardContent className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                             {allFriends.map((friend, index) => (
-                                <Card key={index} className="overflow-hidden text-center group relative">
-                                    <div className="relative">
-                                      <Image src={friend.avatar || ''} alt={friend.name} width={200} height={200} className="aspect-square w-full object-cover"/>
-                                      {friend.online && <span className="absolute top-2 right-2 block h-3 w-3 rounded-full bg-green-500 ring-2 ring-background" title="Online"></span>}
-                                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
-                                      <p className="absolute bottom-2 left-2 text-white font-bold text-lg">{friend.name}</p>
+                    {/* Content Tabs */}
+                    <Tabs defaultValue="friends" className="w-full">
+                        <TabsList className="h-auto flex-wrap justify-center">
+                            <TabsTrigger value="video" asChild><Link href="/socialive"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
+                            <TabsTrigger value="live" asChild><Link href="/socialive"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
+                            <TabsTrigger value="friends" asChild>
+                                <Link href="/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
+                            </TabsTrigger>
+                            <TabsTrigger value="followers" asChild>
+                                <Link href="/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link>
+                            </TabsTrigger>
+                            <TabsTrigger value="groups" asChild>
+                                <Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link>
+                            </TabsTrigger>
+                            <TabsTrigger value="timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="friends" className="mt-4">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Friends Hub</CardTitle>
+                                    <CardDescription>Your connections in the MESY Universe.</CardDescription>
+                                    <div className="relative pt-2">
+                                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                        <Input placeholder="Search friends..." className="pl-10" />
                                     </div>
-                                    <div className="p-3 bg-card-foreground/5">
-                                        <p className="text-xs text-muted-foreground">Level {friend.level}</p>
-                                        <div className="flex gap-2 mt-2">
-                                            <Button variant="outline" size="sm" className="flex-1">Profile</Button>
-                                            <Button variant="secondary" size="sm" className="flex-1"><Gift className="h-4 w-4 mr-1"/> Gift</Button>
-                                        </div>
-                                    </div>
-                                </Card>
-                            ))}
-                        </CardContent>
-                    </Card>
+                                </CardHeader>
+                                <CardContent className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                    {allFriends.map((friend, index) => (
+                                        <Card key={index} className="overflow-hidden text-center group relative">
+                                            <div className="relative">
+                                            <Image src={friend.avatar || ''} alt={friend.name} width={200} height={200} className="aspect-square w-full object-cover"/>
+                                            {friend.online && <span className="absolute top-2 right-2 block h-3 w-3 rounded-full bg-green-500 ring-2 ring-background" title="Online"></span>}
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                            <p className="absolute bottom-2 left-2 text-white font-bold text-lg">{friend.name}</p>
+                                            </div>
+                                            <div className="p-3 bg-card-foreground/5">
+                                                <p className="text-xs text-muted-foreground">Level {friend.level}</p>
+                                                <div className="flex gap-2 mt-2">
+                                                    <Button variant="outline" size="sm" className="flex-1">Profile</Button>
+                                                    <Button variant="secondary" size="sm" className="flex-1"><Gift className="h-4 w-4 mr-1"/> Gift</Button>
+                                                </div>
+                                            </div>
+                                        </Card>
+                                    ))}
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+                    </Tabs>
 
                 </main>
 
