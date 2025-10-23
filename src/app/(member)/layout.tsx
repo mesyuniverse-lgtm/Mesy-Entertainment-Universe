@@ -80,6 +80,7 @@ export default function MemberLayout({
         return;
       }
       
+      // Re-enable authorization check
       if (!user.email || !authorizedTestEmails.includes(user.email)) {
         router.replace('/member-zones/member-inside/access-denied');
       }
