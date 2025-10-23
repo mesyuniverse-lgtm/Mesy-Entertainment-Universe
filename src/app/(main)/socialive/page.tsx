@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Users, Crown, Video, Clapperboard, UserPlus, Rss, Tv, UsersRound, CalendarClock, Heart, MessageCircle, Share2, Gem } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import Link from 'next/link';
 
 const popularMembers = [
   { name: 'Aria', level: 15, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
@@ -99,7 +100,9 @@ export default function SocialivePage() {
             <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 h-auto">
               <TabsTrigger value="video"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</TabsTrigger>
               <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</TabsTrigger>
-              <TabsTrigger value="friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</TabsTrigger>
+              <TabsTrigger asChild>
+                <Link href="/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
+              </TabsTrigger>
               <TabsTrigger value="followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</TabsTrigger>
               <TabsTrigger value="groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</TabsTrigger>
               <TabsTrigger value="timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</TabsTrigger>
@@ -109,7 +112,7 @@ export default function SocialivePage() {
                 <CardContent className="p-0">
                   {videoImage && (
                     <div className="relative aspect-video bg-black">
-                        <Image src={videoImage.imageUrl} alt={videoImage.description} layout="fill" objectFit="cover" />
+                        <Image src={videoImage.imageUrl} alt={videoImage.description} fill objectFit="cover" />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                         <div className="absolute bottom-4 left-4 text-white">
                             <div className="flex items-center gap-3">
