@@ -97,7 +97,7 @@ export default function SocialivePage() {
 
           {/* Content Tabs */}
           <Tabs defaultValue="video" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 sm:grid-cols-6 h-auto">
+            <TabsList className="h-auto flex-wrap justify-center">
               <TabsTrigger value="video"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</TabsTrigger>
               <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</TabsTrigger>
               <TabsTrigger asChild>
