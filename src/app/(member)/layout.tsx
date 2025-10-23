@@ -42,10 +42,12 @@ import React, { useEffect } from 'react';
 import { Loader } from 'lucide-react';
 
 const authorizedTestEmails = [
-  'testuser@mesy.io',
-  'member@mesy.io',
-  'admin@mesy.io',
-  'developer@mesy.io'
+  'tipyatida@gmail.com',
+  'divindnft@gmail.com',
+  'divaparadises@gmail.com',
+  'mayacity2011@gmail.com',
+  'g.divaparadise@gmail.com',
+  'mesy.universe@gmail.com'
 ];
 
 export default function MemberLayout({
@@ -78,9 +80,9 @@ export default function MemberLayout({
         return;
       }
       
-      // if (!user.email || !authorizedTestEmails.includes(user.email)) {
-      //   router.replace('/member-zones/member-inside/access-denied');
-      // }
+      if (!user.email || !authorizedTestEmails.includes(user.email)) {
+        router.replace('/member-zones/member-inside/access-denied');
+      }
     }
   }, [user, isUserLoading, router]);
 
