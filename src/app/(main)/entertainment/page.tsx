@@ -9,7 +9,7 @@ export default function EntertainmentPage() {
     {
       title: "Artists & Music",
       description: "Discover new music from labels and members. Promote your own brand and sound.",
-      icon: <div className="flex gap-2"><Music className="text-primary"/><Video className="text-primary"/></div>,
+      icon: <div className="flex gap-2"><Music className="text-primary"/><Video className="text-primary"/><Mic className="text-primary"/></div>,
       href: "/entertainment/artists",
       comingSoon: true,
     },
