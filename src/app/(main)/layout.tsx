@@ -54,6 +54,9 @@ export default function MainLayout({
                   {item.name}
                 </Link>
               ))}
+                 <Button asChild variant="link">
+                    <Link href="/welcome">Back🎉</Link>
+                </Button>
             </nav>
           </div>
           <div className="flex flex-1 items-center justify-end space-x-2">
@@ -110,6 +113,9 @@ export default function MainLayout({
                           {item.name}
                         </Link>
                       ))}
+                      <Button asChild variant="link">
+                        <Link href="/welcome">Back🎉</Link>
+                      </Button>
                     </nav>
                 </SheetContent>
             </Sheet>

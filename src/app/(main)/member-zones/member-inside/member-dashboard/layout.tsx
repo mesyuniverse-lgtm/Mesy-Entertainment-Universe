@@ -51,6 +51,7 @@ export default function DashboardLayout({
     { title: 'Payment', href: '/dashboard/payment', icon: Wallet },
     { title: 'Daily Rewards', href: '/dashboard/daily-rewards', icon: Calendar },
     { title: 'Notifications', href: '/dashboard/notifications', icon: Bell },
+   
   ];
   
   const auth = useAuth();
