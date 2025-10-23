@@ -103,7 +103,9 @@ export default function SocialivePage() {
               <TabsTrigger asChild>
                 <Link href="/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
               </TabsTrigger>
-              <TabsTrigger value="followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</TabsTrigger>
+              <TabsTrigger asChild>
+                <Link href="/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link>
+              </TabsTrigger>
               <TabsTrigger value="groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</TabsTrigger>
               <TabsTrigger value="timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</TabsTrigger>
             </TabsList>
