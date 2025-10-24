@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { AvatarCanvas } from "@/components/profile/avatar-canvas";
 
 export default function ProfilePage() {
     return (
@@ -13,10 +12,12 @@ export default function ProfilePage() {
                 <Card className="lg:col-span-2 h-[500px]">
                     <CardHeader>
                         <CardTitle>3D Avatar</CardTitle>
-                        <CardDescription>Interact with your 3D avatar. This is just a placeholder.</CardDescription>
+                        <CardDescription>Your 3D avatar will be displayed here.</CardDescription>
                     </CardHeader>
-                    <CardContent className="h-[calc(100%-80px)]">
-                        <AvatarCanvas />
+                    <CardContent className="h-[calc(100%-80px)] flex items-center justify-center">
+                        <div className="text-center text-muted-foreground">
+                            <p>3D Avatar feature is currently being updated.</p>
+                        </div>
                     </CardContent>
                 </Card>
 
