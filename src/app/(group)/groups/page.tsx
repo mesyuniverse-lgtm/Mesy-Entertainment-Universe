@@ -1,11 +1,15 @@
 
+'use client';
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { PlusCircle, Search, Users, Shield } from "lucide-react";
+import { PlusCircle, Search, Users, Shield, Video, Clapperboard, UserPlus, Rss, UsersRound, CalendarClock } from "lucide-react";
+import Link from "next/link";
+
 
 export default function GroupsPage() {
     const myGroups = [
@@ -26,8 +30,42 @@ export default function GroupsPage() {
                     Find and create communities, guilds, and teams within the MESY Universe.
                 </p>
             </div>
+            
+            {/* Marquee & Navbar */}
+             <div className="max-w-5xl mx-auto space-y-4">
+                 <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm">
+                    <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
+                        <span className="mx-4">Dragon Knights are recruiting! 🐲</span>
+                        <span className="mx-4">Mystic Crafters just unlocked a new perk! ✨</span>
+                        <span className="mx-4">The Bardic College is hosting a virtual concert tonight! 🎶</span>
+                    </div>
+                    <div className="absolute top-0 animate-marquee2 whitespace-nowrap text-primary font-semibold">
+                        <span className="mx-4">Dragon Knights are recruiting! 🐲</span>
+                        <span className="mx-4">Mystic Crafters just unlocked a new perk! ✨</span>
+                        <span className="mx-4">The Bardic College is hosting a virtual concert tonight! 🎶</span>
+                    </div>
+                </div>
+                 <style jsx>{`
+                    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+                    @keyframes marquee2 { from { transform: translateX(100%); } to { transform: translateX(0); } }
+                    .animate-marquee { animation: marquee 30s linear infinite; }
+                    .animate-marquee2 { animation: marquee2 30s linear infinite; }
+                `}</style>
+                
+                <Tabs defaultValue="groups" className="w-full">
+                    <TabsList className="h-auto flex-wrap justify-center">
+                        <TabsTrigger value="video" asChild><Link href="/socialive"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
+                        <TabsTrigger value="live" asChild><Link href="/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
+                        <TabsTrigger value="friends" asChild><Link href="/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link></TabsTrigger>
+                        <TabsTrigger value="followers" asChild><Link href="/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link></TabsTrigger>
+                        <TabsTrigger value="groups" asChild><Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link></TabsTrigger>
+                        <TabsTrigger value="timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</TabsTrigger>
+                    </TabsList>
+                </Tabs>
+             </div>
 
-            <Card className="max-w-4xl mx-auto">
+
+            <Card className="max-w-4xl mx-auto mt-8">
                  <CardHeader>
                     <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
                         <div className="relative w-full sm:w-auto sm:flex-grow">
@@ -87,3 +125,5 @@ export default function GroupsPage() {
         </div>
     );
 }
+
+    
