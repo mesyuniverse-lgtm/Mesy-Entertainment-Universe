@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Users, Crown, Video, Clapperboard, UserPlus, Rss, Tv, UsersRound, CalendarClock, Heart, MessageCircle, Share2, Gem, ImagePlus, Mic, Smile } from 'lucide-react';
+import { Users, Crown, Video, Clapperboard, UserPlus, Rss, Tv, UsersRound, CalendarClock, Heart, MessageCircle, Share2, Gem, ImagePlus, Mic, Smile, MoreHorizontal } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import { Textarea } from '@/components/ui/textarea';
@@ -20,26 +20,29 @@ const popularMembers = [
 
 const timelinePosts = [
     { 
+        type: 'video',
         user: { name: 'Aria', avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
         time: '5 min ago',
         text: 'Just discovered a hidden waterfall in the Whispering Woods! The view is absolutely breathtaking. ✨ #adventure #explore',
-        image: PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2'),
+        media: PlaceHolderImages.find(i => i.id === 'socialive-preview'),
         likes: 128,
         comments: 12,
     },
     { 
+        type: 'image',
         user: { name: 'Kael', avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
-        time: '1 hour ago',
+        time: '30 min ago',
         text: 'Forged a new blade today. The "Chrono Blade" is ready for battle! What should I enchant it with?',
-        image: null,
+        media: PlaceHolderImages.find(i => i.id === 'entertainment-preview'),
         likes: 95,
         comments: 25,
     },
     { 
+        type: 'text',
         user: { name: 'System Announcement', avatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl },
         time: '3 hours ago',
-        text: 'A new world event has begun! The Crystal Caverns are now open for exploration. Great treasures await the bravest adventurers!',
-        image: PlaceHolderImages.find(i => i.id === 'fantasy-landscape-3'),
+        text: 'A new world event has begun! The Crystal Caverns are now open for exploration. Great treasures await the bravest adventurers! Join your friends and guilds to conquer the depths and unearth rare artifacts. Good luck, heroes!',
+        media: null,
         likes: 543,
         comments: 88,
     }
@@ -142,9 +145,9 @@ export default function TimelinePage() {
                            <Textarea placeholder="What's happening in your universe?" className="bg-background/50 border-0 focus-visible:ring-1 focus-visible:ring-primary" />
                            <div className='flex justify-between items-center'>
                                 <div className='flex gap-2 text-muted-foreground'>
-                                    <Button variant="ghost" size="icon"><ImagePlus className="h-5 w-5" /></Button>
-                                    <Button variant="ghost" size="icon"><Mic className="h-5 w-5" /></Button>
-                                    <Button variant="ghost" size="icon"><Smile className="h-5 w-5" /></Button>
+                                    <Button variant="ghost" size="icon" aria-label="Add Image"><ImagePlus className="h-5 w-5" /></Button>
+                                    <Button variant="ghost" size="icon" aria-label="Add Voice"><Mic className="h-5 w-5" /></Button>
+                                    <Button variant="ghost" size="icon" aria-label="Add Emoji"><Smile className="h-5 w-5" /></Button>
                                 </div>
                                 <Button>Post</Button>
                            </div>
@@ -161,17 +164,25 @@ export default function TimelinePage() {
                                     <AvatarImage src={post.user.avatar} />
                                     <AvatarFallback>{post.user.name.charAt(0)}</AvatarFallback>
                                 </Avatar>
-                                <div>
+                                <div className="flex-grow">
                                     <p className="font-semibold">{post.user.name}</p>
                                     <p className="text-xs text-muted-foreground">{post.time}</p>
                                 </div>
+                                <Button variant="ghost" size="icon"><MoreHorizontal className="h-5 w-5"/></Button>
                             </div>
                         </CardHeader>
                         <CardContent className="px-4 pb-4 space-y-4">
-                            <p className='whitespace-pre-wrap'>{post.text}</p>
-                            {post.image && (
+                            <p className='whitespace-pre-wrap text-sm'>{post.text}</p>
+                            {post.media && (
                                 <div className="relative aspect-video rounded-lg overflow-hidden border">
-                                    <Image src={post.image.imageUrl} alt={post.image.description} data-ai-hint={post.image.imageHint} fill objectFit="cover" />
+                                    <Image src={post.media.imageUrl} alt={post.media.description} data-ai-hint={post.media.imageHint} fill objectFit="cover" />
+                                    {post.type === 'video' && (
+                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                            <Button variant="ghost" size="icon" className="h-16 w-16 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm">
+                                                <Video className="h-8 w-8 text-white"/>
+                                            </Button>
+                                        </div>
+                                    )}
                                 </div>
                             )}
                             <div className="flex justify-between items-center text-muted-foreground pt-2 border-t border-border">
