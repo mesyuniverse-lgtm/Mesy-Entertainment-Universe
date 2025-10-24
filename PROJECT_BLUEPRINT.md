@@ -1,0 +1,82 @@
+# Blueprint: MESY Entertainment Universe
+
+เอกสารนี้คือแผนผังโครงสร้าง (Blueprint) ของโปรเจกต์ MESY Entertainment Universe ซึ่งจะสรุปภาพรวมของสถาปัตยกรรมเว็บไซต์, การจัดระเบียบหน้า, ระบบการออกแบบ, และโมเดลข้อมูล
+
+## 1. โครงสร้างโฟลเดอร์และหน้า (Folder & Page Structure)
+
+โปรเจกต์นี้ใช้ Next.js App Router ซึ่งมีประสิทธิภาพสูงในการจัดการหน้าและ Layout ต่างๆ โดยเราใช้ระบบ "Route Groups" ในการแบ่งโซนของแอปพลิเคชันอย่างชัดเจน ดังนี้:
+
+- `src/app/(public)/`: **โซนสาธารณะ**
+  - สำหรับผู้เยี่ยมชมทุกคน (Guest) ที่ยังไม่ได้ล็อกอิน
+  - **Layout:** `(public)/layout.tsx` จะมีแถบนำทาง (Navigation Bar) ที่แสดงเมนูหลัก เช่น Member Plan, Features, Chronicle และปุ่มสำหรับ Login/Register
+  - **Pages:**
+    - `/welcome`: หน้าต้อนรับหลักของเว็บไซต์
+    - `/member-plan`: หน้ารายละเอียดแผนสมาชิกและตารางรายได้
+    - `/features`: หน้าอธิบายฟีเจอร์ต่างๆ ของแพลตฟอร์ม
+    - `/chronicle`: หน้าไทม์ไลน์การพัฒนา (Roadmap)
+    - `/developer-zone`: ศูนย์รวมข้อมูลสำหรับนักพัฒนา
+
+- `src/app/(auth)/`: **โซนการยืนยันตัวตน**
+  - สำหรับหน้า Login และ Signup โดยเฉพาะ
+  - **Layout:** `(auth)/layout.tsx` จะมีดีไซน์พิเศษที่เน้นการยืนยันตัวตน มีพื้นหลังสวยงามและไม่มีแถบเมนูหลัก
+  - **Pages:**
+    - `/login`: หน้าสำหรับเข้าสู่ระบบ
+    - `/signup`: หน้าสำหรับสมัครสมาชิก
+
+- `src/app/(main)/`: **โซนสำหรับผู้ใช้ที่ล็อกอินแล้ว (ทั่วไป)**
+  - สำหรับผู้ใช้ที่ล็อกอินแล้ว (User) แต่ยังไม่ได้เป็นสมาชิกพิเศษ (Member)
+  - **Layout:** `(main)/layout.tsx` จะแสดงเมนูครบทุกส่วน ทั้ง Socialive, Entertainment, และมี User Dropdown
+  - **Pages:**
+    - `/home`: หน้า Complex หลักที่รวมทางเข้าไปยังทุกโซน
+    - `/socialive`: ศูนย์กลางโซเชียล มีแท็บไปยัง Live, Friends, Followers, Groups
+    - `/entertainment`: ศูนย์รวมความบันเทิง (Movies, Music, Games)
+    - `/ai-hub`: หน้าทดลองใช้เครื่องมือ AI
+    - `/shopping`: หน้าสำหรับร้านค้าและมาร์เก็ตเพลส (ตัวอย่าง)
+
+- `src/app/(member)/`: **โซนสำหรับสมาชิกพิเศษ (Member Only)**
+  - เป็นโซนพิเศษที่เข้าได้เฉพาะสมาชิกระดับ Member ขึ้นไปเท่านั้น
+  - **Layout:** `(member)/layout.tsx` จะมี Sidebar ด้านข้างสำหรับเข้าถึงเมนูของสมาชิกโดยเฉพาะ เช่น Dashboard, Profile, Memberships, Payment และมีการตรวจสอบสิทธิ์การเข้าถึงอย่างเข้มงวด
+  - **Pages:**
+    - `/dashboard`: แดชบอร์ดสรุปข้อมูลภาพรวมของสมาชิก
+    - `/profile`: หน้าสำหรับแก้ไขข้อมูลส่วนตัว
+    - `/memberships`: หน้าจัดการสายงาน (Downline) และรายได้
+    - `/payment`: หน้าจัดการ Wallet และธุรกรรม (ตัวอย่าง)
+    - `/daily-rewards`: หน้ารับรางวัลล็อกอินประจำวัน
+    - `/notifications`: ศูนย์รวมการแจ้งเตือน
+    - `/admin`: หน้าสำหรับผู้ดูแลระบบ (Admin)
+
+- `src/app/(friend)`, `src/app/(follower)`, `src/app/(group)`, `src/app/(live)`:
+  - เป็น Route Groups ที่ใช้ Layout ร่วมกับ `(main)` แต่แยกโฟลเดอร์ออกมาเพื่อความเป็นระเบียบ
+  - **Pages:** `/friends`, `/followers`, `/groups`, `/live`
+
+## 2. การออกแบบธีมและสไตล์ (Theming & Styling)
+
+ระบบดีไซน์ของเราถูกกำหนดไว้ในไฟล์หลัก 2 ไฟล์:
+
+- `src/app/globals.css`:
+  - เป็นไฟล์ที่กำหนดสีหลักของธีม (Theme Colors) โดยใช้ HSL CSS Variables
+  - **`--primary`**: สีทอง (#FFD700)
+  - **`--background`**: สีทองหม่น (#E0D8B4)
+  - **`--accent`**: สีน้ำเงิน (#6495ED)
+
+- `tailwind.config.ts`:
+  - เป็นไฟล์ที่กำหนด Font หลักของเว็บไซต์
+  - **`font-headline`**: 'Fantasy Magist' (สำหรับหัวข้อ) - *หมายเหตุ: ปัจจุบันใช้ 'Cinzel Decorative' จาก Google Fonts แทน*
+  - **`font-body`**: 'Montserrat' (สำหรับเนื้อหาทั่วไป)
+
+## 3. โมเดลข้อมูลและฐานข้อมูล (Data & Database Model)
+
+ข้อมูลหลักของโปรเจกต์ถูกออกแบบไว้ในไฟล์ `docs/backend.json` ซึ่งทำหน้าที่เป็นพิมพ์เขียว (Blueprint) สำหรับโครงสร้างฐานข้อมูล Firestore ของเรา
+
+- **Entities (ตารางข้อมูลหลัก):**
+  - `User`: เก็บข้อมูลหลักของผู้ใช้ เช่น `role`, `level`
+  - `UserProfile`: เก็บข้อมูลโปรไฟล์ เช่น `nickname`, `bio`, `avatar`
+  - `Downline`: เก็บข้อมูลสมาชิกในสายงาน
+  - `Notification`: เก็บการแจ้งเตือนต่างๆ
+  - `Wallet`: เก็บข้อมูลกระเป๋าเงินและ MESY Coins
+
+- **Firestore Structure (โครงสร้างใน Firestore):**
+  - ข้อมูลส่วนตัวของผู้ใช้จะถูกเก็บเป็น Sub-collection ภายใต้ `/users/{userId}/` เช่น `profile`, `downline`, `notifications`, `wallet` เพื่อความปลอดภัยและความเป็นส่วนตัว
+  - ข้อมูลที่เป็นสาธารณะ เช่น `quests`, `products` จะถูกเก็บไว้ใน Top-level collection เพื่อให้ง่ายต่อการเข้าถึงและค้นหา
+
+เอกสารนี้จะช่วยให้คุณและทีมเห็นภาพรวมของโปรเจกต์ และสามารถพัฒนาต่อยอดไปในทิศทางเดียวกันได้อย่างมีประสิทธิภาพ
