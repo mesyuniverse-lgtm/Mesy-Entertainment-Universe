@@ -148,7 +148,7 @@ export default function LivePage() {
                             <TabsTrigger value="groups" asChild>
                                 <Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link>
                             </TabsTrigger>
-                            <TabsTrigger value="timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</TabsTrigger>
+                            <TabsTrigger value="timeline" asChild><Link href="/timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</Link></TabsTrigger>
                         </TabsList>
                         <TabsContent value="live" className="mt-4">
                             <Card className="aspect-[9/16] max-h-[80vh] w-full max-w-md mx-auto relative overflow-hidden shadow-2xl shadow-primary/20">

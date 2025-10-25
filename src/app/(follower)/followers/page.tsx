@@ -110,7 +110,7 @@ export default function FollowersPage() {
                     <Tabs defaultValue="followers" className="w-full">
                         <TabsList className="h-auto flex-wrap justify-center">
                             <TabsTrigger value="video" asChild><Link href="/socialive"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
-                            <TabsTrigger value="live" asChild><Link href="/socialive"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
+                            <TabsTrigger value="live" asChild><Link href="/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
                             <TabsTrigger value="friends" asChild>
                                 <Link href="/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
                             </TabsTrigger>
@@ -120,7 +120,7 @@ export default function FollowersPage() {
                             <TabsTrigger value="groups" asChild>
                                 <Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link>
                             </TabsTrigger>
-                            <TabsTrigger value="timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</TabsTrigger>
+                            <TabsTrigger value="timeline" asChild><Link href="/timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</Link></TabsTrigger>
                         </TabsList>
 
                         <Card className="mt-4">
