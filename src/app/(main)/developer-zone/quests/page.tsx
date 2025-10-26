@@ -11,6 +11,7 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
+import { usePathname } from 'next/navigation';
 
 const popularDevelopers = [
     { name: 'Draconis', skill: 'AI & Backend', rating: 4.9, hires: 28, avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
@@ -48,6 +49,8 @@ const quests = [
 export default function QuestsPage() {
     const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
     const adImage = PlaceHolderImages.find(i => i.id === 'glowing-gem-1');
+    const pathname = usePathname();
+
 
     return (
     <div className="min-h-screen bg-background/90 text-foreground p-4 lg:p-6" style={{background: 'radial-gradient(ellipse at bottom, hsl(var(--accent)/0.1), hsl(var(--background)) 70%)'}}>
@@ -120,10 +123,14 @@ export default function QuestsPage() {
                 `}</style>
             </div>
 
-            <Tabs defaultValue="quests" className="w-full">
+            <Tabs defaultValue={pathname.includes('/quests') ? 'quests' : 'forum'} className="w-full">
                 <TabsList className="h-auto flex-wrap justify-center">
-                    <TabsTrigger value="forum" asChild><Link href="/developer-zone"><MessageSquare className="mr-2 h-4 w-4"/>Forum</Link></TabsTrigger>
-                    <TabsTrigger value="quests"><HandCoins className="mr-2 h-4 w-4"/>Quests (Bounties)</TabsTrigger>
+                    <TabsTrigger value="forum" asChild>
+                        <Link href="/developer-zone"><MessageSquare className="mr-2 h-4 w-4"/>Forum</Link>
+                    </TabsTrigger>
+                    <TabsTrigger value="quests" asChild>
+                         <Link href="/developer-zone/quests"><HandCoins className="mr-2 h-4 w-4"/>Quests (Bounties)</Link>
+                    </TabsTrigger>
                     <TabsTrigger value="academy" disabled><BookOpen className="mr-2 h-4 w-4"/>Academy</TabsTrigger>
                     <TabsTrigger value="freelance" disabled><Briefcase className="mr-2 h-4 w-4"/>Freelance</TabsTrigger>
                 </TabsList>

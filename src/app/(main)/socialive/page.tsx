@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Users, Crown, Video, Clapperboard, UserPlus, Rss, Tv, UsersRound, CalendarClock, Heart, MessageCircle, Share2, Gem } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const popularMembers = [
   { name: 'Aria', level: 15, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
@@ -22,6 +23,7 @@ export default function SocialivePage() {
   const adImage = PlaceHolderImages.find(i => i.id === 'glowing-gem-1');
   const videoImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-1');
   const userAvatar = PlaceHolderImages.find(i => i.id === 'female-archer-1');
+  const pathname = usePathname();
 
   return (
     <div className="min-h-screen bg-background/90 text-foreground p-4 lg:p-6" style={{background: 'radial-gradient(ellipse at bottom, hsl(var(--primary)/0.1), hsl(var(--background)) 70%)'}}>
@@ -97,7 +99,7 @@ export default function SocialivePage() {
           </div>
 
           {/* Content Tabs */}
-          <Tabs defaultValue="video" className="w-full">
+          <Tabs defaultValue={pathname === '/socialive' ? 'video' : ''} className="w-full">
              <TabsList className="h-auto flex-wrap justify-center">
               <TabsTrigger value="video" asChild><Link href="/socialive"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
               <TabsTrigger value="live" asChild><Link href="/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>

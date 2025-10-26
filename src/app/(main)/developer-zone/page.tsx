@@ -11,6 +11,7 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { cn } from "@/lib/utils";
 import { Textarea } from '@/components/ui/textarea';
 import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
 
 const developers = [
     { name: 'Draconis', skill: 'AI & Backend', rating: 4.9, followers: '12.5k', avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
@@ -120,10 +121,14 @@ export default function DeveloperZonePage() {
 
             <Tabs defaultValue="forum" className="w-full">
                 <TabsList className="h-auto flex-wrap justify-center">
-                    <TabsTrigger value="forum"><MessageSquare className="mr-2 h-4 w-4"/>Forum</TabsTrigger>
-                    <TabsTrigger value="quests"><HandCoins className="mr-2 h-4 w-4"/>Quests (Bounties)</TabsTrigger>
-                    <TabsTrigger value="academy"><BookOpen className="mr-2 h-4 w-4"/>Academy</TabsTrigger>
-                    <TabsTrigger value="freelance"><Briefcase className="mr-2 h-4 w-4"/>Freelance</TabsTrigger>
+                    <TabsTrigger value="forum" asChild>
+                        <Link href="/developer-zone"><MessageSquare className="mr-2 h-4 w-4"/>Forum</Link>
+                    </TabsTrigger>
+                    <TabsTrigger value="quests" asChild>
+                         <Link href="/developer-zone/quests"><HandCoins className="mr-2 h-4 w-4"/>Quests (Bounties)</Link>
+                    </TabsTrigger>
+                    <TabsTrigger value="academy" disabled><BookOpen className="mr-2 h-4 w-4"/>Academy</TabsTrigger>
+                    <TabsTrigger value="freelance" disabled><Briefcase className="mr-2 h-4 w-4"/>Freelance</TabsTrigger>
                 </TabsList>
                 <TabsContent value="forum" className="mt-4 space-y-4">
                     <Card className="bg-card/50">
