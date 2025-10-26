@@ -3,14 +3,48 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ArrowRight, Bot, Code, ImageIcon, Mic, VideoIcon, Clapperboard, Sparkles } from "lucide-react";
+import { ArrowRight, Bot, Code, ImageIcon, Mic, VideoIcon, Clapperboard, Sparkles, Star, ToyBrick, BrainCircuit } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { cn } from "@/lib/utils";
 
 export default function AiHubPage() {
+
+    const aiProviders = [
+        {
+            name: "Google AI",
+            description: "Harness the power of Gemini and Imagen models.",
+            bgClass: "from-blue-500/20 to-blue-700/20 border-blue-400/30",
+            icon: <Image src="https://www.gstatic.com/images/branding/googlelogo/2x/googlelogo_light_color_272x92dp.png" alt="Google AI" width={80} height={27} className="opacity-80"/>,
+        },
+        {
+            name: "OpenAI",
+            description: "Explore the frontier with GPT and DALL-E.",
+            bgClass: "from-teal-500/20 to-teal-700/20 border-teal-400/30",
+            icon: <BrainCircuit className="w-10 h-10 text-teal-300"/>,
+        },
+        {
+            name: "Hugging Face",
+            description: "The community hub for open-source AI models.",
+            bgClass: "from-yellow-500/20 to-yellow-700/20 border-yellow-400/30",
+            icon: <ToyBrick className="w-10 h-10 text-yellow-300"/>,
+        },
+        {
+            name: "Ollama",
+            description: "Run powerful models locally on your own machine.",
+            bgClass: "from-purple-500/20 to-purple-700/20 border-purple-400/30",
+            icon: <Star className="w-10 h-10 text-purple-300"/>,
+        },
+        {
+            name: "OpenRouter",
+            description: "Access a wide range of models through a unified API.",
+            bgClass: "from-red-500/20 to-red-700/20 border-red-400/30",
+            icon: <Sparkles className="w-10 h-10 text-red-300"/>,
+        }
+    ];
 
     const quickActions = [
         { title: "Generate AI Video", icon: VideoIcon, href: "/ai-hub/generator", badge: null },
@@ -38,7 +72,22 @@ export default function AiHubPage() {
     ];
 
     return (
-        <div className="space-y-8">
+        <div className="space-y-12">
+             <div>
+                <h2 className="text-xl font-semibold mb-4">Explore the AI Multiverse</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    {aiProviders.map(provider => (
+                        <Card key={provider.name} className={cn("relative overflow-hidden group border-2 border-transparent hover:border-primary/50 transition-all", provider.bgClass)}>
+                            <div className="p-5 flex flex-col items-center justify-center text-center h-40">
+                                <div className="mb-3">{provider.icon}</div>
+                                <h3 className="font-bold text-lg text-foreground/90">{provider.name}</h3>
+                                <p className="text-xs text-muted-foreground mt-1">{provider.description}</p>
+                            </div>
+                        </Card>
+                    ))}
+                </div>
+            </div>
+
             <div>
                 <h1 className="text-2xl font-semibold text-foreground/90">What would you like to create today?</h1>
             </div>
@@ -102,4 +151,3 @@ export default function AiHubPage() {
             </div>
         </div>
     );
-}
