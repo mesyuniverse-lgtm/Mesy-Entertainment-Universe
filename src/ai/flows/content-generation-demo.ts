@@ -21,6 +21,7 @@ const ContentGenerationInputSchema = z.object({
         'text-to-video',
         'speech-to-text',
         'speech-to-image',
+        'speech-to-video',
         'image-to-image',
         'image-to-video',
         'code-generation'
@@ -64,7 +65,7 @@ const contentGenerationFlow = ai.defineFlow(
       });
 
       return { result: media.url };
-    } else if (input.type === 'text-to-speech' || input.type === 'text-to-video' || input.type === 'image-to-video' || input.type === 'speech-to-text' || input.type === 'code-generation') {
+    } else if (input.type === 'text-to-speech' || input.type === 'text-to-video' || input.type === 'image-to-video' || input.type === 'speech-to-text' || input.type === 'speech-to-video' || input.type === 'code-generation') {
         // Placeholder for functionality not yet fully implemented
         const {output} = await contentGenerationPrompt(input);
         return { result: `Placeholder for ${input.type}: ${output!.result}`};

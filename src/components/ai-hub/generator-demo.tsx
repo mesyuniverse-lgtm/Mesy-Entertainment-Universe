@@ -26,6 +26,7 @@ const formSchema = z.object({
         'text-to-video',
         'speech-to-text',
         'speech-to-image',
+        'speech-to-video',
         'image-to-image',
         'image-to-video',
         'code-generation'
@@ -106,6 +107,7 @@ export function GeneratorDemo() {
                                                 <SelectItem value="text-to-video">Text to Video</SelectItem>
                                                 <SelectItem value="speech-to-text">Speech to Text</SelectItem>
                                                 <SelectItem value="speech-to-image">Speech to Image</SelectItem>
+                                                <SelectItem value="speech-to-video">Speech to Video</SelectItem>
                                                 <SelectItem value="image-to-image">Image to Image</SelectItem>
                                                 <SelectItem value="image-to-video">Image to Video</SelectItem>
                                                 <SelectItem value="code-generation">Code Generation</SelectItem>
