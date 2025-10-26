@@ -17,14 +17,26 @@ import { Lock, Wand2 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const formSchema = z.object({
-    type: z.enum(['content', 'avatar', 'playlist']),
+    type: z.enum([
+        'content', 
+        'avatar', 
+        'playlist',
+        'text-to-speech',
+        'text-to-image',
+        'text-to-video',
+        'speech-to-text',
+        'speech-to-image',
+        'image-to-image',
+        'image-to-video',
+        'code-generation'
+    ]),
     prompt: z.string().min(10, { message: 'Prompt must be at least 10 characters.' }),
 });
 
 export function GeneratorDemo() {
     const [isLoading, setIsLoading] = useState(false);
     const [result, setResult] = useState<string | null>(null);
-    const [generatedType, setGeneratedType] = useState<'content' | 'avatar' | 'playlist' | null>(null);
+    const [generatedType, setGeneratedType] = useState<z.infer<typeof formSchema>['type'] | null>(null);
     const { toast } = useToast();
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -89,6 +101,14 @@ export function GeneratorDemo() {
                                                 <SelectItem value="content">Blog Post</SelectItem>
                                                 <SelectItem value="avatar">Fantasy Avatar</SelectItem>
                                                 <SelectItem value="playlist">Music Playlist</SelectItem>
+                                                <SelectItem value="text-to-speech">Text to Speech</SelectItem>
+                                                <SelectItem value="text-to-image">Text to Image</SelectItem>
+                                                <SelectItem value="text-to-video">Text to Video</SelectItem>
+                                                <SelectItem value="speech-to-text">Speech to Text</SelectItem>
+                                                <SelectItem value="speech-to-image">Speech to Image</SelectItem>
+                                                <SelectItem value="image-to-image">Image to Image</SelectItem>
+                                                <SelectItem value="image-to-video">Image to Video</SelectItem>
+                                                <SelectItem value="code-generation">Code Generation</SelectItem>
                                             </SelectContent>
                                         </Select>
                                         <FormMessage />
@@ -138,9 +158,13 @@ export function GeneratorDemo() {
                         </div>
                     ) : result ? (
                         <div className="w-full h-full">
-                            {generatedType === 'avatar' ? (
-                                <Image src={result} alt="Generated Avatar" width={512} height={512} className="rounded-lg object-contain mx-auto max-h-full w-auto" />
-                            ) : (
+                            {generatedType === 'avatar' || generatedType === 'text-to-image' || generatedType === 'image-to-image' || generatedType === 'speech-to-image' ? (
+                                <Image src={result} alt="Generated Image" width={512} height={512} className="rounded-lg object-contain mx-auto max-h-full w-auto" />
+                            ) : generatedType === 'text-to-speech' ? (
+                                <audio controls src={result} className="w-full" />
+                            ) : generatedType === 'text-to-video' || generatedType === 'image-to-video' ? (
+                                <video controls src={result} className="rounded-lg object-contain mx-auto max-h-full w-auto" />
+                            ): (
                                 <Textarea readOnly value={result} className="h-full w-full text-sm resize-none" />
                             )}
                         </div>
