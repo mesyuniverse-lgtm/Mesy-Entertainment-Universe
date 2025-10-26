@@ -12,6 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Flame, Percent, ShoppingCart, Sparkles, Star, Store, Trophy, Users, Video } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { cn } from '@/lib/utils';
 
 
 export default function ShoppingHubPage() {
@@ -43,10 +44,18 @@ export default function ShoppingHubPage() {
     ];
     
     const justForYouItems = [
-        { name: 'Chrono Blade', price: '1500 MC', image: PlaceHolderImages.find(i => i.id === 'entertainment-preview') },
-        { name: 'Elven Cloak', price: '800 MC', image: PlaceHolderImages.find(i => i.id === 'female-archer-1') },
-        { name: 'Dragon Scale Shield', price: '2500 MC', image: PlaceHolderImages.find(i => i.id === 'dragon-1') },
-        { name: 'Scroll of Knowledge', price: '300 MC', image: PlaceHolderImages.find(i => i.id === 'auth-background') },
+        { name: 'Chrono Blade', price: 1500, oldPrice: 2000, rating: 4.8, reviews: 120, image: PlaceHolderImages.find(i => i.id === 'entertainment-preview') },
+        { name: 'Elven Cloak', price: 800, oldPrice: 1000, rating: 4.9, reviews: 250, image: PlaceHolderImages.find(i => i.id === 'female-archer-1') },
+        { name: 'Dragon Scale Shield', price: 2500, oldPrice: 3000, rating: 5.0, reviews: 80, image: PlaceHolderImages.find(i => i.id === 'dragon-1') },
+        { name: 'Scroll of Knowledge', price: 300, oldPrice: 400, rating: 4.5, reviews: 500, image: PlaceHolderImages.find(i => i.id === 'auth-background') },
+        { name: 'Phoenix Down', price: 500, oldPrice: 600, rating: 4.7, reviews: 300, image: 'https://picsum.photos/seed/phoenix/200/300' },
+        { name: 'Mithril Mail', price: 5000, oldPrice: 6000, rating: 5.0, reviews: 45, image: 'https://picsum.photos/seed/mithril/200/300' },
+        { name: 'Vorpal Sword', price: 9999, oldPrice: 12000, rating: 4.9, reviews: 15, image: 'https://picsum.photos/seed/sword/200/300' },
+        { name: 'Boots of Speed', price: 1200, oldPrice: 1500, rating: 4.6, reviews: 180, image: 'https://picsum.photos/seed/boots/200/300' },
+        { name: 'Amulet of Kings', price: 7500, oldPrice: 8000, rating: 4.9, reviews: 22, image: 'https://picsum.photos/seed/amulet/200/300' },
+        { name: 'Staff of the Magi', price: 15000, oldPrice: 18000, rating: 5.0, reviews: 5, image: 'https://picsum.photos/seed/staff/200/300' },
+        { name: 'Ring of Power', price: 20000, oldPrice: null, rating: 5.0, reviews: 1, image: 'https://picsum.photos/seed/ring/200/300' },
+        { name: 'Potion of Healing', price: 50, oldPrice: 75, rating: 4.5, reviews: 1500, image: 'https://picsum.photos/seed/potion/200/300' },
     ];
     
     const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
@@ -163,7 +172,7 @@ export default function ShoppingHubPage() {
                 </aside>
 
                 {/* Main Content */}
-                <main className="lg:col-span-6 space-y-8">
+                <main className="lg:col-span-9 space-y-8">
                     <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm">
                         <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
                             <span className="mx-4">Flash Sale on Magic Potions - Up to 50% OFF! ✨</span>
@@ -221,11 +230,11 @@ export default function ShoppingHubPage() {
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                                      {/* Mock data */}
                                      {justForYouItems.slice(0,4).map((item, index) => item && (
-                                        <Card key={index} className="overflow-hidden group">
-                                            {item.image && <Image src={item.image.imageUrl} alt={item.name} width={200} height={200} className="w-full h-32 object-cover group-hover:scale-105 transition-transform" />}
+                                        <Card key={index} className="overflow-hidden group bg-card/80">
+                                            {item.image && (typeof item.image === 'string' ? <Image src={item.image} alt={item.name} width={200} height={200} className="w-full h-32 object-cover group-hover:scale-105 transition-transform" /> : <Image src={item.image.imageUrl} alt={item.name} width={200} height={200} className="w-full h-32 object-cover group-hover:scale-105 transition-transform" />) }
                                             <div className="p-3">
-                                                <h3 className="font-semibold truncate">{item.name}</h3>
-                                                <p className="text-sm text-primary">{item.price}</p>
+                                                <h3 className="font-semibold truncate text-sm">{item.name}</h3>
+                                                <p className="text-base font-bold text-primary">{item.price.toLocaleString()} MC</p>
                                             </div>
                                         </Card>
                                      ))}
@@ -271,28 +280,52 @@ export default function ShoppingHubPage() {
 
                              {/* Just for you */}
                             <div>
-                                <div className="flex justify-between items-center mb-2">
+                                <div className="flex justify-between items-center mb-4 mt-8">
                                     <h2 className="text-2xl font-bold tracking-tight">Just For You</h2>
-                                    <Button variant="link" asChild><Link href="#">More <ArrowRight className="h-4 w-4 ml-1"/></Link></Button>
                                 </div>
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                     {justForYouItems.map((item, index) => item && (
-                                        <Card key={index} className="overflow-hidden group">
-                                            {item.image && <Image src={item.image.imageUrl} alt={item.name} width={200} height={200} className="w-full h-32 object-cover group-hover:scale-105 transition-transform" />}
-                                            <div className="p-3">
-                                                <h3 className="font-semibold truncate">{item.name}</h3>
-                                                <p className="text-sm text-primary">{item.price}</p>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                                    {justForYouItems.map((item, index) => {
+                                        const discount = item.oldPrice ? Math.round(((item.oldPrice - item.price) / item.oldPrice) * 100) : null;
+                                        return (
+                                        <Card key={index} className="overflow-hidden group bg-card/80 border-border/50 hover:shadow-md hover:border-primary/50 transition-all">
+                                             <div className="relative">
+                                                {item.image && (typeof item.image === 'string' ? 
+                                                    <Image src={item.image} alt={item.name} width={200} height={200} className="w-full aspect-square object-cover group-hover:scale-105 transition-transform" /> 
+                                                    : <Image src={item.image.imageUrl} alt={item.name} width={200} height={200} className="w-full aspect-square object-cover group-hover:scale-105 transition-transform" />) 
+                                                }
+                                                {discount && (
+                                                    <Badge className="absolute top-2 right-2 bg-primary/90 text-primary-foreground border-none">-{discount}%</Badge>
+                                                )}
+                                            </div>
+                                            <div className="p-3 space-y-2">
+                                                <h3 className="font-semibold truncate text-sm h-10">{item.name}</h3>
+                                                <div>
+                                                    <span className="text-base font-bold text-primary mr-2">{item.price.toLocaleString()} MC</span>
+                                                    {item.oldPrice && (
+                                                        <span className="text-xs text-muted-foreground line-through">{item.oldPrice.toLocaleString()}</span>
+                                                    )}
+                                                </div>
+                                                <div className="flex items-center gap-1 text-xs text-muted-foreground">
+                                                    <div className="flex items-center">
+                                                        {[...Array(5)].map((_, i) => (
+                                                            <Star key={i} className={cn("h-3 w-3", i < Math.round(item.rating) ? 'text-yellow-400 fill-yellow-400' : 'text-muted-foreground/50')} />
+                                                        ))}
+                                                    </div>
+                                                    <span>({item.reviews})</span>
+                                                </div>
                                             </div>
                                         </Card>
-                                     ))}
+                                     )})}
+                                </div>
+                                <div className="mt-8 text-center">
+                                    <Button variant="outline" size="lg">Load More</Button>
                                 </div>
                             </div>
                         </TabsContent>
                     </Tabs>
                 </main>
-
-                {/* Right Sidebar */}
-                <aside className="lg:col-span-3 hidden lg:block space-y-6">
+                 {/* Right Sidebar - This will be merged into the main content on smaller screens */}
+                <aside className="lg:col-span-3 space-y-6 lg:hidden">
                     <Card className="bg-card/50 border-primary/50 shadow-lg shadow-primary/10">
                         <CardHeader className="p-0">
                             {videoAdImage && (
@@ -315,13 +348,12 @@ export default function ShoppingHubPage() {
                     <Card className="bg-card/50">
                         <CardHeader><CardTitle>Popular Products</CardTitle></CardHeader>
                         <CardContent className="space-y-3">
-                            {/* Mock Data */}
-                            <div className="flex items-center gap-3">
-                                {justForYouItems[0]?.image && <Image src={justForYouItems[0].image.imageUrl} width={40} height={40} className="rounded-md" alt="product"/>}
+                             <div className="flex items-center gap-3">
+                                {justForYouItems[0]?.image && (typeof justForYouItems[0].image === 'string' ? <Image src={justForYouItems[0].image} width={40} height={40} className="rounded-md" alt="product"/> : <Image src={justForYouItems[0].image.imageUrl} width={40} height={40} className="rounded-md" alt="product"/>)}
                                 <p className="text-sm font-medium">Chrono Blade</p>
                             </div>
                              <div className="flex items-center gap-3">
-                                {justForYouItems[1]?.image && <Image src={justForYouItems[1].image.imageUrl} width={40} height={40} className="rounded-md" alt="product"/>}
+                                {justForYouItems[1]?.image && (typeof justForYouItems[1].image === 'string' ? <Image src={justForYouItems[1].image} width={40} height={40} className="rounded-md" alt="product"/> : <Image src={justForYouItems[1].image.imageUrl} width={40} height={40} className="rounded-md" alt="product"/>)}
                                 <p className="text-sm font-medium">Elven Cloak</p>
                             </div>
                         </CardContent>
@@ -330,9 +362,8 @@ export default function ShoppingHubPage() {
                     <Card className="bg-card/50">
                         <CardHeader><CardTitle>Recommended For You</CardTitle></CardHeader>
                         <CardContent className="space-y-3">
-                             {/* Mock Data */}
                              <div className="flex items-center gap-3">
-                                {justForYouItems[2]?.image && <Image src={justForYouItems[2].image.imageUrl} width={40} height={40} className="rounded-md" alt="product"/>}
+                                {justForYouItems[2]?.image && (typeof justForYouItems[2].image === 'string' ? <Image src={justForYouItems[2].image} width={40} height={40} className="rounded-md" alt="product"/> : <Image src={justForYouItems[2].image.imageUrl} width={40} height={40} className="rounded-md" alt="product"/>)}
                                 <p className="text-sm font-medium">Dragon Scale Shield</p>
                             </div>
                         </CardContent>
@@ -341,7 +372,6 @@ export default function ShoppingHubPage() {
                      <Card className="bg-card/50">
                         <CardHeader><CardTitle>Featured Stores</CardTitle></CardHeader>
                         <CardContent className="space-y-3">
-                            {/* Mock Data */}
                              <div className="flex items-center gap-3">
                                <Avatar className="h-10 w-10"><AvatarImage src={PlaceHolderImages.find(i=>i.id==='knight-1')?.imageUrl}/></Avatar>
                                <div>
@@ -358,14 +388,10 @@ export default function ShoppingHubPage() {
                             </div>
                         </CardContent>
                     </Card>
-
                 </aside>
             </div>
         </div>
     );
-
-    
-
-
+}
 
     
