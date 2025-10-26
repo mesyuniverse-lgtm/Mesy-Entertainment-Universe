@@ -131,7 +131,9 @@ export default function QuestsPage() {
                     <TabsTrigger value="quests" asChild>
                          <Link href="/developer-zone/quests"><HandCoins className="mr-2 h-4 w-4"/>Quests (Bounties)</Link>
                     </TabsTrigger>
-                    <TabsTrigger value="academy" disabled><BookOpen className="mr-2 h-4 w-4"/>Academy</TabsTrigger>
+                    <TabsTrigger value="academy" asChild>
+                        <Link href="/developer-zone/academy"><BookOpen className="mr-2 h-4 w-4"/>Academy</Link>
+                    </TabsTrigger>
                     <TabsTrigger value="freelance" disabled><Briefcase className="mr-2 h-4 w-4"/>Freelance</TabsTrigger>
                 </TabsList>
                 <TabsContent value="quests" className="mt-4 space-y-4">
