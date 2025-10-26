@@ -42,6 +42,15 @@ export default function ShoppingHubPage() {
     const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
     
     const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+    
+    const mesyMallStores = [
+        { name: 'The Armory', tagline: 'Finest Blades & Armor', image: PlaceHolderImages.find(i => i.id === 'entertainment-preview'), logo: PlaceHolderImages.find(i => i.id === 'knight-1') },
+        { name: 'Alchemist\'s Trove', tagline: 'Potions for every quest', image: PlaceHolderImages.find(i => i.id === 'fantasy-landscape-5'), logo: PlaceHolderImages.find(i => i.id === 'glowing-gem-1') },
+        { name: 'Wanderer\'s Wares', tagline: 'Adventuring essentials', image: PlaceHolderImages.find(i => i.id === 'fantasy-landscape-4'), logo: PlaceHolderImages.find(i => i.id === 'explorer-1') },
+        { name: 'Mystic Threads', tagline: 'Enchanted Apparel', image: PlaceHolderImages.find(i => i.id === 'female-archer-1'), logo: PlaceHolderImages.find(i => i.id === 'feature-1') },
+        { name: 'Dragon\'s Hoard', tagline: 'Rare & Legendary Items', image: PlaceHolderImages.find(i => i.id === 'dragon-1'), logo: PlaceHolderImages.find(i => i.id === 'glowing-gem-1') },
+        { name: 'Gamer\'s Guild', tagline: 'Gear up for victory', image: PlaceHolderImages.find(i => i.id === 'socialive-preview'), logo: PlaceHolderImages.find(i => i.id === 'fighter-character') },
+    ];
 
     useEffect(() => {
         const calculateTimeLeft = () => {
@@ -144,7 +153,7 @@ export default function ShoppingHubPage() {
                 </aside>
 
                 {/* Main Content */}
-                <main className="lg:col-span-6 space-y-4">
+                <main className="lg:col-span-6 space-y-8">
                     <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm">
                         <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
                             <span className="mx-4">Flash Sale on Magic Potions - Up to 50% OFF! ✨</span>
@@ -168,7 +177,7 @@ export default function ShoppingHubPage() {
                             <TabsTrigger value="create-shop">Create Your Shop</TabsTrigger>
                             <TabsTrigger value="mesy-shop">MESY Official</TabsTrigger>
                         </TabsList>
-                        <TabsContent value="mall" className="mt-4 space-y-6">
+                        <TabsContent value="mall" className="mt-4 space-y-8">
                             <Carousel opts={{ loop: true }}>
                                 <CarouselContent>
                                     {slideshowImages.map((img, index) => img && (
@@ -213,6 +222,28 @@ export default function ShoppingHubPage() {
                                 </div>
                             </div>
                             
+                            {/* MESY Mall Section */}
+                            <div>
+                                <div className="flex justify-between items-center mb-3">
+                                    <h2 className="text-2xl font-bold tracking-tight">MESY Mall</h2>
+                                    <Button variant="link" asChild><Link href="#">Shop More <ArrowRight className="h-4 w-4 ml-1"/></Link></Button>
+                                </div>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-0.5">
+                                    {mesyMallStores.map((store, index) => (
+                                        <Link href="#" key={index} className="group bg-card/50 hover:bg-card/90 transition-colors">
+                                            <div className="aspect-square relative overflow-hidden">
+                                                 {store.image && <Image src={store.image.imageUrl} alt={store.name} fill objectFit="cover"/>}
+                                            </div>
+                                            <div className="p-2 text-center">
+                                                {store.logo && <Image src={store.logo.imageUrl} alt={`${store.name} logo`} width={48} height={48} className="mx-auto -mt-8 mb-2 rounded-md border-2 border-background bg-background p-0.5"/>}
+                                                <h3 className="font-semibold text-sm truncate">{store.name}</h3>
+                                                <p className="text-xs text-muted-foreground truncate">{store.tagline}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+
                             {/* Categories */}
                             <div>
                                 <h2 className="text-2xl font-bold tracking-tight mb-3">Shop by Category</h2>
@@ -322,3 +353,4 @@ export default function ShoppingHubPage() {
     );
 
     
+
