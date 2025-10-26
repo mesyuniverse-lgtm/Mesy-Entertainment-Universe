@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Home, Compass, Folder, Video, ImageIcon, Bot, Film, Sparkles, Wand2, Star, Settings, LifeBuoy, UserCircle, Plus, Zap } from 'lucide-react';
+import { Home, Compass, Folder, Video, ImageIcon, Bot, Film, Sparkles, Wand2, Star, Settings, LifeBuoy, UserCircle, Plus, Zap, Code } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useUser } from '@/firebase';
 
