@@ -60,6 +60,18 @@ export default function AiHubLayout({
                     <span>{item.name}</span>
                 </Link>
             ))}
+             <div className="space-y-2 pt-4">
+                <p className="px-3 text-xs font-semibold uppercase text-muted-foreground/80">Creation</p>
+                {sidebarNav.creation.map(item => (
+                    <Link key={item.name} href={item.href} className="flex items-center justify-between gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground">
+                        <div className="flex items-center gap-3">
+                            <item.icon className="h-5 w-5" />
+                            <span>{item.name}</span>
+                        </div>
+                        {item.badge && <Badge variant="secondary">{item.badge}</Badge>}
+                    </Link>
+                ))}
+            </div>
         </nav>
 
         <Card className="bg-gradient-to-br from-accent/20 to-primary/10 border-primary/20">
@@ -76,18 +88,6 @@ export default function AiHubLayout({
             </CardContent>
         </Card>
 
-        <div className="space-y-2">
-            <p className="px-3 text-xs font-semibold uppercase text-muted-foreground/80">Creation</p>
-            {sidebarNav.creation.map(item => (
-                <Link key={item.name} href={item.href} className="flex items-center justify-between gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground">
-                    <div className="flex items-center gap-3">
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.name}</span>
-                    </div>
-                    {item.badge && <Badge variant="secondary">{item.badge}</Badge>}
-                </Link>
-            ))}
-        </div>
         
         <div className="space-y-2">
             <p className="px-3 text-xs font-semibold uppercase text-muted-foreground/80">Entertainment</p>
