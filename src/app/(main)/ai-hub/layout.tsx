@@ -4,9 +4,10 @@ import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Home, Compass, Folder, Video, ImageIcon, Bot, Film, Sparkles, Wand2, Star, Settings, LifeBuoy, UserCircle, Plus, Zap, Code } from 'lucide-react';
+import { Home, Compass, Folder, Video, ImageIcon, Bot, Film, Sparkles, Wand2, Star, Settings, LifeBuoy, UserCircle, Plus, Zap, Code, Shield, Award, Lightbulb } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useUser } from '@/firebase';
+import { Card, CardContent } from '@/components/ui/card';
 
 export default function AiHubLayout({
   children,
@@ -44,15 +45,15 @@ export default function AiHubLayout({
 
   return (
     <div className="flex min-h-screen bg-background text-foreground">
-      <aside className="w-64 flex-col border-r border-border/60 p-4 space-y-4 hidden lg:flex">
-        <Link href="/home" className="flex items-center gap-2 mb-4">
+      <aside className="w-64 flex-col border-r border-border/60 p-2 space-y-2 hidden lg:flex">
+        <Link href="/home" className="flex items-center gap-2 p-2 mb-2">
             <Gem className="h-8 w-8 text-primary" />
             <span className="text-2xl font-bold font-headline">MESY.ai</span>
         </Link>
 
         <Button className="w-full"><Plus className="mr-2 h-4 w-4"/>Create New</Button>
 
-        <nav className="flex-grow space-y-2">
+        <nav className="flex-grow space-y-1">
             {sidebarNav.main.map(item => (
                 <Link key={item.name} href={item.href} className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground">
                     <item.icon className="h-5 w-5" />
@@ -61,7 +62,21 @@ export default function AiHubLayout({
             ))}
         </nav>
 
-        <div className="space-y-4">
+        <Card className="bg-gradient-to-br from-accent/20 to-primary/10 border-primary/20">
+            <CardContent className="p-3 text-center">
+                <h3 className="font-bold text-base text-foreground">Reimagine your creations</h3>
+                <p className="text-xs text-muted-foreground mt-1 mb-3">Future-proof your skills with our Personal Plan.</p>
+                <div className="space-y-2 text-left text-xs">
+                    <div className="flex items-center gap-2"><Shield className="h-4 w-4 text-primary"/><span>Learn AI and more</span></div>
+                    <div className="flex items-center gap-2"><Award className="h-4 w-4 text-primary"/><span>Prep for a certification</span></div>
+                    <div className="flex items-center gap-2"><Wand2 className="h-4 w-4 text-primary"/><span>Practice with AI coaching</span></div>
+                    <div className="flex items-center gap-2"><Lightbulb className="h-4 w-4 text-primary"/><span>Advance your career</span></div>
+                </div>
+                 <Button size="sm" className="w-full mt-4">Learn more</Button>
+            </CardContent>
+        </Card>
+
+        <div className="space-y-2">
             <p className="px-3 text-xs font-semibold uppercase text-muted-foreground/80">Creation</p>
             {sidebarNav.creation.map(item => (
                 <Link key={item.name} href={item.href} className="flex items-center justify-between gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground">
@@ -94,7 +109,16 @@ export default function AiHubLayout({
             ))}
         </div>
         
-        <div className="mt-auto space-y-4">
+        <div className="mt-auto space-y-2">
+             <div className="space-y-2">
+                <p className="px-3 text-xs font-semibold uppercase text-muted-foreground/80">App</p>
+                 {sidebarNav.app.map(item => (
+                    <Link key={item.name} href={item.href} className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground">
+                        <item.icon className="h-5 w-5" />
+                        <span>{item.name}</span>
+                    </Link>
+                ))}
+             </div>
             <Button variant="default" className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600">
                 <Zap className="mr-2 h-4 w-4"/> Upgrade Now
             </Button>
