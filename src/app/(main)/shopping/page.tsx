@@ -24,12 +24,22 @@ export default function ShoppingHubPage() {
     ];
 
     const categories = [
-        { name: 'Fashion', icon: <Sparkles /> },
-        { name: 'Electronics', icon: <ShoppingCart /> },
-        { name: 'Gaming Gear', icon: <Star /> },
-        { name: 'Magic Items', icon: <Flame /> },
-        { name: 'Home & Decor', icon: <Store /> },
-        { name: 'Potions & Elixirs', icon: <Percent /> },
+        { name: 'Mobiles', image: 'https://picsum.photos/seed/mobiles/200/200' },
+        { name: 'Outdoor Lighting', image: 'https://picsum.photos/seed/outdoor-lighting/200/200' },
+        { name: 'Electrical Parts', image: 'https://picsum.photos/seed/electrical/200/200' },
+        { name: 'Cables & Converters', image: 'https://picsum.photos/seed/cables/200/200' },
+        { name: 'Storage Bins', image: 'https://picsum.photos/seed/storage/200/200' },
+        { name: 'Batteries', image: 'https://picsum.photos/seed/batteries/200/200' },
+        { name: 'LED Bulbs & Strips', image: 'https://picsum.photos/seed/led/200/200' },
+        { name: 'Decorations', image: 'https://picsum.photos/seed/decorations/200/200' },
+        { name: 'Tablets', image: 'https://picsum.photos/seed/tablets/200/200' },
+        { name: 'Tents', image: 'https://picsum.photos/seed/tents/200/200' },
+        { name: 'Monitors', image: 'https://picsum.photos/seed/monitors/200/200' },
+        { name: 'Speakers', image: 'https://picsum.photos/seed/speakers/200/200' },
+        { name: 'Power Banks', image: 'https://picsum.photos/seed/powerbanks/200/200' },
+        { name: 'Smart TV', image: 'https://picsum.photos/seed/tv/200/200' },
+        { name: 'T-Shirts', image: 'https://picsum.photos/seed/tshirts/200/200' },
+        { name: 'Garden Hoses', image: 'https://picsum.photos/seed/hoses/200/200' },
     ];
     
     const justForYouItems = [
@@ -244,15 +254,17 @@ export default function ShoppingHubPage() {
                                 </div>
                             </div>
 
-                            {/* Categories */}
+                           {/* Categories */}
                             <div>
                                 <h2 className="text-2xl font-bold tracking-tight mb-3">Shop by Category</h2>
-                                <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
+                                <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 gap-2">
                                     {categories.map((cat) => (
-                                        <Button key={cat.name} variant="outline" className="flex-col h-24 gap-2">
-                                            {cat.icon}
-                                            <span className="text-sm">{cat.name}</span>
-                                        </Button>
+                                        <Link href="#" key={cat.name} className="group flex flex-col items-center text-center p-2 rounded-lg hover:bg-secondary/50 transition-colors">
+                                            <div className="relative w-full aspect-square mb-2 rounded-md overflow-hidden bg-muted/50 flex items-center justify-center">
+                                                <Image src={cat.image} alt={cat.name} width={80} height={80} className="object-contain group-hover:scale-105 transition-transform" />
+                                            </div>
+                                            <span className="text-xs font-medium text-center">{cat.name}</span>
+                                        </Link>
                                     ))}
                                 </div>
                             </div>
@@ -354,3 +366,6 @@ export default function ShoppingHubPage() {
 
     
 
+
+
+    
