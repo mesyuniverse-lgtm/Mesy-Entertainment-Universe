@@ -4,132 +4,140 @@ import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn } from 'lucide-react';
-import { useAuth, useUser } from '@/firebase';
-import { signOut } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
+import { Home, Compass, Folder, Video, ImageIcon, Bot, Film, Sparkles, Wand2, Star, Settings, LifeBuoy, UserCircle, Plus, Zap } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { useUser } from '@/firebase';
 
 export default function AiHubLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const navItems = [
-    { name: 'Socialive', href: '/socialive' },
-    { name: 'Entertainment', href: '/entertainment' },
-    { name: 'AI Hub', href: '/ai-hub' },
-    { name: 'Shopping Hub', href: '/shopping' },
-    { name: 'Member Zones', href: '/dashboard' },
-    { name: 'Developer Zone', href: '/developer-zone' },
-  ];
+  const { user } = useUser();
 
-  const auth = useAuth();
-  const { user, isUserLoading } = useUser();
-  const router = useRouter();
-
-  const handleLogout = async () => {
-    await signOut(auth);
-    router.push('/welcome');
+  const sidebarNav = {
+    main: [
+      { name: 'Home', href: '/ai-hub', icon: Home },
+      { name: 'Explore', href: '#', icon: Compass },
+      { name: 'Projects', href: '#', icon: Folder },
+    ],
+    creation: [
+      { name: 'AI Video', href: '/ai-hub/generator', icon: Video },
+      { name: 'AI Image', href: '/ai-hub/generator', icon: ImageIcon },
+      { name: 'AI Avatar', href: '/ai-hub/generator', icon: Bot },
+      { name: 'AI Shorts', href: '#', icon: Film, badge: 'BETA' },
+      { name: 'Pro Effects', href: '#', icon: Sparkles },
+    ],
+    entertainment: [
+        { name: 'Fun Effects', href: '#', icon: Wand2 },
+        { name: 'Photo Effects', href: '#', icon: ImageIcon },
+    ],
+    tools: [
+        { name: 'AI Tools', href: '#', icon: Star },
+        { name: 'My Creations', href: '#', icon: Sparkles },
+    ],
+    app: [
+        { name: 'App', href: '#', icon: Settings },
+        { name: 'API', href: '#', icon: Code },
+    ]
   };
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-16 max-w-screen-2xl items-center">
-          <div className="mr-4 flex items-center">
-            <Link href="/home" className="mr-6 flex items-center space-x-2">
-              <Gem className="h-6 w-6 text-primary" />
-              <span className="font-bold font-headline sm:inline-block">
-                MESY
-              </span>
-            </Link>
-            <nav className="hidden items-center gap-6 text-sm md:flex">
-              {navItems.map((item) => (
-                <Link
-                  key={item.name}
-                  href={item.href}
-                  className="transition-colors hover:text-foreground/80 text-foreground/60"
-                >
-                  {item.name}
+    <div className="flex min-h-screen bg-background text-foreground">
+      <aside className="w-64 flex-col border-r border-border/60 p-4 space-y-4 hidden lg:flex">
+        <Link href="/home" className="flex items-center gap-2 mb-4">
+            <Gem className="h-8 w-8 text-primary" />
+            <span className="text-2xl font-bold font-headline">MESY.ai</span>
+        </Link>
+
+        <Button className="w-full"><Plus className="mr-2 h-4 w-4"/>Create New</Button>
+
+        <nav className="flex-grow space-y-2">
+            {sidebarNav.main.map(item => (
+                <Link key={item.name} href={item.href} className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground">
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.name}</span>
                 </Link>
-              ))}
-                 <Button asChild variant="link" className="text-lg">
-                    <Link href="/welcome">Back🎉</Link>
-                </Button>
-            </nav>
-          </div>
-          <div className="flex flex-1 items-center justify-end space-x-2">
-             {!isUserLoading && (
-              user ? (
-                <DropdownMenu>
+            ))}
+        </nav>
+
+        <div className="space-y-4">
+            <p className="px-3 text-xs font-semibold uppercase text-muted-foreground/80">Creation</p>
+            {sidebarNav.creation.map(item => (
+                <Link key={item.name} href={item.href} className="flex items-center justify-between gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground">
+                    <div className="flex items-center gap-3">
+                        <item.icon className="h-5 w-5" />
+                        <span>{item.name}</span>
+                    </div>
+                    {item.badge && <Badge variant="secondary">{item.badge}</Badge>}
+                </Link>
+            ))}
+        </div>
+        
+        <div className="space-y-2">
+            <p className="px-3 text-xs font-semibold uppercase text-muted-foreground/80">Entertainment</p>
+            {sidebarNav.entertainment.map(item => (
+                <Link key={item.name} href={item.href} className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground">
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.name}</span>
+                </Link>
+            ))}
+        </div>
+
+        <div className="space-y-2">
+            <p className="px-3 text-xs font-semibold uppercase text-muted-foreground/80">Tools</p>
+            {sidebarNav.tools.map(item => (
+                <Link key={item.name} href={item.href} className="flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:bg-secondary hover:text-foreground">
+                    <item.icon className="h-5 w-5" />
+                    <span>{item.name}</span>
+                </Link>
+            ))}
+        </div>
+        
+        <div className="mt-auto space-y-4">
+            <Button variant="default" className="w-full bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600">
+                <Zap className="mr-2 h-4 w-4"/> Upgrade Now
+            </Button>
+        </div>
+
+      </aside>
+
+      <div className="flex-1 flex flex-col">
+        <header className="flex h-16 items-center justify-between border-b border-border/60 px-6">
+            <div className="flex-1">
+                {/* Search bar can go here */}
+            </div>
+             <div className="flex items-center gap-4">
+                <Button variant="ghost" size="icon"><LifeBuoy className="h-5 w-5"/></Button>
+                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                      <Avatar className="h-9 w-9">
-                        <AvatarImage src={user.photoURL || undefined} alt="User Avatar" />
-                        <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
+                      <Avatar className="h-9 w-9 border-2 border-primary/50">
+                        <AvatarImage src={user?.photoURL || undefined} alt="User Avatar" />
+                        <AvatarFallback>{user?.email?.[0].toUpperCase() || 'A'}</AvatarFallback>
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">{user.displayName || 'User'}</p>
+                        <p className="text-sm font-medium leading-none">{user?.displayName || 'User'}</p>
                         <p className="text-xs leading-none text-muted-foreground">
-                          {user.email}
+                          {user?.email}
                         </p>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild><Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard</Link></DropdownMenuItem>
-                    <DropdownMenuItem asChild><Link href="/profile"><UserCircle className="mr-2 h-4 w-4"/>Profile</Link></DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                     <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/dashboard"><UserCircle className="mr-2 h-4 w-4"/>Dashboard</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/home"><Home className="mr-2 h-4 w-4"/>MESY Home</Link></DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
-              ) : (
-                <Button asChild>
-                  <Link href="/login"><LogIn className="mr-2 h-4 w-4" />Login</Link>
-                </Button>
-              )
-            )}
-            <Button asChild>
-                            <Link href="/signup">Register</Link>
-            </Button>
-            <Sheet>
-                <SheetTrigger asChild>
-                    <Button variant="outline" size="icon" className="md:hidden">
-                        <Menu className="h-4 w-4" />
-                    </Button>
-                </SheetTrigger>
-                <SheetContent side="right">
-                    <nav className="grid gap-6 text-lg font-medium mt-16">
-                        {navItems.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className="hover:text-foreground/80 text-foreground/60"
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                      <Button asChild variant="link" className="text-lg">
-                        <Link href="/welcome">Back🎉</Link>
-                      </Button>
-                    </nav>
-                </SheetContent>
-            </Sheet>
-          </div>
-        </div>
-      </header>
-      <main className="flex-1">{children}</main>
-      <footer className="py-6 md:px-8 md:py-0 bg-secondary/20">
-        <div className="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
-          <p className="text-balance text-center text-sm leading-loose text-muted-foreground md:text-left">
-            © {new Date().getFullYear()} MESY Entertainment Universe. All rights reserved.
-          </p>
-        </div>
-      </footer>
+            </div>
+        </header>
+        <main className="flex-1 p-6 overflow-auto">
+            {children}
+        </main>
+      </div>
     </div>
   );
 }

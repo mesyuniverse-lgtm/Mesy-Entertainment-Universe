@@ -10,7 +10,7 @@
     --card-foreground: 225 25% 95%;
     --popover: 224 70% 4%;
     --popover-foreground: 225 25% 95%;
-    --primary: 0 72% 51%; /* Red */
+    --primary: 340 85% 60%; /* Hot Pink/Red from Upgrade button */
     --primary-foreground: 225 25% 95%;
     --secondary: 224 20% 25%;
     --secondary-foreground: 225 25% 95%;
@@ -22,7 +22,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 224 20% 20%;
     --input: 224 20% 20%;
-    --ring: 0 72% 51%;
+    --ring: 340 85% 60%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -38,7 +38,7 @@
     --card-foreground: 225 25% 95%;
     --popover: 224 70% 4%;
     --popover-foreground: 225 25% 95%;
-    --primary: 0 72% 51%; /* Red */
+    --primary: 340 85% 60%; /* Hot Pink/Red from Upgrade button */
     --primary-foreground: 225 25% 95%;
     --secondary: 224 20% 25%;
     --secondary-foreground: 225 25% 95%;
@@ -50,7 +50,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 224 20% 20%;
     --input: 224 20% 20%;
-    --ring: 0 72% 51%;
+    --ring: 340 85% 60%;
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
