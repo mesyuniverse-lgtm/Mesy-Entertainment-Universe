@@ -1,6 +1,7 @@
 
 'use client';
 
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -39,6 +40,46 @@ export default function ShoppingHubPage() {
     ];
     
     const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
+    
+    const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+
+    useEffect(() => {
+        const calculateTimeLeft = () => {
+            const now = new Date();
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(0, 0, 0, 0);
+
+            const difference = tomorrow.getTime() - now.getTime();
+
+            let timeLeft = {
+                hours: 0,
+                minutes: 0,
+                seconds: 0
+            };
+
+            if (difference > 0) {
+                timeLeft = {
+                    hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+                    minutes: Math.floor((difference / 1000 / 60) % 60),
+                    seconds: Math.floor((difference / 1000) % 60)
+                };
+            }
+
+            return timeLeft;
+        };
+
+        setTimeLeft(calculateTimeLeft());
+        const timer = setInterval(() => {
+            setTimeLeft(calculateTimeLeft());
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, []);
+
+    const formatTime = (time: number) => {
+        return time.toString().padStart(2, '0');
+    };
 
 
     return (
@@ -144,8 +185,18 @@ export default function ShoppingHubPage() {
                             
                              {/* Flash Sale */}
                             <div>
-                                <div className="flex justify-between items-center mb-2">
-                                    <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2"><Flame className="text-red-500"/> Flash Sale</h2>
+                                <div className="flex flex-wrap justify-between items-center mb-2 gap-2">
+                                    <div className="flex items-center gap-4">
+                                        <h2 className="text-2xl font-bold tracking-tight flex items-center gap-2"><Flame className="text-red-500"/> Flash Sale</h2>
+                                        <div className="flex items-center gap-2 text-sm">
+                                            <span className="text-muted-foreground">Ending in</span>
+                                            <span className="bg-destructive text-destructive-foreground font-bold p-2 rounded-md tabular-nums">{formatTime(timeLeft.hours)}</span>
+                                            <span className="font-bold text-destructive">:</span>
+                                            <span className="bg-destructive text-destructive-foreground font-bold p-2 rounded-md tabular-nums">{formatTime(timeLeft.minutes)}</span>
+                                            <span className="font-bold text-destructive">:</span>
+                                            <span className="bg-destructive text-destructive-foreground font-bold p-2 rounded-md tabular-nums">{formatTime(timeLeft.seconds)}</span>
+                                        </div>
+                                    </div>
                                     <Button variant="link" asChild><Link href="#">View All <ArrowRight className="h-4 w-4 ml-1"/></Link></Button>
                                 </div>
                                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
