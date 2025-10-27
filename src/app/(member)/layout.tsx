@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, History, MessageCircle, Store } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, History, MessageCircle, Store, ShoppingBasket } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -30,6 +30,7 @@ const sidebarNavItems = [
   { name: 'Community', href: '/community', icon: MessageCircle },
   { name: 'Memberships', href: '/memberships', icon: HandCoins },
   { name: 'MESY Shop', href: '/shop', icon: Store },
+  { name: 'MESY Market', href: '/market', icon: ShoppingBasket },
   { name: 'Wallet', href: '/wallet', icon: Wallet },
   { name: 'Transaction', href: '/transaction', icon: History },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
