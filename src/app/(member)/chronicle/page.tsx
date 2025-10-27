@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Check, DollarSign, Gift, Star, Users } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-const timelineEvents = [
+const chronicleEvents = [
     {
         icon: <Star className="h-6 w-6 text-yellow-400" />,
         title: "Leveled Up to 5",
@@ -46,13 +46,13 @@ const timelineEvents = [
     }
 ]
 
-export default function MemberTimelinePage() {
+export default function MemberChroniclePage() {
   const userAvatar = PlaceHolderImages.find(i => i.id === 'default-avatar');
   
   return (
     <div className="space-y-6">
         <div>
-            <h1 className="text-3xl font-bold tracking-tight">Your Timeline</h1>
+            <h1 className="text-3xl font-bold tracking-tight">Your Chronicle</h1>
             <p className="text-muted-foreground">A record of your journey and significant achievements in the MESY Universe.</p>
         </div>
         <Card>
@@ -61,7 +61,7 @@ export default function MemberTimelinePage() {
                     {/* Vertical line */}
                     <div className="absolute left-4 top-4 bottom-0 w-0.5 bg-border -translate-x-1/2"></div>
 
-                    {timelineEvents.map((event, index) => (
+                    {chronicleEvents.map((event, index) => (
                          <div key={index} className="flex items-start gap-6 pb-12">
                              {/* Icon and Connector */}
                             <div className="flex flex-col items-center">
