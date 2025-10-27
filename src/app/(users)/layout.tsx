@@ -6,12 +6,21 @@ import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Bell, Wallet, History, Settings, Calendar, Home, Star, Smile } from 'lucide-react';
+import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Bell, Wallet, History, Settings, Calendar, Home, Star } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+
+const MemberIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute bottom-0 left-0 text-purple-400 bg-background/80 rounded-full p-0.5">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#8A2BE2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx="8.5" cy="7" r="4" stroke="#8A2BE2" strokeWidth="2"/>
+        <path d="M18 8a2 2 0 0 1 2-2" stroke="#8A2BE2" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M20 6a6 6 0 0 1 0 12" stroke="#8A2BE2" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+);
 
 export default function UsersDashboardLayout({
   children,
@@ -63,16 +72,11 @@ export default function UsersDashboardLayout({
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                       {isMember ? (
-                        <div className="flex items-center justify-center h-9 w-9 rounded-full bg-primary/10 text-primary">
-                          <Smile className="h-6 w-6" />
-                        </div>
-                      ) : (
-                        <Avatar className="h-9 w-9 border-2 border-primary/50">
-                          <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} alt="User Avatar" />
-                          <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
-                        </Avatar>
-                      )}
+                      <Avatar className="h-9 w-9 border-2 border-primary/50">
+                        <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} alt="User Avatar" />
+                        <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
+                      </Avatar>
+                      {isMember && <MemberIcon />}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>

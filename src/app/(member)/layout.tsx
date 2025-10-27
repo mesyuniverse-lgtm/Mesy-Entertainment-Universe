@@ -14,6 +14,15 @@ import { signOut } from 'firebase/auth';
 import { useAuth } from '@/firebase';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
+const MemberIcon = () => (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute bottom-0 left-0 text-purple-400 bg-background/80 rounded-full p-0.5">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#8A2BE2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+        <circle cx="8.5" cy="7" r="4" stroke="#8A2BE2" strokeWidth="2"/>
+        <path d="M18 8a2 2 0 0 1 2-2" stroke="#8A2BE2" strokeWidth="2" strokeLinecap="round"/>
+        <path d="M20 6a6 6 0 0 1 0 12" stroke="#8A2BE2" strokeWidth="2" strokeLinecap="round"/>
+    </svg>
+);
+
 const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Profile', href: '/profile', icon: UserCircle },
@@ -148,11 +157,12 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="secondary" size="icon" className="rounded-full">
+              <Button variant="secondary" size="icon" className="rounded-full relative">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} alt="@shadcn" />
                   <AvatarFallback>{user?.email?.[0].toUpperCase() ?? 'M'}</AvatarFallback>
                 </Avatar>
+                <MemberIcon />
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
