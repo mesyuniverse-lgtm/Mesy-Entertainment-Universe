@@ -82,7 +82,7 @@ export default function MainLayout({
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild><Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard</Link></DropdownMenuItem>
-                    <DropdownMenuItem asChild><Link href="/profile"><UserCircle className="mr-2 h-4 w-4"/>Profile</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/users"><UserCircle className="mr-2 h-4 w-4"/>Profile</Link></DropdownMenuItem>
                     <DropdownMenuSeparator />
                      <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
                   </DropdownMenuContent>

@@ -26,7 +26,7 @@ export default function UsersDashboardLayout({
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
   const sidebarNavItems = [
-    { name: 'Dashboard', href: '/users/dashboard', icon: LayoutDashboard },
+    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
     { name: 'Profile', href: '/users', icon: UserCircle },
     { name: 'My Timeline', href: '/timeline', icon: Calendar },
     { name: 'Payment', href: '/payment', icon: Wallet },
@@ -78,6 +78,7 @@ export default function UsersDashboardLayout({
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild><Link href="/home"><Home className="mr-2 h-4 w-4"/>MESY Home</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/users"><UserCircle className="mr-2 h-4 w-4"/>Profile</Link></DropdownMenuItem>
                     <DropdownMenuItem asChild><Link href="/member-plan"><Star className="mr-2 h-4 w-4"/>Member Plan</Link></DropdownMenuItem>
                     <DropdownMenuSeparator />
                      <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
