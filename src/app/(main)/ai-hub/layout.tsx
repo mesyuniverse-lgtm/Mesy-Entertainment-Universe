@@ -4,10 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Home, Compass, Folder, Video, ImageIcon, Bot, Film, Sparkles, Wand2, Star, Settings, LifeBuoy, UserCircle, Plus, Zap, Code, Shield, Award, Lightbulb } from 'lucide-react';
+import { Home, Compass, Folder, Video, ImageIcon, Bot, Film, Sparkles, Wand2, Star, Settings, LifeBuoy, UserCircle, Plus, Zap, Code, Shield, Award, Lightbulb, Smile, LayoutDashboard, LogOut } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { useUser } from '@/firebase';
+import { useAuth, useUser } from '@/firebase';
 import { Card, CardContent } from '@/components/ui/card';
+import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 
 export default function AiHubLayout({
   children,
@@ -15,6 +17,15 @@ export default function AiHubLayout({
   children: React.ReactNode;
 }) {
   const { user } = useUser();
+  const auth = useAuth();
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await signOut(auth);
+    router.push('/welcome');
+  };
+
+  const isMember = user && !user.isAnonymous; // Example logic
 
   const sidebarNav = {
     main: [
@@ -135,11 +146,15 @@ export default function AiHubLayout({
                 <Button variant="ghost" size="icon"><LifeBuoy className="h-5 w-5"/></Button>
                  <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                      <Avatar className="h-9 w-9 border-2 border-primary/50">
-                        <AvatarImage src={user?.photoURL || undefined} alt="User Avatar" />
-                        <AvatarFallback>{user?.email?.[0].toUpperCase() || 'A'}</AvatarFallback>
-                      </Avatar>
+                     <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                       {isMember ? (
+                         <Smile className="h-9 w-9 text-primary" />
+                       ) : (
+                        <Avatar className="h-9 w-9 border-2 border-primary/50">
+                          <AvatarImage src={user?.photoURL || undefined} alt="User Avatar" />
+                          <AvatarFallback>{user?.email?.[0].toUpperCase() || 'A'}</AvatarFallback>
+                        </Avatar>
+                       )}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -152,8 +167,19 @@ export default function AiHubLayout({
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild><Link href="/dashboard"><UserCircle className="mr-2 h-4 w-4"/>Dashboard</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href={isMember ? "/dashboard" : "/users"}>
+                        <LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href={isMember ? "/profile" : "/users"}>
+                        <UserCircle className="mr-2 h-4 w-4"/>Profile
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuItem asChild><Link href="/home"><Home className="mr-2 h-4 w-4"/>MESY Home</Link></DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
             </div>

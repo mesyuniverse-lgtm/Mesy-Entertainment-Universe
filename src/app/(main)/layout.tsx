@@ -1,11 +1,11 @@
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Gem } from '@/components/icons';
+import { Gem, Smile } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Camera } from 'lucide-react';
+import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
@@ -76,19 +76,15 @@ export default function MainLayout({
               user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                      <Avatar className="h-9 w-9 border-2 border-primary/50">
-                        <AvatarImage src={user.photoURL || undefined} alt="User Avatar" />
-                        <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
-                      </Avatar>
-                      {isMember ? (
-                          <>
-                            <MemberIcon />
-                            <div className="absolute bottom-0 right-0 bg-background/80 rounded-full p-0.5">
-                                <Camera className="h-3 w-3 text-white" />
-                            </div>
-                          </>
-                      ) : null}
+                     <Button variant="ghost" className="relative h-9 w-9 rounded-full">
+                       {isMember ? (
+                         <Smile className="h-9 w-9 text-primary" />
+                       ) : (
+                        <Avatar className="h-9 w-9 border-2 border-primary/50">
+                          <AvatarImage src={user.photoURL || undefined} alt="User Avatar" />
+                          <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
+                        </Avatar>
+                       )}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -101,8 +97,16 @@ export default function MainLayout({
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild><Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard</Link></DropdownMenuItem>
-                    <DropdownMenuItem asChild><Link href="/users"><UserCircle className="mr-2 h-4 w-4"/>Profile</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href={isMember ? "/dashboard" : "/users"}>
+                        <LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href={isMember ? "/profile" : "/users"}>
+                        <UserCircle className="mr-2 h-4 w-4"/>Profile
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                      <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
                   </DropdownMenuContent>
