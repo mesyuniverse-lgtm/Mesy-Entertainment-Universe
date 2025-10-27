@@ -16,7 +16,7 @@ export default function MemberLoginPage() {
       <p className="px-8 text-center text-sm text-muted-foreground">
         Not a member yet?{" "}
         <Link
-          href="/signup"
+          href="/member-signup"
           className="underline underline-offset-4 hover:text-primary"
         >
           Register here

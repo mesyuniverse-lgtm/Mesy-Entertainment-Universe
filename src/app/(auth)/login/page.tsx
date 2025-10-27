@@ -23,6 +23,16 @@ export default function LoginPage() {
         </Link>
         .
       </p>
+       <p className="px-8 text-center text-sm text-muted-foreground">
+        Are you a member?{" "}
+        <Link
+          href="/member-login"
+          className="underline underline-offset-4 hover:text-primary"
+        >
+          Member Login
+        </Link>
+        .
+      </p>
     </>
   )
 }

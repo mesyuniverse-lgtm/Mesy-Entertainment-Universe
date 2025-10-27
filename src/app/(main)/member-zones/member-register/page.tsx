@@ -33,7 +33,7 @@ export default function MemberRegisterPage() {
        <p className="px-8 text-center text-sm text-muted-foreground">
         Already a member?{" "}
         <Link
-          href="/login"
+          href="/member-login"
           className="underline underline-offset-4 hover:text-primary"
         >
           Login
