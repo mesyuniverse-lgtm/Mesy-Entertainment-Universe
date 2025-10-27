@@ -1,25 +1,25 @@
 import { UserAuthForm } from "@/components/auth/user-auth-form"
 import Link from "next/link"
 
-export default function LoginPage() {
+export default function MemberLoginPage() {
   return (
     <>
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Welcome Back
+          Member Login
         </h1>
         <p className="text-sm text-muted-foreground">
-          Enter your credentials to access your dashboard.
+          Enter your credentials to access the Member Zone.
         </p>
       </div>
       <UserAuthForm action="login" />
       <p className="px-8 text-center text-sm text-muted-foreground">
-        Don't have an account?{" "}
+        Not a member yet?{" "}
         <Link
-          href="/signup"
+          href="/signup/member"
           className="underline underline-offset-4 hover:text-primary"
         >
-          Sign Up
+          Register here
         </Link>
         .
       </p>
