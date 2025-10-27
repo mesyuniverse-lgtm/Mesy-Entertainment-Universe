@@ -1,26 +1,24 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Wallet } from "lucide-react";
+import { History } from "lucide-react";
 
 export default function PaymentPage() {
     return (
         <div>
-            <h1 className="text-3xl font-bold tracking-tight mb-4">Payment</h1>
+            <h1 className="text-3xl font-bold tracking-tight mb-4">Transaction History</h1>
              <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                        <Wallet className="text-primary" />
-                        MESY Wallet
+                        <History className="text-primary" />
+                        Transactions
                     </CardTitle>
                     <CardDescription>
-                        Manage your MESY coins, view transaction history, and withdraw your earnings.
+                        View your transaction history and manage payment settings.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="p-6 bg-secondary/30 rounded-lg text-center">
-                        <p className="text-sm text-muted-foreground">Current Balance</p>
-                        <p className="text-4xl font-bold tracking-tighter">1,250.75 <span className="text-primary text-xl">MESY</span></p>
+                        <p className="text-muted-foreground">Transaction history will be displayed here.</p>
                     </div>
-                    <p className="text-muted-foreground text-center mt-4">Wallet functionality is coming soon.</p>
                 </CardContent>
             </Card>
         </div>

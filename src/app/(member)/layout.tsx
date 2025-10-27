@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, History } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -27,7 +27,8 @@ const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Profile', href: '/profile', icon: UserCircle },
   { name: 'Memberships', href: '/memberships', icon: HandCoins },
-  { name: 'Payment', href: '/payment', icon: Wallet },
+  { name: 'Wallet', href: '/wallet', icon: Wallet },
+  { name: 'Transaction', href: '/payment', icon: History },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
   { name: 'Notifications', href: '/notifications', icon: Bell },
   { name: 'Settings', href: '/settings', icon: Settings },
@@ -77,7 +78,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   const userRole = user?.email === 'admin@mesy.io' ? 'Admin' : 'Member';
-  const isMember = user && userRole === 'Admin' || userRole === 'Member';
+  const isMember = user && (userRole === 'Admin' || userRole === 'Member');
 
 
   return (
@@ -191,7 +192,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={isMember ? "/profile" : "/users"}>
+                <Link href={"/profile"}>
                   <UserCircle className="mr-2 h-4 w-4"/>Profile
                 </Link>
               </DropdownMenuItem>
