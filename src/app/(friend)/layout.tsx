@@ -5,7 +5,7 @@ import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn } from 'lucide-react';
+import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Smile } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
@@ -32,6 +32,8 @@ export default function FriendLayout({
     await signOut(auth);
     router.push('/welcome');
   };
+
+  const isMember = user && !user.isAnonymous; // Example logic: any signed-in user is a "member"
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -65,10 +67,16 @@ export default function FriendLayout({
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                      <Avatar className="h-9 w-9">
-                        <AvatarImage src={user.photoURL || undefined} alt="User Avatar" />
-                        <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
-                      </Avatar>
+                       {isMember ? (
+                        <div className="flex items-center justify-center h-9 w-9 rounded-full bg-primary/10 text-primary">
+                          <Smile className="h-6 w-6" />
+                        </div>
+                      ) : (
+                        <Avatar className="h-9 w-9 border-2 border-primary/50">
+                          <AvatarImage src={user.photoURL || undefined} alt="User Avatar" />
+                          <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
+                        </Avatar>
+                      )}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>
