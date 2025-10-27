@@ -164,37 +164,33 @@ export default function AiHubLayout({
                           <AvatarImage src={user?.photoURL || userProfileImage?.imageUrl} alt="User Avatar" />
                           <AvatarFallback>{user?.email?.[0].toUpperCase() || 'A'}</AvatarFallback>
                         </Avatar>
-                       {isMember ? (
+                       {isMember && (
                           <>
                             <MemberIcon />
                             <div className="absolute bottom-0 right-0 bg-background/80 rounded-full p-0.5">
                                 <Camera className="h-3 w-3 text-white" />
                             </div>
                           </>
-                      ) : null}
+                      )}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">{user?.displayName || 'User'}</p>
+                        <p className="text-sm font-medium leading-none">{user?.displayName || "Sonya'z G"}</p>
                         <p className="text-xs leading-none text-muted-foreground">
-                          {user?.email}
+                          {user?.email || "mesy.universe@gmail.com"}
                         </p>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
-                      <Link href={isMember ? "/dashboard" : "/users"}>
-                        <LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard
-                      </Link>
-                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/home"><Home className="mr-2 h-4 w-4"/>MESY Home</Link></DropdownMenuItem>
                     <DropdownMenuItem asChild>
                       <Link href={isMember ? "/profile" : "/users"}>
                         <UserCircle className="mr-2 h-4 w-4"/>Profile
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem asChild><Link href="/home"><Home className="mr-2 h-4 w-4"/>MESY Home</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/member-plan"><Star className="mr-2 h-4 w-4"/>Member Plan</Link></DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
                   </DropdownMenuContent>
