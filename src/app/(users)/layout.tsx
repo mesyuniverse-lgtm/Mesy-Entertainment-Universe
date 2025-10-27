@@ -38,7 +38,7 @@ export default function UsersDashboardLayout({
     { name: 'Dashboard', href: '/users', icon: LayoutDashboard },
     { name: 'Profile', href: '/users', icon: UserCircle },
     { name: 'My Timeline', href: '/timeline', icon: Calendar },
-    { name: 'Payment', href: '/users', icon: Wallet },
+    { name: 'Payment', href: '/users/payment', icon: Wallet },
     { name: 'Notification', href: '/notifications', icon: Bell },
     { name: 'History', href: '/history', icon: History },
     { name: 'Setting', href: '/settings', icon: Settings },
@@ -96,7 +96,7 @@ export default function UsersDashboardLayout({
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild>
+                     <DropdownMenuItem asChild>
                       <Link href={isMember ? "/dashboard" : "/users"}>
                         <LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard
                       </Link>
