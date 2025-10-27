@@ -41,7 +41,7 @@ export default function UsersDashboardLayout({
     { name: 'Payment', href: '/users/payment', icon: Wallet },
     { name: 'Notification', href: '/users/notifications', icon: Bell },
     { name: 'History', href: '/users/history', icon: History },
-    { name: 'Setting', href: '/settings', icon: Settings },
+    { name: 'Setting', href: '/users/settings', icon: Settings },
   ];
 
   const handleLogout = async () => {
