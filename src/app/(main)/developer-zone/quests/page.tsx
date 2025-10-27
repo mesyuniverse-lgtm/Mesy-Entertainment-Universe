@@ -123,7 +123,7 @@ export default function QuestsPage() {
                 `}</style>
             </div>
 
-            <Tabs defaultValue={pathname.includes('/quests') ? 'quests' : 'forum'} className="w-full">
+            <Tabs defaultValue={pathname.includes('/quests') ? 'quests' : ''} className="w-full">
                 <TabsList className="h-auto flex-wrap justify-center">
                     <TabsTrigger value="forum" asChild>
                         <Link href="/developer-zone"><MessageSquare className="mr-2 h-4 w-4"/>Forum</Link>
@@ -134,7 +134,7 @@ export default function QuestsPage() {
                     <TabsTrigger value="academy" asChild>
                         <Link href="/developer-zone/academy"><BookOpen className="mr-2 h-4 w-4"/>Academy</Link>
                     </TabsTrigger>
-                    <TabsTrigger value="freelance" disabled><Briefcase className="mr-2 h-4 w-4"/>Freelance</TabsTrigger>
+                    <TabsTrigger value="freelance" asChild><Link href="/developer-zone/freelance"><Briefcase className="mr-2 h-4 w-4"/>Freelance</Link></TabsTrigger>
                 </TabsList>
                 <TabsContent value="quests" className="mt-4 space-y-4">
                     <Card className="bg-card/50">

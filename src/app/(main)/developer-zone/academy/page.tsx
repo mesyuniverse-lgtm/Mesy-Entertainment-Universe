@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -182,7 +181,7 @@ export default function AcademyPage() {
                 `}</style>
             </div>
 
-            <Tabs defaultValue={pathname.includes('/academy') ? 'academy' : 'forum'} className="w-full">
+            <Tabs defaultValue={pathname.includes('/academy') ? 'academy' : ''} className="w-full">
                 <TabsList className="h-auto flex-wrap justify-center">
                     <TabsTrigger value="forum" asChild>
                         <Link href="/developer-zone"><MessageSquare className="mr-2 h-4 w-4"/>Forum</Link>
@@ -193,7 +192,7 @@ export default function AcademyPage() {
                      <TabsTrigger value="academy" asChild>
                         <Link href="/developer-zone/academy"><BookOpen className="mr-2 h-4 w-4"/>Academy</Link>
                     </TabsTrigger>
-                    <TabsTrigger value="freelance" disabled><Briefcase className="mr-2 h-4 w-4"/>Freelance</TabsTrigger>
+                    <TabsTrigger value="freelance" asChild><Link href="/developer-zone/freelance"><Briefcase className="mr-2 h-4 w-4"/>Freelance</Link></TabsTrigger>
                 </TabsList>
                 <TabsContent value="academy" className="mt-4 space-y-4">
                      {courses.map((course, index) => (
@@ -208,7 +207,7 @@ export default function AcademyPage() {
                             <CardContent className="px-4 pb-4 space-y-4">
                                {course.thumbnail && (
                                     <div className="relative aspect-video rounded-lg overflow-hidden border">
-                                        <Image src={course.thumbnail.imageUrl} alt={course.thumbnail.description} fill objectFit="cover" />
+                                        <Image src={course.thumbnail.imageUrl} alt={course.thumbnail.description} data-ai-hint={course.thumbnail.imageHint} fill objectFit="cover" />
                                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-4">
                                             <h3 className="text-2xl font-bold text-white tracking-tight">{course.title}</h3>
                                         </div>

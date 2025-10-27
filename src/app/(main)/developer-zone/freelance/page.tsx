@@ -6,44 +6,47 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Star, UserPlus, Video, MoreHorizontal, Heart, MessageCircle, Share2, Gem, HandCoins, Code, BookOpen, MessageSquare, Briefcase } from "lucide-react";
+import { Users, Star, UserPlus, Video, MoreHorizontal, Heart, MessageCircle, Share2, Gem, HandCoins, Code, BookOpen, MessageSquare, Briefcase, Sparkles, Wand2, Swords, BadgeCent } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { cn } from "@/lib/utils";
-import { Textarea } from '@/components/ui/textarea';
-import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
+import { Separator } from '@/components/ui/separator';
 import { usePathname } from 'next/navigation';
 
-const developers = [
-    { name: 'Draconis', skill: 'AI & Backend', rating: 4.9, followers: '12.5k', avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
-    { name: 'Elara', skill: '3D Art & Animation', rating: 4.8, followers: '8.2k', avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
-    { name: 'Valerius', skill: 'Game Logic & Unreal', rating: 4.7, followers: '6.1k', avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
+const popularDevelopers = [
+    { name: 'Draconis', skill: 'AI & Backend', rating: 4.9, hires: 28, avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
+    { name: 'Elara', skill: '3D Art & Animation', rating: 4.8, hires: 42, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
+    { name: 'Valerius', skill: 'Game Logic & Unreal', rating: 4.7, hires: 15, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
 ];
 
-const timelinePosts = [
-    { 
-        user: developers[0],
-        time: '1h ago',
-        text: 'Just deployed a new sentiment analysis model for the chat system. It can now detect sarcasm with 95% accuracy! 🔥 #AI #MachineLearning',
-        media: null,
-        likes: 128,
-        comments: 32,
+const freelancers = [
+    {
+        ...popularDevelopers[1],
+        post: 'Just finished designing a new line of enchanted armor. Available for custom 3D modeling commissions!',
+        media: PlaceHolderImages.find(i => i.id === 'socialive-preview'),
+        likes: 350,
+        comments: 45
     },
-    { 
-        user: developers[1],
-        time: '5h ago',
-        text: 'Work in progress of the new capital city environment. What do you guys think? #3DArt #Blender',
-        media: PlaceHolderImages.find(i => i.id === 'fantasy-castle-1'),
-        likes: 567,
-        comments: 112,
+    {
+        ...popularDevelopers[0],
+        post: 'My Genkit integration services are open. Let\'s build intelligent features for your project.',
+        media: null,
+        likes: 180,
+        comments: 22
     }
 ];
 
-export default function DeveloperZonePage() {
+const featuredSkills = [
+    { name: 'Logo Design', rating: 4.8, users: 1500, price: 250, icon: <Sparkles/> },
+    { name: 'VFX Effects', rating: 4.9, users: 800, price: 800, icon: <Wand2/> },
+    { name: 'Character Rigging', rating: 4.7, users: 450, price: 500, icon: <UserPlus/> },
+]
+
+export default function FreelancePage() {
     const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
     const adImage = PlaceHolderImages.find(i => i.id === 'glowing-gem-1');
-    const userAvatar = PlaceHolderImages.find(i => i.id === 'default-avatar');
     const pathname = usePathname();
+
 
     return (
     <div className="min-h-screen bg-background/90 text-foreground p-4 lg:p-6" style={{background: 'radial-gradient(ellipse at bottom, hsl(var(--accent)/0.1), hsl(var(--background)) 70%)'}}>
@@ -54,26 +57,26 @@ export default function DeveloperZonePage() {
             <Card className="bg-card/50">
                 <CardHeader className="flex-row items-center gap-3 space-y-0">
                     <Users className="h-6 w-6 text-primary" />
-                    <CardTitle>Developers Active</CardTitle>
+                    <CardTitle>Total Users</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-4xl font-bold">1,842</p>
-                    <p className="text-sm text-muted-foreground">Contributing to the Universe</p>
+                    <p className="text-4xl font-bold">10,284</p>
+                    <p className="text-sm text-muted-foreground">Seeking Talent</p>
                 </CardContent>
             </Card>
 
             <Card className="bg-card/50">
                 <CardHeader>
-                    <CardTitle>Top Contributors</CardTitle>
-                    <CardDescription>Leading developers this cycle</CardDescription>
+                    <CardTitle>Top Freelancers</CardTitle>
+                    <CardDescription>Most sought-after talent</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                {developers.map((dev, index) => (
+                {popularDevelopers.map((dev, index) => (
                     <div key={index} className="flex items-start gap-3">
                         <Avatar className="h-12 w-12"><AvatarImage src={dev.avatar} /><AvatarFallback>{dev.name.charAt(0)}</AvatarFallback></Avatar>
                         <div className="flex-grow">
                             <p className="font-bold">{dev.name}</p>
-                            <div className="flex items-center text-xs text-amber-400 gap-1"><Star className="h-3 w-3 fill-current"/>{dev.rating}</div>
+                            <div className="flex items-center text-xs text-amber-400 gap-1"><Star className="h-3 w-3 fill-current"/>{dev.rating} ({dev.hires} hires)</div>
                             <p className="text-xs text-muted-foreground">{dev.skill}</p>
                         </div>
                         <Button variant="outline" size="sm"><UserPlus className="h-4 w-4"/></Button>
@@ -84,18 +87,21 @@ export default function DeveloperZonePage() {
             
             <Card className="bg-card/50">
                 <CardHeader>
-                    <CardTitle>Featured Freelancers</CardTitle>
-                    <CardDescription>Top-rated instructors and designers</CardDescription>
+                    <CardTitle>Featured Services</CardTitle>
+                    <CardDescription>Discover popular skills</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-3">
-                     {developers.slice(0, 2).map((dev, index) => (
-                        <div key={index} className="flex items-center gap-3">
-                           <Avatar className="h-10 w-10"><AvatarImage src={dev.avatar} /><AvatarFallback>{dev.name.charAt(0)}</AvatarFallback></Avatar>
-                           <div>
-                               <p className="font-semibold text-sm">{dev.name}</p>
-                               <p className="text-xs text-muted-foreground">{dev.followers} followers</p>
-                           </div>
-                           <Button variant="secondary" size="sm" className="ml-auto">Follow</Button>
+                    {featuredSkills.map(skill => (
+                        <div key={skill.name} className="flex items-center gap-3">
+                            <div className="p-2 bg-secondary rounded-md text-primary">{skill.icon}</div>
+                            <div className="flex-grow">
+                                <p className="font-semibold text-sm">{skill.name}</p>
+                                <div className="flex items-center text-xs text-muted-foreground gap-2">
+                                    <span className="flex items-center gap-1"><Star className="h-3 w-3 text-yellow-400 fill-yellow-400"/> {skill.rating}</span>
+                                    <span>({skill.users} users)</span>
+                                </div>
+                            </div>
+                            <Button size="sm" variant="outline">{skill.price} MC</Button>
                         </div>
                     ))}
                 </CardContent>
@@ -106,12 +112,12 @@ export default function DeveloperZonePage() {
         <main className="lg:col-span-6 space-y-4">
             <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 shadow-inner shadow-primary/10">
                 <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
-                    <span className="mx-4 tracking-wider">New SDK for Unreal Engine 5.4 released! 🚀</span>
-                    <span className="mx-4 tracking-wider">Quest Bounty: Need a custom 3D model for a new creature. Prize: 5000 MC! 💎</span>
+                    <span className="mx-4 tracking-wider">Need a project done? Hire top-tier talent from the MESY Freelance Market! 🧑‍💻</span>
+                    <span className="mx-4 tracking-wider">Top artist 'Elara' is now available for custom 3D model commissions. ✨</span>
                 </div>
                 <div className="absolute top-0 animate-marquee2 whitespace-nowrap text-primary font-semibold">
-                    <span className="mx-4 tracking-wider">New SDK for Unreal Engine 5.4 released! 🚀</span>
-                    <span className="mx-4 tracking-wider">Quest Bounty: Need a custom 3D model for a new creature. Prize: 5000 MC! 💎</span>
+                    <span className="mx-4 tracking-wider">Need a project done? Hire top-tier talent from the MESY Freelance Market! 🧑‍💻</span>
+                    <span className="mx-4 tracking-wider">Top artist 'Elara' is now available for custom 3D model commissions. ✨</span>
                 </div>
                 <style jsx>{`
                 @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
@@ -121,7 +127,7 @@ export default function DeveloperZonePage() {
                 `}</style>
             </div>
 
-            <Tabs defaultValue={pathname === '/developer-zone' ? 'forum' : ''} className="w-full">
+            <Tabs defaultValue="freelance" className="w-full">
                 <TabsList className="h-auto flex-wrap justify-center">
                     <TabsTrigger value="forum" asChild>
                         <Link href="/developer-zone"><MessageSquare className="mr-2 h-4 w-4"/>Forum</Link>
@@ -134,42 +140,26 @@ export default function DeveloperZonePage() {
                     </TabsTrigger>
                     <TabsTrigger value="freelance" asChild><Link href="/developer-zone/freelance"><Briefcase className="mr-2 h-4 w-4"/>Freelance</Link></TabsTrigger>
                 </TabsList>
-                <TabsContent value="forum" className="mt-4 space-y-4">
-                    <Card className="bg-card/50">
-                        <CardContent className="p-3">
-                            <div className="flex gap-3">
-                                <Avatar><AvatarImage src={userAvatar?.imageUrl} /><AvatarFallback>D</AvatarFallback></Avatar>
-                                <Textarea placeholder="Share your progress, developer..." className="bg-background/50 border-0 focus-visible:ring-1 focus-visible:ring-primary"/>
-                            </div>
-                            <Separator className="my-3"/>
-                            <div className="flex justify-between items-center">
-                                <div className="flex gap-1 text-muted-foreground">
-                                    <Button variant="ghost" size="sm"><Video className="mr-2 h-4 w-4"/>Video</Button>
-                                    <Button variant="ghost" size="sm"><Code className="mr-2 h-4 w-4"/>Code</Button>
-                                </div>
-                                <Button>Post Update</Button>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-                    {timelinePosts.map((post, index) => (
+                <TabsContent value="freelance" className="mt-4 space-y-4">
+                    {freelancers.map((freelancer, index) => (
                         <Card key={index} className="overflow-hidden bg-card/50 border border-border/50">
                             <CardHeader className="p-4">
                                 <div className="flex items-center gap-3">
-                                    <Avatar><AvatarImage src={post.user.avatar} /><AvatarFallback>{post.user.name.charAt(0)}</AvatarFallback></Avatar>
-                                    <div className="flex-grow"><p className="font-semibold">{post.user.name}</p><p className="text-xs text-muted-foreground">{post.time}</p></div>
+                                    <Avatar><AvatarImage src={freelancer.avatar} /><AvatarFallback>{freelancer.name.charAt(0)}</AvatarFallback></Avatar>
+                                    <div className="flex-grow"><p className="font-semibold">{freelancer.name}</p><p className="text-xs text-muted-foreground">{freelancer.skill}</p></div>
+                                    <Button variant="outline" size="sm">Hire Me</Button>
                                     <Button variant="ghost" size="icon"><MoreHorizontal className="h-5 w-5"/></Button>
                                 </div>
                             </CardHeader>
                             <CardContent className="px-4 pb-4 space-y-4">
-                                <p className="whitespace-pre-wrap text-sm">{post.text}</p>
-                                {post.media && (
-                                    <div className="relative aspect-video rounded-lg overflow-hidden border"><Image src={post.media.imageUrl} alt={post.media.description} data-ai-hint={post.media.imageHint} fill objectFit="cover" /></div>
+                                <p className="whitespace-pre-wrap text-sm">{freelancer.post}</p>
+                                {freelancer.media && (
+                                    <div className="relative aspect-video rounded-lg overflow-hidden border"><Image src={freelancer.media.imageUrl} alt={freelancer.media.description} fill objectFit="cover" /></div>
                                 )}
                                 <div className="flex justify-between items-center text-muted-foreground pt-2 border-t border-border">
                                     <div className="flex">
-                                        <Button variant="ghost" size="sm" className="flex items-center gap-2"><Heart className="h-5 w-5"/>{post.likes}</Button>
-                                        <Button variant="ghost" size="sm" className="flex items-center gap-2"><MessageCircle className="h-5 w-5"/>{post.comments}</Button>
+                                        <Button variant="ghost" size="sm" className="flex items-center gap-2"><Heart className="h-5 w-5"/>{freelancer.likes}</Button>
+                                        <Button variant="ghost" size="sm" className="flex items-center gap-2"><MessageCircle className="h-5 w-5"/>{freelancer.comments}</Button>
                                         <Button variant="ghost" size="sm" className="flex items-center gap-2"><Share2 className="h-5 w-5"/></Button>
                                     </div>
                                     <div className="flex gap-1">
@@ -192,7 +182,7 @@ export default function DeveloperZonePage() {
                     <div className="relative aspect-video"><Image src={videoAdImage.imageUrl} alt={videoAdImage.description} data-ai-hint={videoAdImage.imageHint} fill className="object-cover rounded-t-lg"/><div className="absolute inset-0 bg-black/50 flex items-center justify-center"><Button variant="ghost" size="icon" className="h-16 w-16 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm"><Video className="h-8 w-8 text-white"/></Button></div></div>
                     )}
                 </CardHeader>
-                <CardContent className="p-4"><CardTitle className="text-base">Build with Genkit</CardTitle><p className="text-muted-foreground text-xs mt-1">Learn to build AI-powered features with our official SDK.</p></CardContent>
+                <CardContent className="p-4"><CardTitle className="text-base">Find Top Talent</CardTitle><p className="text-muted-foreground text-xs mt-1">Browse our freelance market to find the perfect developer for your project.</p></CardContent>
             </Card>
             <Card className="bg-card/50">
                 <CardHeader><CardTitle>Sponsored Tools</CardTitle></CardHeader>
@@ -207,10 +197,10 @@ export default function DeveloperZonePage() {
                 <CardHeader><CardTitle>Discover Developers</CardTitle></CardHeader>
                 <CardContent>
                     <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10"><AvatarImage src={developers[2].avatar}/></Avatar>
+                        <Avatar className="h-10 w-10"><AvatarImage src={popularDevelopers[2].avatar}/></Avatar>
                         <div>
-                            <p className="font-semibold text-sm">{developers[2].name}</p>
-                            <p className="text-xs text-muted-foreground">{developers[2].skill}</p>
+                            <p className="font-semibold text-sm">{popularDevelopers[2].name}</p>
+                            <p className="text-xs text-muted-foreground">{popularDevelopers[2].skill}</p>
                         </div>
                         <Button variant="outline" size="sm" className="ml-auto">Follow</Button>
                     </div>
@@ -220,8 +210,8 @@ export default function DeveloperZonePage() {
                 <CardHeader><CardTitle>Recommended Courses</CardTitle></CardHeader>
                 <CardContent>
                    <div className="space-y-3">
-                       <div><p className="font-semibold text-sm">Intro to 3D Modeling for MESY</p><p className="text-xs text-muted-foreground">By: {developers[1].name}</p></div>
-                       <div><p className="font-semibold text-sm">Advanced AI Agent Design</p><p className="text-xs text-muted-foreground">By: {developers[0].name}</p></div>
+                       <div><p className="font-semibold text-sm">Intro to 3D Modeling for MESY</p><p className="text-xs text-muted-foreground">By: {popularDevelopers[1].name}</p></div>
+                       <div><p className="font-semibold text-sm">Advanced AI Agent Design</p><p className="text-xs text-muted-foreground">By: {popularDevelopers[0].name}</p></div>
                    </div>
                 </CardContent>
             </Card>
