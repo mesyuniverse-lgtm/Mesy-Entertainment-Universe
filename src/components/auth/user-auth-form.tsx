@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -47,7 +48,6 @@ export function UserAuthForm({ className, action, ...props }: UserAuthFormProps)
 
 
   const handleAuthError = (error: any) => {
-    console.error(error);
     let title = "An error occurred";
     let description = "Please try again.";
 
