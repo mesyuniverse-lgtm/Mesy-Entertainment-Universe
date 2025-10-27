@@ -175,16 +175,30 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">{user.displayName || user.email}</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {user.email}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link href={isMember ? "/dashboard" : "/users"}>
-                  <LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard
+               <DropdownMenuItem asChild>
+                <Link href="/home">
+                  <Home className="mr-2 h-4 w-4" />
+                  <span>MESY Home</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
                 <Link href={isMember ? "/profile" : "/users"}>
                   <UserCircle className="mr-2 h-4 w-4"/>Profile
+                </Link>
+              </DropdownMenuItem>
+               <DropdownMenuItem asChild>
+                <Link href="/member-plan">
+                  <Star className="mr-2 h-4 w-4" />
+                  <span>Member Plan</span>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuSeparator />
