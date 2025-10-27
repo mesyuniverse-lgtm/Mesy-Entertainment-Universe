@@ -135,7 +135,7 @@ export default function TimelinePage() {
             <TabsContent value="timeline" className="mt-4 space-y-4">
                 <Card className="bg-card/50">
                     <CardContent className="p-3">
-                        <div className='flex gap-3'>
+                        <div className='flex gap-3 items-center'>
                             <Avatar>
                                 <AvatarImage src={userAvatar?.imageUrl} />
                                 <AvatarFallback>U</AvatarFallback>

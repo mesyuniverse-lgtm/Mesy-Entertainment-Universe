@@ -26,6 +26,7 @@ const MemberIcon = () => (
 const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Profile', href: '/profile', icon: UserCircle },
+  { name: 'Timeline', href: '/timeline', icon: History },
   { name: 'Memberships', href: '/memberships', icon: HandCoins },
   { name: 'Wallet', href: '/wallet', icon: Wallet },
   { name: 'Transaction', href: '/transaction', icon: History },

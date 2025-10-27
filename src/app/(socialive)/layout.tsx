@@ -20,6 +20,7 @@ const MemberIcon = () => (
     </svg>
 );
 
+
 export default function SocialiveLayout({
   children,
 }: {
@@ -41,7 +42,9 @@ export default function SocialiveLayout({
 
 
   const handleLogout = async () => {
-    await signOut(auth);
+    if(auth) {
+        await signOut(auth);
+    }
     router.push('/welcome');
   };
   
@@ -109,7 +112,7 @@ export default function SocialiveLayout({
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href={isMember ? "/profile" : "/users"}>
+                      <Link href={isMember ? "/profile" : "/users/profile"}>
                         <UserCircle className="mr-2 h-4 w-4"/>Profile
                       </Link>
                     </DropdownMenuItem>
