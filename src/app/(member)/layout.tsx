@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, History } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, History, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -27,6 +27,7 @@ const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Profile', href: '/profile', icon: UserCircle },
   { name: 'Timeline', href: '/timeline', icon: History },
+  { name: 'Community', href: '/community', icon: MessageCircle },
   { name: 'Memberships', href: '/memberships', icon: HandCoins },
   { name: 'Wallet', href: '/wallet', icon: Wallet },
   { name: 'Transaction', href: '/transaction', icon: History },
