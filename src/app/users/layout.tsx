@@ -40,7 +40,7 @@ export default function UsersDashboardLayout({
     { name: 'My Timeline', href: '/timeline', icon: Calendar },
     { name: 'Payment', href: '/users/payment', icon: Wallet },
     { name: 'Notification', href: '/users/notifications', icon: Bell },
-    { name: 'History', href: '/history', icon: History },
+    { name: 'History', href: '/users/history', icon: History },
     { name: 'Setting', href: '/settings', icon: Settings },
   ];
 
