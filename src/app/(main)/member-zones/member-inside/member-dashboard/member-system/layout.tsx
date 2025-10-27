@@ -11,7 +11,7 @@ const systemNavItems = [
   { name: 'System Overview', href: '/member-zones/member-inside/member-dashboard/member-system', icon: Shield },
   { name: 'Levels & Benefits', href: '/member-zones/member-inside/member-dashboard/member-system/leves', icon: BarChart },
   { name: 'Income & Downline', href: '/member-zones/member-inside/member-dashboard/member-system/incom', icon: HandCoins },
-  { name: 'Service Fee (3%)', href: '/member-zones/member-inside/member-dashboard/member-system/Fee3%', icon: Percent },
+  { name: 'Service Fee (3%)', href: '/member-zones/member-inside/member-dashboard/member-system/fee', icon: Percent },
   { name: 'Transactions', href: '/transaction', icon: History },
 ];
 
