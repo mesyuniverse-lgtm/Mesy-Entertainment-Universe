@@ -29,7 +29,6 @@ const sidebarNavItems = [
   { name: 'Memberships', href: '/memberships', icon: HandCoins },
   { name: 'Wallet', href: '/wallet', icon: Wallet },
   { name: 'Transaction', href: '/transaction', icon: History },
-  { name: 'Payment', href: '/payment', icon: Wallet },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
   { name: 'Notifications', href: '/notifications', icon: Bell },
   { name: 'Settings', href: '/settings', icon: Settings },
