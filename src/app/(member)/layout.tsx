@@ -33,6 +33,7 @@ const sidebarNavItems = [
   { name: 'Transaction', href: '/transaction', icon: History },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
   { name: 'Notifications', href: '/notifications', icon: Bell },
+  { name: 'Member System', href: '/member-zones/member-inside/member-dashboard/member-system', icon: Shield },
   { name: 'Settings', href: '/settings', icon: Settings },
   { name: 'Admin', href: '/admin', icon: Shield, adminOnly: true },
 ];
@@ -103,7 +104,8 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
                     href={item.href}
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                      pathname === item.href && 'bg-muted text-primary'
+                      pathname.startsWith(item.href) && item.href !== '/dashboard' ? 'bg-muted text-primary' : pathname === item.href ? 'bg-muted text-primary' : '',
+                      pathname === '/dashboard' && item.href === '/dashboard' ? 'bg-muted text-primary' : ''
                     )}
                   >
                     <item.icon className="h-4 w-4" />
@@ -145,7 +147,8 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
                             href={item.href}
                             className={cn(
                             "flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
-                            pathname === item.href && "bg-muted text-foreground"
+                             pathname.startsWith(item.href) && item.href !== '/dashboard' ? 'bg-muted text-foreground' : pathname === item.href ? 'bg-muted text-foreground' : '',
+                             pathname === '/dashboard' && item.href === '/dashboard' ? 'bg-muted text-foreground' : ''
                             )}
                         >
                             <item.icon className="h-5 w-5" />
