@@ -386,6 +386,45 @@
         "mesyCoinBalance",
         "cashbackBalance"
       ]
+    },
+    "InventoryItem": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "InventoryItem",
+      "type": "object",
+      "description": "Represents a single item in a user's inventory.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the inventory item."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the item."
+        },
+        "type": {
+          "type": "string",
+          "enum": ["Weapon", "Armor", "Cosmetic", "Effect", "Consumable", "Material", "Land", "House"],
+          "description": "The category or type of the item."
+        },
+        "rarity": {
+          "type": "string",
+          "enum": ["Common", "Uncommon", "Rare", "Epic", "Legendary"],
+          "description": "The rarity level of the item."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the item's icon or image."
+        },
+        "equipped": {
+          "type": "boolean",
+          "description": "Whether the item is currently equipped by the user's avatar."
+        },
+        "quantity": {
+          "type": "number",
+          "description": "The number of items in the stack. Defaults to 1 for non-stackable items."
+        }
+      },
+      "required": ["id", "name", "type", "rarity", "imageUrl", "equipped"]
     }
   },
   "auth": {
@@ -572,6 +611,26 @@
             {
               "name": "walletId",
               "description": "The unique identifier for the wallet."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/inventory/{itemId}",
+        "definition": {
+          "entityName": "InventoryItem",
+          "schema": {
+            "$ref": "#/backend/entities/InventoryItem"
+          },
+          "description": "Stores items in a user's inventory. Subcollection of users for private data.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user."
+            },
+            {
+              "name": "itemId",
+              "description": "The unique identifier for the inventory item."
             }
           ]
         }
