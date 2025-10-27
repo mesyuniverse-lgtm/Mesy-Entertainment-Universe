@@ -26,7 +26,26 @@ const messages = [
 export default function CommunityPage() {
     return (
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-100px)]">
-            <main className="lg:col-span-3 flex flex-col h-full">
+            <main className="lg:col-span-3 flex flex-col h-full gap-4">
+                 {/* Marquee */}
+                 <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm">
+                    <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
+                        <span className="mx-4">Welcome to the Member's Lounge! ✨</span>
+                        <span className="mx-4">Weekly developer AMA happening this Friday! 🎙️</span>
+                        <span className="mx-4">New 'Chrono Blade' available in the marketplace! ⚔️</span>
+                    </div>
+                    <div className="absolute top-0 animate-marquee2 whitespace-nowrap text-primary font-semibold">
+                       <span className="mx-4">Welcome to the Member's Lounge! ✨</span>
+                        <span className="mx-4">Weekly developer AMA happening this Friday! 🎙️</span>
+                        <span className="mx-4">New 'Chrono Blade' available in the marketplace! ⚔️</span>
+                    </div>
+                </div>
+                 <style jsx>{`
+                    @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+                    @keyframes marquee2 { from { transform: translateX(100%); } to { transform: translateX(0); } }
+                    .animate-marquee { animation: marquee 30s linear infinite; }
+                    .animate-marquee2 { animation: marquee2 30s linear infinite; }
+                `}</style>
                  <Card className="flex-grow flex flex-col">
                      <CardHeader>
                         <CardTitle>#general-chat</CardTitle>
