@@ -1,103 +1,208 @@
-
 'use client';
 
-import React from 'react';
-import { Button } from "@/components/ui/button";
-import { CheckCircle, Milestone, Rocket, Flag, Calendar } from "lucide-react";
+import React, { useState } from 'react';
+import Image from 'next/image';
+import { Button } from '@/components/ui/button';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { ArrowUp } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import styles from './page.module.css';
 
-const roadmapPhases = [
+const chronicleData = [
   {
-    phase: "Phase 1: Foundation (Q1-Q2 2024)",
-    status: "Completed",
-    icon: <CheckCircle className="h-8 w-8 text-green-500" />,
-    items: [
-      { text: "Core Platform Development & Infrastructure Setup", completed: true },
-      { text: "Launch of Public & Authentication Zones", completed: true },
-      { text: "Initial Membership System Design (Levels 0-50)", completed: true },
-      { text: "Implementation of Developer & AI Hubs (Beta)", completed: true },
+    year: '2025',
+    chapter: 'Chapter 1: The Foundation',
+    title: 'แผนพัฒนาระบบตัวอย่าง',
+    quote: '"ช่วงเวลาทองในการทดลอง พิสูจน์ และวางรากฐานสำหรับ MESY UNIVERSE"',
+    description: 'การวางแผนพัฒนา “ระบบตัวอย่าง” ภายใน 3 เดือนสุดท้ายของปี 2025 คือช่วงเวลาทองในการทดลอง พิสูจน์ และวางรากฐานสำหรับ MESY UNIVERSE ก่อนเข้าสู่ปีแห่งการขยายตัวใน 2026',
+    milestones: [
+      {
+        title: 'เดือนตุลาคม: “พิธีเปิดจักรวาล”',
+        details: 'สร้างโครงสร้างพื้นฐาน, ระบบสมาชิกลงทะเบียน (Email/Google), หน้า Welcome Page, และตาราง Member Plan Level 0-5',
+      },
+      {
+        title: 'เดือนพฤศจิกายน: “การปลุกพลังสมาชิก”',
+        details: 'พัฒนาระบบ Level (0-10), Dashboard, หน้า CHRONICLE, และระบบ Daily Rewards เพื่อให้สมาชิกเห็นสถานะและติดตามการพัฒนาได้',
+      },
+      {
+        title: 'เดือนธันวาคม: “การเฉลิมฉลองแห่งการเชื่อมโยง”',
+        details: 'เชื่อมต่อ AI Hub (Prompt Generator), Wallet Mockup, Shopping Hub ตัวอย่าง, และระบบสิทธิ์ Guest/Member เพื่อสาธิตและทดสอบ',
+      }
     ],
+    characterImage: PlaceHolderImages.find((i) => i.id === 'fighter-character')!,
   },
   {
-    phase: "Phase 2: Community & Content (Q3 2024)",
-    status: "In Progress",
-    icon: <Rocket className="h-8 w-8 text-primary" />,
-    items: [
-      { text: "Socialive Platform Launch (Live, Friends, Groups)", completed: true },
-      { text: "Entertainment Hub Unveiling (Movies, Music)", completed: false },
-      { text: "Full AI Generator Integration (Video, Image, Avatar)", completed: false },
-      { text: "Developer Zone Expansion (Quests, Academy)", completed: false },
-    ],
+    year: '2026',
+    chapter: '',
+    title: 'Coming Soon',
+    quote: 'อนาคตที่ยังมาไม่ถึง',
+    description: 'การอัปเดตครั้งใหญ่กำลังจะมา โปรดติดตาม!',
+    milestones: [],
+    characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
   {
-    phase: "Phase 3: Economy & Monetization (Q4 2024)",
-    status: "Planned",
-    icon: <Milestone className="h-8 w-8 text-blue-500" />,
-    items: [
-      { text: "Shopping Hub & Marketplace Rollout", completed: false },
-      { text: "MESY Wallet & Payment Gateway Integration", completed: false },
-      { text: "Advanced Downline Income & Analytics Tools", completed: false },
-      { text: "Partnership Program Launch", completed: false },
-    ],
+    year: '2027',
+    chapter: '',
+    title: 'Coming Soon',
+    quote: '',
+    description: '',
+    milestones: [],
+    characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
-    {
-    phase: "Phase 4: The Metaverse (2025)",
-    status: "Planned",
-    icon: <Flag className="h-8 w-8 text-purple-500" />,
-    items: [
-      { text: "3D Avatar System & Customization", completed: false },
-      { text: "Integration with Unreal Engine 5", completed: false },
-      { text: "Launch of the first Virtual Social Rooms", completed: false },
-      { text: "Cross-Platform Asset Compatibility", completed: false },
-    ],
+  {
+    year: '2028',
+    chapter: '',
+    title: 'Coming Soon',
+    quote: '',
+    description: '',
+    milestones: [],
+    characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
   },
-];
+   {
+    year: '2029',
+    chapter: '',
+    title: 'Coming Soon',
+    quote: '',
+    description: '',
+    milestones: [],
+    characterImage: PlaceHolderImages.find((i) => i.id === 'glowing-gem-1')!,
+  },
+].sort((a, b) => parseInt(a.year) - parseInt(b.year)); // Sort years in ascending order
 
 export default function ChroniclePage() {
+  const [selectedYear, setSelectedYear] = useState(chronicleData[0].year);
+  const [selectedChapterIndex, setSelectedChapterIndex] = useState(0);
+
+  const selectedData = chronicleData.find((d) => d.year === selectedYear) || chronicleData[0];
+
+  const handleScrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  
+  const bgImage = PlaceHolderImages.find((i) => i.id === 'fighter-silhouette');
+
   return (
-    <div className="container py-16 md:py-24">
-      <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">MESY Universe Chronicle</h1>
-        <p className="max-w-3xl mx-auto mt-4 text-muted-foreground text-lg">
-          Follow our journey as we build the future of entertainment. This is our commitment to transparency and progress.
-        </p>
+    <div className="relative min-h-screen w-full bg-background text-white overflow-hidden">
+      
+      {/* Background Image and Overlays */}
+      <div className="absolute inset-0 z-0">
+        {bgImage && (
+           <Image
+            src={bgImage.imageUrl}
+            alt={bgImage.description}
+            data-ai-hint={bgImage.imageHint}
+            fill
+            className="object-cover object-center opacity-20"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
       </div>
 
-      <div className="relative pl-6">
-        {/* Vertical line */}
-        <div className="absolute left-9 top-0 bottom-0 w-1 bg-border/50 rounded-full"></div>
+      {/* Main Content */}
+      <div className="container relative z-10 mx-auto px-4 py-16 md:py-24">
+        <header className="mb-16">
+          <h1 className={`text-5xl md:text-7xl font-headline font-bold tracking-widest text-white uppercase ${styles.pageTitle}`}>Chronicle</h1>
+        </header>
 
-        {roadmapPhases.map((phase, phaseIndex) => (
-          <div key={phase.phase} className="relative flex items-start gap-8 mb-16">
-            <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background border-2 border-primary shadow-lg shadow-primary/20">
-                {phase.icon}
-            </div>
-            <div className="flex-1 pt-2">
-                <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-4">
-                    <h2 className="text-2xl md:text-3xl font-bold">{phase.phase}</h2>
-                    <span className="text-lg font-semibold text-primary">{phase.status}</span>
-                </div>
-              
-              <div className="bg-card/50 border border-border/50 rounded-lg p-6 space-y-4">
-                {phase.items.map((item, itemIndex) => (
-                  <div key={itemIndex} className="flex items-center gap-4">
-                    <CheckCircle className={item.completed ? "h-5 w-5 text-green-500" : "h-5 w-5 text-muted-foreground/50"} />
-                    <span className={item.completed ? "text-foreground" : "text-muted-foreground"}>
-                      {item.text}
-                    </span>
+        <div className="flex flex-col lg:flex-row items-start gap-12">
+
+            {/* Timeline Selector */}
+            <aside className="w-full lg:w-1/3 lg:sticky top-24">
+              <div className="flex gap-8 items-start">
+                  {/* Year Selector */}
+                  <div className="flex flex-col items-center gap-4">
+                      {chronicleData.map((item) => (
+                          <button 
+                              key={item.year}
+                              onClick={() => {
+                                setSelectedYear(item.year)
+                                setSelectedChapterIndex(0);
+                              }}
+                              className={cn(
+                                  "font-headline font-bold text-2xl transition-colors duration-300",
+                                  selectedYear === item.year ? 'text-primary' : 'text-white/60 hover:text-white'
+                              )}
+                          >
+                              {item.year}
+                          </button>
+                      ))}
                   </div>
-                ))}
+
+                  {/* Chapter Selector */}
+                  {selectedData.milestones.length > 0 && (
+                    <div className="relative pl-8 pt-2">
+                        <div className="absolute left-[3px] top-0 bottom-0 w-px bg-white/20"></div>
+
+                        {selectedData.milestones.map((milestone, index) => (
+                            <button 
+                                key={index}
+                                onClick={() => setSelectedChapterIndex(index)}
+                                className="relative w-full text-left mb-6 transition-all duration-300 group"
+                            >
+                                <div className="absolute left-0 top-1.5 -translate-y-1/2 -translate-x-1/2 h-2.5 w-2.5 rounded-full bg-white/30 group-hover:bg-primary transition-colors duration-300 z-10">
+                                    {selectedChapterIndex === index && (
+                                        <div className="absolute inset-0 rounded-full bg-primary ring-4 ring-primary/30"></div>
+                                    )}
+                                </div>
+                                
+                                <p className={cn(
+                                    "text-sm font-semibold transition-colors duration-300",
+                                    selectedChapterIndex === index ? "text-white/90" : "text-muted-foreground group-hover:text-white/80"
+                                )}>
+                                    Chapter {index + 1}
+                                </p>
+                                <p className={cn(
+                                    "text-sm transition-colors duration-300",
+                                    selectedChapterIndex === index ? "text-white/80" : "text-muted-foreground/80 group-hover:text-white/70"
+                                )}>
+                                    {milestone.title}
+                                </p>
+                            </button>
+                        ))}
+                    </div>
+                  )}
               </div>
-            </div>
-          </div>
-        ))}
-         <div className="relative flex items-start gap-8">
-             <div className="z-10 flex h-12 w-12 items-center justify-center rounded-full bg-background border-2 border-border/50">
-                <Calendar className="h-6 w-6 text-muted-foreground" />
-            </div>
-            <div className="flex-1 pt-3">
-                 <h2 className="text-2xl font-bold text-muted-foreground">To be continued...</h2>
-            </div>
-         </div>
+            </aside>
+
+            {/* Content Details */}
+            <main className="w-full lg:w-2/3">
+                <Card className="bg-card/70 backdrop-blur-sm border-primary/20 shadow-2xl shadow-primary/10">
+                    <CardHeader>
+                        <p className="text-primary font-semibold">{selectedData.chapter}</p>
+                        <CardTitle className="text-4xl !mt-0 font-bold tracking-wider" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.5)'}}>
+                          {selectedData.title}
+                        </CardTitle>
+                        <blockquote className="mt-2 text-lg font-semibold italic text-muted-foreground border-l-4 border-primary/50 pl-4">
+                          {selectedData.quote}
+                        </blockquote>
+                    </CardHeader>
+                    <CardContent>
+                        <p className="mt-4 text-foreground/90">
+                          {selectedData.description}
+                        </p>
+                      
+                        {selectedData.milestones && selectedData.milestones.length > 0 && (
+                          <div className='mt-8 pt-6 border-t border-white/10 space-y-4'>
+                            {selectedData.milestones.map((milestone, index) => (
+                              <div key={index} className={cn("p-4 rounded-md bg-background/50 border border-border", selectedChapterIndex === index ? "block" : "hidden")}>
+                                <h4 className='font-bold text-lg text-primary'>{milestone.title}</h4>
+                                <p className="text-sm text-muted-foreground mt-1">{milestone.details}</p>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                    </CardContent>
+                </Card>
+            </main>
+        </div>
+      </div>
+      
+       {/* Scroll to top button */}
+       <div className="fixed bottom-4 right-4 z-20">
+        <Button variant="outline" size="icon" onClick={handleScrollToTop} className="bg-background/50 backdrop-blur-sm">
+          <ArrowUp />
+        </Button>
       </div>
     </div>
   );
