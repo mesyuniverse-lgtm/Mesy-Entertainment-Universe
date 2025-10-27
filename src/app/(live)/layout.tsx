@@ -100,14 +100,16 @@ export default function LiveLayout({
                   </DropdownMenuContent>
                 </DropdownMenu>
               ) : (
-                <Button asChild>
-                  <Link href="/login"><LogIn className="mr-2 h-4 w-4" />Login</Link>
-                </Button>
+                <>
+                  <Button asChild variant="ghost">
+                    <Link href="/login">Login</Link>
+                  </Button>
+                  <Button asChild>
+                    <Link href="/signup">Register</Link>
+                  </Button>
+                </>
               )
             )}
-            <Button asChild>
-                            <Link href="/signup">Register</Link>
-            </Button>
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant="outline" size="icon" className="md:hidden">
