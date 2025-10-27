@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -6,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Star, UserPlus, Video, MoreHorizontal, Heart, MessageCircle, Share2, Gem, HandCoins, Code, BookOpen, MessageSquare, Briefcase, PlayCircle, Clock, BarChart, GraduationCap, Calendar, Zap, Crown } from "lucide-react";
+import { Users, Star, UserPlus, Video, MoreHorizontal, Heart, MessageCircle, Share2, Gem, HandCoins, Code, BookOpen, MessageSquare, Briefcase, PlayCircle, Clock, BarChart, GraduationCap, Calendar, Zap, Crown, PlusCircle } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
@@ -78,6 +79,16 @@ export default function AcademyPage() {
                 <CardContent>
                     <p className="text-4xl font-bold">25,831</p>
                     <p className="text-sm text-muted-foreground">Learning in the Academy</p>
+                </CardContent>
+            </Card>
+
+            <Card className="bg-card/50">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><PlusCircle /> Create Class Room</CardTitle>
+                    <CardDescription>Share your expertise and start earning by creating your own courses.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Button className="w-full">Start Teaching</Button>
                 </CardContent>
             </Card>
 
