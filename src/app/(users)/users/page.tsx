@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Camera, Clapperboard, Edit, Ellipsis, HandCoins, Heart, Image as ImageIcon, MapPin, MessageCircle, MoreHorizontal, Music, Rss, Search, Share2, Shield, Video, Users as UsersIcon, Briefcase } from "lucide-react";
+import { Camera, Clapperboard, Edit, Ellipsis, HandCoins, Heart, Image as ImageIcon, MapPin, MessageCircle, MoreHorizontal, Music, Rss, Search, Share2, Shield, Video, Users as UsersIcon, Briefcase, CheckCircle2, XCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -36,6 +36,12 @@ export default function UsersPage() {
         likes: 128,
         comments: 32,
     }];
+    
+    const verificationStatus = {
+        email: true,
+        phone: false,
+        payment: false,
+    };
 
 
     return (
@@ -102,6 +108,24 @@ export default function UsersPage() {
                                     <div className="flex items-center gap-3"><MapPin className="h-5 w-5 text-muted-foreground"/><p>Was lead vocalist at Siam Bayshore Resort & Spa, Pattaya</p></div>
                                 </div>
                                 <Button variant="secondary" className="w-full">Edit Details</Button>
+                            </CardContent>
+                        </Card>
+                         <Card>
+                            <CardHeader><CardTitle>Verification Status</CardTitle></CardHeader>
+                            <CardContent className="space-y-3">
+                                <div className="flex items-center justify-between">
+                                    <span className="font-medium">Email Verification</span>
+                                    {verificationStatus.email ? <CheckCircle2 className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-red-500" />}
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="font-medium">Phone Number</span>
+                                    {verificationStatus.phone ? <CheckCircle2 className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-red-500" />}
+                                </div>
+                                <div className="flex items-center justify-between">
+                                    <span className="font-medium">Payment Method</span>
+                                    {verificationStatus.payment ? <CheckCircle2 className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-red-500" />}
+                                </div>
+                                <Button variant="default" className="w-full mt-2">Become a MESY Member</Button>
                             </CardContent>
                         </Card>
                         <Card>
