@@ -76,7 +76,7 @@ export default function MemberLayout({
   useEffect(() => {
     if (!isUserLoading) {
       if (!user) {
-        router.replace('/login');
+        router.replace('/member-zones/member-login');
         return;
       }
       
