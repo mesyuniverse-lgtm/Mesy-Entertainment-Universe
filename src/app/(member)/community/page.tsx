@@ -6,7 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Send, Users } from "lucide-react";
+import { Send, Users, Image as ImageIcon, Video, Music, Mic, MoreHorizontal, Heart, MessageCircle, Share2, Star, Gift, Gem } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
 
 const onlineMembers = [
     { name: 'Admin', avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
@@ -16,19 +19,44 @@ const onlineMembers = [
     { name: 'Lyra', avatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
 ];
 
-const messages = [
-    { user: onlineMembers[1], text: "Welcome to the new community hub, everyone!", time: "10:30 AM" },
-    { user: onlineMembers[2], text: "This is awesome! Great to have a place just for members.", time: "10:31 AM" },
-    { user: onlineMembers[0], text: "Feel free to share your thoughts, ideas, or just chat. Let's build a great community together. ✨", time: "10:32 AM" },
-    { user: onlineMembers[3], text: "Anyone up for a quest later?", time: "10:35 AM" },
+const timelinePosts = [
+    { 
+        user: onlineMembers[1],
+        time: '2 hours ago',
+        text: 'Just found this breathtaking view on my last quest! The Floating Islands are even more magical at sunset. ✨ #AethelgardAdventures #MESYUniverse',
+        media: PlaceHolderImages.find(i => i.id === 'fantasy-landscape-1'),
+        mediaType: 'image',
+        likes: 128,
+        comments: 32,
+    },
+    { 
+        user: onlineMembers[2],
+        time: '5 hours ago',
+        text: 'Working on a new ballad inspired by the tales of the ancient dragons. Here\'s a sneak peek! 🎶',
+        media: null,
+        mediaType: 'music',
+        likes: 89,
+        comments: 15,
+    },
+    {
+        user: onlineMembers[0],
+        time: '1 day ago',
+        text: 'A great live stream from the "Dragon Knights Guild"! They just defeated the Crimson Wyvern. A must watch for all aspiring adventurers. Shared from #Live.',
+        media: PlaceHolderImages.find(i => i.id === 'socialive-preview'),
+        mediaType: 'video',
+        likes: 256,
+        comments: 64,
+    }
 ];
 
 export default function CommunityPage() {
+    const userAvatar = PlaceHolderImages.find(i => i.id === 'default-avatar');
+    
     return (
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-100px)]">
             <main className="lg:col-span-3 flex flex-col h-full gap-4">
                  {/* Marquee */}
-                 <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm">
+                 <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm shadow-inner shadow-primary/10">
                     <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
                         <span className="mx-4">Welcome to the Member's Lounge! ✨</span>
                         <span className="mx-4">Weekly developer AMA happening this Friday! 🎙️</span>
@@ -46,39 +74,68 @@ export default function CommunityPage() {
                     .animate-marquee { animation: marquee 30s linear infinite; }
                     .animate-marquee2 { animation: marquee2 30s linear infinite; }
                 `}</style>
-                 <Card className="flex-grow flex flex-col">
-                     <CardHeader>
-                        <CardTitle>#general-chat</CardTitle>
-                        <CardDescription>The main hub for all member conversations. Be respectful and have fun!</CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-grow flex flex-col">
-                        <ScrollArea className="flex-grow h-0 pr-4 -mr-4">
-                            <div className="space-y-6">
-                                {messages.map((msg, index) => (
-                                    <div key={index} className="flex items-start gap-3">
-                                        <Avatar className="h-10 w-10">
-                                            <AvatarImage src={msg.user.avatar} />
-                                            <AvatarFallback>{msg.user.name.charAt(0)}</AvatarFallback>
-                                        </Avatar>
-                                        <div>
-                                            <div className="flex items-baseline gap-2">
-                                                <p className="font-bold text-primary">{msg.user.name}</p>
-                                                <p className="text-xs text-muted-foreground">{msg.time}</p>
-                                            </div>
-                                            <div className="p-3 rounded-lg bg-secondary/50 mt-1">
-                                                <p>{msg.text}</p>
-                                            </div>
+                
+                 <ScrollArea className="flex-grow h-0 pr-4 -mr-4">
+                    <div className="space-y-6">
+                        {/* Create Post Card */}
+                        <Card className="bg-card/70">
+                            <CardContent className="p-3">
+                                <div className="flex gap-3">
+                                    <Avatar><AvatarImage src={userAvatar?.imageUrl} /><AvatarFallback>M</AvatarFallback></Avatar>
+                                    <Textarea placeholder="What's happening in your universe?" className="bg-background/50 border-0 focus-visible:ring-1 focus-visible:ring-primary"/>
+                                </div>
+                                <Separator className="my-3"/>
+                                <div className="flex justify-between items-center">
+                                    <div className="flex gap-1 text-muted-foreground">
+                                        <Button variant="ghost" size="sm"><ImageIcon className="mr-2 h-4 w-4"/>Image</Button>
+                                        <Button variant="ghost" size="sm"><Video className="mr-2 h-4 w-4"/>Video</Button>
+                                        <Button variant="ghost" size="sm"><Music className="mr-2 h-4 w-4"/>Music</Button>
+                                        <Button variant="ghost" size="sm"><Mic className="mr-2 h-4 w-4"/>Live</Button>
+                                    </div>
+                                    <Button>Post</Button>
+                                </div>
+                            </CardContent>
+                        </Card>
+
+                        {/* Timeline Posts */}
+                        {timelinePosts.map((post, index) => (
+                             <Card key={index} className="overflow-hidden bg-card/70 border border-border/50">
+                                <CardHeader className="p-4">
+                                    <div className="flex items-center gap-3">
+                                        <Avatar><AvatarImage src={post.user.avatar} /><AvatarFallback>{post.user.name.charAt(0)}</AvatarFallback></Avatar>
+                                        <div className="flex-grow"><p className="font-semibold">{post.user.name}</p><p className="text-xs text-muted-foreground">{post.time}</p></div>
+                                        <Button variant="ghost" size="icon"><MoreHorizontal className="h-5 w-5"/></Button>
+                                    </div>
+                                </CardHeader>
+                                <CardContent className="px-4 pb-4 space-y-4">
+                                    <p className="whitespace-pre-wrap text-sm">{post.text}</p>
+                                    {post.media && (
+                                        <div className="relative aspect-video rounded-lg overflow-hidden border">
+                                            <Image src={post.media.imageUrl} alt={post.media.description} data-ai-hint={post.media.imageHint} fill objectFit="cover" />
+                                            {post.mediaType === 'video' && (
+                                                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                                    <Button variant="ghost" size="icon" className="h-16 w-16 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm"><Video className="h-8 w-8 text-white"/></Button>
+                                                </div>
+                                            )}
+                                        </div>
+                                    )}
+                                    <div className="flex justify-between items-center text-muted-foreground pt-2 border-t border-border">
+                                        <div className="flex">
+                                            <Button variant="ghost" size="sm" className="flex items-center gap-2"><Heart className="h-5 w-5"/>{post.likes}</Button>
+                                            <Button variant="ghost" size="sm" className="flex items-center gap-2"><MessageCircle className="h-5 w-5"/>{post.comments}</Button>
+                                            <Button variant="ghost" size="sm" className="flex items-center gap-2"><Share2 className="h-5 w-5"/></Button>
+                                        </div>
+                                        <div className="flex gap-1">
+                                            <Button variant="ghost" size="sm" className="flex items-center gap-2"><Star className="h-5 w-5 text-yellow-400"/>Give Star</Button>
+                                            <Button variant="ghost" size="sm" className="flex items-center gap-2"><Gift className="h-5 w-5 text-pink-400"/>Gift</Button>
+                                            <Button variant="ghost" size="sm" className="flex items-center gap-2"><Gem className="h-5 w-5 text-cyan-400"/>Coin</Button>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-                        </ScrollArea>
-                        <div className="mt-4 flex items-center gap-2">
-                            <Input placeholder="Type your message..." className="h-12"/>
-                            <Button size="icon" className="h-12 w-12"><Send /></Button>
-                        </div>
-                    </CardContent>
-                 </Card>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                </ScrollArea>
             </main>
             <aside className="hidden lg:block">
                  <Card>
