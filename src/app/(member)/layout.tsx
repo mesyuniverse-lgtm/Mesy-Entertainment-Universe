@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -77,6 +77,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   const userRole = user?.email === 'admin@mesy.io' ? 'Admin' : 'Member';
+  const isMember = user && !user.isAnonymous;
 
 
   return (
@@ -162,7 +163,14 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
                   <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} alt="@shadcn" />
                   <AvatarFallback>{user?.email?.[0].toUpperCase() ?? 'M'}</AvatarFallback>
                 </Avatar>
-                <MemberIcon />
+                 {isMember ? (
+                    <>
+                    <MemberIcon />
+                    <div className="absolute bottom-0 right-0 bg-background/80 rounded-full p-0.5">
+                        <Camera className="h-3 w-3 text-white" />
+                    </div>
+                    </>
+                ) : null}
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
