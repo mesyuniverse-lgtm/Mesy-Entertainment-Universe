@@ -1,0 +1,41 @@
+.universePage {
+    background: radial-gradient(ellipse at center, hsl(var(--accent)/0.2) 0%, hsl(var(--background)) 70%);
+}
+
+.rotateSlow {
+    animation: spin 60s linear infinite;
+}
+
+.rotateFast {
+    animation: spin 30s linear infinite reverse;
+}
+
+.eventHorizon {
+    background: #000;
+    box-shadow: inset 0 0 50px 20px hsl(var(--accent) / 0.5);
+    animation: pulse 4s ease-in-out infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        box-shadow: inset 0 0 50px 20px hsl(var(--accent) / 0.4);
+    }
+    50% {
+        transform: scale(1.02);
+        box-shadow: inset 0 0 70px 30px hsl(var(--accent) / 0.6);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: inset 0 0 50px 20px hsl(var(--accent) / 0.4);
+    }
+}
