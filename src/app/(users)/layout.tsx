@@ -89,16 +89,23 @@ export default function UsersDashboardLayout({
                   <DropdownMenuContent className="w-56" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">{user.displayName || 'Sonya\'z G'}</p>
+                        <p className="text-sm font-medium leading-none">{user.displayName || 'User'}</p>
                         <p className="text-xs leading-none text-muted-foreground">
                           {user.email}
                         </p>
                       </div>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
-                    <DropdownMenuItem asChild><Link href="/home"><Home className="mr-2 h-4 w-4"/>MESY Home</Link></DropdownMenuItem>
-                    <DropdownMenuItem asChild><Link href="/users"><UserCircle className="mr-2 h-4 w-4"/>Profile</Link></DropdownMenuItem>
-                    <DropdownMenuItem asChild><Link href="/member-plan"><Star className="mr-2 h-4 w-4"/>Member Plan</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href={isMember ? "/dashboard" : "/users"}>
+                        <LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href={isMember ? "/profile" : "/users"}>
+                        <UserCircle className="mr-2 h-4 w-4"/>Profile
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                      <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
                   </DropdownMenuContent>

@@ -77,7 +77,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   const userRole = user?.email === 'admin@mesy.io' ? 'Admin' : 'Member';
-  const isMember = user && !user.isAnonymous;
+  const isMember = user && userRole === 'Admin' || userRole === 'Member';
 
 
   return (
@@ -177,9 +177,16 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
             <DropdownMenuContent align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
-               <DropdownMenuItem asChild><Link href="/home"><Home className="mr-2 h-4 w-4"/>MESY Home</Link></DropdownMenuItem>
-               <DropdownMenuItem asChild><Link href="/profile"><UserCircle className="mr-2 h-4 w-4"/>Profile</Link></DropdownMenuItem>
-               <DropdownMenuItem asChild><Link href="/member-plan"><Star className="mr-2 h-4 w-4"/>Member Plan</Link></DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={isMember ? "/dashboard" : "/users"}>
+                  <LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={isMember ? "/profile" : "/users"}>
+                  <UserCircle className="mr-2 h-4 w-4"/>Profile
+                </Link>
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" />
