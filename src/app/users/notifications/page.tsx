@@ -1,5 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Bell, Gift, Zap } from "lucide-react";
+import { Bell, Gift, Zap, Star } from "lucide-react";
 
 export default function UserNotificationsPage() {
     const notifications = [
@@ -10,13 +10,19 @@ export default function UserNotificationsPage() {
             time: "1 minute ago"
         },
         {
+            icon: <Star className="h-5 w-5 text-yellow-400" />,
+            title: "Unlock Full Potential",
+            description: "คุณจะต้องเป็น member ก่อน จึงจะไม่พลาด Daily Rewards และสิทธิ์มากมาย (Become a member to not miss out on Daily Rewards and many benefits).",
+            time: "30 minutes ago"
+        },
+        {
             icon: <Gift className="h-5 w-5 text-accent" />,
             title: "Daily Rewards are available",
             description: "Log in every day to claim exclusive rewards. Become a member to unlock even more!",
             time: "1 hour ago"
         },
         {
-            icon: <Zap className="h-5 w-5 text-yellow-400" />,
+            icon: <Zap className="h-5 w-5 text-purple-400" />,
             title: "New Features in the AI Hub",
             description: "We've added new models to the AI Hub. Give them a try!",
             time: "3 hours ago"
