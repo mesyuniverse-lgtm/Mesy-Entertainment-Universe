@@ -14,6 +14,7 @@ import { Separator } from '@/components/ui/separator';
 import { usePathname } from 'next/navigation';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 const popularInstructors = [
     { name: 'Draconis', skill: 'AI & Backend', rating: 4.9, students: 1250, avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl, course: 'Advanced AI Agent Design' },
