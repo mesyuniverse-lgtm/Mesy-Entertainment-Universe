@@ -6,12 +6,14 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Star, UserPlus, Video, MoreHorizontal, Heart, MessageCircle, Share2, Gem, HandCoins, Code, BookOpen, MessageSquare, Briefcase, PlayCircle, Clock, BarChart, GraduationCap } from "lucide-react";
+import { Users, Star, UserPlus, Video, MoreHorizontal, Heart, MessageCircle, Share2, Gem, HandCoins, Code, BookOpen, MessageSquare, Briefcase, PlayCircle, Clock, BarChart, GraduationCap, Calendar, Zap, Crown } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import { usePathname } from 'next/navigation';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Label } from '@/components/ui/label';
 
 const popularInstructors = [
     { name: 'Draconis', skill: 'AI & Backend', rating: 4.9, students: 1250, avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl, course: 'Advanced AI Agent Design' },
@@ -20,8 +22,8 @@ const popularInstructors = [
 ];
 
 const liveClasses = [
-    { title: 'Live Coding: Building a Genkit Flow', instructor: 'Draconis', viewers: 128, avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
-    { title: '3D Sculpting Session: Mythical Creatures', instructor: 'Elara', viewers: 256, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
+    { title: 'Live Coding: Building a Genkit Flow', instructor: 'Draconis', viewers: 128, avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl, isFree: true },
+    { title: '3D Sculpting Session: Mythical Creatures', instructor: 'Elara', viewers: 256, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl, isFree: false },
 ]
 
 const courses = [
@@ -48,6 +50,13 @@ const courses = [
         likes: 2500, comments: 450,
     }
 ];
+
+const registrationOptions = [
+    { id: 'session', name: 'Single Session', price: '25 MC' },
+    { id: 'week', name: 'Weekly Pass', price: '150 MC' },
+    { id: 'month', name: 'Monthly Pass', price: '500 MC', popular: true },
+    { id: 'year', name: 'Annual Pass', price: '5,500 MC' },
+]
 
 export default function AcademyPage() {
     const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
@@ -105,18 +114,38 @@ export default function AcademyPage() {
                                    <p className="text-xs text-muted-foreground">by {live.instructor}</p>
                                </div>
                             </div>
-                            <Button className="w-full mt-2" size="sm"><PlayCircle className="mr-2 h-4 w-4"/> Join ({live.viewers} watching)</Button>
+                            {live.isFree ? (
+                                <Button className="w-full mt-2" size="sm" variant="secondary"><PlayCircle className="mr-2 h-4 w-4"/> Join for Free ({live.viewers} watching)</Button>
+                            ): (
+                                <Button className="w-full mt-2" size="sm"><Calendar className="mr-2 h-4 w-4"/> Register to Join</Button>
+                            )}
                        </div>
                    ))}
                 </CardContent>
             </Card>
 
             <Card className="bg-card/50">
-                <CardHeader><CardTitle>On-Demand Courses</CardTitle></CardHeader>
-                <CardContent className="space-y-3">
-                    <h4 className="font-semibold text-sm">Intro to Unreal Engine</h4>
-                    <p className="text-xs text-muted-foreground">Learn the basics of game development in MESY.</p>
-                    <Button className="w-full" variant="secondary">Enroll (100 MC)</Button>
+                <CardHeader>
+                    <CardTitle>Course Registration</CardTitle>
+                    <CardDescription>Join Draconis's advanced AI course.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <RadioGroup defaultValue="month" className="space-y-2">
+                        {registrationOptions.map(opt => (
+                            <Label key={opt.id} htmlFor={opt.id} className="flex items-center justify-between p-3 rounded-md border border-border has-[:checked]:border-primary has-[:checked]:bg-primary/10 cursor-pointer transition-colors">
+                                <RadioGroupItem value={opt.id} id={opt.id} />
+                                <span className="font-semibold text-sm flex-grow ml-3">{opt.name}</span>
+                                {opt.popular && <Badge variant="secondary" className="mr-2">Popular</Badge>}
+                                <span className="font-bold text-primary">{opt.price}</span>
+                            </Label>
+                        ))}
+                    </RadioGroup>
+                    <Separator />
+                    <div className="space-y-2">
+                        <Label htmlFor="session-date">Select Date & Time</Label>
+                        <Input type="datetime-local" id="session-date" className="bg-background/50" />
+                    </div>
+                    <Button className="w-full"><HandCoins className="mr-2 h-4 w-4"/> Register & Pay</Button>
                 </CardContent>
             </Card>
 
