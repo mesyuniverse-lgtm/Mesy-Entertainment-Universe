@@ -1,4 +1,4 @@
-import { UserAuthForm } from "@/components/auth/user-auth-form"
+import { MemberAuthForm } from "@/components/auth/member-auth-form"
 import Link from "next/link"
 
 export default function MemberLoginPage() {
@@ -12,7 +12,7 @@ export default function MemberLoginPage() {
           Enter your credentials to access the Member Zone.
         </p>
       </div>
-      <UserAuthForm action="login" />
+      <MemberAuthForm action="login" />
       <p className="px-8 text-center text-sm text-muted-foreground">
         Not a member yet?{" "}
         <Link

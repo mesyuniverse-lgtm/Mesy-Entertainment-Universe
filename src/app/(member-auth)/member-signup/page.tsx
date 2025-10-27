@@ -1,4 +1,4 @@
-import { UserAuthForm } from "@/components/auth/user-auth-form"
+import { MemberAuthForm } from "@/components/auth/member-auth-form"
 import Link from "next/link"
 
 export default function MemberRegisterPage() {
@@ -12,7 +12,7 @@ export default function MemberRegisterPage() {
           Create your account to unlock exclusive member benefits.
         </p>
       </div>
-      <UserAuthForm action="signup" />
+      <MemberAuthForm action="signup" />
       <p className="px-8 text-center text-sm text-muted-foreground">
         By clicking continue, you agree to our{" "}
         <Link

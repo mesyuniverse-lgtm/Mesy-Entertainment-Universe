@@ -19,18 +19,18 @@ import {
 import { useToast } from "@/hooks/use-toast";
 
 
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
+interface MemberAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     action: "login" | "signup";
-    redirectPath?: string;
 }
 
-export function UserAuthForm({ className, action, redirectPath, ...props }: UserAuthFormProps) {
+export function MemberAuthForm({ className, action, ...props }: MemberAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+  const redirectPath = "/dashboard"; // Always redirect members to dashboard
 
   React.useEffect(() => {
     const handleRedirectResult = async () => {
@@ -39,7 +39,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         const result = await getRedirectResult(auth);
         if (result) {
           // This is the signed-in user
-          router.push(redirectPath || '/home');
+          router.push(redirectPath);
         } else {
             setIsLoading(false);
         }
@@ -99,7 +99,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       } else {
         await signInWithEmailAndPassword(auth, email, password);
       }
-      router.push(redirectPath || '/home');
+      router.push(redirectPath);
     } catch (error: any) {
       handleAuthError(error);
     } finally {
