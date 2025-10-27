@@ -1,14 +1,15 @@
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Gem, Smile } from 'lucide-react';
+import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn } from 'lucide-react';
+import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Camera } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const MemberIcon = () => (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute bottom-0 left-0 text-purple-400 bg-background/80 rounded-full p-0.5">
@@ -37,13 +38,15 @@ export default function MainLayout({
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
   const router = useRouter();
+  const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
+
 
   const handleLogout = async () => {
     await signOut(auth);
     router.push('/welcome');
   };
 
-  const isMember = user && !user.isAnonymous; // Example logic: any signed-in user is a "member"
+  const isMember = user?.email === 'admin@mesy.io';
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -77,14 +80,18 @@ export default function MainLayout({
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                      <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                       {isMember ? (
-                         <Smile className="h-9 w-9 text-primary" />
-                       ) : (
                         <Avatar className="h-9 w-9 border-2 border-primary/50">
-                          <AvatarImage src={user.photoURL || undefined} alt="User Avatar" />
+                          <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} alt="User Avatar" />
                           <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
                         </Avatar>
-                       )}
+                       {isMember ? (
+                          <>
+                            <MemberIcon />
+                            <div className="absolute bottom-0 right-0 bg-background/80 rounded-full p-0.5">
+                                <Camera className="h-3 w-3 text-white" />
+                            </div>
+                          </>
+                      ) : null}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>

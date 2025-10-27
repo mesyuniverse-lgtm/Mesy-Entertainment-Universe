@@ -35,7 +35,7 @@ export default function UsersDashboardLayout({
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
   const sidebarNavItems = [
-    { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
+    { name: 'Dashboard', href: '/users', icon: LayoutDashboard },
     { name: 'Profile', href: '/users', icon: UserCircle },
     { name: 'My Timeline', href: '/timeline', icon: Calendar },
     { name: 'Payment', href: '/payment', icon: Wallet },
@@ -51,7 +51,7 @@ export default function UsersDashboardLayout({
     router.push('/welcome');
   };
 
-  const isMember = user && !user.isAnonymous; // Example logic: any signed-in user is a "member"
+  const isMember = user?.email === 'admin@mesy.io';
 
   return (
     <div className="flex min-h-screen flex-col">
