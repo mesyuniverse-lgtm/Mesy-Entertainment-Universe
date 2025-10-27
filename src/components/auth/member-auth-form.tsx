@@ -24,17 +24,16 @@ interface MemberAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function MemberAuthForm({ className, action, ...props }: MemberAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const auth = useAuth();
   const router = useRouter();
   const { toast } = useToast();
-  const redirectPath = "/dashboard"; // Always redirect members to dashboard
+  const redirectPath = "/dashboard";
 
   React.useEffect(() => {
     const handleRedirectResult = async () => {
-      setIsLoading(true);
       try {
         const result = await getRedirectResult(auth);
         if (result) {
