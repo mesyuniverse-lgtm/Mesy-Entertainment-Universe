@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, QrCode, CheckCircle2, XCircle, ShoppingBag, RadioTower, Film, Wallet, Settings } from "lucide-react";
+import { CreditCard, QrCode, CheckCircle2, XCircle, ShoppingBag, RadioTower, Film, Wallet, Settings, Plus } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -102,9 +102,12 @@ export default function PaymentPage() {
                     </div>
                     <div className="p-4 border rounded-lg">
                         <Label htmlFor="daily-limit" className="flex items-center gap-2 mb-2"><Settings className="h-4 w-4"/> Daily Spending Limit</Label>
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center flex-wrap gap-4">
                             <Input id="daily-limit" type="number" placeholder="e.g., 1000" className="max-w-xs" />
-                            <Button>Set Limit</Button>
+                            <div className="flex gap-2">
+                                <Button>Set Limit</Button>
+                                <Button variant="secondary"><Plus className="mr-2 h-4 w-4"/> Top up</Button>
+                            </div>
                         </div>
                         <p className="text-xs text-muted-foreground mt-2">Set a limit of 0 for unlimited spending.</p>
                     </div>
