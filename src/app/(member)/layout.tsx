@@ -37,7 +37,7 @@ const sidebarNavItems = [
   { name: 'Build', href: '/build', icon: Hammer },
   { name: 'Shop', href: '/shop', icon: Store },
   { name: 'Market', href: '/market', icon: Wallet },
-  { name: 'Member System', href: '/member-zones/member-inside/member-dashboard/member-system', icon: Shield },
+  { name: 'Member System', href: '/member-system', icon: Shield },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
   { name: 'Notifications', href: '/notifications', icon: Bell },
   { name: 'Settings', href: '/settings', icon: Settings },
@@ -189,7 +189,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
             <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user.displayName || 'mesy.universe@gmail.com'}</p>
+                  <p className="text-sm font-medium leading-none">{user.displayName || user.email}</p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {user.email}
                   </p>
