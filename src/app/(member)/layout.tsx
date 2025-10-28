@@ -28,7 +28,6 @@ const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'MESY Universe', href: '/universe', icon: Orbit },
   { name: 'Profile', href: '/profile', icon: UserCircle },  
-  { name: 'Bag', href: '/bag', icon: ShoppingBasket },
   { name: 'Inventory', href: '/inventory', icon: Package },
   { name: 'Timeline', href: '/timeline', icon: History },
   { name: 'Community', href: '/community', icon: MessageCircle },
