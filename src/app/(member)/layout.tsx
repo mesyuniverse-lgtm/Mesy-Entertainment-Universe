@@ -30,6 +30,13 @@ const sidebarNavItems = [
   { name: 'Profile', href: '/profile', icon: UserCircle },
   { name: 'Timeline', href: '/timeline', icon: History },
   { name: 'Community', href: '/community', icon: MessageCircle },
+  { name: 'Customize', href: '/customize', icon: Shirt },
+  { name: 'Bag', href: '/bag', icon: ShoppingBasket },
+  { name: 'Inventory', href: '/inventory', icon: Package },
+  { name: 'Cloud', href: '/cloud', icon: Cloud },
+  { name: 'Build', href: '/build', icon: Hammer },
+  { name: 'Shop', href: '/shop', icon: Store },
+  { name: 'Market', href: '/market', icon: Wallet },
   { name: 'Member System', href: '/member-zones/member-inside/member-dashboard/member-system', icon: Shield },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
   { name: 'Notifications', href: '/notifications', icon: Bell },
@@ -93,7 +100,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
               <span className="font-headline">MESY MEMBER</span>
             </Link>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 overflow-y-auto">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {sidebarNavItems.map((item) => {
                 if (item.adminOnly && userRole !== 'Admin') return null;
@@ -130,7 +137,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
-              <nav className="grid gap-2 text-lg font-medium">
+              <nav className="grid gap-2 text-lg font-medium overflow-y-auto">
                 <Link
                   href="/home"
                   className="flex items-center gap-2 text-lg font-semibold mb-4"
@@ -179,10 +186,10 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="w-56">
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
-                  <p className="text-sm font-medium leading-none">{user.displayName || user.email}</p>
+                  <p className="text-sm font-medium leading-none">{user.displayName || 'mesy.universe@gmail.com'}</p>
                   <p className="text-xs leading-none text-muted-foreground">
                     {user.email}
                   </p>
