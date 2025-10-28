@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, History, MessageCircle, Store, ShoppingBasket, Hammer, Cloud, Package, Orbit, Shirt } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, History, MessageCircle, Store, ShoppingBasket, Hammer, Cloud, Package, Orbit, Shirt } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -27,22 +27,13 @@ const MemberIcon = () => (
 const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'MESY Universe', href: '/universe', icon: Orbit },
-  { name: 'Profile', href: '/profile', icon: UserCircle },  
-  { name: 'Inventory', href: '/inventory', icon: Package },
+  { name: 'Profile', href: '/profile', icon: UserCircle },
   { name: 'Timeline', href: '/timeline', icon: History },
   { name: 'Community', href: '/community', icon: MessageCircle },
-  { name: 'Build', href: '/build', icon: Hammer },
-  { name: 'MESY Cloud', href: '/cloud', icon: Cloud },
-  { name: 'Memberships', href: '/memberships', icon: HandCoins },
-  { name: 'MESY Shop', href: '/shop', icon: Store },
-  { name: 'MESY Market', href: '/market', icon: ShoppingBasket },
-  { name: 'Wallet', href: '/wallet', icon: Wallet },
-  { name: 'Transaction', href: '/transaction', icon: History },
+  { name: 'Member System', href: '/member-zones/member-inside/member-dashboard/member-system', icon: Shield },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
   { name: 'Notifications', href: '/notifications', icon: Bell },
-  { name: 'Member System', href: '/member-zones/member-inside/member-dashboard/member-system', icon: Shield },
   { name: 'Settings', href: '/settings', icon: Settings },
-  { name: 'Customize', href: '/customize', icon: Shirt },
   { name: 'Admin', href: '/admin', icon: Shield, adminOnly: true },
 ];
 
