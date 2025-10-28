@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Shield, BarChart, HandCoins, Percent, History } from 'lucide-react';
+import { Shield, BarChart, HandCoins, Percent, History, Wallet } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 
@@ -12,6 +12,7 @@ const systemNavItems = [
   { name: 'Levels & Benefits', href: '/member-system/leves', icon: BarChart },
   { name: 'Income & Downline', href: '/member-system/incom', icon: HandCoins },
   { name: 'Service Fee', href: '/member-system/fee', icon: Percent },
+  { name: 'Payment', href: '/payment', icon: Wallet },
   { name: 'Transactions', href: '/transaction', icon: History },
 ];
 
