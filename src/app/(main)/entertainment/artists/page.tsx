@@ -9,6 +9,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 const popularArtists = [
     { name: 'Aria', rating: 4.9, followers: '1.2M', avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
@@ -121,7 +122,7 @@ export default function ArtistsPage() {
                     <TabsTrigger value="songs"><Music className="h-4 w-4 mr-1"/> Songs</TabsTrigger>
                     <TabsTrigger value="music-videos"><Video className="h-4 w-4 mr-1"/> Videos</TabsTrigger>
                     <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1"/> Live</TabsTrigger>
-                    <TabsTrigger value="talent-hub"><Star className="h-4 w-4 mr-1"/> Talent Hub</TabsTrigger>
+                    <TabsTrigger value="talent-hub" asChild><Link href="/entertainment/artists/find-talent"><Star className="h-4 w-4 mr-1"/> Talent Hub</Link></TabsTrigger>
                 </TabsList>
                 <TabsContent value="artists" className="mt-4">
                      <Card>
@@ -132,36 +133,6 @@ export default function ArtistsPage() {
                         <CardContent className="h-64 flex items-center justify-center bg-muted/30 rounded-b-lg">
                             <p className="text-muted-foreground">Artist discovery section coming soon.</p>
                         </CardContent>
-                    </Card>
-                </TabsContent>
-                 <TabsContent value="talent-hub" className="mt-4">
-                     <Card className="overflow-hidden">
-                        <div className="relative aspect-video">
-                            {talentHubImage && <Image src={talentHubImage.imageUrl} alt="Talent Hub" fill objectFit="cover" className="opacity-30"/>}
-                            <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-                            <div className="absolute bottom-0 left-0 p-6 text-white">
-                                 <h2 className="text-3xl font-bold" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.8)'}}>MESY Talent Hub</h2>
-                                 <p className="max-w-md mt-1" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.7)'}}>The premier marketplace for artists and event organizers to connect and create opportunities.</p>
-                            </div>
-                        </div>
-                        <Tabs defaultValue="find-talent">
-                            <TabsList className="grid w-full grid-cols-2 mt-4 px-4">
-                                <TabsTrigger value="find-talent">Find Talent</TabsTrigger>
-                                <TabsTrigger value="find-gigs">Find Gigs</TabsTrigger>
-                            </TabsList>
-                            <TabsContent value="find-talent" className="p-4">
-                                <div className="h-48 flex flex-col items-center justify-center bg-muted/30 rounded-lg">
-                                    <p className="text-muted-foreground">Browse artists available for hire.</p>
-                                    <Button variant="secondary" className="mt-4">Post a Job Opening</Button>
-                                </div>
-                            </TabsContent>
-                            <TabsContent value="find-gigs" className="p-4">
-                                <div className="h-48 flex flex-col items-center justify-center bg-muted/30 rounded-lg">
-                                    <p className="text-muted-foreground">Discover performance opportunities and events.</p>
-                                     <Button variant="secondary" className="mt-4">View Open Gigs</Button>
-                                </div>
-                            </TabsContent>
-                        </Tabs>
                     </Card>
                 </TabsContent>
             </Tabs>

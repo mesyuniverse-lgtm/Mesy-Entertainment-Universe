@@ -1,0 +1,191 @@
+'use client';
+
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { PlusCircle, Search, Star, HandCoins, Users, MapPin, BadgeCent, CheckCircle, Clock, FileText, Send, XCircle } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
+import Link from "next/link";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+
+
+const jobQuests = [
+    {
+        title: 'Live Acoustic Performance for Grand Opening',
+        postedBy: 'The Golden Neko Cafe',
+        avatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl,
+        budget: '1,500 - 2,500 MC',
+        location: 'Pattaya, Chonburi',
+        applicants: 12,
+        status: 'Open'
+    },
+    {
+        title: 'Seeking Vocalist for Fantasy Metal Band',
+        postedBy: 'Dragonforce Tribute',
+        avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl,
+        budget: 'Long-term Project',
+        location: 'Remote/Online',
+        applicants: 5,
+        status: 'Open'
+    },
+     {
+        title: 'DJ for New Year\'s Eve Countdown Party',
+        postedBy: 'Skyfall Rooftop Bar',
+        avatar: PlaceHolderImages.find(i => i.id === 'fantasy-landscape-1')?.imageUrl,
+        budget: '5,000 MC',
+        location: 'Bangkok',
+        applicants: 28,
+        status: 'Closed'
+    }
+];
+
+const selectedQuest = jobQuests[0];
+
+const applicantStatuses = {
+    notApplied: {
+        text: 'Apply Now',
+        buttonVariant: 'default',
+        icon: <Send className="mr-2 h-4 w-4"/>,
+        alert: null
+    },
+    pending: {
+        text: 'Application Sent - Pending Approval',
+        buttonVariant: 'secondary',
+        icon: <Clock className="mr-2 h-4 w-4"/>,
+        alert: <Alert variant="default" className="mt-4 bg-blue-500/10 border-blue-500/30">
+                <AlertTitle className="text-blue-400">Application Submitted</AlertTitle>
+                <AlertDescription>Your profile has been sent to the organizer. You will be notified once a decision has been made.</AlertDescription>
+            </Alert>
+    },
+    approved: {
+        text: 'Approved - Contact Organizer',
+        buttonVariant: 'default',
+        icon: <CheckCircle className="mr-2 h-4 w-4"/>,
+        alert: <Alert variant="default" className="mt-4 bg-green-500/10 border-green-500/30">
+                <AlertTitle className="text-green-400">Congratulations!</AlertTitle>
+                <AlertDescription>You have been selected for this opportunity. Please contact the organizer to discuss the final details.</AlertDescription>
+            </Alert>
+    },
+    rejected: {
+        text: 'Position Filled',
+        buttonVariant: 'destructive',
+        icon: <XCircle className="mr-2 h-4 w-4"/>,
+        alert: <Alert variant="destructive" className="mt-4">
+                <AlertTitle>Position Filled</AlertTitle>
+                <AlertDescription>Thank you for your interest. The organizer has selected another artist. We encourage you to apply for other opportunities!</AlertDescription>
+            </Alert>
+    }
+};
+
+// You can change this to test different states
+const currentApplicantStatus = applicantStatuses.notApplied;
+
+
+export default function FindTalentPage() {
+    
+    return (
+    <div className="min-h-screen bg-background/90 text-foreground p-4 lg:p-6">
+       <div className="container mx-auto">
+            <header className="text-center mb-12">
+                <div className="inline-block p-4 bg-primary/10 rounded-full mb-4">
+                    <Star className="w-12 h-12 text-primary"/>
+                </div>
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Talent Hub</h1>
+                <p className="max-w-2xl mx-auto mt-4 text-muted-foreground">
+                    The premier marketplace for artists and event organizers to connect and create opportunities.
+                </p>
+                 <Button size="lg" className="mt-6">
+                    <PlusCircle className="mr-2 h-5 w-5"/> Create Job Quest
+                    <Badge variant="secondary" className="ml-3">Members Only</Badge>
+                </Button>
+            </header>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                {/* Left: Quest List */}
+                <aside className="lg:col-span-4 space-y-4">
+                    <div className="relative">
+                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                        <Input placeholder="Search for gigs, locations, genres..." className="pl-10" />
+                    </div>
+                    {jobQuests.map((quest, index) => (
+                        <Card key={index} className="bg-card/50 hover:bg-card/80 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/50">
+                            <CardContent className="p-4 flex gap-4">
+                                <Avatar className="h-12 w-12 hidden sm:block">
+                                    <AvatarImage src={quest.avatar} />
+                                    <AvatarFallback>{quest.postedBy.charAt(0)}</AvatarFallback>
+                                </Avatar>
+                                <div className="flex-grow">
+                                    <p className="font-bold">{quest.title}</p>
+                                    <p className="text-sm text-muted-foreground">{quest.postedBy}</p>
+                                     <div className="flex items-center gap-4 text-xs text-muted-foreground mt-2">
+                                        <span className="flex items-center gap-1"><MapPin className="h-3 w-3"/>{quest.location}</span>
+                                        <span className="flex items-center gap-1"><Users className="h-3 w-3"/>{quest.applicants} applicants</span>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </aside>
+
+                {/* Right: Quest Details */}
+                <main className="lg:col-span-8">
+                    <Card>
+                        <CardHeader>
+                            <div className="flex flex-col sm:flex-row justify-between gap-2">
+                                <div>
+                                    <CardTitle className="text-2xl">{selectedQuest.title}</CardTitle>
+                                    <CardDescription className="flex items-center gap-2 mt-1">
+                                        Posted by 
+                                        <Avatar className="h-6 w-6"><AvatarImage src={selectedQuest.avatar} /></Avatar>
+                                        {selectedQuest.postedBy}
+                                    </CardDescription>
+                                </div>
+                                <div className="text-left sm:text-right shrink-0">
+                                    <p className="text-sm text-muted-foreground">Budget</p>
+                                    <p className="text-2xl font-bold text-primary">{selectedQuest.budget}</p>
+                                </div>
+                            </div>
+                        </CardHeader>
+                        <Separator />
+                        <CardContent className="p-6 grid md:grid-cols-2 gap-6">
+                            <div className="space-y-4">
+                                <h3 className="font-semibold text-lg">Job Details</h3>
+                                <p className="text-muted-foreground">We are seeking a talented acoustic guitarist/singer for the grand opening of our new fantasy-themed cafe. The event will be a cozy, evening affair. We need someone who can create a magical and welcoming atmosphere. The performance will be for 2 hours with a 15-minute break.</p>
+                                <div className="space-y-2">
+                                    <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-primary"/> <strong>Location:</strong> {selectedQuest.location}</p>
+                                    <p className="flex items-center gap-2"><BadgeCent className="h-4 w-4 text-primary"/> <strong>Compensation:</strong> {selectedQuest.budget} + Food & Drinks</p>
+                                    <p className="flex items-center gap-2"><Users className="h-4 w-4 text-primary"/> <strong>Age Requirement:</strong> 20+</p>
+                                </div>
+                            </div>
+                             <div className="space-y-4">
+                                <h3 className="font-semibold text-lg">Requirements</h3>
+                                <ul className="list-disc list-inside text-muted-foreground space-y-1">
+                                    <li>Genre: Folk, Fantasy, Instrumental, Pop</li>
+                                    <li>Must have own equipment (Guitar, Mic, small amp)</li>
+                                    <li>Punctual and professional demeanor</li>
+                                    <li>Ability to take song requests is a plus</li>
+                                </ul>
+
+                                <h3 className="font-semibold text-lg pt-4">How to Apply</h3>
+                                <p className="text-muted-foreground">Please submit your MESY Profile along with a link to a performance video (YouTube, Facebook, or TikTok). We will review all applications and contact selected artists for a short online interview.</p>
+                            </div>
+                        </CardContent>
+                        <Separator />
+                        <CardContent className="p-6">
+                             <Button size="lg" className="w-full" variant={currentApplicantStatus.buttonVariant} disabled={currentApplicantStatus.buttonVariant !== 'default'}>
+                                {currentApplicantStatus.icon}
+                                {currentApplicantStatus.text}
+                            </Button>
+                            {currentApplicantStatus.alert}
+                        </CardContent>
+                    </Card>
+                </main>
+            </div>
+       </div>
+    </div>
+    );
+}
