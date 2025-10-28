@@ -34,7 +34,7 @@ export default function EntertainmentPage() {
       description: "Find local attractions, restaurants, and venues. Create your own page to promote your business.",
       icon: <div className="flex gap-2"><Map className="text-primary"/><Store className="text-primary"/><Video className="text-primary"/><Tv className="text-primary"/><Mic className="text-primary"/></div>,
       href: "/entertainment/venues",
-      comingSoon: true,
+      comingSoon: false,
     },
   ];
 
