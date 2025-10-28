@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -37,7 +38,7 @@ export default function UsersDashboardLayout({
   const sidebarNavItems = [
     { name: 'Dashboard', href: '/users', icon: LayoutDashboard },
     { name: 'Profile', href: '/users/profile', icon: UserCircle },
-    { name: 'My Timeline', href: '/timeline', icon: Calendar },
+    { name: 'My Timeline', href: '/users/timeline', icon: Calendar },
     { name: 'Payment', href: '/users/payment', icon: Wallet },
     { name: 'Notification', href: '/users/notifications', icon: Bell },
     { name: 'History', href: '/users/history', icon: History },
