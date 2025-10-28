@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { AvatarCanvas } from "@/components/profile/avatar-canvas";
 
 export default function MemberProfilePage() {
     const coverImage = PlaceHolderImages.find(i => i.id === 'fantasy-castle-1');
@@ -51,12 +52,8 @@ export default function MemberProfilePage() {
                     </div>
                     <div className="px-4 -mt-16 sm:-mt-20">
                         <div className="flex flex-col sm:flex-row items-start sm:gap-6">
-                            <div className="relative shrink-0">
-                                <Avatar className="h-32 w-32 md:h-40 md:w-40 border-4 border-card shadow-lg">
-                                    <AvatarImage src={profileImage?.imageUrl} />
-                                    <AvatarFallback>T</AvatarFallback>
-                                </Avatar>
-                                <Button size="icon" variant="secondary" className="absolute bottom-2 right-2 h-8 w-8 rounded-full"><Camera className="h-4 w-4"/></Button>
+                            <div className="relative shrink-0 h-32 w-32 md:h-40 md:w-40">
+                                <AvatarCanvas />
                             </div>
                             <div className="w-full pt-4">
                                 <div className="flex flex-col sm:flex-row justify-between sm:items-end">
