@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -10,12 +11,12 @@ import { cn } from "@/lib/utils";
 import React from "react";
 
 const presets = [
-    { name: 'Archer', image: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
-    { name: 'Knight', image: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
-    { name: 'Fighter', image: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
-    { name: 'Explorer', image: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
-    { name: 'Dragonborn', image: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
-    { name: 'Silhouette', image: PlaceHolderImages.find(i => i.id === 'fighter-silhouette')?.imageUrl },
+    { name: 'Model 1', image: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
+    { name: 'Model 2', image: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
+    { name: 'Model 3', image: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
+    { name: 'Model 4', image: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
+    { name: 'Model 5', image: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
+    { name: 'Model 6', image: PlaceHolderImages.find(i => i.id === 'fighter-silhouette')?.imageUrl },
 ];
 
 const customizationOptions = [
