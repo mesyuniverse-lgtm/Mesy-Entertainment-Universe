@@ -1,11 +1,13 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, QrCode, CheckCircle2, XCircle, ShoppingBag, RadioTower, Film, Wallet, Settings, Plus } from "lucide-react";
+import { CreditCard, QrCode, CheckCircle2, XCircle, ShoppingBag, RadioTower, Film, Wallet, Settings, Plus, ArrowRightLeft } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 
 const PayPalIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -95,19 +97,32 @@ export default function PaymentPage() {
                                 <Switch id="switch-mesy-wallet" checked={true} />
                             </div>
                         </div>
-                        <div className="text-center pt-2">
-                            <p className="text-sm text-muted-foreground">Current Balance</p>
-                            <p className="text-4xl font-bold tracking-tighter">1,250.75 <span className="text-primary text-xl font-normal">MC</span></p>
+                        
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                            <div className="text-center md:text-left py-2">
+                                <p className="text-sm text-muted-foreground">Cash Balance</p>
+                                <p className="text-4xl font-bold tracking-tighter">850.00 <span className="text-primary text-xl font-normal">USD</span></p>
+                            </div>
+                             <Separator orientation="vertical" className="hidden md:block h-16"/>
+                             <div className="text-center md:text-left py-2">
+                                <p className="text-sm text-muted-foreground">MESY Coin Balance</p>
+                                <p className="text-4xl font-bold tracking-tighter">1,250.75 <span className="text-primary text-xl font-normal">MC</span></p>
+                            </div>
+                        </div>
+                        <div className="text-center text-xs text-muted-foreground">Exchange Rate: 1 USD = 1 MESY Coin</div>
+
+
+                         <div className="flex items-center flex-wrap gap-2 pt-2 border-t border-border/50">
+                            <Button variant="secondary"><Plus className="mr-2 h-4 w-4"/> Top up Cash</Button>
+                            <Button variant="secondary"><Plus className="mr-2 h-4 w-4"/> Buy MESY Coins</Button>
+                            <Button variant="outline"><ArrowRightLeft className="mr-2 h-4 w-4"/> Swap</Button>
                         </div>
                     </div>
                     <div className="p-4 border rounded-lg">
-                        <Label htmlFor="daily-limit" className="flex items-center gap-2 mb-2"><Settings className="h-4 w-4"/> Daily Spending Limit</Label>
+                        <Label htmlFor="daily-limit" className="flex items-center gap-2 mb-2"><Settings className="h-4 w-4"/> Daily Spending Limit (MESY Coins)</Label>
                         <div className="flex items-center flex-wrap gap-4">
                             <Input id="daily-limit" type="number" placeholder="e.g., 1000" className="max-w-xs" />
-                            <div className="flex gap-2">
-                                <Button>Set Limit</Button>
-                                <Button variant="secondary"><Plus className="mr-2 h-4 w-4"/> Top up</Button>
-                            </div>
+                            <Button>Set Limit</Button>
                         </div>
                         <p className="text-xs text-muted-foreground mt-2">Set a limit of 0 for unlimited spending.</p>
                     </div>
