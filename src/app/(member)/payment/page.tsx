@@ -82,16 +82,22 @@ export default function PaymentPage() {
                     <CardDescription>Manage your primary MESY Wallet and spending controls.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border">
-                        <div className="flex items-center gap-4">
-                            <Wallet className="h-6 w-6 text-primary"/>
-                            <span className="font-semibold">MESY Wallet</span>
+                    <div className="p-4 border rounded-lg space-y-4">
+                         <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                                <Wallet className="h-6 w-6 text-primary"/>
+                                <span className="font-semibold">MESY Wallet</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <Label htmlFor="switch-mesy-wallet" className="text-sm text-muted-foreground">
+                                    Linked
+                                </Label>
+                                <Switch id="switch-mesy-wallet" checked={true} />
+                            </div>
                         </div>
-                        <div className="flex items-center gap-2">
-                            <Label htmlFor="switch-mesy-wallet" className="text-sm text-muted-foreground">
-                                Linked
-                            </Label>
-                            <Switch id="switch-mesy-wallet" checked={true} />
+                        <div className="text-center pt-2">
+                            <p className="text-sm text-muted-foreground">Current Balance</p>
+                            <p className="text-4xl font-bold tracking-tighter">1,250.75 <span className="text-primary text-xl font-normal">MC</span></p>
                         </div>
                     </div>
                     <div className="p-4 border rounded-lg">
