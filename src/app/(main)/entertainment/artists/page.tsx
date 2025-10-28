@@ -1,4 +1,6 @@
 
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Music, Video, Mic, Tv, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -19,6 +21,25 @@ export default function ArtistsPage() {
           Discover new artists, listen to their music, and watch exclusive content.
         </p>
       </div>
+      
+       <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm mb-8">
+            <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
+                <span className="mx-4">New Album "Celestial" by Aria just dropped! 🎵</span>
+                <span className="mx-4">Kael is hosting a live concert this Friday! 🎤</span>
+                <span className="mx-4">Top 10 MESY Chart updated. See who's number one! 🏆</span>
+            </div>
+            <div className="absolute top-0 animate-marquee2 whitespace-nowrap text-primary font-semibold">
+                <span className="mx-4">New Album "Celestial" by Aria just dropped! 🎵</span>
+                <span className="mx-4">Kael is hosting a live concert this Friday! 🎤</span>
+                <span className="mx-4">Top 10 MESY Chart updated. See who's number one! 🏆</span>
+            </div>
+        </div>
+        <style jsx>{`
+            @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+            @keyframes marquee2 { from { transform: translateX(100%); } to { transform: translateX(0); } }
+            .animate-marquee { animation: marquee 30s linear infinite; }
+            .animate-marquee2 { animation: marquee2 30s linear infinite; }
+        `}</style>
 
        <Card className="mb-8">
             <CardContent className="p-4">
