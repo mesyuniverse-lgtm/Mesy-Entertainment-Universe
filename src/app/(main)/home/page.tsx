@@ -1,11 +1,18 @@
+
+'use client';
+
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useUser } from "@/firebase";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { ArrowRight, Lock } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
 export default function HomePage() {
+    const { user } = useUser();
+    const isMember = user?.email === 'admin@mesy.io';
+
     const complexSections = [
         {
             title: "Socialive",
@@ -37,17 +44,17 @@ export default function HomePage() {
         },
         {
             title: "Member Zones",
-            description: "Preview of exclusive member-only content and areas.",
+            description: "Exclusive member-only content, dashboard, and creation tools.",
             href: "/dashboard",
             image: PlaceHolderImages.find((i) => i.id === "member-zone-preview"),
-            locked: true,
+            locked: !isMember,
         },
         {
             title: "Developer Zone",
             description: "Ranking, Sponsor, Vote, Join Team, Forum, Roadmap.",
             href: "/developer-zone",
             image: PlaceHolderImages.find((i) => i.id === "auth-background"),
-            locked: true,
+            locked: !isMember,
         },
     ];
 
@@ -78,9 +85,9 @@ export default function HomePage() {
                             <CardTitle>{section.title}</CardTitle>
                             <CardDescription className="mt-2 flex-grow">{section.description}</CardDescription>
                             <Button asChild className="mt-4 w-full" variant={section.locked ? "secondary" : "default"}>
-                                <Link href={section.href}>
+                                <Link href={section.locked ? (user ? "/member-plan" : "/member-login") : section.href}>
                                     {section.locked ? <Lock className="mr-2 h-4 w-4" /> : null}
-                                    Enter
+                                    {section.locked ? "Access Locked" : "Enter"}
                                     {!section.locked ? <ArrowRight className="ml-2 h-4 w-4" /> : null}
                                 </Link>
                             </Button>
