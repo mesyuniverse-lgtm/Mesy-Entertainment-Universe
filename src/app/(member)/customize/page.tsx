@@ -1,23 +1,13 @@
 
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Camera, Check, Download, Redo, Save, Undo, User, PersonStanding, ChevronLeft, SlidersHorizontal, Shirt } from "lucide-react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-import React from "react";
-
-const presets = [
-    { name: 'Model 1', image: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
-    { name: 'Model 2', image: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
-    { name: 'Model 3', image: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
-    { name: 'Model 4', image: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
-    { name: 'Model 5', image: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
-    { name: 'Model 6', image: PlaceHolderImages.find(i => i.id === 'fighter-silhouette')?.imageUrl },
-];
 
 const customizationOptions = [
     { name: 'Appearance', icon: <User className="h-8 w-8" /> },
@@ -46,26 +36,6 @@ export default function CustomizePage() {
 
             {/* Main Content */}
             <main className="flex-1 flex flex-col md:flex-row gap-4 mt-4 overflow-hidden">
-
-                {/* Left Panel */}
-                <aside className="w-full md:w-64 lg:w-72 bg-card/50 rounded-lg p-4 space-y-4 overflow-y-auto">
-                    <Button variant="secondary" className="w-full justify-start text-base">
-                        <Camera className="mr-3 h-5 w-5"/>
-                        Beauty Album
-                    </Button>
-                    <div className="space-y-2">
-                        {presets.map((preset, index) => (
-                            <button key={index} onClick={() => setActivePreset(index)} className={cn("w-full text-left p-2 rounded-md transition-colors flex items-center gap-4", activePreset === index ? 'bg-primary/20 ring-2 ring-primary' : 'hover:bg-secondary')}>
-                                <Avatar className="h-16 w-16 rounded-md">
-                                    <AvatarImage src={preset.image} />
-                                    <AvatarFallback>{preset.name.charAt(0)}</AvatarFallback>
-                                </Avatar>
-                                <span className="font-semibold">{preset.name}</span>
-                            </button>
-                        ))}
-                    </div>
-                </aside>
-
                 {/* Center/Right Combined Panel */}
                 <div className="flex-1 flex flex-col md:flex-row gap-4">
 
@@ -103,10 +73,7 @@ export default function CustomizePage() {
                         </div>
                     </div>
                 </div>
-
             </main>
         </div>
     );
 }
-
-    
