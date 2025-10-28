@@ -9,7 +9,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
-import { AvatarCanvas } from "@/components/profile/avatar-canvas";
+import dynamic from 'next/dynamic';
+import { Skeleton } from "@/components/ui/skeleton";
+
+const AvatarCanvas = dynamic(() => import('@/components/profile/avatar-canvas').then(mod => mod.AvatarCanvas), {
+    ssr: false,
+    loading: () => <Skeleton className="h-full w-full rounded-full" />,
+});
+
 
 export default function MemberProfilePage() {
     const coverImage = PlaceHolderImages.find(i => i.id === 'fantasy-castle-1');
