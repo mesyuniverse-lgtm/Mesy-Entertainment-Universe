@@ -28,22 +28,20 @@ export default function TalentHubPage() {
                             <Search className="mr-2 h-4 w-4"/> Find Talent
                         </Link>
                     </TabsTrigger>
-                    <TabsTrigger value="find-gigs">
-                        <Briefcase className="mr-2 h-4 w-4"/> Find Gigs
+                    <TabsTrigger value="find-gigs" asChild>
+                        <Link href="/entertainment/artists/find-gigs">
+                            <Briefcase className="mr-2 h-4 w-4"/> Find Gigs
+                        </Link>
                     </TabsTrigger>
                 </TabsList>
-                <TabsContent value="find-gigs" className="mt-6">
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Find Gigs</CardTitle>
-                            <CardDescription>Browse opportunities posted by event organizers.</CardDescription>
-                        </CardHeader>
-                        <CardContent className="h-64 flex items-center justify-center bg-muted/30 rounded-b-lg">
-                            <p className="text-muted-foreground">The job board for artists is coming soon.</p>
-                        </CardContent>
-                    </Card>
+                <TabsContent value="find-talent" className="mt-6">
+                     {/* This content will be handled by the find-talent page route */}
+                </TabsContent>
+                 <TabsContent value="find-gigs" className="mt-6">
+                    {/* This content will be handled by the find-gigs page route */}
                 </TabsContent>
             </Tabs>
         </div>
     );
 }
+
