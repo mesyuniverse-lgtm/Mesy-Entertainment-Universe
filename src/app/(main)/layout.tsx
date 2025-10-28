@@ -116,7 +116,7 @@ export default function MainLayout({
                     </DropdownMenuItem>
                      {!isMember && (
                       <DropdownMenuItem asChild>
-                        <Link href="/member-plan">
+                        <Link href="/users/payment">
                           <Star className="mr-2 h-4 w-4 text-primary"/>
                           <span className="text-primary font-semibold">Upgrade to Member</span>
                         </Link>

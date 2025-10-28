@@ -2,7 +2,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, QrCode, CheckCircle2, XCircle } from "lucide-react";
+import { CreditCard, QrCode, CheckCircle2, XCircle, Star } from "lucide-react";
 
 // Custom components for payment provider icons
 const PayPalIcon = (props: React.SVGProps<SVGSVGElement>) => (
@@ -44,33 +44,57 @@ export default function UserPaymentPage() {
     return (
         <div className="space-y-6">
             <Card>
-                <CardHeader><CardTitle>Verification Status</CardTitle></CardHeader>
-                <CardContent className="space-y-3">
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border">
-                        <span className="font-medium">Email Verification</span>
-                        {verificationStatus.email ? <CheckCircle2 className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-destructive" />}
-                    </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border">
-                        <span className="font-medium">Phone Number</span>
-                        {verificationStatus.phone ? <CheckCircle2 className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-destructive" />}
-                    </div>
-                    <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border">
-                        <span className="font-medium">Payment Method</span>
-                        {verificationStatus.payment ? <CheckCircle2 className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-destructive" />}
-                    </div>
-                </CardContent>
-            </Card>
-            <Card>
                 <CardHeader>
-                    <CardTitle>Connect Payment for Verification</CardTitle>
-                    <CardDescription>คุณยังทำธุรกรรมไม่ได้ กรุณาเชื่อมต่อ Payment เพื่อยืนยันตน</CardDescription>
+                    <CardTitle className="text-2xl font-bold">Upgrade to MESY Member</CardTitle>
+                    <CardDescription>To unlock member benefits, please complete your verification and pay the one-time registration fee.</CardDescription>
                 </CardHeader>
-                <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <Button variant="outline" className="h-16 flex justify-start items-center gap-3 text-base p-4"><CreditCard className="h-6 w-6 text-primary"/> Credit / Debit Card</Button>
-                    <Button variant="outline" className="h-16 flex justify-start items-center gap-3 text-base p-4"><PayPalIcon className="h-6 w-6"/> PayPal</Button>
-                    <Button variant="outline" className="h-16 flex justify-start items-center gap-3 text-base p-4"><TrueMoneyIcon className="h-6 w-6"/> TrueMoney</Button>
-                    <Button variant="outline" className="h-16 flex justify-start items-center gap-3 text-base p-4"><QrCode className="h-6 w-6 text-primary"/> QR Code Payment</Button>
-                    <Button variant="outline" className="h-16 flex justify-start items-center gap-3 text-base p-4 sm:col-span-2"><GooglePayIcon className="h-8"/> </Button>
+                <CardContent className="space-y-6">
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>1. Verification Status</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border">
+                                <span className="font-medium">Email Verification</span>
+                                {verificationStatus.email ? <CheckCircle2 className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-destructive" />}
+                            </div>
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border">
+                                <span className="font-medium">Phone Number</span>
+                                {verificationStatus.phone ? <CheckCircle2 className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-destructive" />}
+                            </div>
+                            <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border">
+                                <span className="font-medium">Payment Method</span>
+                                {verificationStatus.payment ? <CheckCircle2 className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-destructive" />}
+                            </div>
+                        </CardContent>
+                    </Card>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle>2. Connect Payment for Verification</CardTitle>
+                            <CardDescription>คุณยังทำธุรกรรมไม่ได้ กรุณาเชื่อมต่อ Payment เพื่อยืนยันตน</CardDescription>
+                        </CardHeader>
+                        <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <Button variant="outline" className="h-16 flex justify-start items-center gap-3 text-base p-4"><CreditCard className="h-6 w-6 text-primary"/> Credit / Debit Card</Button>
+                            <Button variant="outline" className="h-16 flex justify-start items-center gap-3 text-base p-4"><PayPalIcon className="h-6 w-6"/> PayPal</Button>
+                            <Button variant="outline" className="h-16 flex justify-start items-center gap-3 text-base p-4"><TrueMoneyIcon className="h-6 w-6"/> TrueMoney</Button>
+                            <Button variant="outline" className="h-16 flex justify-start items-center gap-3 text-base p-4"><QrCode className="h-6 w-6 text-primary"/> QR Code Payment</Button>
+                            <Button variant="outline" className="h-16 flex justify-start items-center gap-3 text-base p-4 sm:col-span-2"><GooglePayIcon className="h-8"/> </Button>
+                        </CardContent>
+                    </Card>
+                     <Card className="border-primary/50 bg-primary/10">
+                        <CardHeader>
+                            <CardTitle>3. Registration Fee</CardTitle>
+                        </CardHeader>
+                        <CardContent className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div>
+                                <p className="text-4xl font-bold">$9.99 <span className="text-lg text-muted-foreground font-normal">USD</span></p>
+                                <p className="text-muted-foreground">One-time payment for lifetime membership.</p>
+                            </div>
+                            <Button size="lg" disabled={!verificationStatus.email || !verificationStatus.phone || !verificationStatus.payment}>
+                                <Star className="mr-2 h-5 w-5"/> Upgrade & Pay
+                            </Button>
+                        </CardContent>
+                    </Card>
                 </CardContent>
             </Card>
         </div>
