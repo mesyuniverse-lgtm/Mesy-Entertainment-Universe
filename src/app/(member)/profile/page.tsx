@@ -2,20 +2,18 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Camera, Edit, MoreHorizontal, Package, Shield, MessageCircle, Heart, Share2, Star, Gift, Gem, User, Users } from "lucide-react";
+import { Camera, Edit, MoreHorizontal, Package, Shield, MessageCircle, Heart, Share2, Gem } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Textarea } from "@/components/ui/textarea";
 
 export default function MemberProfilePage() {
     const coverImage = PlaceHolderImages.find(i => i.id === 'fantasy-castle-1');
     const profileImage = { imageUrl: "https://picsum.photos/seed/thisaya/400/400" }; 
     const timelinePosts = [
     { 
-        type: 'image',
         user: { name: 'Thisaya', avatar: profileImage?.imageUrl },
         time: '5 mins ago',
         text: 'Hello , my friens 😁',
@@ -51,11 +49,10 @@ export default function MemberProfilePage() {
                     </div>
                     <div className="px-4 -mt-16 sm:-mt-20">
                         <div className="flex flex-col sm:flex-row items-start sm:gap-6">
-                            <div className="relative shrink-0 h-32 w-32 md:h-40 md:w-40">
-                                <Avatar className="h-full w-full border-4 border-background shadow-lg">
-                                    <AvatarImage src={profileImage.imageUrl} />
-                                    <AvatarFallback>M</AvatarFallback>
-                                </Avatar>
+                            <div className="relative shrink-0">
+                                <div className="relative h-32 w-32 md:h-40 md:w-40 rounded-full overflow-hidden border-4 border-background shadow-lg">
+                                     <Image src={profileImage.imageUrl} alt="Thisaya" fill objectFit="cover"/>
+                                </div>
                             </div>
                             <div className="w-full pt-4">
                                 <div className="flex flex-col sm:flex-row justify-between sm:items-end">
@@ -65,7 +62,7 @@ export default function MemberProfilePage() {
                                         <p className="text-sm text-muted-foreground">Income: $1,213 | Fee (3%): $37.5</p>
                                     </div>
                                     <div className="flex gap-2 mt-4 sm:mt-0 justify-center">
-                                        <Button variant="secondary"><Package className="mr-2 h-4 w-4"/> Bag</Button>
+                                        <Button asChild variant="secondary"><Link href="/bag"><Package className="mr-2 h-4 w-4"/> Bag</Link></Button>
                                         <Button asChild><Link href="/customize"><Shield className="mr-2 h-4 w-4"/> Customize</Link></Button>
                                         <Button variant="secondary"><Edit className="mr-2 h-4 w-4"/> Edit Profile</Button>
                                         <Button variant="secondary" size="icon"><MoreHorizontal /></Button>
@@ -73,7 +70,7 @@ export default function MemberProfilePage() {
                                 </div>
                                  <div className="mt-3 relative w-full bg-white/20 rounded-full h-6 overflow-hidden border border-border">
                                     <div 
-                                        className="bg-destructive h-full rounded-full flex items-center justify-center"
+                                        className="bg-destructive h-full rounded-full flex items-center justify-center transition-all duration-500"
                                         style={{ width: `${progressPercentage}%` }}
                                     >
                                     </div>
@@ -167,6 +164,7 @@ export default function MemberProfilePage() {
                                         <Button variant="ghost" className="flex-1 flex items-center gap-2"><Heart className="h-5 w-5"/> Like</Button>
                                         <Button variant="ghost" className="flex-1 flex items-center gap-2"><MessageCircle className="h-5 w-5"/> Comment</Button>
                                         <Button variant="ghost" className="flex-1 flex items-center gap-2"><Share2 className="h-5 w-5"/> Share</Button>
+                                        <Button variant="ghost" className="flex-1 flex items-center gap-2"><Gem className="h-5 w-5 text-cyan-400"/> Give Coin</Button>
                                     </div>
                                 </CardContent>
                             </Card>

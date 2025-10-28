@@ -27,8 +27,8 @@ const MemberIcon = () => (
 const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'MESY Universe', href: '/universe', icon: Orbit },
-  { name: 'Profile', href: '/profile', icon: UserCircle },
-  { name: 'Customize', href: '/customize', icon: Shirt },
+  { name: 'Profile', href: '/profile', icon: UserCircle },  
+  { name: 'Bag', href: '/bag', icon: ShoppingBasket },
   { name: 'Inventory', href: '/inventory', icon: Package },
   { name: 'Timeline', href: '/timeline', icon: History },
   { name: 'Community', href: '/community', icon: MessageCircle },
@@ -43,6 +43,7 @@ const sidebarNavItems = [
   { name: 'Notifications', href: '/notifications', icon: Bell },
   { name: 'Member System', href: '/member-zones/member-inside/member-dashboard/member-system', icon: Shield },
   { name: 'Settings', href: '/settings', icon: Settings },
+  { name: 'Customize', href: '/customize', icon: Shirt },
   { name: 'Admin', href: '/admin', icon: Shield, adminOnly: true },
 ];
 
@@ -232,5 +233,3 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default MemberLayout;
-
-    
