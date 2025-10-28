@@ -2,9 +2,10 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { CreditCard, QrCode, CheckCircle2, XCircle, ShoppingBag, RadioTower, Film } from "lucide-react";
+import { CreditCard, QrCode, CheckCircle2, XCircle, ShoppingBag, RadioTower, Film, Wallet, Settings } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const PayPalIcon = (props: React.SVGProps<SVGSVGElement>) => (
     <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -71,6 +72,35 @@ export default function PaymentPage() {
                     <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border">
                         <span className="font-medium">Payment Method</span>
                         {verificationStatus.payment ? <CheckCircle2 className="h-6 w-6 text-green-500" /> : <XCircle className="h-6 w-6 text-destructive" />}
+                    </div>
+                </CardContent>
+            </Card>
+
+             <Card>
+                <CardHeader>
+                    <CardTitle>MESY Wallet Management</CardTitle>
+                    <CardDescription>Manage your primary MESY Wallet and spending controls.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-secondary/30 border border-border">
+                        <div className="flex items-center gap-4">
+                            <Wallet className="h-6 w-6 text-primary"/>
+                            <span className="font-semibold">MESY Wallet</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <Label htmlFor="switch-mesy-wallet" className="text-sm text-muted-foreground">
+                                Linked
+                            </Label>
+                            <Switch id="switch-mesy-wallet" checked={true} />
+                        </div>
+                    </div>
+                    <div className="p-4 border rounded-lg">
+                        <Label htmlFor="daily-limit" className="flex items-center gap-2 mb-2"><Settings className="h-4 w-4"/> Daily Spending Limit</Label>
+                        <div className="flex items-center gap-4">
+                            <Input id="daily-limit" type="number" placeholder="e.g., 1000" className="max-w-xs" />
+                            <Button>Set Limit</Button>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-2">Set a limit of 0 for unlimited spending.</p>
                     </div>
                 </CardContent>
             </Card>
