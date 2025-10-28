@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -122,7 +123,7 @@ export default function ArtistsPage() {
                     <TabsTrigger value="songs"><Music className="h-4 w-4 mr-1"/> Songs</TabsTrigger>
                     <TabsTrigger value="music-videos"><Video className="h-4 w-4 mr-1"/> Videos</TabsTrigger>
                     <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1"/> Live</TabsTrigger>
-                    <TabsTrigger value="talent-hub" asChild><Link href="/entertainment/artists/find-talent"><Star className="h-4 w-4 mr-1"/> Talent Hub</Link></TabsTrigger>
+                    <TabsTrigger value="talent-hub" asChild><Link href="/entertainment/artists/talent-hub"><Star className="h-4 w-4 mr-1"/> Talent Hub</Link></TabsTrigger>
                 </TabsList>
                 <TabsContent value="artists" className="mt-4">
                      <Card>
