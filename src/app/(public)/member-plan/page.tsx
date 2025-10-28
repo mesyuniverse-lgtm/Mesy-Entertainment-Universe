@@ -20,7 +20,8 @@ export default function MemberPlanPage() {
           <MembershipTable />
         </div>
         <div className="lg:col-span-2 space-y-8">
-          <div className="relative aspect-video rounded-lg overflow-hidden shadow-xl">
+          <IncomeCalculator />
+           <div className="relative aspect-video rounded-lg overflow-hidden shadow-xl">
               <Image
                   src={PlaceHolderImages.find((img) => img.id === 'member-plan-video')?.imageUrl || ''}
                   alt="Member plan video"
@@ -32,7 +33,6 @@ export default function MemberPlanPage() {
                   <h2 className="text-3xl font-bold text-white" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.9)'}}>The MESY Vision</h2>
               </div>
           </div>
-          <IncomeCalculator />
         </div>
       </div>
       
