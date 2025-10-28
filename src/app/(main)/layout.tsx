@@ -5,7 +5,7 @@ import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Camera } from 'lucide-react';
+import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Camera, Star } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
@@ -110,10 +110,18 @@ export default function MainLayout({
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href={isMember ? "/profile" : "/users"}>
+                      <Link href={isMember ? "/profile" : "/users/profile"}>
                         <UserCircle className="mr-2 h-4 w-4"/>Profile
                       </Link>
                     </DropdownMenuItem>
+                     {!isMember && (
+                      <DropdownMenuItem asChild>
+                        <Link href="/member-plan">
+                          <Star className="mr-2 h-4 w-4 text-primary"/>
+                          <span className="text-primary font-semibold">Upgrade to Member</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuSeparator />
                      <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
                   </DropdownMenuContent>

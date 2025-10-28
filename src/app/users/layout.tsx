@@ -106,6 +106,14 @@ export default function UsersDashboardLayout({
                         <UserCircle className="mr-2 h-4 w-4"/>Profile
                       </Link>
                     </DropdownMenuItem>
+                     {!isMember && (
+                      <DropdownMenuItem asChild>
+                        <Link href="/member-plan">
+                          <Star className="mr-2 h-4 w-4 text-primary"/>
+                          <span className="text-primary font-semibold">Upgrade to Member</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    )}
                     <DropdownMenuSeparator />
                      <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
                   </DropdownMenuContent>
