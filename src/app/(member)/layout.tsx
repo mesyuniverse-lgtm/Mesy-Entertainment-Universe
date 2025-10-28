@@ -1,10 +1,11 @@
+
 'use client';
 
 import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, History, MessageCircle, Store, ShoppingBasket, Hammer, Cloud, Package, Orbit } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, HandCoins, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, History, MessageCircle, Store, ShoppingBasket, Hammer, Cloud, Package, Orbit, Shirt } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -27,6 +28,7 @@ const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'MESY Universe', href: '/universe', icon: Orbit },
   { name: 'Profile', href: '/profile', icon: UserCircle },
+  { name: 'Customize', href: '/customize', icon: Shirt },
   { name: 'Inventory', href: '/inventory', icon: Package },
   { name: 'Timeline', href: '/timeline', icon: History },
   { name: 'Community', href: '/community', icon: MessageCircle },
@@ -230,3 +232,5 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
 };
 
 export default MemberLayout;
+
+    
