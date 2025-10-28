@@ -10,12 +10,12 @@ import { cn } from "@/lib/utils";
 import React from "react";
 
 const presets = [
-    { name: 'Default', image: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
-    { name: 'Preset 1', image: "https://picsum.photos/seed/preset1/100/100" },
-    { name: 'Preset 2', image: "https://picsum.photos/seed/preset2/100/100" },
-    { name: 'Preset 3', image: "https://picsum.photos/seed/preset3/100/100" },
-    { name: 'Preset 4', image: "https://picsum.photos/seed/preset4/100/100" },
-    { name: 'Preset 5', image: "https://picsum.photos/seed/preset5/100/100" },
+    { name: 'Archer', image: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
+    { name: 'Knight', image: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
+    { name: 'Fighter', image: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
+    { name: 'Explorer', image: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
+    { name: 'Dragonborn', image: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
+    { name: 'Silhouette', image: PlaceHolderImages.find(i => i.id === 'fighter-silhouette')?.imageUrl },
 ];
 
 const customizationOptions = [
