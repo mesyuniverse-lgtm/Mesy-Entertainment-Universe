@@ -31,6 +31,10 @@ export default function MemberProfilePage() {
         { name: 'Draconis', avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
         { name: 'Valerius', avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
     ];
+
+    const currentDownline = 1250;
+    const nextLevelGoal = 2000;
+    const progressPercentage = (currentDownline / nextLevelGoal) * 100;
     
     return (
         <div className="bg-background/90 text-foreground">
@@ -68,9 +72,14 @@ export default function MemberProfilePage() {
                                         <Button variant="secondary" size="icon"><MoreHorizontal /></Button>
                                     </div>
                                 </div>
-                                 <div className="mt-3 relative">
-                                    <div className="w-full bg-destructive rounded-full h-6 flex items-center px-4">
-                                        <p className="font-bold text-destructive-foreground text-sm">Downline: 1,250</p>
+                                 <div className="mt-3 relative w-full bg-white/20 rounded-full h-6 overflow-hidden border border-border">
+                                    <div 
+                                        className="bg-destructive h-full rounded-full flex items-center justify-center"
+                                        style={{ width: `${progressPercentage}%` }}
+                                    >
+                                    </div>
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <p className="font-bold text-white text-sm" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.8)'}}>Downline: {currentDownline.toLocaleString()} / {nextLevelGoal.toLocaleString()}</p>
                                     </div>
                                 </div>
                             </div>
