@@ -30,8 +30,6 @@ const sidebarNavItems = [
   { name: 'Profile', href: '/profile', icon: UserCircle },
   { name: 'Timeline', href: '/timeline', icon: History },
   { name: 'Community', href: '/community', icon: MessageCircle },
-  { name: 'Customize', href: '/customize', icon: Shirt },
-  { name: 'Bag', href: '/bag', icon: ShoppingBasket },
   { name: 'Inventory', href: '/inventory', icon: Package },
   { name: 'Cloud', href: '/cloud', icon: Cloud },
   { name: 'Build', href: '/build', icon: Hammer },
