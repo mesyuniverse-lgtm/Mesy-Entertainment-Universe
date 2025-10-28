@@ -1,7 +1,9 @@
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv } from "lucide-react";
+
+import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
+import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export default function EntertainmentPage() {
 
@@ -62,6 +64,13 @@ export default function EntertainmentPage() {
             <CardContent className="flex-grow">
               <CardDescription>{section.description}</CardDescription>
             </CardContent>
+            <CardFooter>
+              <Button asChild className="w-full" disabled={section.comingSoon}>
+                <Link href={section.href}>
+                  Explore <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+            </CardFooter>
           </Card>
         ))}
       </div>
