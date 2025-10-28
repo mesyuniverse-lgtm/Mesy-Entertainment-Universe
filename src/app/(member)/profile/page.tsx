@@ -1,22 +1,28 @@
-
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Camera, Clapperboard, Edit, Ellipsis, HandCoins, Heart, Image as ImageIcon, MapPin, MessageCircle, MoreHorizontal, Music, Rss, Search, Share2, Shield, Video, Users as UsersIcon, Briefcase, CheckCircle2, XCircle, CreditCard, QrCode } from "lucide-react";
+import { Camera, Edit, MoreHorizontal, Package, Shield, MessageCircle, Heart, Share2, Star, Gift, Gem, User, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 
 export default function MemberProfilePage() {
-    const coverImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-1');
-    const profileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
-    const featuredImage = PlaceHolderImages.find(i => i.id === 'explorer-1');
-    const galleryImages = PlaceHolderImages.slice(2, 8);
+    const coverImage = PlaceHolderImages.find(i => i.id === 'fantasy-castle-1');
+    const profileImage = { imageUrl: "https://picsum.photos/seed/thisaya/400/400" }; 
+    const timelinePosts = [
+    { 
+        type: 'image',
+        user: { name: 'Thisaya', avatar: profileImage?.imageUrl },
+        time: '5 mins ago',
+        text: 'Hello , my friens 😁',
+        media: null,
+        likes: 128,
+        comments: 32,
+    }];
     const friends = [
         { name: 'Kael', avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
         { name: 'Zane', avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
@@ -25,24 +31,13 @@ export default function MemberProfilePage() {
         { name: 'Draconis', avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
         { name: 'Valerius', avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
     ];
-
-    const timelinePosts = [
-    { 
-        type: 'image',
-        user: { name: 'Aria\'s Adventures', avatar: profileImage?.imageUrl },
-        time: '5 days ago',
-        text: 'The view from the Sky Citadel was absolutely breathtaking today! #MESYUniverse #SkyCitadel',
-        media: PlaceHolderImages.find(i => i.id === 'fantasy-castle-1'),
-        likes: 128,
-        comments: 32,
-    }];
     
     return (
         <div className="bg-background/90 text-foreground">
             {/* Profile Header */}
-            <header className="bg-card shadow-sm">
-                <div className="container px-0 lg:px-8">
-                    <div className="relative h-48 md:h-64 lg:h-80 rounded-b-lg overflow-hidden">
+            <header className="bg-card shadow-sm rounded-lg">
+                <div className="container px-0 lg:px-4">
+                    <div className="relative h-48 md:h-64 rounded-t-lg overflow-hidden">
                         {coverImage && <Image src={coverImage.imageUrl} alt="Cover Photo" layout="fill" objectFit="cover" />}
                         <div className="absolute inset-0 bg-black/20"></div>
                         <Button variant="secondary" className="absolute bottom-4 right-4">
@@ -51,34 +46,45 @@ export default function MemberProfilePage() {
                         </Button>
                     </div>
                     <div className="px-4 -mt-16 sm:-mt-20">
-                        <div className="flex flex-col sm:flex-row items-center sm:items-end sm:gap-6">
-                            <div className="relative">
-                                <Avatar className="h-32 w-32 md:h-40 md:w-40 border-4 border-background shadow-lg">
+                        <div className="flex flex-col sm:flex-row items-start sm:gap-6">
+                            <div className="relative shrink-0">
+                                <Avatar className="h-32 w-32 md:h-40 md:w-40 border-4 border-card shadow-lg">
                                     <AvatarImage src={profileImage?.imageUrl} />
-                                    <AvatarFallback>A</AvatarFallback>
+                                    <AvatarFallback>T</AvatarFallback>
                                 </Avatar>
                                 <Button size="icon" variant="secondary" className="absolute bottom-2 right-2 h-8 w-8 rounded-full"><Camera className="h-4 w-4"/></Button>
                             </div>
-                            <div className="flex-grow pt-4 text-center sm:text-left">
-                                <h1 className="text-2xl md:text-3xl font-bold">Aria (Member)</h1>
-                                <p className="text-muted-foreground">5.1K followers • 2.1K following</p>
-                            </div>
-                            <div className="flex gap-2 mt-4 sm:mt-0">
-                                <Button><Shield className="mr-2 h-4 w-4"/> Member Dashboard</Button>
-                                <Button variant="secondary"><Edit className="mr-2 h-4 w-4"/> Edit Profile</Button>
-                                <Button variant="secondary" size="icon"><Ellipsis /></Button>
+                            <div className="w-full pt-4">
+                                <div className="flex flex-col sm:flex-row justify-between sm:items-end">
+                                    <div className="text-center sm:text-left">
+                                        <p className="text-sm text-muted-foreground">Member ID:001  Level.1</p>
+                                        <h1 className="text-2xl md:text-3xl font-bold">Membername : Thisaya</h1>
+                                        <p className="text-sm text-muted-foreground">Income: $1,213 | Fee (3%): $37.5</p>
+                                    </div>
+                                    <div className="flex gap-2 mt-4 sm:mt-0 justify-center">
+                                        <Button variant="secondary"><Package className="mr-2 h-4 w-4"/> Bag</Button>
+                                        <Button asChild><Link href="/customize"><Shield className="mr-2 h-4 w-4"/> Customize</Link></Button>
+                                        <Button variant="secondary"><Edit className="mr-2 h-4 w-4"/> Edit Profile</Button>
+                                        <Button variant="secondary" size="icon"><MoreHorizontal /></Button>
+                                    </div>
+                                </div>
+                                 <div className="mt-3 relative">
+                                    <div className="w-full bg-destructive rounded-full h-6 flex items-center px-4">
+                                        <p className="font-bold text-destructive-foreground text-sm">Downline: 1,250</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <hr className="mt-4 border-border"/>
-                    <Tabs defaultValue="posts" className="mt-1 px-4">
+                    <Tabs defaultValue="posts" className="px-4">
                         <TabsList>
                             <TabsTrigger value="posts">Posts</TabsTrigger>
                             <TabsTrigger value="about">About</TabsTrigger>
-                            <TabsTrigger value="reels">Reels</TabsTrigger>
+                            <TabsTrigger value="friends">Friends</TabsTrigger>
                             <TabsTrigger value="photos">Photos</TabsTrigger>
                             <TabsTrigger value="groups">Groups</TabsTrigger>
-                            <TabsTrigger value="events">Events</TabsTrigger>
+                            <TabsTrigger value="more">More</TabsTrigger>
                         </TabsList>
                     </Tabs>
                 </div>
@@ -91,28 +97,11 @@ export default function MemberProfilePage() {
                     <aside className="lg:col-span-5 space-y-6">
                         <Card>
                             <CardHeader><CardTitle>Intro</CardTitle></CardHeader>
-                            <CardContent className="space-y-4 text-center">
-                                <p>Explorer of Aethelgard and chronicler of its wonders. Join me on my adventures!</p>
-                                <Button variant="secondary" className="w-full">Edit Bio</Button>
-                                <div className="space-y-3 text-left pt-4">
-                                    <div className="flex items-center gap-3"><UsersIcon className="h-5 w-5 text-muted-foreground"/><p>Profile: Digital Creator</p></div>
-                                    <div className="flex items-center gap-3"><Briefcase className="h-5 w-5 text-muted-foreground"/><p>Member of the Wanderers Guild</p></div>
-                                    <div className="flex items-center gap-3"><MapPin className="h-5 w-5 text-muted-foreground"/><p>Lives in the Sky Citadel</p></div>
-                                </div>
+                            <CardContent className="space-y-3">
+                                <Button variant="secondary" className="w-full">Add Bio</Button>
                                 <Button variant="secondary" className="w-full">Edit Details</Button>
-                            </CardContent>
-                        </Card>
-                        <Card>
-                             <CardHeader className="flex flex-row justify-between items-center">
-                                <CardTitle>Photos</CardTitle>
-                                <Button variant="link">See All Photos</Button>
-                            </CardHeader>
-                            <CardContent className="grid grid-cols-3 gap-2">
-                                {galleryImages.map((img, idx) => img && (
-                                    <div key={idx} className="aspect-square relative rounded-md overflow-hidden">
-                                        <Image src={img.imageUrl} alt={img.description} fill objectFit="cover" className="hover:scale-110 transition-transform duration-300"/>
-                                    </div>
-                                ))}
+                                <Button variant="secondary" className="w-full">Add Hobbies</Button>
+                                <Button variant="secondary" className="w-full">Add Featured</Button>
                             </CardContent>
                         </Card>
                          <Card>
@@ -139,23 +128,6 @@ export default function MemberProfilePage() {
 
                     {/* Right Content */}
                     <main className="lg:col-span-7 space-y-6">
-                        <Card>
-                            <CardContent className="p-3">
-                                <div className='flex gap-3 items-center'>
-                                    <Avatar>
-                                        <AvatarImage src={profileImage?.imageUrl} />
-                                    </Avatar>
-                                    <Textarea placeholder="What's on your mind, Aria?" className="bg-muted border-0 focus-visible:ring-1 focus-visible:ring-primary flex-grow rounded-full px-4 py-2 h-10 resize-none" />
-                                </div>
-                                <hr className="my-3 border-border"/>
-                                <div className='flex justify-around items-center'>
-                                    <Button variant="ghost" className="flex-1"><Video className="mr-2 h-5 w-5 text-red-500"/> Live Video</Button>
-                                    <Button variant="ghost" className="flex-1"><ImageIcon className="mr-2 h-5 w-5 text-green-500"/> Photo/Video</Button>
-                                    <Button variant="ghost" className="flex-1"><Clapperboard className="mr-2 h-5 w-5 text-purple-500"/> Reel</Button>
-                                </div>
-                            </CardContent>
-                        </Card>
-
                         {timelinePosts.map((post, index) => (
                             <Card key={index} className="overflow-hidden">
                                 <CardHeader className='p-4'>
@@ -197,5 +169,3 @@ export default function MemberProfilePage() {
         </div>
     );
 }
-
-    

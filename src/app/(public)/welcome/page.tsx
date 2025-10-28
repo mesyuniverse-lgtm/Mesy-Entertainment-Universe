@@ -39,9 +39,9 @@ export default function WelcomePage() {
     <div className="flex flex-col items-center">
       <section className="relative w-full h-[70vh] md:h-[85vh] flex items-center justify-center text-center text-white overflow-hidden">
         <Image
-          src={PlaceHolderImages.find((img) => img.id === 'fantasy-castle-1')?.imageUrl || ''}
-          alt={PlaceHolderImages.find((img) => img.id === 'fantasy-castle-1')?.description || ''}
-          data-ai-hint={PlaceHolderImages.find((img) => img.id === 'fantasy-castle-1')?.imageHint || ''}
+          src={PlaceHolderImages.find((img) => img.id === 'fantasy-landscape-5')?.imageUrl || ''}
+          alt={PlaceHolderImages.find((img) => img.id === 'fantasy-landscape-5')?.description || ''}
+          data-ai-hint={PlaceHolderImages.find((img) => img.id === 'fantasy-landscape-5')?.imageHint || ''}
           fill
           className="object-cover"
           priority
