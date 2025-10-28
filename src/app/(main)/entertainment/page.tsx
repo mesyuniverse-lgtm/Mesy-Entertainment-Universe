@@ -27,7 +27,7 @@ export default function EntertainmentPage() {
       description: "Explore games, watch live streams, and see behind-the-scenes content. Subscribe with MESY Coins.",
       icon: <div className="flex gap-2"><Gamepad2 className="text-primary"/><Video className="text-primary"/><Tv className="text-primary"/><Mic className="text-primary"/></div>,
       href: "/entertainment/games",
-      comingSoon: true,
+      comingSoon: false,
     },
     {
       title: "Lifestyle & Venues",
