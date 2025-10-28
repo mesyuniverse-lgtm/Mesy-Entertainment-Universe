@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Clapperboard, Video, UserPlus, Rss, UsersRound, CalendarClock, Crown, Gift, Users, UserCheck, Mic, Star, Send, Heart, Share2, Save, BadgeCent } from "lucide-react";
+import { Search, Clapperboard, Video, UserPlus, Rss, UsersRound, Home, Crown, Gift, Users, UserCheck, Mic, Star, Send, Heart, Share2, Save, BadgeCent } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -148,7 +148,7 @@ export default function LivePage() {
                             <TabsTrigger value="groups" asChild>
                                 <Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link>
                             </TabsTrigger>
-                            <TabsTrigger value="timeline" asChild><Link href="/timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</Link></TabsTrigger>
+                            <TabsTrigger value="home" asChild><Link href="/home"><Home className="h-4 w-4 mr-1 sm:hidden"/>Home</Link></TabsTrigger>
                         </TabsList>
                         <TabsContent value="live" className="mt-4">
                             <Card className="aspect-[9/16] max-h-[80vh] w-full max-w-md mx-auto relative overflow-hidden shadow-2xl shadow-primary/20">

@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { PlusCircle, Search, Users, Shield, Video, Clapperboard, UserPlus, Rss, UsersRound, CalendarClock, Globe, Lock, Mic, Send, Heart, Gift, BadgeCent, Star, Share2, Save } from "lucide-react";
+import { PlusCircle, Search, Users, Shield, Video, Clapperboard, UserPlus, Rss, UsersRound, Home, Globe, Lock, Mic, Send, Heart, Gift, BadgeCent, Star, Share2, Save } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -121,7 +121,7 @@ export default function GroupsPage() {
                             <TabsTrigger value="groups" asChild>
                                 <Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link>
                             </TabsTrigger>
-                            <TabsTrigger value="timeline" asChild><Link href="/timeline"><CalendarClock className="h-4 w-4 mr-1 sm:hidden"/>Timeline</Link></TabsTrigger>
+                            <TabsTrigger value="home" asChild><Link href="/home"><Home className="h-4 w-4 mr-1 sm:hidden"/>Home</Link></TabsTrigger>
                         </TabsList>
                         <TabsContent value="groups" className="mt-4">
                             <Card className="aspect-[9/16] max-h-[80vh] w-full max-w-md mx-auto relative overflow-hidden shadow-2xl shadow-primary/20">
