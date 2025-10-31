@@ -1,7 +1,7 @@
 
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv, ArrowRight, Sparkles } from "lucide-react";
+import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv, ArrowRight, Sparkles, ToyBrick, Smile, Film } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -41,6 +41,13 @@ export default function EntertainmentPage() {
       description: "Sing your heart out with a vast library of songs. Join public rooms or create private sessions with friends.",
       icon: <div className="flex gap-2"><Mic className="text-primary"/><Music className="text-primary"/><Tv className="text-primary"/></div>,
       href: "/entertainment/karaoke",
+      comingSoon: false,
+    },
+    {
+      title: "Kids Zone",
+      description: "A safe and fun space for our youngest explorers with curated videos, games, and creative activities.",
+      icon: <div className="flex gap-2"><ToyBrick className="text-primary"/><Smile className="text-primary"/><Film className="text-primary"/></div>,
+      href: "/entertainment/kids",
       comingSoon: false,
     },
     {
