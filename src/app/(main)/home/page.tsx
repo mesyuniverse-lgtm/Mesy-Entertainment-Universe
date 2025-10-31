@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUser } from "@/firebase";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { ArrowRight, Lock } from "lucide-react";
+import { ArrowRight, Lock, Users } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -26,6 +26,13 @@ export default function HomePage() {
             description: "Music, Video, and Artist showcases. Login to save and interact.",
             href: "/entertainment",
             image: PlaceHolderImages.find((i) => i.id === "entertainment-preview"),
+            locked: false,
+        },
+        {
+            title: "The Connection",
+            description: "Find friends, companions, personal assistants, and professional services.",
+            href: "/connections",
+            image: PlaceHolderImages.find((i) => i.id === "fantasy-landscape-1"),
             locked: false,
         },
         {

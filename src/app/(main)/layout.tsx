@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -29,6 +30,7 @@ export default function MainLayout({
   const navItems = [
     { name: 'Socialive', href: '/socialive' },
     { name: 'Entertainment', href: '/entertainment' },
+    { name: 'The Connection', href: '/connections' },
     { name: 'AI Hub', href: '/ai-hub' },
     { name: 'Shopping Hub', href: '/shopping' },
     { name: 'Member Zones', href: '/dashboard' },
