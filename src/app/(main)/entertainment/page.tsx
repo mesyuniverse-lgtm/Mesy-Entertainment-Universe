@@ -12,7 +12,7 @@ export default function EntertainmentPage() {
       title: "Artists & Music",
       description: "Discover new music, videos, and live streams. Promote your own brand, sound, and host events.",
       icon: <div className="flex gap-2"><Music className="text-primary"/><Video className="text-primary"/><Mic className="text-primary"/><Tv className="text-primary"/></div>,
-      href: "/entertainment/artists",
+      href: "/entertainment/showcase",
       comingSoon: false,
     },
     {

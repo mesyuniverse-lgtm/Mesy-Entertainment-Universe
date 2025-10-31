@@ -2,7 +2,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Music, Video, Mic, Tv, Search, Users, Star, Clapperboard, BadgeInfo, PlayCircle } from "lucide-react";
+import { Music, Video, Mic, Tv, Search, Users, Star, Clapperboard, BadgeInfo, PlayCircle, Sparkles } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -117,12 +117,13 @@ export default function ArtistsPage() {
                 .animate-marquee2 { animation: marquee2 30s linear infinite; }
             `}</style>
             
-            <Tabs defaultValue="artists" className="w-full">
-                <TabsList className="grid w-full grid-cols-5">
+            <Tabs defaultValue="showcase" className="w-full">
+                <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 h-auto">
+                    <TabsTrigger value="showcase" asChild><Link href="/entertainment/showcase"><Sparkles className="h-4 w-4 mr-1"/>Showcase</Link></TabsTrigger>
+                    <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1"/>Live</TabsTrigger>
                     <TabsTrigger value="artists"><Users className="h-4 w-4 mr-1"/> Artists</TabsTrigger>
                     <TabsTrigger value="songs"><Music className="h-4 w-4 mr-1"/> Songs</TabsTrigger>
-                    <TabsTrigger value="music-videos"><Video className="h-4 w-4 mr-1"/> Videos</TabsTrigger>
-                    <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1"/> Live</TabsTrigger>
+                    <TabsTrigger value="videos"><Video className="h-4 w-4 mr-1"/> Videos</TabsTrigger>
                     <TabsTrigger value="talent-hub" asChild><Link href="/entertainment/artists/talent-hub"><Star className="h-4 w-4 mr-1"/> Talent Hub</Link></TabsTrigger>
                 </TabsList>
                 <TabsContent value="artists" className="mt-4">
