@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { PlusCircle, Search, Star, HandCoins, Users, MapPin, BadgeCent, CheckCircle2, Clock, FileText, Send, XCircle, Sparkles, Clapperboard, Music, Video, Mic, Palette } from "lucide-react";
+import { PlusCircle, Search, Star, HandCoins, Users, MapPin, BadgeCent, CheckCircle2, Clock, FileText, Send, XCircle, Sparkles, Clapperboard, Music, Video, Mic, Palette, Drama, Brush, Film } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -49,13 +49,13 @@ const selectedQuest = jobQuests[0];
 const applicantStatuses = {
     notApplied: {
         text: 'Submit Your Portfolio',
-        buttonVariant: 'default',
+        buttonVariant: 'default' as 'default',
         icon: <Send className="mr-2 h-4 w-4"/>,
         alert: null
     },
     pending: {
         text: 'Application Sent - Pending Review',
-        buttonVariant: 'secondary',
+        buttonVariant: 'secondary' as 'secondary',
         icon: <Clock className="mr-2 h-4 w-4"/>,
         alert: <Alert variant="default" className="mt-4 bg-blue-500/10 border-blue-500/30">
                 <AlertTitle className="text-blue-400">Application Submitted</AlertTitle>
@@ -64,7 +64,7 @@ const applicantStatuses = {
     },
     approved: {
         text: 'Approved - Contact Client',
-        buttonVariant: 'default',
+        buttonVariant: 'default' as 'default',
         icon: <CheckCircle2 className="mr-2 h-4 w-4"/>,
         alert: <Alert variant="default" className="mt-4 bg-green-500/10 border-green-500/30">
                 <AlertTitle className="text-green-400">Congratulations!</AlertTitle>
@@ -73,7 +73,7 @@ const applicantStatuses = {
     },
     rejected: {
         text: 'Position Filled',
-        buttonVariant: 'destructive',
+        buttonVariant: 'destructive' as 'destructive',
         icon: <XCircle className="mr-2 h-4 w-4"/>,
         alert: <Alert variant="destructive" className="mt-4">
                 <AlertTitle>Position Filled</AlertTitle>
@@ -81,6 +81,14 @@ const applicantStatuses = {
             </Alert>
     }
 };
+
+const categories = [
+    { name: 'Performing Arts', icon: <Drama className="h-5 w-5 text-red-400"/>, sub: 'Actors, Dancers' },
+    { name: 'Music & Audio', icon: <Music className="h-5 w-5 text-blue-400"/>, sub: 'Singers, DJs, Producers' },
+    { name: 'Visual Arts', icon: <Brush className="h-5 w-5 text-yellow-400"/>, sub: 'Painters, Illustrators' },
+    { name: 'Film & Video', icon: <Film className="h-5 w-5 text-purple-400"/>, sub: 'Directors, Editors' },
+    { name: 'Design', icon: <Palette className="h-5 w-5 text-green-400"/>, sub: 'Graphic, 3D Modeler' },
+];
 
 // You can change this to test different states
 const currentApplicantStatus = applicantStatuses.notApplied;
@@ -136,10 +144,26 @@ export default function PostJobPage() {
 
                         {/* Left: Quest List */}
                         <aside className="lg:col-span-4 space-y-4">
-                            <div className="relative">
+                             <div className="relative">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                <Input placeholder="Search for jobs, skills, genres..." className="pl-10" />
+                                <Input placeholder="Search talent by skills, genres..." className="pl-10" />
                             </div>
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Categories</CardTitle>
+                                </CardHeader>
+                                <CardContent className="space-y-3">
+                                    {categories.map((cat, index) => (
+                                        <Button key={index} variant="ghost" className="w-full justify-start h-auto">
+                                            <div className="p-2 bg-secondary rounded-md mr-3">{cat.icon}</div>
+                                            <div>
+                                                <p className="font-semibold text-base text-left">{cat.name}</p>
+                                                <p className="text-xs text-muted-foreground text-left">{cat.sub}</p>
+                                            </div>
+                                        </Button>
+                                    ))}
+                                </CardContent>
+                            </Card>
                             {jobQuests.map((quest, index) => (
                                 <Card key={index} className="bg-card/50 hover:bg-card/80 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/50">
                                     <CardContent className="p-4 flex gap-4">

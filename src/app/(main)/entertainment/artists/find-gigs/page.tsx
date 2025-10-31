@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Briefcase, Camera, Check, Clock, Coins, Edit, FileText, Filter, MapPin, Search, Star, MessageSquare, Sparkles, Clapperboard, Users, Music, Video, Mic, Palette, Film } from "lucide-react";
+import { Briefcase, Camera, Check, Clock, Coins, Edit, FileText, Filter, MapPin, Search, Star, MessageSquare, Sparkles, Clapperboard, Users, Music, Video, Mic, Palette, Film, Drama, Disc, Brush, PersonStanding } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -69,6 +69,14 @@ const workingStatus = {
 
 const currentWorkStatus = workingStatus.pending;
 
+const categories = [
+    { name: 'Performing Arts', icon: <Drama className="h-5 w-5 text-red-400"/>, sub: 'Actors, Dancers' },
+    { name: 'Music & Audio', icon: <Music className="h-5 w-5 text-blue-400"/>, sub: 'Singers, DJs, Producers' },
+    { name: 'Visual Arts', icon: <Brush className="h-5 w-5 text-yellow-400"/>, sub: 'Painters, Illustrators' },
+    { name: 'Film & Video', icon: <Film className="h-5 w-5 text-purple-400"/>, sub: 'Directors, Editors' },
+    { name: 'Design', icon: <Palette className="h-5 w-5 text-green-400"/>, sub: 'Graphic, 3D Modeler' },
+];
+
 
 export default function FindGigsPage() {
     
@@ -123,6 +131,24 @@ export default function FindGigsPage() {
                                 </div>
                                 <Button variant="outline" size="icon"><Filter /></Button>
                             </div>
+
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Categories</CardTitle>
+                                </CardHeader>
+                                <CardContent className="space-y-3">
+                                    {categories.map((cat, index) => (
+                                        <Button key={index} variant="ghost" className="w-full justify-start h-auto">
+                                            <div className="p-2 bg-secondary rounded-md mr-3">{cat.icon}</div>
+                                            <div>
+                                                <p className="font-semibold text-base text-left">{cat.name}</p>
+                                                <p className="text-xs text-muted-foreground text-left">{cat.sub}</p>
+                                            </div>
+                                        </Button>
+                                    ))}
+                                </CardContent>
+                            </Card>
+
                             {availableGigs.map((gig, index) => (
                                 <Card key={index} className="bg-card/50 hover:bg-card/80 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/50">
                                     <CardContent className="p-4 flex gap-4">
