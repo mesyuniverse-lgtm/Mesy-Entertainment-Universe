@@ -132,6 +132,9 @@ export default function FreelancePage() {
                     <TabsTrigger value="forum" asChild>
                         <Link href="/developer-zone"><MessageSquare className="mr-2 h-4 w-4"/>Forum</Link>
                     </TabsTrigger>
+                     <TabsTrigger value="developers" asChild>
+                        <Link href="/developers"><Code className="mr-2 h-4 w-4"/>Developers</Link>
+                    </TabsTrigger>
                     <TabsTrigger value="quests" asChild>
                          <Link href="/developer-zone/quests"><HandCoins className="mr-2 h-4 w-4"/>Quests (Bounties)</Link>
                     </TabsTrigger>
