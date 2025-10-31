@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { UserPlus, ArrowLeft, UploadCloud } from "lucide-react";
+import { UserPlus, ArrowLeft, KeyRound } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
@@ -49,7 +49,7 @@ export default function CreateArtistProfilePage() {
                             Create Your Artist Profile
                         </CardTitle>
                         <CardDescription>
-                            Establish your identity in the MESY Universe. Share your talents, connect with fans, and find opportunities.
+                            Establish your identity in the MESY Universe. Link your Member ID to verify your status and start connecting.
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
@@ -63,6 +63,12 @@ export default function CreateArtistProfilePage() {
                                 <Input type="file" className="max-w-xs"/>
                                 <p className="text-xs text-muted-foreground">Upload a high-quality image (JPG, PNG). 400x400px recommended.</p>
                             </div>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="member-id" className="flex items-center"><KeyRound className="mr-2 h-4 w-4 text-primary"/>MESY Member ID</Label>
+                            <Input id="member-id" placeholder="Enter your MESY Member ID to connect" />
+                            <p className="text-xs text-muted-foreground">Only verified members can create an Artist Profile. This ensures a safe and trusted community.</p>
                         </div>
                         
                         <div className="space-y-2">
