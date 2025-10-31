@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Briefcase, Camera, Check, Clock, Coins, Edit, FileText, Filter, MapPin, Search, Star, MessageSquare, Sparkles, Clapperboard, Users, Music, Video, Mic } from "lucide-react";
+import { Briefcase, Camera, Check, Clock, Coins, Edit, FileText, Filter, MapPin, Search, Star, MessageSquare, Sparkles, Clapperboard, Users, Music, Video, Mic, Palette, Film } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -23,24 +23,27 @@ const availableGigs = [
         budget: '2,000 MC + Food',
         location: 'Pattaya',
         type: 'Live Music',
+        icon: <Music className="h-4 w-4"/>,
         isNew: true,
     },
     {
-        title: 'Lead Vocalist for Charity Stream',
-        client: 'Gamers for Good',
-        avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl,
-        budget: '5,000 MC',
-        location: 'Remote/Online',
-        type: 'Streaming',
+        title: 'Photographer for Fantasy Wedding Event',
+        client: 'Celestial Events',
+        avatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl,
+        budget: '4,000 MC',
+        location: 'Bangkok',
+        type: 'Photography',
+        icon: <Camera className="h-4 w-4"/>,
         isNew: false,
     },
      {
-        title: 'Resort Lobby Pianist',
-        client: 'Siam Bayshore Resort',
+        title: 'Video Editor for Cinematic Trailer',
+        client: 'Skyward Studios',
         avatar: PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2')?.imageUrl,
-        budget: '3,500 MC / Night',
-        location: 'Pattaya',
-        type: 'Background Music',
+        budget: '3,000 MC / Project',
+        location: 'Remote',
+        type: 'Video Editing',
+        icon: <Film className="h-4 w-4"/>,
         isNew: false,
     }
 ];
@@ -48,9 +51,9 @@ const availableGigs = [
 const selectedGig = availableGigs[0];
 
 const artistProfile = {
-    name: 'Sonya G.',
+    name: 'Creative Professional',
     avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl,
-    tagline: 'Versatile vocalist & guitarist for any occasion.',
+    tagline: 'Multi-disciplinary artist ready for new challenges.',
     rating: 4.9,
     reviews: 88,
     baseRate: '1,500 MC / hour',
@@ -73,12 +76,12 @@ export default function FindGigsPage() {
     <div className="min-h-screen bg-background/90 text-foreground p-4 lg:p-6">
         <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm mb-6">
             <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
-                <span className="mx-4">The Dragon's Flagon Inn is looking for an acoustic performer! 🎸</span>
-                <span className="mx-4">New remote streaming opportunity available with Gamers for Good. 🎮</span>
+                <span className="mx-4">New Gig: The Dragon's Flagon Inn is looking for an acoustic performer! 🎸</span>
+                <span className="mx-4">Skyward Studios is hiring a remote video editor. 🎬</span>
             </div>
             <div className="absolute top-0 animate-marquee2 whitespace-nowrap text-primary font-semibold">
-                <span className="mx-4">The Dragon's Flagon Inn is looking for an acoustic performer! 🎸</span>
-                <span className="mx-4">New remote streaming opportunity available with Gamers for Good. 🎮</span>
+                <span className="mx-4">New Gig: The Dragon's Flagon Inn is looking for an acoustic performer! 🎸</span>
+                <span className="mx-4">Skyward Studios is hiring a remote video editor. 🎬</span>
             </div>
         </div>
         <style jsx>{`
@@ -116,16 +119,15 @@ export default function FindGigsPage() {
                             <div className="flex gap-2">
                                 <div className="relative flex-grow">
                                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                    <Input placeholder="Search gigs..." className="pl-10" />
+                                    <Input placeholder="Search gigs, skills, locations..." className="pl-10" />
                                 </div>
                                 <Button variant="outline" size="icon"><Filter /></Button>
                             </div>
                             {availableGigs.map((gig, index) => (
                                 <Card key={index} className="bg-card/50 hover:bg-card/80 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/50">
                                     <CardContent className="p-4 flex gap-4">
-                                        <Avatar className="h-12 w-12 hidden sm:block">
-                                            <AvatarImage src={gig.avatar} />
-                                            <AvatarFallback>{gig.client.charAt(0)}</AvatarFallback>
+                                        <Avatar className="h-12 w-12 hidden sm:flex items-center justify-center bg-muted">
+                                           {gig.icon}
                                         </Avatar>
                                         <div className="flex-grow">
                                             {gig.isNew && <Badge className="mb-1">New</Badge>}
@@ -163,7 +165,7 @@ export default function FindGigsPage() {
                                     <Alert>
                                         <Briefcase className="h-4 w-4"/>
                                         <AlertTitle>Your Next Step</AlertTitle>
-                                        <AlertDescription>Apply now with your MESY Artist Profile. The client will review your videos and rates before making a decision.</AlertDescription>
+                                        <AlertDescription>Apply now with your MESY Artist Profile. The client will review your portfolio and rates before making a decision.</AlertDescription>
                                     </Alert>
                                 </CardContent>
                                 <Separator />
@@ -180,7 +182,7 @@ export default function FindGigsPage() {
                             <Card>
                                 <CardHeader>
                                     <CardTitle className="flex justify-between items-center">
-                                        <span>Artist Profile</span>
+                                        <span>Creator Profile</span>
                                         <Button variant="ghost" size="icon"><Edit className="h-4 w-4"/></Button>
                                     </CardTitle>
                                     <CardDescription>This is how clients see you.</CardDescription>
@@ -188,7 +190,7 @@ export default function FindGigsPage() {
                                 <CardContent className="text-center">
                                     <Avatar className="h-24 w-24 mx-auto mb-4 border-4 border-primary">
                                         <AvatarImage src={artistProfile.avatar} />
-                                        <AvatarFallback>S</AvatarFallback>
+                                        <AvatarFallback>C</AvatarFallback>
                                     </Avatar>
                                     <h3 className="text-xl font-bold">{artistProfile.name}</h3>
                                     <p className="text-sm text-muted-foreground">{artistProfile.tagline}</p>
@@ -213,7 +215,7 @@ export default function FindGigsPage() {
                                     <Alert variant="default" className="bg-yellow-500/10 border-yellow-500/30 text-yellow-200">
                                         <Clock className="h-4 w-4"/>
                                         <AlertTitle>You've been hired!</AlertTitle>
-                                        <AlertDescription>You are scheduled to perform at The Dragon's Flagon. Please check in upon arrival.</AlertDescription>
+                                        <AlertDescription>You are scheduled for a gig at The Dragon's Flagon. Please check in upon arrival.</AlertDescription>
                                     </Alert>
                                     <Button size="lg" className="w-full mt-4" variant={currentWorkStatus.buttonVariant}>
                                         {currentWorkStatus.icon} {currentWorkStatus.text}

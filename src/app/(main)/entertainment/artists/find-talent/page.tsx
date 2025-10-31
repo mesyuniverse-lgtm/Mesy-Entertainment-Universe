@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { PlusCircle, Search, Star, HandCoins, Users, MapPin, BadgeCent, CheckCircle2, Clock, FileText, Send, XCircle, Sparkles, Clapperboard, Music, Video, Mic } from "lucide-react";
+import { PlusCircle, Search, Star, HandCoins, Users, MapPin, BadgeCent, CheckCircle2, Clock, FileText, Send, XCircle, Sparkles, Clapperboard, Music, Video, Mic, Palette } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -16,20 +16,20 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const jobQuests = [
     {
-        title: 'Live Acoustic Performance for Grand Opening',
+        title: 'Graphic Designer for Guild Logo',
         postedBy: 'The Golden Neko Cafe',
         avatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl,
-        budget: '1,500 - 2,500 MC',
-        location: 'Pattaya, Chonburi',
+        budget: '800 MC',
+        location: 'Remote',
         applicants: 12,
         status: 'Open'
     },
     {
-        title: 'Seeking Vocalist for Fantasy Metal Band',
-        postedBy: 'Dragonforce Tribute',
+        title: 'Seeking Dancers for Music Video',
+        postedBy: 'Starlight Productions',
         avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl,
-        budget: 'Long-term Project',
-        location: 'Remote/Online',
+        budget: 'Project-based',
+        location: 'Pattaya',
         applicants: 5,
         status: 'Open'
     },
@@ -48,27 +48,27 @@ const selectedQuest = jobQuests[0];
 
 const applicantStatuses = {
     notApplied: {
-        text: 'Apply Now',
+        text: 'Submit Your Portfolio',
         buttonVariant: 'default',
         icon: <Send className="mr-2 h-4 w-4"/>,
         alert: null
     },
     pending: {
-        text: 'Application Sent - Pending Approval',
+        text: 'Application Sent - Pending Review',
         buttonVariant: 'secondary',
         icon: <Clock className="mr-2 h-4 w-4"/>,
         alert: <Alert variant="default" className="mt-4 bg-blue-500/10 border-blue-500/30">
                 <AlertTitle className="text-blue-400">Application Submitted</AlertTitle>
-                <AlertDescription>Your profile has been sent to the organizer. You will be notified once a decision has been made.</AlertDescription>
+                <AlertDescription>Your portfolio has been sent to the client. You will be notified once a decision has been made.</AlertDescription>
             </Alert>
     },
     approved: {
-        text: 'Approved - Contact Organizer',
+        text: 'Approved - Contact Client',
         buttonVariant: 'default',
         icon: <CheckCircle2 className="mr-2 h-4 w-4"/>,
         alert: <Alert variant="default" className="mt-4 bg-green-500/10 border-green-500/30">
                 <AlertTitle className="text-green-400">Congratulations!</AlertTitle>
-                <AlertDescription>You have been selected for this opportunity. Please contact the organizer to discuss the final details.</AlertDescription>
+                <AlertDescription>You have been selected for this project. Please contact the client to discuss the final details.</AlertDescription>
             </Alert>
     },
     rejected: {
@@ -77,7 +77,7 @@ const applicantStatuses = {
         icon: <XCircle className="mr-2 h-4 w-4"/>,
         alert: <Alert variant="destructive" className="mt-4">
                 <AlertTitle>Position Filled</AlertTitle>
-                <AlertDescription>Thank you for your interest. The organizer has selected another artist. We encourage you to apply for other opportunities!</AlertDescription>
+                <AlertDescription>Thank you for your interest. The client has selected another creator. We encourage you to apply for other opportunities!</AlertDescription>
             </Alert>
     }
 };
@@ -124,7 +124,7 @@ export default function FindTalentPage() {
                         </div>
                         <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Find Talent</h1>
                         <p className="max-w-2xl mx-auto mt-4 text-muted-foreground">
-                            Post job quests and discover the perfect artist for your event or project.
+                            Post job quests and discover the perfect creator for your event or project.
                         </p>
                         <Button size="lg" className="mt-6">
                             <PlusCircle className="mr-2 h-5 w-5"/> Create Job Quest
@@ -138,7 +138,7 @@ export default function FindTalentPage() {
                         <aside className="lg:col-span-4 space-y-4">
                             <div className="relative">
                                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                <Input placeholder="Search for gigs, locations, genres..." className="pl-10" />
+                                <Input placeholder="Search for jobs, skills, genres..." className="pl-10" />
                             </div>
                             {jobQuests.map((quest, index) => (
                                 <Card key={index} className="bg-card/50 hover:bg-card/80 transition-colors cursor-pointer border-2 border-transparent hover:border-primary/50">
@@ -182,25 +182,25 @@ export default function FindTalentPage() {
                                 <Separator />
                                 <CardContent className="p-6 grid md:grid-cols-2 gap-6">
                                     <div className="space-y-4">
-                                        <h3 className="font-semibold text-lg">Job Details</h3>
-                                        <p className="text-muted-foreground">We are seeking a talented acoustic guitarist/singer for the grand opening of our new fantasy-themed cafe. The event will be a cozy, evening affair. We need someone who can create a magical and welcoming atmosphere. The performance will be for 2 hours with a 15-minute break.</p>
+                                        <h3 className="font-semibold text-lg">Project Details</h3>
+                                        <p className="text-muted-foreground">We're opening a new fantasy-themed cafe and need a unique, charming logo. We're looking for a design that is modern yet captures a sense of magic and coziness. The main element should be a "Golden Neko" (lucky cat).</p>
                                         <div className="space-y-2">
                                             <p className="flex items-center gap-2"><MapPin className="h-4 w-4 text-primary"/> <strong>Location:</strong> {selectedQuest.location}</p>
-                                            <p className="flex items-center gap-2"><BadgeCent className="h-4 w-4 text-primary"/> <strong>Compensation:</strong> {selectedQuest.budget} + Food & Drinks</p>
-                                            <p className="flex items-center gap-2"><Users className="h-4 w-4 text-primary"/> <strong>Age Requirement:</strong> 20+</p>
+                                            <p className="flex items-center gap-2"><BadgeCent className="h-4 w-4 text-primary"/> <strong>Compensation:</strong> {selectedQuest.budget}</p>
+                                            <p className="flex items-center gap-2"><Palette className="h-4 w-4 text-primary"/> <strong>Category:</strong> Graphic Design</p>
                                         </div>
                                     </div>
                                     <div className="space-y-4">
                                         <h3 className="font-semibold text-lg">Requirements</h3>
                                         <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                                            <li>Genre: Folk, Fantasy, Instrumental, Pop</li>
-                                            <li>Must have own equipment (Guitar, Mic, small amp)</li>
-                                            <li>Punctual and professional demeanor</li>
-                                            <li>Ability to take song requests is a plus</li>
+                                            <li>Proven experience in logo design & branding.</li>
+                                            <li>Portfolio showcasing relevant styles.</li>
+                                            <li>Ability to provide files in vector format (AI, SVG).</li>
+                                            <li>Good communication and ability to iterate on feedback.</li>
                                         </ul>
 
                                         <h3 className="font-semibold text-lg pt-4">How to Apply</h3>
-                                        <p className="text-muted-foreground">Please submit your MESY Profile along with a link to a performance video (YouTube, Facebook, or TikTok). We will review all applications and contact selected artists for a short online interview.</p>
+                                        <p className="text-muted-foreground">Please submit your MESY Profile along with a link to your online portfolio (e.g., Behance, Dribbble, ArtStation). We will review all applications and contact selected artists.</p>
                                     </div>
                                 </CardContent>
                                 <Separator />
