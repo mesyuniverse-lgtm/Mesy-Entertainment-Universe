@@ -7,9 +7,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Clapperboard, Video, UserPlus, Rss, UsersRound, Home, Crown, Gift, Users, UserCheck, Mic, Star, Send, Heart, Share2, Save, BadgeCent, Sparkles, Music } from "lucide-react";
+import { Search, Clapperboard, Video, UserPlus, Rss, UsersRound, Home, Crown, Gift, Users, UserCheck, Mic, Star, Send, Heart, Share2, Save, BadgeCent, Sparkles, Music, Ticket, Calendar } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { Separator } from "@/components/ui/separator";
 
 
 export default function LivePerformancePage() {
@@ -27,6 +28,17 @@ export default function LivePerformancePage() {
     const liveStreamImage = PlaceHolderImages.find(i => i.id === 'socialive-preview');
     const liveStreamerAvatar = PlaceHolderImages.find(i => i.id === 'female-archer-1');
     const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
+    
+    const upcomingShows = [
+        { artist: 'Aria', date: '2025-12-25 20:00', price: 150, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
+        { artist: 'Kael', date: '2025-12-31 22:00', price: 200, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
+    ];
+
+    const ticketHolders = [
+        { name: 'Zane', avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
+        { name: 'Lyra', avatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
+        { name: 'Echo', avatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl },
+    ]
     
     return (
         <div className="min-h-screen bg-background text-foreground p-4 lg:p-6">
@@ -219,6 +231,46 @@ export default function LivePerformancePage() {
                                    </Button>
                                 </CardContent>
                             </Card>
+
+                            <Card className="bg-card/50">
+                                <CardHeader>
+                                    <CardTitle className="text-base flex items-center gap-2"><Calendar />Upcoming Schedule</CardTitle>
+                                    <CardDescription>Book your spot for exclusive live events.</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                    {upcomingShows.map((show, index) => (
+                                        <div key={index} className="space-y-2">
+                                            <div className="flex items-center gap-3">
+                                                <Avatar className="h-10 w-10">
+                                                    <AvatarImage src={show.avatar} />
+                                                    <AvatarFallback>{show.artist.charAt(0)}</AvatarFallback>
+                                                </Avatar>
+                                                <div className="flex-grow">
+                                                    <p className="font-semibold text-sm">{show.artist}'s Concert</p>
+                                                    <p className="text-xs text-muted-foreground">{new Date(show.date).toLocaleString()}</p>
+                                                </div>
+                                            </div>
+                                            <Button className="w-full"><Ticket className="mr-2 h-4 w-4"/> Book Ticket - {show.price} MC</Button>
+                                            {index < upcomingShows.length - 1 && <Separator />}
+                                        </div>
+                                    ))}
+                                </CardContent>
+                            </Card>
+
+                            <Card className="bg-card/50">
+                                <CardHeader>
+                                    <CardTitle className="text-base flex items-center gap-2"><Users />Recent Ticket Holders</CardTitle>
+                                </CardHeader>
+                                <CardContent className="flex flex-wrap gap-2">
+                                     {ticketHolders.map((holder, index) => (
+                                         <Avatar key={index} className="h-10 w-10 border-2 border-primary/50">
+                                            <AvatarImage src={holder.avatar} />
+                                            <AvatarFallback>{holder.name.charAt(0)}</AvatarFallback>
+                                        </Avatar>
+                                     ))}
+                                </CardContent>
+                            </Card>
+
                         </aside>
 
                     </div>
