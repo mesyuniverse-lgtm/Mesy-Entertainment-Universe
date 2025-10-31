@@ -142,7 +142,9 @@ export default function ArtistsPage() {
                                 <CardDescription>Build your brand, share your music, and connect with fans. Create a profile for your solo act or your band.</CardDescription>
                             </CardHeader>
                             <CardContent>
-                                <Button className="w-full">Get Started</Button>
+                                <Button className="w-full" asChild>
+                                    <Link href="/entertainment/artists/create-profile">Get Started</Link>
+                                </Button>
                             </CardContent>
                         </Card>
 
