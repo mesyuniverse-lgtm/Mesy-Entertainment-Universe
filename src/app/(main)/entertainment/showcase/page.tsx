@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Heart, MessageCircle, Share2, Gem, Star, Gift, MoreHorizontal, Video, Music, Sparkles, Clapperboard, Users } from "lucide-react";
+import { Heart, MessageCircle, Share2, Gem, Star, Gift, MoreHorizontal, Video, Music, Sparkles, Clapperboard, Users, Mic } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Link from 'next/link';
@@ -73,7 +73,7 @@ export default function ShowcasePage() {
             <Tabs defaultValue="showcase" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 h-auto">
                     <TabsTrigger value="showcase" asChild><Link href="/entertainment/showcase"><Sparkles className="h-4 w-4 mr-1"/>Showcase</Link></TabsTrigger>
-                    <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1"/>Live</TabsTrigger>
+                    <TabsTrigger value="live" asChild><Link href="/entertainment/artists/live-performance"><Mic className="h-4 w-4 mr-1"/>Live performance</Link></TabsTrigger>
                     <TabsTrigger value="artists" asChild><Link href="/entertainment/artists"><Users className="h-4 w-4 mr-1"/> Artists</Link></TabsTrigger>
                     <TabsTrigger value="songs"><Music className="h-4 w-4 mr-1"/> Songs</TabsTrigger>
                     <TabsTrigger value="videos"><Video className="h-4 w-4 mr-1"/> Videos</TabsTrigger>

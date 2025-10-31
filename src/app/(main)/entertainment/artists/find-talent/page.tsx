@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { PlusCircle, Search, Star, HandCoins, Users, MapPin, BadgeCent, CheckCircle, Clock, FileText, Send, XCircle, Sparkles, Clapperboard, Music, Video } from "lucide-react";
+import { PlusCircle, Search, Star, HandCoins, Users, MapPin, BadgeCent, CheckCircle2, Clock, FileText, Send, XCircle, Sparkles, Clapperboard, Music, Video, Mic } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -65,7 +65,7 @@ const applicantStatuses = {
     approved: {
         text: 'Approved - Contact Organizer',
         buttonVariant: 'default',
-        icon: <CheckCircle className="mr-2 h-4 w-4"/>,
+        icon: <CheckCircle2 className="mr-2 h-4 w-4"/>,
         alert: <Alert variant="default" className="mt-4 bg-green-500/10 border-green-500/30">
                 <AlertTitle className="text-green-400">Congratulations!</AlertTitle>
                 <AlertDescription>You have been selected for this opportunity. Please contact the organizer to discuss the final details.</AlertDescription>
@@ -110,7 +110,7 @@ export default function FindTalentPage() {
         <Tabs defaultValue="talent-hub" className="w-full">
             <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 h-auto">
                 <TabsTrigger value="showcase" asChild><Link href="/entertainment/showcase"><Sparkles className="h-4 w-4 mr-1"/>Showcase</Link></TabsTrigger>
-                <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1"/>Live</TabsTrigger>
+                <TabsTrigger value="live" asChild><Link href="/entertainment/artists/live-performance"><Mic className="h-4 w-4 mr-1"/>Live performance</Link></TabsTrigger>
                 <TabsTrigger value="artists" asChild><Link href="/entertainment/artists"><Users className="h-4 w-4 mr-1"/> Artists</Link></TabsTrigger>
                 <TabsTrigger value="songs"><Music className="h-4 w-4 mr-1"/> Songs</TabsTrigger>
                 <TabsTrigger value="videos"><Video className="h-4 w-4 mr-1"/> Videos</TabsTrigger>

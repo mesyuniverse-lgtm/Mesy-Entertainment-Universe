@@ -3,7 +3,7 @@
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Briefcase, Search, Star, Sparkles, Clapperboard, Users, Music, Video } from "lucide-react";
+import { Briefcase, Search, Star, Sparkles, Clapperboard, Users, Music, Video, Mic } from "lucide-react";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
@@ -31,7 +31,7 @@ export default function TalentHubPage() {
             <Tabs defaultValue="talent-hub" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 h-auto">
                     <TabsTrigger value="showcase" asChild><Link href="/entertainment/showcase"><Sparkles className="h-4 w-4 mr-1"/>Showcase</Link></TabsTrigger>
-                    <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1"/>Live</TabsTrigger>
+                    <TabsTrigger value="live" asChild><Link href="/entertainment/artists/live-performance"><Mic className="h-4 w-4 mr-1"/>Live performance</Link></TabsTrigger>
                     <TabsTrigger value="artists" asChild><Link href="/entertainment/artists"><Users className="h-4 w-4 mr-1"/> Artists</Link></TabsTrigger>
                     <TabsTrigger value="songs"><Music className="h-4 w-4 mr-1"/> Songs</TabsTrigger>
                     <TabsTrigger value="videos"><Video className="h-4 w-4 mr-1"/> Videos</TabsTrigger>

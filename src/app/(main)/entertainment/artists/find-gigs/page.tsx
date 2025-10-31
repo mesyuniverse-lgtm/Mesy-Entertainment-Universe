@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Briefcase, Camera, Check, Clock, Coins, Edit, FileText, Filter, MapPin, Search, Star, MessageSquare, Sparkles, Clapperboard, Users, Music, Video } from "lucide-react";
+import { Briefcase, Camera, Check, Clock, Coins, Edit, FileText, Filter, MapPin, Search, Star, MessageSquare, Sparkles, Clapperboard, Users, Music, Video, Mic } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
@@ -91,7 +91,7 @@ export default function FindGigsPage() {
         <Tabs defaultValue="talent-hub" className="w-full">
             <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 h-auto">
                 <TabsTrigger value="showcase" asChild><Link href="/entertainment/showcase"><Sparkles className="h-4 w-4 mr-1"/>Showcase</Link></TabsTrigger>
-                <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1"/>Live</TabsTrigger>
+                <TabsTrigger value="live" asChild><Link href="/entertainment/artists/live-performance"><Mic className="h-4 w-4 mr-1"/>Live performance</Link></TabsTrigger>
                 <TabsTrigger value="artists" asChild><Link href="/entertainment/artists"><Users className="h-4 w-4 mr-1"/> Artists</Link></TabsTrigger>
                 <TabsTrigger value="songs"><Music className="h-4 w-4 mr-1"/> Songs</TabsTrigger>
                 <TabsTrigger value="videos"><Video className="h-4 w-4 mr-1"/> Videos</TabsTrigger>

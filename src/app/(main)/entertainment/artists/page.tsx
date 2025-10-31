@@ -104,10 +104,10 @@ export default function ArtistsPage() {
                 .animate-marquee2 { animation: marquee2 30s linear infinite; }
             `}</style>
             
-            <Tabs defaultValue="showcase" className="w-full">
+            <Tabs defaultValue="artists" className="w-full">
                 <TabsList className="grid w-full grid-cols-3 md:grid-cols-6 h-auto">
                     <TabsTrigger value="showcase" asChild><Link href="/entertainment/showcase"><Sparkles className="h-4 w-4 mr-1"/>Showcase</Link></TabsTrigger>
-                    <TabsTrigger value="live"><Clapperboard className="h-4 w-4 mr-1"/>Live</TabsTrigger>
+                    <TabsTrigger value="live" asChild><Link href="/entertainment/artists/live-performance"><Mic className="h-4 w-4 mr-1"/>Live performance</Link></TabsTrigger>
                     <TabsTrigger value="artists"><Users className="h-4 w-4 mr-1"/> Artists</TabsTrigger>
                     <TabsTrigger value="songs"><Music className="h-4 w-4 mr-1"/> Songs</TabsTrigger>
                     <TabsTrigger value="videos"><Video className="h-4 w-4 mr-1"/> Videos</TabsTrigger>
