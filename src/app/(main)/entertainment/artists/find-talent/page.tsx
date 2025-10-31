@@ -86,7 +86,7 @@ const applicantStatuses = {
 const currentApplicantStatus = applicantStatuses.notApplied;
 
 
-export default function FindTalentPage() {
+export default function PostJobPage() {
     
     return (
     <div className="min-h-screen bg-background/90 text-foreground p-4 lg:p-6">
@@ -120,14 +120,14 @@ export default function FindTalentPage() {
                 <div className="container mx-auto">
                     <header className="text-center mb-12">
                         <div className="inline-block p-4 bg-primary/10 rounded-full mb-4">
-                            <Star className="w-12 h-12 text-primary"/>
+                            <Search className="w-12 h-12 text-primary"/>
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Find Talent</h1>
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Post a Job & Find Talent</h1>
                         <p className="max-w-2xl mx-auto mt-4 text-muted-foreground">
-                            Post job quests and discover the perfect creator for your event or project.
+                            Post job quests to find the perfect person for your event, project, or personal needs.
                         </p>
                         <Button size="lg" className="mt-6">
-                            <PlusCircle className="mr-2 h-5 w-5"/> Create Job Quest
+                            <PlusCircle className="mr-2 h-5 w-5"/> Create a New Job Quest
                             <Badge variant="secondary" className="ml-3">Members Only</Badge>
                         </Button>
                     </header>

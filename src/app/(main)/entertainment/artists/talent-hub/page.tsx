@@ -42,21 +42,21 @@ export default function TalentHubPage() {
                         <div className="inline-block p-4 bg-primary/10 rounded-full mb-4">
                             <Star className="w-12 h-12 text-primary"/>
                         </div>
-                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Talent Hub</h1>
+                        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Talent & Connections Hub</h1>
                         <p className="max-w-2xl mx-auto mt-4 text-muted-foreground">
-                            The premier marketplace for artists and event organizers to connect and create opportunities.
+                            The premier marketplace to find talent, offer services, and build connections for both creative projects and personal lifestyle needs.
                         </p>
                     </header>
                     <Tabs defaultValue="find-talent" className="w-full max-w-4xl mx-auto">
                         <TabsList className="grid w-full grid-cols-2">
                             <TabsTrigger value="find-talent" asChild>
                                 <Link href="/entertainment/artists/find-talent">
-                                    <Search className="mr-2 h-4 w-4"/> Find Talent
+                                    <Search className="mr-2 h-4 w-4"/> Post a Job / Find People
                                 </Link>
                             </TabsTrigger>
                             <TabsTrigger value="find-gigs" asChild>
                                 <Link href="/entertainment/artists/find-gigs">
-                                    <Briefcase className="mr-2 h-4 w-4"/> Find Gigs
+                                    <Briefcase className="mr-2 h-4 w-4"/> Find Gigs / Offer Services
                                 </Link>
                             </TabsTrigger>
                         </TabsList>
