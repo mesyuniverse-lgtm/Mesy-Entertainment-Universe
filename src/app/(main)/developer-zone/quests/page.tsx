@@ -129,7 +129,7 @@ export default function QuestsPage() {
                         <Link href="/developer-zone"><MessageSquare className="mr-2 h-4 w-4"/>Forum</Link>
                     </TabsTrigger>
                      <TabsTrigger value="developers" asChild>
-                        <Link href="/join-developer"><Code className="mr-2 h-4 w-4"/>Developers</Link>
+                        <Link href="/developer-zone/developers"><Code className="mr-2 h-4 w-4"/>Developers</Link>
                     </TabsTrigger>
                     <TabsTrigger value="quests" asChild>
                          <Link href="/developer-zone/quests"><HandCoins className="mr-2 h-4 w-4"/>Quests (Bounties)</Link>
