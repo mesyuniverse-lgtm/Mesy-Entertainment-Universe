@@ -1,7 +1,7 @@
 
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv, ArrowRight, Sparkles, ToyBrick, Smile, Film, PawPrint } from "lucide-react";
+import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv, ArrowRight, Sparkles, ToyBrick, Smile, Film, PawPrint, Heart, Users } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -62,6 +62,13 @@ export default function EntertainmentPage() {
       description: "Find local attractions, restaurants, and venues. Create your own page to promote your business.",
       icon: <div className="flex gap-2"><Map className="text-primary"/><Store className="text-primary"/><Video className="text-primary"/><Tv className="text-primary"/><Mic className="text-primary"/></div>,
       href: "/entertainment/venues",
+      comingSoon: false,
+    },
+    {
+      title: "Dating Zone",
+      description: "Discover meaningful connections and build relationships within the MESY Universe.",
+      icon: <div className="flex gap-2"><Heart className="text-primary"/><Users className="text-primary"/><Sparkles className="text-primary"/></div>,
+      href: "/entertainment/dating",
       comingSoon: false,
     },
   ];
