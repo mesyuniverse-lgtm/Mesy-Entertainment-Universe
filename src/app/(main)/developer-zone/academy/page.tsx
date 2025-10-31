@@ -71,26 +71,14 @@ export default function AcademyPage() {
         {/* Left Sidebar */}
         <aside className="lg:col-span-3 hidden lg:block space-y-6">
             <Card className="bg-card/50">
-                <CardHeader className="flex-row items-center gap-3 space-y-0">
-                    <GraduationCap className="h-6 w-6 text-primary" />
-                    <CardTitle>Total Students</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-4xl font-bold">25,831</p>
-                    <p className="text-sm text-muted-foreground">Learning in the Academy</p>
-                </CardContent>
-            </Card>
-
-            <Card className="bg-card/50">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><PlusCircle /> Create Class Room</CardTitle>
-                    <CardDescription>Share your expertise and start earning by creating your own courses.</CardDescription>
+                    <CardTitle className="flex items-center gap-2"><PlusCircle /> Create your Developer page</CardTitle>
+                    <CardDescription>Create a page to show your identity as a Developer.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <Button className="w-full">Start Teaching</Button>
+                    <Button className="w-full">Create Page</Button>
                 </CardContent>
             </Card>
-
             <Card className="bg-card/50">
                 <CardHeader>
                     <CardTitle>Popular Instructors</CardTitle>

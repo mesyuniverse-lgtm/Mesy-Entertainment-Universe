@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Star, UserPlus, Video, MoreHorizontal, Heart, MessageCircle, Share2, Gem, HandCoins, Code, BookOpen, MessageSquare, Briefcase, Sparkles, Wand2, Swords } from "lucide-react";
+import { Users, Star, UserPlus, Video, MoreHorizontal, Heart, MessageCircle, Share2, Gem, HandCoins, Code, BookOpen, MessageSquare, Briefcase, Sparkles, Wand2, Swords, PlusCircle } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
@@ -58,17 +58,15 @@ export default function QuestsPage() {
         
         {/* Left Sidebar */}
         <aside className="lg:col-span-3 hidden lg:block space-y-6">
-            <Card className="bg-card/50">
-                <CardHeader className="flex-row items-center gap-3 space-y-0">
-                    <Users className="h-6 w-6 text-primary" />
-                    <CardTitle>Total Users</CardTitle>
+             <Card className="bg-card/50">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><PlusCircle /> Create your Developer page</CardTitle>
+                    <CardDescription>Create a page to show your identity as a Developer.</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-4xl font-bold">10,284</p>
-                    <p className="text-sm text-muted-foreground">Seeking Talent</p>
+                    <Button className="w-full">Create Page</Button>
                 </CardContent>
             </Card>
-
             <Card className="bg-card/50">
                 <CardHeader>
                     <CardTitle>Top Developers</CardTitle>
