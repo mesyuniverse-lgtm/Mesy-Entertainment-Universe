@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Star, UserPlus, Video, MoreHorizontal, Heart, MessageCircle, Share2, Gem, HandCoins, Code, BookOpen, MessageSquare, Briefcase, PlusCircle } from "lucide-react";
+import { Users, Star, UserPlus, Video, MoreHorizontal, Heart, MessageCircle, Share2, Gem, HandCoins, Code, BookOpen, MessageSquare, Briefcase, PlusCircle, Terminal, Brush, Bot } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { cn } from "@/lib/utils";
 import { Textarea } from '@/components/ui/textarea';
@@ -195,6 +195,17 @@ export default function DeveloperZonePage() {
                 </CardHeader>
                 <CardContent className="p-4"><CardTitle className="text-base">Build with Genkit</CardTitle><p className="text-muted-foreground text-xs mt-1">Learn to build AI-powered features with our official SDK.</p></CardContent>
             </Card>
+             <Card className="bg-card/50">
+                <CardHeader>
+                    <CardTitle>Developer Tools</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                    <Button variant="ghost" className="w-full justify-start gap-2"><Terminal className="h-4 w-4"/> Studio Playground</Button>
+                    <Button variant="ghost" className="w-full justify-start gap-2"><Code className="h-4 w-4"/> Code Editor</Button>
+                    <Button variant="ghost" className="w-full justify-start gap-2"><Brush className="h-4 w-4"/> Design Tools</Button>
+                    <Button variant="ghost" className="w-full justify-start gap-2"><Bot className="h-4 w-4"/> Genkit AI</Button>
+                </CardContent>
+            </Card>
             <Card className="bg-card/50">
                 <CardHeader><CardTitle>Sponsored Tools</CardTitle></CardHeader>
                 <CardContent className="space-y-4">
@@ -202,28 +213,6 @@ export default function DeveloperZonePage() {
                         {adImage && <Image src={adImage.imageUrl} alt={adImage.description} data-ai-hint={adImage.imageHint} width={60} height={60} className="rounded-md"/>}
                         <div><p className="font-semibold text-sm">Chrono Debugger</p><p className="text-xs text-muted-foreground">Trace bugs through time!</p></div>
                     </div>
-                </CardContent>
-            </Card>
-            <Card className="bg-card/50">
-                <CardHeader><CardTitle>Discover Developers</CardTitle></CardHeader>
-                <CardContent>
-                    <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10"><AvatarImage src={developers[2].avatar}/></Avatar>
-                        <div>
-                            <p className="font-semibold text-sm">{developers[2].name}</p>
-                            <p className="text-xs text-muted-foreground">{developers[2].skill}</p>
-                        </div>
-                        <Button variant="outline" size="sm" className="ml-auto">Follow</Button>
-                    </div>
-                </CardContent>
-            </Card>
-            <Card className="bg-card/50">
-                <CardHeader><CardTitle>Recommended Courses</CardTitle></CardHeader>
-                <CardContent>
-                   <div className="space-y-3">
-                       <div><p className="font-semibold text-sm">Intro to 3D Modeling for MESY</p><p className="text-xs text-muted-foreground">By: {developers[1].name}</p></div>
-                       <div><p className="font-semibold text-sm">Advanced AI Agent Design</p><p className="text-xs text-muted-foreground">By: {developers[0].name}</p></div>
-                   </div>
                 </CardContent>
             </Card>
         </aside>

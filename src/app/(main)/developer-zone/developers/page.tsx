@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Star, UserPlus, Video, Code, BookOpen, MessageSquare, Briefcase, HandCoins, Search, PlusCircle } from "lucide-react";
+import { Users, Star, UserPlus, Video, Code, BookOpen, MessageSquare, Briefcase, HandCoins, Search, PlusCircle, Terminal, Brush, Bot } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -179,6 +179,17 @@ export default function DevelopersPage() {
                     )}
                 </CardHeader>
                 <CardContent className="p-4"><CardTitle className="text-base">Build with Genkit</CardTitle><p className="text-muted-foreground text-xs mt-1">Learn to build AI-powered features with our official SDK.</p></CardContent>
+            </Card>
+            <Card className="bg-card/50">
+                <CardHeader>
+                    <CardTitle>Developer Tools</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2">
+                    <Button variant="ghost" className="w-full justify-start gap-2"><Terminal className="h-4 w-4"/> Studio Playground</Button>
+                    <Button variant="ghost" className="w-full justify-start gap-2"><Code className="h-4 w-4"/> Code Editor</Button>
+                    <Button variant="ghost" className="w-full justify-start gap-2"><Brush className="h-4 w-4"/> Design Tools</Button>
+                    <Button variant="ghost" className="w-full justify-start gap-2"><Bot className="h-4 w-4"/> Genkit AI</Button>
+                </CardContent>
             </Card>
             <Card className="bg-card/50">
                 <CardHeader><CardTitle>Sponsored Tools</CardTitle></CardHeader>
