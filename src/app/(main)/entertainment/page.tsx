@@ -1,7 +1,7 @@
 
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv, ArrowRight, Sparkles, ToyBrick, Smile, Film } from "lucide-react";
+import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv, ArrowRight, Sparkles, ToyBrick, Smile, Film, PawPrint } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -48,6 +48,13 @@ export default function EntertainmentPage() {
       description: "A safe and fun space for our youngest explorers with curated videos, games, and creative activities.",
       icon: <div className="flex gap-2"><ToyBrick className="text-primary"/><Smile className="text-primary"/><Film className="text-primary"/></div>,
       href: "/entertainment/kids",
+      comingSoon: false,
+    },
+    {
+      title: "Animals & Pets",
+      description: "Share your furry friends' moments, find pet-friendly places, and connect with other animal lovers.",
+      icon: <div className="flex gap-2"><PawPrint className="text-primary"/><Video className="text-primary"/><Store className="text-primary"/></div>,
+      href: "/entertainment/animals",
       comingSoon: false,
     },
     {
