@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,6 +12,8 @@ import { UserPlus, ArrowLeft, KeyRound } from "lucide-react";
 import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
 
 const artistRoles = [
     "Musician",
@@ -29,6 +32,35 @@ const artistRoles = [
 
 export default function CreateArtistProfilePage() {
     const defaultAvatar = PlaceHolderImages.find(i => i.id === 'default-avatar');
+    const { toast } = useToast();
+    const router = useRouter();
+    const [memberId, setMemberId] = useState('');
+
+    const handleCreateProfile = () => {
+        // Mock validation: In a real app, you'd check this against a database.
+        // We'll consider any non-empty ID other than "admin@mesy.io" as valid for demo.
+        const isMember = memberId.trim() !== '' && memberId.trim() !== 'user@mesy.io';
+
+        if (!isMember) {
+            toast({
+                variant: "destructive",
+                title: "Not a Member",
+                description: "You must be a verified MESY Member to create an artist profile.",
+                action: (
+                    <Button onClick={() => router.push('/member-signup')}>
+                        Register Now
+                    </Button>
+                ),
+            });
+        } else {
+            // In a real app, you would proceed with form submission here.
+             toast({
+                title: "Profile Creation Successful!",
+                description: "Your artist profile is now live.",
+            });
+        }
+    };
+
 
     return (
         <div className="container py-12">
@@ -67,7 +99,12 @@ export default function CreateArtistProfilePage() {
 
                         <div className="space-y-2">
                             <Label htmlFor="member-id" className="flex items-center"><KeyRound className="mr-2 h-4 w-4 text-primary"/>MESY Member ID</Label>
-                            <Input id="member-id" placeholder="Enter your MESY Member ID to connect" />
+                            <Input 
+                                id="member-id" 
+                                placeholder="Enter your MESY Member ID to connect" 
+                                value={memberId}
+                                onChange={(e) => setMemberId(e.target.value)}
+                            />
                             <p className="text-xs text-muted-foreground">Only verified members can create an Artist Profile. This ensures a safe and trusted community.</p>
                         </div>
                         
@@ -96,7 +133,7 @@ export default function CreateArtistProfilePage() {
                         </div>
 
                         <div className="flex justify-end pt-4">
-                            <Button size="lg">Create Profile</Button>
+                            <Button size="lg" onClick={handleCreateProfile}>Create Profile</Button>
                         </div>
                     </CardContent>
                 </Card>
