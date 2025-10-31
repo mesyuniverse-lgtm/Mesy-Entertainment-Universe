@@ -2,7 +2,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Music, Video, Mic, Tv, Search, Users, Star, Clapperboard, BadgeInfo, PlayCircle, Sparkles } from "lucide-react";
+import { Music, Video, Mic, Tv, Search, Users, Star, Clapperboard, BadgeInfo, PlayCircle, Sparkles, PlusCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -85,19 +85,6 @@ export default function ArtistsPage() {
 
         {/* Main Content */}
         <main className="lg:col-span-6 space-y-6">
-            <div className="text-center">
-                <div className="flex justify-center gap-4 mb-4">
-                    <Music className="w-10 h-10 text-primary" />
-                    <Video className="w-10 h-10 text-primary" />
-                    <Mic className="w-10 h-10 text-primary" />
-                    <Tv className="w-10 h-10 text-primary" />
-                </div>
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">Artists &amp; Music Hub</h1>
-                <p className="max-w-2xl mx-auto mt-4 text-muted-foreground">
-                Discover new artists, listen to their music, and watch exclusive content.
-                </p>
-            </div>
-
             <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm">
                 <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
                     <span className="mx-4">New Album "Celestial" by Aria just dropped! 🎵</span>
@@ -150,6 +137,17 @@ export default function ArtistsPage() {
                 </CardHeader>
                 <CardContent className="p-4"><CardTitle className="text-base">Featured Promotion</CardTitle><p className="text-muted-foreground text-xs mt-1">Join the MESY Music Festival - Live next week!</p></CardContent>
             </Card>
+
+            <Card className="bg-card/50">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><PlusCircle className="text-primary"/> Create Artist/Band Profile</CardTitle>
+                    <CardDescription>Build your brand, share your music, and connect with fans. Create a profile for your solo act or your band.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Button className="w-full">Get Started</Button>
+                </CardContent>
+            </Card>
+
             <Card className="bg-card/50">
                 <CardHeader><CardTitle>Recommended Artists</CardTitle></CardHeader>
                 <CardContent className="space-y-4">
