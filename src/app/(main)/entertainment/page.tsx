@@ -1,7 +1,7 @@
 
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv, ArrowRight } from "lucide-react";
+import { Music, Video, Gamepad2, Mic, Ticket, Map, Store, Tv, ArrowRight, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
@@ -13,6 +13,13 @@ export default function EntertainmentPage() {
       description: "Discover new music, videos, and live streams. Promote your own brand, sound, and host events.",
       icon: <div className="flex gap-2"><Music className="text-primary"/><Video className="text-primary"/><Mic className="text-primary"/><Tv className="text-primary"/></div>,
       href: "/entertainment/artists",
+      comingSoon: false,
+    },
+    {
+      title: "Artist Showcase",
+      description: "Explore a feed of the latest posts, songs, and videos directly from your favorite artists. Like, comment, and support their work.",
+      icon: <div className="flex gap-2"><Sparkles className="text-primary"/><Video className="text-primary"/><Music className="text-primary"/></div>,
+      href: "/entertainment/showcase",
       comingSoon: false,
     },
     {
@@ -47,7 +54,7 @@ export default function EntertainmentPage() {
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
         {entertainmentSections.map((section) => (
           <Card key={section.title} className="flex flex-col hover:shadow-primary/20 transition-shadow duration-300">
             <CardHeader>
