@@ -37,6 +37,13 @@ export default function EntertainmentPage() {
       comingSoon: false,
     },
     {
+      title: "Karaoke",
+      description: "Sing your heart out with a vast library of songs. Join public rooms or create private sessions with friends.",
+      icon: <div className="flex gap-2"><Mic className="text-primary"/><Music className="text-primary"/><Tv className="text-primary"/></div>,
+      href: "/entertainment/karaoke",
+      comingSoon: false,
+    },
+    {
       title: "Lifestyle & Venues",
       description: "Find local attractions, restaurants, and venues. Create your own page to promote your business.",
       icon: <div className="flex gap-2"><Map className="text-primary"/><Store className="text-primary"/><Video className="text-primary"/><Tv className="text-primary"/><Mic className="text-primary"/></div>,
