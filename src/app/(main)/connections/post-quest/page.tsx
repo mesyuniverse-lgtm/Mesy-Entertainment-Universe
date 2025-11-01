@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 
 const quests = [
@@ -132,7 +133,6 @@ const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
                      <Button 
                         className={cn("w-full font-bold", currentStatus.className)} 
                         variant={currentStatus.buttonVariant}
-                        disabled={quest.status !== 'accept'}
                     >
                         {currentStatus.icon}
                         {currentStatus.text}
@@ -142,6 +142,25 @@ const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
         </Card>
     )
 }
+
+const QuestGrid = ({ status }: { status?: string }) => {
+    const filteredQuests = status ? quests.filter(q => q.status === status) : quests;
+    if (filteredQuests.length === 0) {
+        return (
+            <div className="text-center col-span-full py-12">
+                <p className="text-muted-foreground">No quests found for this status.</p>
+            </div>
+        )
+    }
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {filteredQuests.map((quest, index) => (
+                <QuestCard key={index} quest={quest} />
+            ))}
+        </div>
+    );
+};
+
 
 export default function PostQuestPage() {
   return (
@@ -214,11 +233,35 @@ export default function PostQuestPage() {
                 <Button variant="outline" size="lg"><Filter className="mr-2"/> Filters</Button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {quests.map((quest, index) => (
-                    <QuestCard key={index} quest={quest} />
-                ))}
-            </div>
+            <Tabs defaultValue="all">
+                <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto">
+                    <TabsTrigger value="all">All Quests</TabsTrigger>
+                    <TabsTrigger value="accept">Available</TabsTrigger>
+                    <TabsTrigger value="pending">Waiting for Approval</TabsTrigger>
+                    <TabsTrigger value="in-progress">In Progress</TabsTrigger>
+                    <TabsTrigger value="completed">Completed</TabsTrigger>
+                </TabsList>
+                <TabsContent value="all" className="mt-6">
+                    <QuestGrid />
+                </TabsContent>
+                <TabsContent value="accept" className="mt-6">
+                   <QuestGrid status="accept" />
+                </TabsContent>
+                <TabsContent value="pending" className="mt-6">
+                    <QuestGrid status="pending" />
+                </TabsContent>
+                <TabsContent value="in-progress" className="mt-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {quests.filter(q => q.status === 'approved' || q.status === 'working').map((quest, index) => (
+                            <QuestCard key={index} quest={quest} />
+                        ))}
+                    </div>
+                </TabsContent>
+                <TabsContent value="completed" className="mt-6">
+                    <QuestGrid status="paid" />
+                </TabsContent>
+            </Tabs>
+            
             <div className="text-center mt-12">
                 <Button variant="outline" size="lg">Load More Quests</Button>
             </div>
