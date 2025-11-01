@@ -1,11 +1,11 @@
 
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
@@ -165,6 +165,14 @@ const QuestGrid = ({ status }: { status?: string }) => {
 export default function PostQuestPage() {
   return (
     <div className="container py-12">
+      <div className="mb-8">
+          <Button asChild variant="outline">
+              <Link href="/connections">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to The Connection Hub
+              </Link>
+          </Button>
+      </div>
       <header className="text-center mb-12">
         <div className="flex justify-center gap-4 mb-4">
             <Search className="w-10 h-10 text-primary" />
@@ -270,4 +278,6 @@ export default function PostQuestPage() {
     </div>
   );
 }
+
+
 
