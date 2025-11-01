@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
@@ -173,21 +173,56 @@ export default function PostQuestPage() {
             .animate-marquee { animation: marquee 30s linear infinite; }
             .animate-marquee2 { animation: marquee2 30s linear infinite; }
         `}</style>
-      <div className="flex gap-2 mb-8">
-        <div className="relative flex-grow">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input placeholder="Search quests by title, skill, or location..." className="pl-10 h-12 text-base" />
-        </div>
-        <Button variant="outline" size="lg"><Filter className="mr-2"/> Filters</Button>
-      </div>
+      
+      <div className="grid lg:grid-cols-12 gap-8">
+        
+        {/* Left Sidebar */}
+        <aside className="lg:col-span-3 space-y-6">
+            <Card>
+                <CardHeader className="flex-row items-center gap-3">
+                    <Users className="h-6 w-6 text-primary"/>
+                    <CardTitle>Talent Pool</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-4xl font-bold">2,458</p>
+                    <p className="text-sm text-muted-foreground">talents available</p>
+                </CardContent>
+            </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {quests.map((quest, index) => (
-            <QuestCard key={index} quest={quest} />
-        ))}
-      </div>
-       <div className="text-center mt-12">
-        <Button variant="outline" size="lg">Load More Quests</Button>
+            <Card className="bg-card/70 border-primary/30">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><PlusCircle/> Post a Job</CardTitle>
+                    <CardDescription>Need help? Post a quest to find the perfect person for the job.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Button asChild className="w-full">
+                        <Link href="/connections/post-quest/create-new-quest">Create New Quest</Link>
+                    </Button>
+                </CardContent>
+            </Card>
+
+            {/* Other sidebar cards can be added here */}
+        </aside>
+
+        {/* Main Content */}
+        <main className="lg:col-span-9">
+            <div className="flex gap-2 mb-8">
+                <div className="relative flex-grow">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input placeholder="Search quests by title, skill, or location..." className="pl-10 h-12 text-base" />
+                </div>
+                <Button variant="outline" size="lg"><Filter className="mr-2"/> Filters</Button>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                {quests.map((quest, index) => (
+                    <QuestCard key={index} quest={quest} />
+                ))}
+            </div>
+            <div className="text-center mt-12">
+                <Button variant="outline" size="lg">Load More Quests</Button>
+            </div>
+        </main>
       </div>
     </div>
   );
