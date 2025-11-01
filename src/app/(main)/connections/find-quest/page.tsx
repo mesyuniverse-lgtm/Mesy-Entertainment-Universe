@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
@@ -71,8 +71,8 @@ const quests = [
 ];
 
 const statusConfig = {
-    accept: { text: "Accept Quest", buttonVariant: "destructive" as "destructive", icon: <HandCoins className="mr-2 h-4 w-4"/> },
-    pending: { text: "Pending Approval", buttonVariant: "secondary" as "secondary", icon: <Hourglass className="mr-2 h-4 w-4"/> },
+    accept: { text: "Accept Quest", buttonVariant: "destructive" as "destructive", className: "", icon: <HandCoins className="mr-2 h-4 w-4"/> },
+    pending: { text: "Pending Approval", buttonVariant: "secondary" as "secondary", className: "bg-yellow-500/80 hover:bg-yellow-500/90 text-white", icon: <Hourglass className="mr-2 h-4 w-4"/> },
     approved: { text: "Approved", buttonVariant: "default" as "default", className: "bg-green-600 hover:bg-green-700", icon: <CheckCircle className="mr-2 h-4 w-4"/> },
     working: { text: "Mark as Complete & Get Paid", buttonVariant: "default" as "default", className: "bg-blue-600 hover:bg-blue-700", icon: <CircleDollarSign className="mr-2 h-4 w-4"/> },
     paid: { text: "Payment Received", buttonVariant: "default" as "default", className: "bg-violet-600 hover:bg-violet-700", icon: <CheckCircle2 className="mr-2 h-4 w-4"/> }
@@ -116,7 +116,7 @@ const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
                 <div className="space-y-2 text-sm text-muted-foreground flex-grow mb-4">
                     <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0"/> {quest.location}</p>
                     {quest.allowances.length > 0 && (
-                        <div className="space-y-1">
+                        <div className="space-y-1 pt-2">
                              {quest.allowances.map(allowance => (
                                 <p key={allowance} className="flex items-center gap-2">
                                     {allowanceIcons[allowance as keyof typeof allowanceIcons]}
