@@ -15,14 +15,14 @@ import Image from "next/image";
 
 const availableTalent = [
     { name: 'Kael', profession: 'Personal Chef', rating: 4.9, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
-    { name: 'Aria', profession: 'Musician', rating: 4.8, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
+    { name: 'Aria', profession: 'Personal Assistant', rating: 4.8, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
     { name: 'Zane', profession: 'Bodyguard', rating: 5.0, avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
 ];
 
 const postedQuests = [
     { title: 'Seeking Personal Chef for Private Event', applicants: 5, status: 'Open' },
     { title: 'Bodyguard for VIP Escort', applicants: 12, status: 'Open' },
-    { title: 'Acoustic Musician for Gala Dinner', applicants: 8, status: 'Closed' },
+    { title: 'Part-time Personal Assistant', applicants: 8, status: 'Closed' },
 ];
 
 const topHirers = [
@@ -214,5 +214,4 @@ export default function PostQuestPage() {
         </div>
     </div>
   );
-
-    
+}
