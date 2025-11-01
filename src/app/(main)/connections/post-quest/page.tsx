@@ -1,11 +1,12 @@
 
+
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft, Building, User, FileText, Send, MessageSquare, Hand, ChefHat, Dumbbell, GraduationCap, Landmark, ShieldCheck, Calculator, Home, Stethoscope, HeartPulse, Boxes, Car, Camera, Wrench, Baby, HeartHandshake, Accessibility, ClipboardUser, BrainCircuit, HandHeart } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft, Building, User, FileText, Send, MessageSquare, Hand, ChefHat, Dumbbell, GraduationCap, Landmark, ShieldCheck, Calculator, Home, Stethoscope, HeartPulse, Boxes, Car, Camera, Wrench, Baby, HeartHandshake, Accessibility, ClipboardList, BrainCircuit, HandHeart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
@@ -108,7 +109,7 @@ const categories = [
     { name: 'คนขับรถ', icon: <Car /> },
     { name: 'ช่างภาพ', icon: <Camera /> },
     { name: 'ช่างซ่อม', icon: <Wrench /> },
-    { name: 'เลขา', icon: <ClipboardUser /> },
+    { name: 'เลขา', icon: <ClipboardList /> },
     { name: 'ที่ปรึกษา', icon: <BrainCircuit /> },
     { name: 'อาสาสมัคร', icon: <HandHeart /> },
 ];
@@ -320,3 +321,4 @@ export default function PostQuestPage() {
     
 
     
+
