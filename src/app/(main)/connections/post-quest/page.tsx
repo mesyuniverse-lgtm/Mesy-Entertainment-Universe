@@ -76,7 +76,9 @@ export default function PostQuestPage() {
                     </CardHeader>
                     <CardContent>
                         <p className="text-sm text-muted-foreground mb-4">Post a job to find personal assistants, bodyguards, chefs, and more.</p>
-                        <Button className="w-full">Create Quest</Button>
+                        <Button className="w-full" asChild>
+                            <Link href="/connections/post-quest/create-new-quest">Create Quest</Link>
+                        </Button>
                     </CardContent>
                 </Card>
                 
