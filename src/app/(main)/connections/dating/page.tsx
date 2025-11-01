@@ -77,8 +77,8 @@ export default function ConnectionsDatingPage() {
                  {videoAdImage && (
                     <Image 
                         src={videoAdImage.imageUrl} 
-                        alt="Featured Video" 
-                        data-ai-hint={videoAdImage.imageHint}
+                        alt={videoAdImage.description}
+                        data-ai-hint="wedding couple"
                         fill
                         objectFit="cover"
                         className="transition-transform duration-500 hover:scale-105"

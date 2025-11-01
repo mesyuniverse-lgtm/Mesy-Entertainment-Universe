@@ -32,9 +32,9 @@
     },
     {
       "id": "fantasy-landscape-2",
-      "description": "A beautiful fantasy landscape with a waterfall.",
-      "imageUrl": "https://images.unsplash.com/photo-1583355900358-ba9966a382b8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxmYW50YXN5JTIwd2F0ZXJmYWxsfGVufDB8fHx8MTc2MDk2NjY4Mnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "fantasy waterfall"
+      "description": "A wedding couple celebrating their marriage.",
+      "imageUrl": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3ZWRkaW5nJTIwY291cGxlfGVufDB8fHx8MTc2MTA4ODAwOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wedding couple"
     },
     {
       "id": "fantasy-landscape-3",
@@ -99,55 +99,55 @@
     {
       "id": "feature-3",
       "description": "A person shopping online.",
-      "imageUrl": "https://images.unsplash.com/photo-1605902711834-8b11c3e3ef2f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvbmxpbmUlMjBzaG9wcGluZ3xlbnwwfHx8fDE3NjA5ODIwODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1605902711834-8b11c3e3ef2f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxvbmxpbmUlMjBzaG9wcGluZ3xlbnwwfHx8fDE3NjA5ODIwODd8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "online shopping"
     },
     {
       "id": "member-plan-video",
       "description": "A placeholder for a video about member plans.",
-      "imageUrl": "https://images.unsplash.com/photo-1673767296837-8106e1b94d34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwcmVzZW50YXRpb24lMjB2aWRlb3xlbnwwfHx8fDE3NjEwNzc0NDR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1673767296837-8106e1b94d34?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwcmVzZW50YXRpb24lMjB2aWRlb3xlbnwwfHx8fDE3NjEwNzc0NDR8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "presentation video"
     },
     {
       "id": "default-avatar",
       "description": "Default user avatar.",
-      "imageUrl": "https://images.unsplash.com/photo-1758862493208-2046897d09d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmYW50YXN5JTIwY2hhcmFjdGVyfGVufDB8fHx8MTc2MTAzNDk3OHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1758862493208-2046897d09d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmYW50YXN5JTIwY2hhcmFjdGVyfGVufDB8fHx8MTc2MTAzNDk3OHww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy character"
     },
     {
       "id": "auth-background",
       "description": "A fantasy-themed background for the authentication pages.",
-      "imageUrl": "https://images.unsplash.com/photo-1505567745926-ba89000d255a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmYW50YXN5JTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1505567745926-ba89000d255a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmYW50YXN5JTIwYmFja2dyb3VuZHxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy background"
     },
     {
       "id": "female-archer-1",
       "description": "A female archer in a fantasy setting.",
-      "imageUrl": "https://images.unsplash.com/photo-1686747502355-aa3b0103724b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmZW1hbGUlMjBhcmNoZXJ8ZW58MHx8fHwxNzYxMDc3NDQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1686747502355-aa3b0103724b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxmZW1hbGUlMjBhcmNoZXJ8ZW58MHx8fHwxNzYxMDc3NDQ1fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "female archer"
     },
     {
       "id": "knight-1",
       "description": "A knight in shining armor.",
-      "imageUrl": "https://images.unsplash.com/photo-1759719441123-f29b39db6a90?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmYW50YXN5JTIwa25pZ2h0fGVufDB8fHx8MTc2MDk5Mjc3Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1759719441123-f29b39db6a90?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmYW50YXN5JTIwa25pZ2h0fGVufDB8fHx8MTc2MDk5Mjc3Nnww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy knight"
     },
     {
       "id": "explorer-1",
       "description": "An explorer in a fantasy world.",
-      "imageUrl": "https://images.unsplash.com/photo-1633147967356-a5eac3aa214b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwZXhwbG9yZXJ8ZW58MHx8fHwxNzYwOTY2NjgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1633147967356-a5eac3aa214b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwZXhwbG9yZXJ8ZW58MHx8fHwxNzYwOTY2NjgyfDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy explorer"
     },
     {
       "id": "fighter-character",
       "description": "A powerful fighter character with glowing fists.",
-      "imageUrl": "https://images.unsplash.com/photo-1593352217347-007764e7df22?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmYW50YXN5JTIwZmlnaHRlcnxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1593352217347-007764e7df22?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxmYW50YXN5JTIwZmlnaHRlcnxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy fighter"
     },
     {
       "id": "fighter-silhouette",
       "description": "A silhouette of a powerful fighter character.",
-      "imageUrl": "https://images.unsplash.com/photo-1758295970180-69c318772447?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmaWdodGVyJTIwc2lsaG91ZXR0ZXxlbnwwfHx8fDE3NjEwNzc0NDV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1758295970180-69c318772447?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmaWdodGVyJTIwc2lsaG91ZXR0ZXxlbnwwfHx8fDE3NjEwNzc0NDV8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "fighter silhouette"
     }
   ]
