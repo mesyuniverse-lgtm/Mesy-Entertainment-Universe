@@ -5,13 +5,14 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft, Building, User, FileText, Send, MessageSquare, Hand, ChefHat, Dumbbell, GraduationCap, Landmark, ShieldCheck, Calculator } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 
 const quests = [
@@ -87,6 +88,18 @@ const allowanceIcons = {
     'Food Allowance': <Utensils className="h-4 w-4 text-orange-400"/>
 } as const;
 
+const categories = [
+    { name: 'จ้างผู้ช่วย', icon: <Hand /> },
+    { name: 'เพื่อนพาเที่ยว', icon: <Users /> },
+    { name: 'ไกด์นำเที่ยว', icon: <Landmark /> },
+    { name: 'แม่ครัว', icon: <ChefHat /> },
+    { name: 'แม่บ้าน', icon: <Home /> },
+    { name: 'บอดี้การ์ด', icon: <ShieldCheck /> },
+    { name: 'ผู้จัดการส่วนตัว', icon: <Briefcase /> },
+    { name: 'ทนายความ', icon: <Dumbbell /> }, // Using Dumbbell as a placeholder for scale/justice
+    { name: 'ครูสอนพิเศษ', icon: <GraduationCap /> },
+    { name: 'นักบัญชี', icon: <Calculator /> },
+];
 
 const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
     const currentStatus = statusConfig[quest.status as keyof typeof statusConfig];
@@ -111,7 +124,10 @@ const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
                     </Avatar>
                     <div>
                         <p className="font-semibold">{quest.hirer}</p>
-                        <p className="text-xs text-muted-foreground">{quest.hirerType}</p>
+                        <p className="text-xs text-muted-foreground flex items-center gap-1">
+                            {quest.hirerType === 'Personal' ? <User className="h-3 w-3"/> : <Building className="h-3 w-3" />}
+                            {quest.hirerType}
+                        </p>
                     </div>
                 </div>
 
@@ -201,9 +217,22 @@ export default function PostQuestPage() {
             .animate-marquee2 { animation: marquee2 30s linear infinite; }
         `}</style>
       
+       <div className="my-8">
+            <ScrollArea className="w-full whitespace-nowrap rounded-md">
+                <div className="flex w-max space-x-2 p-2">
+                    {categories.map((category) => (
+                        <Button key={category.name} variant="outline" className="h-auto flex-col px-4 py-3 gap-2">
+                            {category.icon}
+                            <span className="text-xs font-semibold">{category.name}</span>
+                        </Button>
+                    ))}
+                </div>
+                <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+        </div>
+
       <div className="grid lg:grid-cols-12 gap-8">
         
-        {/* Left Sidebar */}
         <aside className="lg:col-span-3 space-y-6">
             <Card>
                 <CardHeader className="flex-row items-center gap-3">
@@ -227,11 +256,8 @@ export default function PostQuestPage() {
                     </Button>
                 </CardContent>
             </Card>
-
-            {/* Other sidebar cards can be added here */}
         </aside>
 
-        {/* Main Content */}
         <main className="lg:col-span-9">
             <div className="flex gap-2 mb-8">
                 <div className="relative flex-grow">
@@ -278,6 +304,7 @@ export default function PostQuestPage() {
     </div>
   );
 }
+
 
 
 
