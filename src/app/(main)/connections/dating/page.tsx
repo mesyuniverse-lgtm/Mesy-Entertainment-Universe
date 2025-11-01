@@ -1,6 +1,28 @@
 
+'use client';
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Heart, Users, Sparkles } from "lucide-react";
+import { Heart, Users, Sparkles, Search, Filter, UserCheck, KeyRound, Lock } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+import Image from "next/image";
+import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+
+const singles = [
+    { name: 'Kael', age: 28, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl, location: 'Bangkok' },
+    { name: 'Aria', age: 25, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl, location: 'Chiang Mai' },
+    { name: 'Zane', age: 30, avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl, location: 'Pattaya' },
+];
+
+const newBeginnings = [
+    { name: 'Valerius', age: 42, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl, location: 'Phuket' },
+    { name: 'Lyra', age: 38, avatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl, location: 'Remote' },
+];
 
 export default function ConnectionsDatingPage() {
   return (
@@ -17,15 +39,106 @@ export default function ConnectionsDatingPage() {
         </p>
       </div>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Coming Soon</CardTitle>
-          <CardDescription>The stars are aligning for new connections. We are crafting a dedicated space for members to find meaningful relationships. Profile matching, private chats, and icebreaker events are on the horizon!</CardDescription>
-        </CardHeader>
-        <CardContent className="h-64 flex items-center justify-center bg-muted/30 rounded-b-lg">
-          <p className="text-muted-foreground">The Dating Zone is being built with care and a touch of magic.</p>
-        </CardContent>
-      </Card>
+      <Tabs defaultValue="singles" className="w-full">
+        <TabsList className="grid w-full grid-cols-3 h-auto">
+            <TabsTrigger value="singles">For Singles (คนโสด)</TabsTrigger>
+            <TabsTrigger value="new-beginnings">New Beginnings (พ่อหม้าย/แม่หม้าย)</TabsTrigger>
+            <TabsTrigger value="conditions">My Profile / Conditions (โปรไฟล์/เงื่อนไข)</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="singles" className="mt-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle>Discover Singles</CardTitle>
+                    <CardDescription>Find other single members looking for a connection. Filter by gender, age, and location to find your match.</CardDescription>
+                     <div className="flex gap-2 pt-4">
+                        <div className="relative flex-grow">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                            <Input placeholder="Search by name or interest..." className="pl-10" />
+                        </div>
+                        <Button variant="outline" size="icon"><Filter /></Button>
+                    </div>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {singles.map((person, index) => (
+                        <Card key={index} className="overflow-hidden group">
+                             <div className="relative aspect-square">
+                                <Image src={person.avatar || ''} alt={person.name} fill objectFit="cover" className="group-hover:scale-105 transition-transform" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                <div className="absolute bottom-0 p-4 text-white">
+                                    <h3 className="text-xl font-bold">{person.name}, {person.age}</h3>
+                                    <p className="text-sm">{person.location}</p>
+                                </div>
+                            </div>
+                            <CardContent className="p-4">
+                                <Button className="w-full">View Profile</Button>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </CardContent>
+            </Card>
+        </TabsContent>
+
+        <TabsContent value="new-beginnings" className="mt-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle>New Beginnings</CardTitle>
+                    <CardDescription>A respectful and understanding space for those who are legally single again (divorced/widowed) and ready to find a new partner.</CardDescription>
+                </CardHeader>
+                <CardContent className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                     {newBeginnings.map((person, index) => (
+                        <Card key={index} className="overflow-hidden group">
+                             <div className="relative aspect-square">
+                                <Image src={person.avatar || ''} alt={person.name} fill objectFit="cover" />
+                             </div>
+                            <CardContent className="p-4">
+                                <h3 className="font-bold text-lg">{person.name}, {person.age}</h3>
+                                <p className="text-sm text-muted-foreground">{person.location}</p>
+                                <Button className="w-full mt-3">View Profile</Button>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </CardContent>
+            </Card>
+        </TabsContent>
+
+        <TabsContent value="conditions" className="mt-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><UserCheck /> Create Your Dating Profile</CardTitle>
+                    <CardDescription>Set your conditions and preferences. This feature is exclusively for verified MESY Members to ensure a safe community.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                    <div className="space-y-2 p-4 border border-dashed rounded-lg">
+                        <Label htmlFor="member-id" className="flex items-center text-base"><KeyRound className="mr-2 h-5 w-5 text-primary"/>Enter MESY Member ID</Label>
+                        <p className="text-sm text-muted-foreground">Please enter your Member ID to verify your status and create your dating profile.</p>
+                        <div className="flex gap-2">
+                           <Input id="member-id" placeholder="Your unique MESY Member ID..." />
+                           <Button>Verify ID</Button>
+                        </div>
+                    </div>
+
+                    <div className="relative p-8 rounded-lg bg-muted/30 overflow-hidden text-center blur-sm pointer-events-none">
+                         <h3 className="font-bold text-lg">Set Your Preferences</h3>
+                        <Textarea placeholder="Describe your ideal partner and relationship..." className="mt-2" />
+                        <Button className="mt-4">Save Conditions</Button>
+                    </div>
+
+                     <div className="absolute inset-0 bg-background/50 flex flex-col items-center justify-center rounded-lg">
+                        <Lock className="h-12 w-12 text-primary mb-4" />
+                        <h3 className="text-2xl font-bold">Feature Locked</h3>
+                        <p className="text-muted-foreground max-w-sm">You must be a verified MESY Member to create a dating profile and set conditions.</p>
+                        <Button asChild className="mt-6">
+                            <Link href="/member-signup">
+                                Become a Member
+                            </Link>
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
+        </TabsContent>
+
+      </Tabs>
     </div>
   );
 }
