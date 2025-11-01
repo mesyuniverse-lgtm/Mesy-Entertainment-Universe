@@ -2,14 +2,29 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Heart, Users, Sparkles, UserCheck } from "lucide-react";
+import { Heart, Users, Sparkles, UserCheck, Video, PlayCircle } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
 import { cn } from "@/lib/utils";
+import Image from "next/image";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+
+const aiRecommendations = [
+     { name: 'Seraphina', age: 26, avatar: 'https://picsum.photos/seed/seraphina/200', location: 'Ayutthaya', match: 92 },
+     { name: 'Jax', age: 31, avatar: 'https://picsum.photos/seed/jax/200', location: 'Bangkok', match: 88 },
+     { name: 'Kael', age: 28, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl, location: 'Bangkok', match: 85 },
+     { name: 'Lyra', age: 27, avatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl, location: 'Phuket', match: 82 },
+];
+
 
 export default function ConnectionsDatingPage() {
   const pathname = usePathname();
+  const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
+
 
   // Determine the active tab based on the current path
   const getActiveTab = () => {
@@ -53,6 +68,60 @@ export default function ConnectionsDatingPage() {
         </TabsList>
         {/* Content for these tabs is now handled by their respective pages */}
       </Tabs>
+      
+      <div className="mt-12 space-y-12">
+        {/* Featured Video Section */}
+        <Card className="overflow-hidden shadow-2xl shadow-primary/10">
+            <div className="relative aspect-video">
+                 {videoAdImage && (
+                    <Image 
+                        src={videoAdImage.imageUrl} 
+                        alt="Featured Video" 
+                        data-ai-hint={videoAdImage.imageHint}
+                        fill
+                        objectFit="cover"
+                        className="transition-transform duration-500 hover:scale-105"
+                    />
+                 )}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4">
+                     <Button variant="ghost" size="icon" className="h-20 w-20 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-sm mb-4">
+                        <PlayCircle className="h-12 w-12 text-white"/>
+                    </Button>
+                    <h2 className="text-3xl md:text-4xl font-bold" style={{textShadow: '2px 2px 4px rgba(0,0,0,0.8)'}}>Find Your Soulmate</h2>
+                    <p className="max-w-xl mx-auto mt-2" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.7)'}}>Watch our guide on how to make meaningful connections in the MESY Universe.</p>
+                </div>
+            </div>
+        </Card>
+
+        {/* AI Recommendations Section */}
+        <div>
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-3xl font-bold tracking-tight flex items-center gap-3">
+                    <Sparkles className="text-primary"/>
+                    Just For You
+                </h2>
+                <Button variant="link">See More</Button>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                {aiRecommendations.map((person, index) => (
+                    <Card key={index} className="overflow-hidden group text-center border-border/50 hover:border-primary/50 hover:shadow-lg transition-all">
+                        <div className="relative aspect-[3/4]">
+                            <Image src={person.avatar || ''} alt={person.name} fill objectFit="cover" className="group-hover:scale-105 transition-transform" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                             <div className="absolute top-2 right-2">
+                                <Badge>{person.match}% Match</Badge>
+                            </div>
+                            <div className="absolute bottom-0 p-3 text-white w-full">
+                                <h3 className="text-lg font-bold truncate">{person.name}, {person.age}</h3>
+                                <p className="text-xs truncate">{person.location}</p>
+                            </div>
+                        </div>
+                    </Card>
+                ))}
+            </div>
+        </div>
+      </div>
     </div>
   );
 }
