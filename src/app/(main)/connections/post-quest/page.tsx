@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft, Building, User, FileText, Send, MessageSquare, Hand, ChefHat, Dumbbell, GraduationCap, Landmark, ShieldCheck, Calculator, Home } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft, Building, User, FileText, Send, MessageSquare, Hand, ChefHat, Dumbbell, GraduationCap, Landmark, ShieldCheck, Calculator, Home, Stethoscope, HeartPulse, Boxes, Car, Camera, Wrench } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
@@ -96,9 +96,15 @@ const categories = [
     { name: 'แม่บ้าน', icon: <Home /> },
     { name: 'บอดี้การ์ด', icon: <ShieldCheck /> },
     { name: 'ผู้จัดการส่วนตัว', icon: <Briefcase /> },
-    { name: 'ทนายความ', icon: <Dumbbell /> }, // Using Dumbbell as a placeholder for scale/justice
+    { name: 'ทนายความ', icon: <Dumbbell /> },
     { name: 'ครูสอนพิเศษ', icon: <GraduationCap /> },
     { name: 'นักบัญชี', icon: <Calculator /> },
+    { name: 'หมอ', icon: <Stethoscope /> },
+    { name: 'พยาบาล', icon: <HeartPulse /> },
+    { name: 'คนช่วยขนของ', icon: <Boxes /> },
+    { name: 'คนขับรถ', icon: <Car /> },
+    { name: 'ช่างภาพ', icon: <Camera /> },
+    { name: 'ช่างซ่อม', icon: <Wrench /> },
 ];
 
 const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
@@ -304,6 +310,7 @@ export default function PostQuestPage() {
     </div>
   );
 }
+
 
 
 
