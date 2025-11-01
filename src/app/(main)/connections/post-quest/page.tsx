@@ -5,45 +5,166 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { PlusCircle, Search, Star, HandCoins, Users, Filter } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
-import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
+import Link from "next/link";
 
-const availableTalent = [
-    { name: 'Kael', profession: 'Personal Chef', rating: 4.9, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
-    { name: 'Aria', profession: 'Personal Assistant', rating: 4.8, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
-    { name: 'Zane', profession: 'Bodyguard', rating: 5.0, avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
+
+const quests = [
+    { 
+        title: 'Personal Assistant for Shopping Spree', 
+        hirer: 'Lord Valerius',
+        hirerAvatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl,
+        hirerType: 'Personal',
+        location: 'Siam Paragon, Bangkok',
+        price: '3,000 MC',
+        allowances: ['Advance Payment', 'Food Allowance'],
+        status: 'accept',
+        image: PlaceHolderImages.find(i => i.id === 'shopping-preview')?.imageUrl,
+    },
+    { 
+        title: 'Bodyguard for VIP Event', 
+        hirer: 'Celestial Events',
+        hirerAvatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl,
+        hirerType: 'Company',
+        location: 'Pattaya',
+        price: '5,000 MC',
+        allowances: ['Travel Expenses', 'Accommodation', 'Food Allowance'],
+        status: 'pending',
+        image: 'https://picsum.photos/seed/vip-event/400/225',
+    },
+    { 
+        title: 'Private Chef for a Week', 
+        hirer: 'Lady Elara',
+        hirerAvatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl,
+        hirerType: 'Personal',
+        location: 'Chiang Mai',
+        price: '10,000 MC',
+        allowances: ['Accommodation', 'Food Allowance'],
+        status: 'approved',
+        image: 'https://picsum.photos/seed/private-chef/400/225',
+    },
+    { 
+        title: 'Complete Quest & Claim Payment', 
+        hirer: 'Dragon Guild',
+        hirerAvatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl,
+        hirerType: 'Company',
+        location: 'Remote (Online)',
+        price: '1,500 MC',
+        allowances: [],
+        status: 'working',
+        image: 'https://picsum.photos/seed/dragon-guild/400/225',
+    },
+     { 
+        title: 'Payment Received for Translation Job', 
+        hirer: 'Scholar\'s Guild',
+        hirerAvatar: 'https://picsum.photos/seed/scholar-guild/100',
+        hirerType: 'Company',
+        location: 'Remote (Online)',
+        price: '500 MC',
+        allowances: [],
+        status: 'paid',
+        image: 'https://picsum.photos/seed/translation-job/400/225',
+    },
 ];
 
-const postedQuests = [
-    { title: 'Seeking Personal Chef for Private Event', applicants: 5, status: 'Open' },
-    { title: 'Bodyguard for VIP Escort', applicants: 12, status: 'Open' },
-    { title: 'Part-time Personal Assistant', applicants: 8, status: 'Closed' },
-];
+const statusConfig = {
+    accept: { text: "Accept Quest", buttonVariant: "destructive" as "destructive", className: "", icon: <HandCoins className="mr-2 h-4 w-4"/> },
+    pending: { text: "Pending Approval", buttonVariant: "secondary" as "secondary", className: "bg-yellow-500/80 hover:bg-yellow-500/90 text-white", icon: <Hourglass className="mr-2 h-4 w-4"/> },
+    approved: { text: "Approved", buttonVariant: "default" as "default", className: "bg-green-600 hover:bg-green-700", icon: <CheckCircle className="mr-2 h-4 w-4"/> },
+    working: { text: "Mark as Complete & Get Paid", buttonVariant: "default" as "default", className: "bg-blue-600 hover:bg-blue-700", icon: <CircleDollarSign className="mr-2 h-4 w-4"/> },
+    paid: { text: "Payment Received", buttonVariant: "default" as "default", className: "bg-violet-600 hover:bg-violet-700", icon: <CheckCircle2 className="mr-2 h-4 w-4"/> }
+};
 
-const topHirers = [
-    { name: 'Celestial Events', rating: 5.0, avatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl },
-    { name: 'Lord Valerius', rating: 4.9, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
-];
+const allowanceIcons = {
+    'Advance Payment': <DollarSign className="h-4 w-4 text-green-400"/>,
+    'Travel Expenses': <Plane className="h-4 w-4 text-blue-400"/>,
+    'Accommodation': <Bed className="h-4 w-4 text-purple-400"/>,
+    'Food Allowance': <Utensils className="h-4 w-4 text-orange-400"/>
+} as const;
 
+
+const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
+    const currentStatus = statusConfig[quest.status as keyof typeof statusConfig];
+    
+    return (
+        <Card className="overflow-hidden bg-card/60 border-border/50 hover:border-primary/50 transition-all shadow-lg flex flex-col">
+            <div className="relative aspect-video">
+                <Image src={quest.image} alt={quest.title} fill objectFit="cover" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
+                <div className="absolute top-2 right-2">
+                    <Badge className="bg-primary/80 backdrop-blur-sm text-base">{quest.price}</Badge>
+                </div>
+                 <div className="absolute bottom-2 left-4 text-white">
+                    <CardTitle className="text-lg leading-tight" style={{textShadow: '1px 1px 3px #000'}}>{quest.title}</CardTitle>
+                </div>
+            </div>
+            <CardContent className="p-4 flex-grow flex flex-col">
+                <div className="flex items-center gap-3 mb-3">
+                    <Avatar className="h-10 w-10">
+                        <AvatarImage src={quest.hirerAvatar} />
+                        <AvatarFallback>{quest.hirer.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <p className="font-semibold">{quest.hirer}</p>
+                        <p className="text-xs text-muted-foreground">{quest.hirerType}</p>
+                    </div>
+                </div>
+
+                <div className="space-y-2 text-sm text-muted-foreground flex-grow mb-4">
+                    <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0"/> {quest.location}</p>
+                    {quest.allowances.length > 0 && (
+                        <div className="space-y-1 pt-2">
+                             {quest.allowances.map(allowance => (
+                                <p key={allowance} className="flex items-center gap-2">
+                                    {allowanceIcons[allowance as keyof typeof allowanceIcons]}
+                                    <span>{allowance}</span>
+                                </p>
+                             ))}
+                        </div>
+                    )}
+                </div>
+                
+                <div className="mt-auto">
+                     <Button 
+                        className={cn("w-full font-bold", currentStatus.className)} 
+                        variant={currentStatus.buttonVariant}
+                        disabled={quest.status !== 'accept'}
+                    >
+                        {currentStatus.icon}
+                        {currentStatus.text}
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
 
 export default function PostQuestPage() {
-    const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
-  
   return (
     <div className="container py-12">
-        {/* Marquee Text */}
-        <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm mb-6">
+      <header className="text-center mb-12">
+        <div className="flex justify-center gap-4 mb-4">
+            <Search className="w-10 h-10 text-primary" />
+            <Briefcase className="w-10 h-10 text-primary" />
+            <Star className="w-10 h-10 text-primary" />
+        </div>
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Find a Quest</h1>
+        <p className="max-w-3xl mx-auto mt-4 text-muted-foreground text-lg">
+          Offer your skills and find part-time work. Browse through quests posted by other members and start earning.
+        </p>
+      </header>
+       <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm mb-6">
             <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
-                <span className="mx-4">Need talent? Post a quest and find the perfect match from thousands of skilled members! ✨</span>
-                <span className="mx-4">Top-rated bodyguard 'Zane' is now available for hire.</span>
+                <span className="mx-4">Lord Valerius is hiring a Personal Assistant for a shopping spree! 🛍️</span>
+                <span className="mx-4">New Quest: Private Chef needed in Chiang Mai for one week. 🍲</span>
             </div>
             <div className="absolute top-0 animate-marquee2 whitespace-nowrap text-primary font-semibold">
-                <span className="mx-4">Need talent? Post a quest and find the perfect match from thousands of skilled members! ✨</span>
-                <span className="mx-4">Top-rated bodyguard 'Zane' is now available for hire.</span>
+                <span className="mx-4">Lord Valerius is hiring a Personal Assistant for a shopping spree! 🛍️</span>
+                <span className="mx-4">New Quest: Private Chef needed in Chiang Mai for one week. 🍲</span>
             </div>
         </div>
         <style jsx>{`
@@ -52,147 +173,22 @@ export default function PostQuestPage() {
             .animate-marquee { animation: marquee 30s linear infinite; }
             .animate-marquee2 { animation: marquee2 30s linear infinite; }
         `}</style>
-        
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-            {/* Left Sidebar */}
-            <aside className="lg:col-span-3 space-y-6">
-                <Card>
-                    <CardHeader className="flex-row items-center gap-3">
-                        <Users className="h-6 w-6 text-primary"/>
-                        <CardTitle>Available Talent</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-4xl font-bold">3,456</p>
-                        <p className="text-sm text-muted-foreground">skilled members ready for quests</p>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><PlusCircle /> Create New Quest</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-sm text-muted-foreground mb-4">Post a job to find personal assistants, bodyguards, chefs, and more.</p>
-                        <Button className="w-full" asChild>
-                            <Link href="/connections/post-quest/create-new-quest">Create Quest</Link>
-                        </Button>
-                    </CardContent>
-                </Card>
-                
-                <Card>
-                    <CardHeader><CardTitle>Your Posted Quests</CardTitle></CardHeader>
-                    <CardContent className="space-y-4">
-                        {postedQuests.map((quest, index) => (
-                            <div key={index} className="flex items-center gap-3">
-                                <div>
-                                    <p className="font-semibold text-sm leading-tight">{quest.title}</p>
-                                    <p className="text-xs text-muted-foreground">{quest.applicants} Applicants</p>
-                                </div>
-                                <Badge variant={quest.status === 'Open' ? 'default' : 'secondary'} className="ml-auto">{quest.status}</Badge>
-                            </div>
-                        ))}
-                    </CardContent>
-                </Card>
-            </aside>
-
-            {/* Main Content */}
-            <main className="lg:col-span-5">
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Manage Quest: Seeking Personal Chef</CardTitle>
-                        <CardDescription>Review applicants for your private event.</CardDescription>
-                        <div className="flex gap-2 pt-4">
-                            <div className="relative flex-grow">
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                <Input placeholder="Search applicants..." className="pl-10" />
-                            </div>
-                            <Button variant="outline" size="icon"><Filter /></Button>
-                        </div>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        <Alert>
-                            <HandCoins className="h-4 w-4" />
-                            <AlertTitle>5 Applicants</AlertTitle>
-                            <AlertDescription>Review profiles and portfolios to find the best fit for your quest.</AlertDescription>
-                        </Alert>
-
-                         {availableTalent.map((person, index) => (
-                            <Card key={index} className="overflow-hidden group text-left flex flex-col sm:flex-row items-center gap-4 p-4">
-                                <Avatar className="h-20 w-20">
-                                    <AvatarImage src={person.avatar || ''} />
-                                    <AvatarFallback>{person.name.charAt(0)}</AvatarFallback>
-                                </Avatar>
-                                <div className="flex-grow">
-                                    <h3 className="text-lg font-bold">{person.name}</h3>
-                                    <p className="text-sm text-primary font-semibold">{person.profession}</p>
-                                    <div className="flex items-center gap-1 text-yellow-400">
-                                        <Star className="h-4 w-4 fill-current"/>
-                                        <span className="font-bold">{person.rating}</span>
-                                        <span className="text-xs text-muted-foreground">(15 successful quests)</span>
-                                    </div>
-                                </div>
-                                <div className="flex flex-col gap-2 shrink-0">
-                                    <Button>Hire Now</Button>
-                                    <Button variant="secondary">Send Message</Button>
-                                </div>
-                            </Card>
-                        ))}
-                    </CardContent>
-                </Card>
-            </main>
-
-            {/* Right Sidebar */}
-            <aside className="lg:col-span-4 space-y-6">
-                <Card className="bg-card/50 border-primary/50 shadow-lg shadow-primary/10">
-                    <CardHeader className="p-0">
-                        {videoAdImage && (
-                        <div className="relative aspect-video">
-                            <Image src={videoAdImage.imageUrl} alt={videoAdImage.description} data-ai-hint={videoAdImage.imageHint} fill className="object-cover rounded-t-lg"/>
-                            <div className="absolute inset-0 bg-black/50 flex items-center justify-center"></div>
-                        </div>
-                        )}
-                    </CardHeader>
-                    <CardContent className="p-4">
-                        <CardTitle className="text-lg">Find Professionals Instantly</CardTitle>
-                        <p className="text-muted-foreground text-sm mt-1">Upgrade to a Member account for advanced filtering and priority support.</p>
-                        <Button className="w-full mt-3" asChild>
-                            <Link href="/member-plan">Learn More</Link>
-                        </Button>
-                    </CardContent>
-                </Card>
-                <Card className="bg-card/50">
-                    <CardHeader>
-                        <CardTitle>Popular Quests</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-3">
-                        <p className="text-sm text-muted-foreground">Seeking bodyguard for event</p>
-                        <p className="text-sm text-muted-foreground">Part-time chef for family</p>
-                        <p className="text-sm text-muted-foreground">Personal assistant for shopping</p>
-                    </CardContent>
-                </Card>
-
-                <Card>
-                    <CardHeader>
-                        <CardTitle>Top Rated Hirers</CardTitle>
-                        <CardDescription>Trusted members of the community.</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        {topHirers.map((hirer, index) => (
-                             <div key={index} className="flex items-center gap-3">
-                                <Avatar><AvatarImage src={hirer.avatar} /><AvatarFallback>{hirer.name.charAt(0)}</AvatarFallback></Avatar>
-                                <div className="flex-grow">
-                                    <p className="font-semibold text-sm">{hirer.name}</p>
-                                    <div className="flex items-center text-xs text-yellow-400"><Star className="h-4 w-4 fill-current mr-1"/>{hirer.rating}</div>
-                                </div>
-                               <Badge variant="outline">Verified Hirer</Badge>
-                            </div>
-                        ))}
-                    </CardContent>
-                </Card>
-
-            </aside>
+      <div className="flex gap-2 mb-8">
+        <div className="relative flex-grow">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input placeholder="Search quests by title, skill, or location..." className="pl-10 h-12 text-base" />
         </div>
+        <Button variant="outline" size="lg"><Filter className="mr-2"/> Filters</Button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {quests.map((quest, index) => (
+            <QuestCard key={index} quest={quest} />
+        ))}
+      </div>
+       <div className="text-center mt-12">
+        <Button variant="outline" size="lg">Load More Quests</Button>
+      </div>
     </div>
   );
 }
