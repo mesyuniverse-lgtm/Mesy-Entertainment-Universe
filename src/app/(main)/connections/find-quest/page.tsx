@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2 } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
@@ -71,12 +71,20 @@ const quests = [
 ];
 
 const statusConfig = {
-    accept: { text: "Accept Quest", variant: "destructive" as "destructive", icon: <HandCoins/> },
-    pending: { text: "Pending Approval", variant: "warning" as "default", icon: <Hourglass/> },
-    approved: { text: "Approved", variant: "success" as "default", icon: <CheckCircle/> },
-    working: { text: "Mark as Complete & Get Paid", variant: "default" as "default", icon: <CircleDollarSign/> },
-    paid: { text: "Payment Received", variant: "violet" as "default", icon: <CheckCircle2/> }
+    accept: { text: "Accept Quest", buttonVariant: "destructive" as "destructive", icon: <HandCoins className="mr-2 h-4 w-4"/> },
+    pending: { text: "Pending Approval", buttonVariant: "secondary" as "secondary", icon: <Hourglass className="mr-2 h-4 w-4"/> },
+    approved: { text: "Approved", buttonVariant: "default" as "default", className: "bg-green-600 hover:bg-green-700", icon: <CheckCircle className="mr-2 h-4 w-4"/> },
+    working: { text: "Mark as Complete & Get Paid", buttonVariant: "default" as "default", className: "bg-blue-600 hover:bg-blue-700", icon: <CircleDollarSign className="mr-2 h-4 w-4"/> },
+    paid: { text: "Payment Received", buttonVariant: "default" as "default", className: "bg-violet-600 hover:bg-violet-700", icon: <CheckCircle2 className="mr-2 h-4 w-4"/> }
 };
+
+const allowanceIcons = {
+    'Advance Payment': <DollarSign className="h-4 w-4 text-green-400"/>,
+    'Travel Expenses': <Plane className="h-4 w-4 text-blue-400"/>,
+    'Accommodation': <Bed className="h-4 w-4 text-purple-400"/>,
+    'Food Allowance': <Utensils className="h-4 w-4 text-orange-400"/>
+} as const;
+
 
 const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
     const currentStatus = statusConfig[quest.status as keyof typeof statusConfig];
@@ -87,14 +95,14 @@ const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
                 <Image src={quest.image} alt={quest.title} fill objectFit="cover" />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                 <div className="absolute top-2 right-2">
-                    <Badge className="bg-primary/80 backdrop-blur-sm">{quest.price}</Badge>
+                    <Badge className="bg-primary/80 backdrop-blur-sm text-base">{quest.price}</Badge>
                 </div>
                  <div className="absolute bottom-2 left-4 text-white">
                     <CardTitle className="text-lg leading-tight" style={{textShadow: '1px 1px 3px #000'}}>{quest.title}</CardTitle>
                 </div>
             </div>
             <CardContent className="p-4 flex-grow flex flex-col">
-                <div className="flex items-center gap-3 mb-4">
+                <div className="flex items-center gap-3 mb-3">
                     <Avatar className="h-10 w-10">
                         <AvatarImage src={quest.hirerAvatar} />
                         <AvatarFallback>{quest.hirer.charAt(0)}</AvatarFallback>
@@ -105,27 +113,25 @@ const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
                     </div>
                 </div>
 
-                <div className="space-y-2 text-sm text-muted-foreground flex-grow">
-                    <p className="flex items-center gap-2"><MapPin className="h-4 w-4"/> {quest.location}</p>
+                <div className="space-y-2 text-sm text-muted-foreground flex-grow mb-4">
+                    <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0"/> {quest.location}</p>
                     {quest.allowances.length > 0 && (
-                        <div>
-                             <p className="font-medium text-foreground/80">Allowances:</p>
-                             <ul className="list-disc list-inside pl-2">
-                                {quest.allowances.map(allowance => <li key={allowance}>{allowance}</li>)}
-                             </ul>
+                        <div className="space-y-1">
+                             {quest.allowances.map(allowance => (
+                                <p key={allowance} className="flex items-center gap-2">
+                                    {allowanceIcons[allowance as keyof typeof allowanceIcons]}
+                                    <span>{allowance}</span>
+                                </p>
+                             ))}
                         </div>
                     )}
                 </div>
                 
-                <div className="mt-4">
+                <div className="mt-auto">
                      <Button 
-                        className={cn(
-                            "w-full font-bold",
-                            currentStatus.variant === 'warning' && 'bg-yellow-500 hover:bg-yellow-600 text-black',
-                            currentStatus.variant === 'success' && 'bg-green-500 hover:bg-green-600 text-white',
-                            currentStatus.variant === 'violet' && 'bg-violet-600 hover:bg-violet-700 text-white',
-                        )} 
-                        variant={currentStatus.variant}
+                        className={cn("w-full font-bold", currentStatus.className)} 
+                        variant={currentStatus.buttonVariant}
+                        disabled={quest.status !== 'accept'}
                     >
                         {currentStatus.icon}
                         {currentStatus.text}
@@ -170,4 +176,3 @@ export default function FindQuestPage() {
     </div>
   );
 }
-
