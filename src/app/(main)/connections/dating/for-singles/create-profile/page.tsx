@@ -163,6 +163,11 @@ export default function CreateDatingProfilePage() {
                             </div>
                         </div>
 
+                        <div className="space-y-2">
+                            <Label htmlFor="food-allergies">Food Allergies (แพ้อาหารอะไรบ้าง)</Label>
+                            <Textarea id="food-allergies" placeholder="e.g., Seafood, peanuts, gluten..." />
+                        </div>
+
                          <div className="space-y-2">
                             <Label htmlFor="partner-preference">Partner Preference (ต้องการคนแบบไหน)</Label>
                             <Textarea id="partner-preference" placeholder="Describe your ideal partner..." />
