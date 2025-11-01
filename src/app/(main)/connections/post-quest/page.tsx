@@ -1,12 +1,11 @@
 
-
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft, Building, User, FileText, Send, MessageSquare, Hand, ChefHat, Dumbbell, GraduationCap, Landmark, ShieldCheck, Calculator, Home, Stethoscope, HeartPulse, Boxes, Car, Camera, Wrench, Baby, HeartHandshake } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft, Building, User, FileText, Send, MessageSquare, Hand, ChefHat, Dumbbell, GraduationCap, Landmark, ShieldCheck, Calculator, Home, Stethoscope, HeartPulse, Boxes, Car, Camera, Wrench, Baby, HeartHandshake, Accessibility } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
@@ -104,6 +103,7 @@ const categories = [
     { name: 'พยาบาล', icon: <HeartPulse /> },
     { name: 'พี่เลี้ยงดูแลเด็ก', icon: <Baby /> },
     { name: 'ผู้ดูแลผู้สูงอายุ', icon: <HeartHandshake /> },
+    { name: 'ผู้ดูแลและบำบัดผู้พิการ', icon: <Accessibility /> },
     { name: 'คนช่วยขนของ', icon: <Boxes /> },
     { name: 'คนขับรถ', icon: <Car /> },
     { name: 'ช่างภาพ', icon: <Camera /> },
@@ -314,10 +314,4 @@ export default function PostQuestPage() {
   );
 }
 
-
-
-
-
-
-
-
+    
