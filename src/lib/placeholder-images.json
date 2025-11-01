@@ -45,55 +45,55 @@
     {
       "id": "fantasy-landscape-4",
       "description": "A beautiful fantasy landscape with an ancient tree.",
-      "imageUrl": "https://images.unsplash.com/photo-1601239389304-83cb62cd6106?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhbmNpZW50JTIwdHJlZXxlbnwwfHx8fDE3NjEwNjg5ODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1601239389304-83cb62cd6106?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhbmNpZW50JTIwdHJlZXxlbnwwfHx8fDE3NjEwNjg5ODd8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "ancient tree"
     },
     {
       "id": "fantasy-landscape-5",
       "description": "A beautiful fantasy landscape with a mystical portal.",
-      "imageUrl": "https://images.unsplash.com/photo-1670779431437-9723ebfcaaec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxteXN0aWNhbCUyMHBvcnRhbHxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1670779431437-9723ebfcaaec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxteXN0aWNhbCUyMHBvcnRhbHxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "mystical portal"
     },
     {
       "id": "fantasy-landscape-6",
       "description": "A beautiful fantasy landscape with a sky city.",
-      "imageUrl": "https://images.unsplash.com/photo-1600178503558-5ecdf7f854ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxza3klMjBjaXR5fGVufDB8fHx8MTc2MDk2NjY4Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1600178503558-5ecdf7f854ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxza3klMjBjaXR5fGVufDB8fHx8MTc2MDk2NjY4Mnww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "sky city"
     },
     {
       "id": "socialive-preview",
       "description": "People in a virtual social room.",
-      "imageUrl": "https://images.unsplash.com/photo-1758523668152-318d3f9d52b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8dmlydHVhbCUyMGhhbmdvdXR8ZW58MHx8fHwxNzYxMDc3NDQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1758523668152-318d3f9d52b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8dmlydHVhbCUyMGhhbmdvdXR8ZW58MHx8fHwxNzYxMDc3NDQ1fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "virtual hangout"
     },
     {
       "id": "entertainment-preview",
       "description": "A stage with musical instruments and lights.",
-      "imageUrl": "https://images.unsplash.com/photo-1670028514318-0ac718c0590d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb25jZXJ0JTIwc3RhZ2V8ZW58MHx8fHwxNzYxMDY2ODcyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1670028514318-0ac718c0590d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb25jZXJ0JTIwc3RhZ2V8ZW58MHx8fHwxNzYxMDY2ODcyfDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "concert stage"
     },
     {
       "id": "shopping-preview",
       "description": "A magical marketplace with various stalls.",
-      "imageUrl": "https://images.unsplash.com/photo-1723489553375-342965f1c4e6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmYW50YXN5JTIwbWFya2V0fGVufDB8fHx8MTc2MTA3NzQ0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1723489553375-342965f1c4e6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmYW50YXN5JTIwbWFya2V0fGVufDB8fHx8MTc2MTA3NzQ0NHww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy market"
     },
     {
       "id": "member-zone-preview",
       "description": "An exclusive, ornate door with glowing runes.",
-      "imageUrl": "https://images.unsplash.com/photo-1693939423676-fe3efb21becf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtYWdpYyUyMGRvb3J8ZW58MHx8fHwxNzYwOTY2NjgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1693939423676-fe3efb21becf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtYWdpYyUyMGRvb3J8ZW58MHx8fHwxNzYwOTY2NjgyfDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "magic door"
     },
     {
       "id": "feature-1",
       "description": "A diagram showing social connections.",
-      "imageUrl": "https://images.unsplash.com/photo-1535303311164-664fc9ec6532?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzb2NpYWwlMjBuZXR3b3JrfGVufDB8fHx8MTc2MDk3Mzk0M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1535303311164-664fc9ec6532?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzb2NpYWwlMjBuZXR3b3JrfGVufDB8fHx8MTc2MDk3Mzk0M3ww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "social network"
     },
     {
       "id": "feature-2",
       "description": "An AI generating art.",
-      "imageUrl": "https://images.unsplash.com/photo-1667835949495-78a1ea9ecd77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxBSSUyMGFydHxlbnwwfHx8fDE3NjEwNDQ0MjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1667835949495-78a1ea9ecd77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxBSSUyMGFydHxlbnwwfHx8fDE3NjEwNDQ0MjR8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "AI art"
     },
     {
@@ -149,6 +149,12 @@
       "description": "A silhouette of a powerful fighter character.",
       "imageUrl": "https://images.unsplash.com/photo-1758295970180-69c318772447?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmaWdodGVyJTIwc2lsaG91ZXR0ZXxlbnwwfHx8fDE3NjEwNzc0NDV8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "fighter silhouette"
+    },
+    {
+      "id": "rose-background",
+      "description": "A soft background of pink roses.",
+      "imageUrl": "https://images.unsplash.com/photo-1565531233379-71c73b065163?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+      "imageHint": "roses background"
     }
   ]
 }
