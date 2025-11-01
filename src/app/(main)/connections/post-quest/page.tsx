@@ -5,9 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { PlusCircle, Search, Star, HandCoins, Users, MapPin, BadgeCent, CheckCircle2, Clock, FileText, Send, XCircle, Sparkles, Briefcase, Filter } from "lucide-react";
+import { PlusCircle, Search, Star, HandCoins, Users, Filter } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
@@ -33,7 +32,6 @@ const topHirers = [
 
 export default function PostQuestPage() {
     const videoAdImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-2');
-    const adImage = PlaceHolderImages.find(i => i.id === 'glowing-gem-1');
   
   return (
     <div className="container py-12">
@@ -96,25 +94,6 @@ export default function PostQuestPage() {
                         ))}
                     </CardContent>
                 </Card>
-
-                 <Card>
-                    <CardHeader>
-                        <CardTitle className="flex items-center gap-2"><Sparkles className="text-primary"/> Just For You</CardTitle>
-                        <CardDescription>AI Recommended Talent</CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                        {availableTalent.slice(0, 2).map((rec, index) => (
-                             <div key={index} className="flex items-center gap-3">
-                                <Avatar><AvatarImage src={rec.avatar} /><AvatarFallback>{rec.name.charAt(0)}</AvatarFallback></Avatar>
-                                <div>
-                                    <p className="font-semibold text-sm">{rec.name}</p>
-                                    <p className="text-xs text-muted-foreground">{rec.profession}</p>
-                                </div>
-                                <Button size="sm" variant="outline" className="ml-auto">View</Button>
-                            </div>
-                        ))}
-                    </CardContent>
-                </Card>
             </aside>
 
             {/* Main Content */}
@@ -133,7 +112,7 @@ export default function PostQuestPage() {
                     </CardHeader>
                     <CardContent className="space-y-4">
                         <Alert>
-                            <Briefcase className="h-4 w-4" />
+                            <HandCoins className="h-4 w-4" />
                             <AlertTitle>5 Applicants</AlertTitle>
                             <AlertDescription>Review profiles and portfolios to find the best fit for your quest.</AlertDescription>
                         </Alert>
