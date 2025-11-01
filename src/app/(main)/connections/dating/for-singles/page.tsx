@@ -87,7 +87,7 @@ export default function ForSinglesPage() {
                     <CardContent>
                         <p className="text-sm text-muted-foreground mb-4">Create your profile to start connecting with other members.</p>
                         <Button className="w-full" asChild>
-                            <Link href="/connections/dating#conditions">Create Profile</Link>
+                            <Link href="/connections/dating/for-singles/create-profile">Create Profile</Link>
                         </Button>
                     </CardContent>
                 </Card>
