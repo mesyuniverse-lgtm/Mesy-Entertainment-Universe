@@ -18,7 +18,7 @@ export default function ConnectionsPage() {
       icon: <FilePlus2 className="w-10 h-10 text-primary" />,
       title: "Post a Quest (For Hirers)",
       description: "Need help? Post a job quest to find personal assistants, bodyguards, chefs, and other skilled individuals.",
-      href: "/connections/post-quest/create-new-quest",
+      href: "/connections/post-quest",
       buttonText: "Post Your Quest"
     },
     {
