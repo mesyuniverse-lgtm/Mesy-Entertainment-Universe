@@ -1,15 +1,18 @@
 
 'use client';
 
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft, Building, User, FileText, Send, MessageSquare, Hand, ChefHat, Dumbbell, GraduationCap, Landmark, ShieldCheck, Calculator, Home, Stethoscope, HeartPulse, Boxes, Car, Camera, Wrench, Baby, HeartHandshake, Accessibility, ClipboardList, BrainCircuit, HandHeart } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 
 const quests = [
@@ -85,6 +88,30 @@ const allowanceIcons = {
     'Food Allowance': <Utensils className="h-4 w-4 text-orange-400"/>
 } as const;
 
+const categories = [
+    { name: 'จ้างผู้ช่วย', icon: <Hand /> },
+    { name: 'เพื่อนพาเที่ยว', icon: <Users /> },
+    { name: 'ไกด์นำเที่ยว', icon: <Landmark /> },
+    { name: 'แม่ครัว', icon: <ChefHat /> },
+    { name: 'แม่บ้าน', icon: <Home /> },
+    { name: 'บอดี้การ์ด', icon: <ShieldCheck /> },
+    { name: 'ผู้จัดการส่วนตัว', icon: <Briefcase /> },
+    { name: 'ทนายความ', icon: <Dumbbell /> },
+    { name: 'ครูสอนพิเศษ', icon: <GraduationCap /> },
+    { name: 'นักบัญชี', icon: <Calculator /> },
+    { name: 'หมอ', icon: <Stethoscope /> },
+    { name: 'พยาบาล', icon: <HeartPulse /> },
+    { name: 'พี่เลี้ยงดูแลเด็ก', icon: <Baby /> },
+    { name: 'ผู้ดูแลผู้สูงอายุ', icon: <HeartHandshake /> },
+    { name: 'ผู้ดูแลและบำบัดผู้พิการ', icon: <Accessibility /> },
+    { name: 'คนช่วยขนของ', icon: <Boxes /> },
+    { name: 'คนขับรถ', icon: <Car /> },
+    { name: 'ช่างภาพ', icon: <Camera /> },
+    { name: 'ช่างซ่อม', icon: <Wrench /> },
+    { name: 'เลขา', icon: <ClipboardList /> },
+    { name: 'ที่ปรึกษา', icon: <BrainCircuit /> },
+    { name: 'อาสาสมัคร', icon: <HandHeart /> },
+];
 
 const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
     const currentStatus = statusConfig[quest.status as keyof typeof statusConfig];
@@ -109,7 +136,10 @@ const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
                     </Avatar>
                     <div>
                         <p className="font-semibold">{quest.hirer}</p>
-                        <p className="text-xs text-muted-foreground">{quest.hirerType}</p>
+                        <p className="text-xs text-muted-foreground flex items-center gap-1">
+                            {quest.hirerType === 'Personal' ? <User className="h-3 w-3"/> : <Building className="h-3 w-3" />}
+                            {quest.hirerType}
+                        </p>
                     </div>
                 </div>
 
@@ -131,7 +161,6 @@ const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
                      <Button 
                         className={cn("w-full font-bold", currentStatus.className)} 
                         variant={currentStatus.buttonVariant}
-                        disabled={quest.status !== 'accept'}
                     >
                         {currentStatus.icon}
                         {currentStatus.text}
@@ -142,9 +171,36 @@ const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
     )
 }
 
-export default function FindQuestPage() {
+const QuestGrid = ({ status }: { status?: string }) => {
+    const filteredQuests = status ? quests.filter(q => q.status === status) : quests;
+    if (filteredQuests.length === 0) {
+        return (
+            <div className="text-center col-span-full py-12">
+                <p className="text-muted-foreground">No quests found for this status.</p>
+            </div>
+        )
+    }
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {filteredQuests.map((quest, index) => (
+                <QuestCard key={index} quest={quest} />
+            ))}
+        </div>
+    );
+};
+
+
+export default function NeedJobsPage() {
   return (
     <div className="container py-12">
+      <div className="mb-8">
+          <Button asChild variant="outline">
+              <Link href="/connections">
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back to The Connection Hub
+              </Link>
+          </Button>
+      </div>
       <header className="text-center mb-12">
         <div className="flex justify-center gap-4 mb-4">
             <Search className="w-10 h-10 text-primary" />
@@ -156,22 +212,106 @@ export default function FindQuestPage() {
           Offer your skills and find part-time work. Browse through quests posted by other members and start earning.
         </p>
       </header>
-
-      <div className="flex gap-2 mb-8">
-        <div className="relative flex-grow">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-            <Input placeholder="Search quests by title, skill, or location..." className="pl-10 h-12 text-base" />
+       <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm mb-6">
+            <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
+                <span className="mx-4">Lord Valerius is hiring a Personal Assistant for a shopping spree! 🛍️</span>
+                <span className="mx-4">New Quest: Private Chef needed in Chiang Mai for one week. 🍲</span>
+            </div>
+            <div className="absolute top-0 animate-marquee2 whitespace-nowrap text-primary font-semibold">
+                <span className="mx-4">Lord Valerius is hiring a Personal Assistant for a shopping spree! 🛍️</span>
+                <span className="mx-4">New Quest: Private Chef needed in Chiang Mai for one week. 🍲</span>
+            </div>
         </div>
-        <Button variant="outline" size="lg"><Filter className="mr-2"/> Filters</Button>
-      </div>
+        <style jsx>{`
+            @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+            @keyframes marquee2 { from { transform: translateX(100%); } to { transform: translateX(0); } }
+            .animate-marquee { animation: marquee 30s linear infinite; }
+            .animate-marquee2 { animation: marquee2 30s linear infinite; }
+        `}</style>
+      
+       <div className="my-8">
+            <ScrollArea className="w-full whitespace-nowrap rounded-md">
+                <div className="flex w-max space-x-2 p-2">
+                    {categories.map((category) => (
+                        <Button key={category.name} variant="outline" className="h-auto flex-col px-4 py-3 gap-2">
+                            {category.icon}
+                            <span className="text-xs font-semibold">{category.name}</span>
+                        </Button>
+                    ))}
+                </div>
+                <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+        </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {quests.map((quest, index) => (
-            <QuestCard key={index} quest={quest} />
-        ))}
-      </div>
-       <div className="text-center mt-12">
-        <Button variant="outline" size="lg">Load More Quests</Button>
+      <div className="grid lg:grid-cols-12 gap-8">
+        
+        <aside className="lg:col-span-3 space-y-6">
+            <Card>
+                <CardHeader className="flex-row items-center gap-3">
+                    <Users className="h-6 w-6 text-primary"/>
+                    <CardTitle>Talent Pool</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <p className="text-4xl font-bold">2,458</p>
+                    <p className="text-sm text-muted-foreground">talents available</p>
+                </CardContent>
+            </Card>
+
+            <Card className="bg-card/70 border-primary/30">
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><PlusCircle/> Post a Job</CardTitle>
+                    <CardDescription>Need help? Post a quest to find the perfect person for the job.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                    <Button asChild className="w-full">
+                        <Link href="/connections/post-quest/create-new-quest">Create New Quest</Link>
+                    </Button>
+                </CardContent>
+            </Card>
+        </aside>
+
+        <main className="lg:col-span-9">
+            <div className="flex gap-2 mb-8">
+                <div className="relative flex-grow">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                    <Input placeholder="Search quests by title, skill, or location..." className="pl-10 h-12 text-base" />
+                </div>
+                <Button variant="outline" size="lg"><Filter className="mr-2"/> Filters</Button>
+            </div>
+
+            <Tabs defaultValue="all">
+                <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 h-auto">
+                    <TabsTrigger value="all">All Quests</TabsTrigger>
+                    <TabsTrigger value="accept">Available</TabsTrigger>
+                    <TabsTrigger value="pending">Waiting for Approval</TabsTrigger>
+                    <TabsTrigger value="in-progress">In Progress</TabsTrigger>
+                    <TabsTrigger value="completed">Completed</TabsTrigger>
+                </TabsList>
+                <TabsContent value="all" className="mt-6">
+                    <QuestGrid />
+                </TabsContent>
+                <TabsContent value="accept" className="mt-6">
+                   <QuestGrid status="accept" />
+                </TabsContent>
+                <TabsContent value="pending" className="mt-6">
+                    <QuestGrid status="pending" />
+                </TabsContent>
+                <TabsContent value="in-progress" className="mt-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                        {quests.filter(q => q.status === 'approved' || q.status === 'working').map((quest, index) => (
+                            <QuestCard key={index} quest={quest} />
+                        ))}
+                    </div>
+                </TabsContent>
+                <TabsContent value="completed" className="mt-6">
+                    <QuestGrid status="paid" />
+                </TabsContent>
+            </Tabs>
+            
+            <div className="text-center mt-12">
+                <Button variant="outline" size="lg">Load More Quests</Button>
+            </div>
+        </main>
       </div>
     </div>
   );
