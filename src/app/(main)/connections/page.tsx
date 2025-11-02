@@ -16,7 +16,7 @@ export default function ConnectionsPage() {
     },
     {
       icon: <FilePlus2 className="w-10 h-10 text-primary" />,
-      title: "Post a Quest (For Hirers)",
+      title: "Post Quest (find Employees)",
       description: "Need help? Post a job quest to find personal assistants, bodyguards, chefs, and other skilled individuals.",
       href: "/connections/post-quest",
       buttonText: "Post Your Quest"
@@ -25,7 +25,7 @@ export default function ConnectionsPage() {
       icon: <Search className="w-10 h-10 text-primary" />,
       title: "Find a Quest (For Talents)",
       description: "Offer your skills. Browse and accept quests for part-time work, from personal services to entertainment gigs.",
-      href: "/connections/post-quest",
+      href: "/connections/find-quest",
       buttonText: "Find a Quest"
     }
   ];
