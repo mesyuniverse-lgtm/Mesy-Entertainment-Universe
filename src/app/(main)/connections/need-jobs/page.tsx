@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -259,12 +258,12 @@ export default function NeedJobsPage() {
 
             <Card className="bg-card/70 border-primary/30">
                 <CardHeader>
-                    <CardTitle className="flex items-center gap-2"><PlusCircle/> Post a Job</CardTitle>
-                    <CardDescription>Need help? Post a quest to find the perfect person for the job.</CardDescription>
+                    <CardTitle className="flex items-center gap-2"><PlusCircle/> Need A Job</CardTitle>
+                    <CardDescription>Let hirers know you're available. Post your skills and desired work.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Button asChild className="w-full">
-                        <Link href="/connections/post-quest/create-new-quest">Create New Quest</Link>
+                        <Link href="/connections/post-quest/create-new-request">Post Your Availability</Link>
                     </Button>
                 </CardContent>
             </Card>
