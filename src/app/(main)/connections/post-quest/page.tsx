@@ -208,7 +208,7 @@ export default function PostQuestPage() {
             <Briefcase className="w-10 h-10 text-primary" />
             <Star className="w-10 h-10 text-primary" />
         </div>
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Find a Quest</h1>
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Post a Quest</h1>
         <p className="max-w-3xl mx-auto mt-4 text-muted-foreground text-lg">
           Offer your skills and find part-time work. Browse through quests posted by other members and start earning.
         </p>
@@ -321,4 +321,5 @@ export default function PostQuestPage() {
     
 
     
+
 
