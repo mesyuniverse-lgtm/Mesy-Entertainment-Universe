@@ -22,39 +22,175 @@ const talents = [
         talentName: 'Sonya',
         talentAvatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl,
         talentSkill: 'Personal Assistant',
+        experience: '5 years',
+        rating: 4.8,
+        reviews: 88,
         availability: 'Weekends, Bangkok',
-        rate: '1,500 MC / Day',
-        tags: ['Shopping', 'Personal Assistant', 'Stylist'],
+        residence: 'Bangkok',
+        workPreference: ['On-site', 'Online'],
+        requestedAllowances: ['Food Allowance'],
+        aiRate: '1,500 MC / Day',
         status: 'available',
-        image: PlaceHolderImages.find(i => i.id === 'shopping-preview')?.imageUrl,
     },
     { 
         title: 'Experienced VIP Bodyguard', 
         talentName: 'Valerius',
         talentAvatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl,
         talentSkill: 'Security Specialist',
+        experience: '10 years',
+        rating: 5.0,
+        reviews: 42,
         availability: 'Pattaya, Chonburi',
-        rate: 'Negotiable',
-        tags: ['Security', 'VIP Protection', 'Events'],
-        status: 'available',
-        image: 'https://picsum.photos/seed/bodyguard/400/225',
+        residence: 'Pattaya',
+        workPreference: ['On-site'],
+        requestedAllowances: ['Travel Expenses', 'Accommodation'],
+        aiRate: '5,000 MC / Day',
+        status: 'pending',
     },
     { 
         title: 'Private Chef for hire', 
         talentName: 'Elara',
         talentAvatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl,
         talentSkill: 'Gourmet Chef',
+        experience: '8 years',
+        rating: 4.9,
+        reviews: 120,
         availability: 'Chiang Mai, available for travel',
-        rate: '10,000 MC / Week',
-        tags: ['Cooking', 'Private Dining', 'Western & Thai'],
-        status: 'busy',
-        image: 'https://picsum.photos/seed/private-chef/400/225',
+        residence: 'Chiang Mai',
+        workPreference: ['On-site'],
+        requestedAllowances: ['Accommodation', 'Food Allowance'],
+        aiRate: '10,000 MC / Week',
+        status: 'approved',
     },
+    {
+        title: 'Genkit AI Developer',
+        talentName: 'Draconis',
+        talentAvatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl,
+        talentSkill: 'AI Developer',
+        experience: '7 years',
+        rating: 4.9,
+        reviews: 65,
+        availability: 'Remote (Online)',
+        residence: 'Digital Realm',
+        workPreference: ['Online'],
+        requestedAllowances: ['Advance Payment'],
+        aiRate: '8,000 MC / Project',
+        status: 'working',
+    },
+    {
+        title: '3D Artist & Animator',
+        talentName: 'Echo',
+        talentAvatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl,
+        talentSkill: '3D Artist',
+        experience: '4 years',
+        rating: 4.7,
+        reviews: 95,
+        availability: 'Remote (Online)',
+        residence: 'Bangkok',
+        workPreference: ['Online'],
+        requestedAllowances: [],
+        aiRate: '3,500 MC / Model',
+        status: 'paid',
+    }
 ];
 
 const statusConfig = {
-    available: { text: "Hire Now", buttonVariant: "default" as "default", className: "", icon: <HandCoins className="mr-2 h-4 w-4"/> },
-    busy: { text: "Currently on Quest", buttonVariant: "secondary" as "secondary", className: "bg-yellow-500/80 hover:bg-yellow-500/90 text-white", icon: <Hourglass className="mr-2 h-4 w-4"/>, disabled: true },
+    available: { text: "Hire Now", buttonVariant: "destructive" as "destructive", className: "", icon: <HandCoins className="mr-2 h-4 w-4"/> },
+    pending: { text: "Waiting for Confirmation", buttonVariant: "secondary" as "secondary", className: "bg-yellow-500/80 hover:bg-yellow-500/90 text-white", icon: <Hourglass className="mr-2 h-4 w-4"/>, disabled: true },
+    approved: { text: "Confirmed - Ready to Start", buttonVariant: "default" as "default", className: "bg-blue-600 hover:bg-blue-700", icon: <CheckCircle className="mr-2 h-4 w-4"/> },
+    working: { text: "Mark as Complete & Get Paid", buttonVariant: "default" as "default", className: "bg-blue-600 hover:bg-blue-700", icon: <CircleDollarSign className="mr-2 h-4 w-4"/> },
+    paid: { text: "Payment Received: Claim Now", buttonVariant: "default" as "default", className: "bg-violet-600 hover:bg-violet-700", icon: <CheckCircle2 className="mr-2 h-4 w-4"/> }
+};
+
+const allowanceIcons = {
+    'Advance Payment': <DollarSign className="h-4 w-4 text-green-400"/>,
+    'Travel Expenses': <Plane className="h-4 w-4 text-blue-400"/>,
+    'Accommodation': <Bed className="h-4 w-4 text-purple-400"/>,
+    'Food Allowance': <Utensils className="h-4 w-4 text-orange-400"/>
+} as const;
+
+
+const TalentCard = ({ talent }: { talent: typeof talents[0] }) => {
+    const currentStatus = statusConfig[talent.status as keyof typeof statusConfig];
+    
+    return (
+        <Card className="overflow-hidden bg-card/60 border-border/50 hover:border-primary/50 transition-all shadow-lg flex flex-col">
+            <CardHeader className="p-4">
+                 <div className="flex items-center gap-3">
+                    <Avatar className="h-14 w-14 border-2 border-primary/50">
+                        <AvatarImage src={talent.talentAvatar} />
+                        <AvatarFallback>{talent.talentName.charAt(0)}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                        <p className="font-bold text-xl">{talent.talentName}</p>
+                        <p className="text-sm text-primary font-semibold">{talent.talentSkill}</p>
+                         <div className="flex items-center gap-2 text-xs text-muted-foreground mt-1">
+                            <span className="flex items-center gap-1"><Star className="h-3 w-3 text-yellow-400 fill-current"/> {talent.rating} ({talent.reviews} reviews)</span>
+                            <span>•</span>
+                            <span>{talent.experience}</span>
+                        </div>
+                    </div>
+                </div>
+            </CardHeader>
+            <CardContent className="p-4 pt-0 flex-grow flex flex-col">
+                <div className="space-y-2 text-sm text-muted-foreground flex-grow mb-4">
+                    <p className="font-semibold text-foreground italic">"{talent.title}"</p>
+                    <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0"/> <strong>Available in:</strong> {talent.availability}</p>
+                    <p className="flex items-start gap-2"><Home className="h-4 w-4 mt-0.5 shrink-0"/> <strong>From:</strong> {talent.residence}</p>
+                    
+                    {talent.requestedAllowances.length > 0 && (
+                        <div className="pt-2">
+                             <h4 className="font-semibold text-foreground text-xs mb-1">Requested Allowances:</h4>
+                             <div className="flex flex-wrap gap-x-4 gap-y-1">
+                                {talent.requestedAllowances.map(allowance => (
+                                    <p key={allowance} className="flex items-center gap-1.5">
+                                        {allowanceIcons[allowance as keyof typeof allowanceIcons]}
+                                        <span>{allowance}</span>
+                                    </p>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+                </div>
+
+                <Separator className="my-4"/>
+                
+                <div className="text-center mb-3">
+                    <p className="text-xs text-muted-foreground">AI Estimated Rate</p>
+                    <p className="text-xl font-bold text-primary">{talent.aiRate}</p>
+                </div>
+                
+                <div className="mt-auto">
+                     <Button 
+                        className={cn("w-full font-bold", currentStatus.className)} 
+                        variant={currentStatus.buttonVariant}
+                        disabled={!!currentStatus.disabled}
+                    >
+                        {currentStatus.icon}
+                        {currentStatus.text}
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+    )
+}
+
+const TalentGrid = ({ status }: { status?: string }) => {
+    const filteredTalents = status ? talents.filter(q => q.status === status) : talents;
+    if (filteredTalents.length === 0) {
+        return (
+            <div className="text-center col-span-full py-12">
+                <p className="text-muted-foreground">No talents found for this status.</p>
+            </div>
+        )
+    }
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {filteredTalents.map((talent, index) => (
+                <TalentCard key={index} talent={talent} />
+            ))}
+        </div>
+    );
 };
 
 const categoryGroups = [
@@ -103,79 +239,6 @@ const categoryGroups = [
     }
 ];
 
-const TalentCard = ({ talent }: { talent: typeof talents[0] }) => {
-    const currentStatus = statusConfig[talent.status as keyof typeof statusConfig];
-    
-    return (
-        <Card className="overflow-hidden bg-card/60 border-border/50 hover:border-primary/50 transition-all shadow-lg flex flex-col">
-            <div className="relative aspect-video">
-                <Image src={talent.image} alt={talent.title} fill objectFit="cover" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
-                <div className="absolute top-2 right-2">
-                    <Badge className="bg-primary/80 backdrop-blur-sm text-base">{talent.rate}</Badge>
-                </div>
-                 <div className="absolute bottom-2 left-4 text-white">
-                    <CardTitle className="text-lg leading-tight" style={{textShadow: '1px 1px 3px #000'}}>{talent.title}</CardTitle>
-                </div>
-            </div>
-            <CardContent className="p-4 flex-grow flex flex-col">
-                <div className="flex items-center gap-3 mb-3">
-                    <Avatar className="h-10 w-10">
-                        <AvatarImage src={talent.talentAvatar} />
-                        <AvatarFallback>{talent.talentName.charAt(0)}</AvatarFallback>
-                    </Avatar>
-                    <div>
-                        <p className="font-semibold">{talent.talentName}</p>
-                        <p className="text-xs text-muted-foreground flex items-center gap-1">
-                            <Star className="h-3 w-3 text-yellow-400"/>
-                            {talent.talentSkill}
-                        </p>
-                    </div>
-                </div>
-
-                <div className="space-y-2 text-sm text-muted-foreground flex-grow mb-4">
-                    <p className="flex items-start gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0"/> {talent.availability}</p>
-                    <div className="flex flex-wrap gap-1 pt-2">
-                         {talent.tags.map(tag => (
-                            <Badge key={tag} variant="secondary">{tag}</Badge>
-                         ))}
-                    </div>
-                </div>
-                
-                <div className="mt-auto">
-                     <Button 
-                        className={cn("w-full font-bold", currentStatus.className)} 
-                        variant={currentStatus.buttonVariant}
-                        disabled={currentStatus.disabled}
-                    >
-                        {currentStatus.icon}
-                        {currentStatus.text}
-                    </Button>
-                </div>
-            </CardContent>
-        </Card>
-    )
-}
-
-const TalentGrid = ({ status }: { status?: string }) => {
-    const filteredTalents = status ? talents.filter(q => q.status === status) : talents;
-    if (filteredTalents.length === 0) {
-        return (
-            <div className="text-center col-span-full py-12">
-                <p className="text-muted-foreground">No talents found for this status.</p>
-            </div>
-        )
-    }
-    return (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {filteredTalents.map((talent, index) => (
-                <TalentCard key={index} talent={talent} />
-            ))}
-        </div>
-    );
-};
-
-
 export default function NeedJobsPage() {
   return (
     <div className="container py-12">
@@ -200,12 +263,12 @@ export default function NeedJobsPage() {
       </header>
        <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm mb-6">
             <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
-                <span className="mx-4">Lord Valerius is hiring a Personal Assistant for a shopping spree! 🛍️</span>
-                <span className="mx-4">New Quest: Private Chef needed in Chiang Mai for one week. 🍲</span>
+                <span className="mx-4">Sonya is now available for hire as a Personal Assistant! 🛍️</span>
+                <span className="mx-4">New Talent: Valerius, a 10-year veteran bodyguard, has joined the market.🛡️</span>
             </div>
             <div className="absolute top-0 animate-marquee2 whitespace-nowrap text-primary font-semibold">
-                <span className="mx-4">Lord Valerius is hiring a Personal Assistant for a shopping spree! 🛍️</span>
-                <span className="mx-4">New Quest: Private Chef needed in Chiang Mai for one week. 🍲</span>
+                <span className="mx-4">Sonya is now available for hire as a Personal Assistant! 🛍️</span>
+                <span className="mx-4">New Talent: Valerius, a 10-year veteran bodyguard, has joined the market.🛡️</span>
             </div>
         </div>
         <style jsx>{`
@@ -291,7 +354,11 @@ export default function NeedJobsPage() {
                    <TalentGrid status="available" />
                 </TabsContent>
                 <TabsContent value="busy" className="mt-6">
-                    <TalentGrid status="busy" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                         {talents.filter(q => q.status !== 'available').map((talent, index) => (
+                            <TalentCard key={index} talent={talent} />
+                        ))}
+                    </div>
                 </TabsContent>
             </Tabs>
             
@@ -303,3 +370,4 @@ export default function NeedJobsPage() {
     </div>
   );
 }
+
