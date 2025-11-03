@@ -18,7 +18,8 @@ import {
   UserCredential,
   signInAnonymously,
   sendEmailVerification,
-  User
+  User,
+  updateProfile
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -33,6 +34,11 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [username, setUsername] = React.useState('');
+  const [firstname, setFirstname] = React.useState('');
+  const [lastname, setLastname] = React.useState('');
+  const [phoneNumber, setPhoneNumber] = React.useState('');
+
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
@@ -40,6 +46,8 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
 
   const handleSuccessfulAuth = async (user: User) => {
     if (action === 'signup') {
+      await updateProfile(user, { displayName: username });
+
       const userDocRef = doc(firestore, "users", user.uid);
       await setDoc(userDocRef, {
         id: user.uid,
@@ -47,6 +55,16 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         role: 'User',
         level: 0
       }, { merge: true });
+
+      const userProfileDocRef = doc(firestore, `users/${user.uid}/profile`, user.uid);
+      await setDoc(userProfileDocRef, {
+        userId: user.uid,
+        nickname: username,
+        firstname: firstname,
+        lastname: lastname,
+        phoneNumber: { number: phoneNumber, countryCode: '' },
+      });
+
       await sendEmailVerification(user);
        toast({
         title: "Verification Email Sent",
@@ -58,6 +76,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
 
   React.useEffect(() => {
     setIsLoading(true);
+    if (!auth) return;
     getRedirectResult(auth)
       .then((result) => {
         if (result) {
@@ -112,6 +131,11 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
     setIsLoading(true)
+    if (!auth) {
+        console.error("Auth service is not available.");
+        setIsLoading(false);
+        return;
+    }
 
     try {
       let userCredential: UserCredential;
@@ -130,6 +154,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
 
   async function onGoogleSignIn() {
     setIsLoading(true);
+    if (!auth) return;
     try {
       const provider = new GoogleAuthProvider();
       await signInWithRedirect(auth, provider);
@@ -141,6 +166,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   
   async function onAnonymousSignIn() {
     setIsLoading(true);
+    if (!auth) return;
     try {
       await signInAnonymously(auth);
       router.push(redirectPath || "/home");
@@ -155,6 +181,24 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
+          {action === 'signup' && (
+            <>
+              <div className="grid gap-2">
+                <Label htmlFor="username">Username</Label>
+                <Input id="username" placeholder="Your username" value={username} onChange={(e) => setUsername(e.target.value)} disabled={isLoading} />
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="grid gap-2">
+                    <Label htmlFor="firstname">First Name</Label>
+                    <Input id="firstname" placeholder="First Name" value={firstname} onChange={(e) => setFirstname(e.target.value)} disabled={isLoading} />
+                </div>
+                <div className="grid gap-2">
+                    <Label htmlFor="lastname">Last Name</Label>
+                    <Input id="lastname" placeholder="Last Name" value={lastname} onChange={(e) => setLastname(e.target.value)} disabled={isLoading} />
+                </div>
+              </div>
+            </>
+          )}
           <div className="grid gap-2">
             <Label htmlFor="email">
               Email
@@ -184,6 +228,12 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
+          {action === 'signup' && (
+            <div className="grid gap-2">
+              <Label htmlFor="phone">Phone Number</Label>
+              <Input id="phone" placeholder="Your phone number" type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} disabled={isLoading} />
+            </div>
+          )}
           <Button disabled={isLoading}>
             {isLoading && (
               <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
