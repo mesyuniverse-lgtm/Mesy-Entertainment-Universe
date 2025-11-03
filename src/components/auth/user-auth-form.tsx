@@ -25,6 +25,10 @@ import { doc, setDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -32,32 +36,62 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     redirectPath?: string;
 }
 
+const loginSchema = z.object({
+  email: z.string().email({ message: "Invalid email address." }),
+  password: z.string().min(1, { message: "Password is required." }),
+});
+
+const signupSchema = z.object({
+  username: z.string().min(3, { message: "Username must be at least 3 characters." }),
+  firstname: z.string().min(1, { message: "First name is required." }),
+  lastname: z.string().min(1, { message: "Last name is required." }),
+  nickname: z.string().optional(),
+  phoneNumber: z.string().min(9, { message: "Please enter a valid phone number." }),
+  email: z.string().email({ message: "Invalid email address." }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters." }),
+  confirmPassword: z.string(),
+  birthDay: z.string().min(1, { message: "Day is required." }),
+  birthMonth: z.string().min(1, { message: "Month is required." }),
+  birthYear: z.string().min(1, { message: "Year is required." }),
+  gender: z.enum(["female", "male", "custom"], { required_error: "Please select a gender." }),
+}).refine(data => data.password === data.confirmPassword, {
+  message: "Passwords do not match.",
+  path: ["confirmPassword"],
+});
+
+
 export function UserAuthForm({ className, action, redirectPath, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const [email, setEmail] = React.useState('');
-  const [password, setPassword] = React.useState('');
-  const [confirmPassword, setConfirmPassword] = React.useState('');
-  const [username, setUsername] = React.useState('');
-  const [firstname, setFirstname] = React.useState('');
-  const [lastname, setLastname] = React.useState('');
-  const [nickname, setNickname] = React.useState('');
-  const [phoneNumber, setPhoneNumber] = React.useState('');
-  
-  // Date of birth states
-  const [birthDay, setBirthDay] = React.useState('');
-  const [birthMonth, setBirthMonth] = React.useState('');
-  const [birthYear, setBirthYear] = React.useState('');
-  const [gender, setGender] = React.useState('');
-
-
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleSuccessfulAuth = async (user: User) => {
-    if (action === 'signup') {
-      const displayName = `${firstname} ${lastname}`.trim();
+  const formSchema = action === 'login' ? loginSchema : signupSchema;
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: action === 'signup' ? {
+        username: "",
+        firstname: "",
+        lastname: "",
+        nickname: "",
+        phoneNumber: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        birthDay: "",
+        birthMonth: "",
+        birthYear: "",
+    } : {
+        email: "",
+        password: "",
+    },
+  });
+
+  const handleSuccessfulAuth = async (user: User, data?: z.infer<typeof signupSchema>) => {
+    if (action === 'signup' && data) {
+      const displayName = `${data.firstname} ${data.lastname}`.trim();
       await updateProfile(user, { displayName });
 
       const userDocRef = doc(firestore, "users", user.uid);
@@ -68,18 +102,18 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         level: 0
       }, { merge: true });
 
-      const userProfileDocRef = doc(firestore, `users/${'\'\'\''}{user.uid}/profile`, user.uid);
+      const userProfileDocRef = doc(firestore, `users/${user.uid}/profile`, user.uid);
       await setDoc(userProfileDocRef, {
         userId: user.uid,
-        username: username,
-        nickname: nickname,
-        firstname: firstname,
-        lastname: lastname,
-        dob: `${'\'\'\''}{birthYear}-${'\'\'\''}{birthMonth}-${'\'\'\''}{birthDay}`,
-        gender: gender,
+        username: data.username,
+        nickname: data.nickname,
+        firstname: data.firstname,
+        lastname: data.lastname,
+        dob: `${data.birthYear}-${data.birthMonth}-${data.birthDay}`,
+        gender: data.gender,
         phoneNumber: {
-            countryCode: "+66", // Assuming Thai country code for now
-            number: phoneNumber,
+            countryCode: "+66",
+            number: data.phoneNumber,
         }
       });
 
@@ -93,8 +127,8 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   };
 
   React.useEffect(() => {
-    setIsLoading(true);
     if (!auth) return;
+    setIsLoading(true);
     getRedirectResult(auth)
       .then((result) => {
         if (result) {
@@ -146,22 +180,12 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     });
   }
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
-    setIsLoading(true)
-
-    if (action === 'signup' && password !== confirmPassword) {
-        toast({
-            variant: "destructive",
-            title: "Passwords do not match",
-            description: "Please make sure your passwords match.",
-        });
-        setIsLoading(false);
-        return;
-    }
+  async function onSubmit(data: z.infer<typeof formSchema>) {
+    setIsLoading(true);
 
     if (!auth) {
         console.error("Auth service is not available.");
+        toast({ title: "Authentication Error", description: "Auth service not initialized.", variant: "destructive" });
         setIsLoading(false);
         return;
     }
@@ -169,11 +193,14 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     try {
       let userCredential: UserCredential;
       if (action === 'signup') {
-        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const signupData = data as z.infer<typeof signupSchema>;
+        userCredential = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
+        await handleSuccessfulAuth(userCredential.user, signupData);
       } else {
-        userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const loginData = data as z.infer<typeof loginSchema>;
+        userCredential = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
+        await handleSuccessfulAuth(userCredential.user);
       }
-      await handleSuccessfulAuth(userCredential.user);
     } catch (error: any) {
       handleAuthError(error);
     } finally {
@@ -182,8 +209,8 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   }
 
   async function onGoogleSignIn() {
-    setIsLoading(true);
     if (!auth) return;
+    setIsLoading(true);
     try {
       const provider = new GoogleAuthProvider();
       await signInWithRedirect(auth, provider);
@@ -194,8 +221,8 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   }
   
   async function onAnonymousSignIn() {
-    setIsLoading(true);
     if (!auth) return;
+    setIsLoading(true);
     try {
       await signInAnonymously(auth);
       router.push(redirectPath || "/home");
@@ -218,130 +245,120 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
-        <div className="grid gap-4">
-          {action === 'signup' ? (
-            <>
-              <div className="grid gap-2">
-                  <Label htmlFor="username">Username</Label>
-                  <Input id="username" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} disabled={isLoading} />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="grid gap-2">
-                    <Label htmlFor="firstname">Firstname</Label>
-                    <Input id="firstname" placeholder="Firstname" value={firstname} onChange={(e) => setFirstname(e.target.value)} disabled={isLoading} />
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <div className="grid gap-4">
+            {action === 'signup' ? (
+              <>
+                <FormField control={form.control} name="username" render={({ field }) => (
+                  <FormItem><FormLabel>Username</FormLabel><FormControl><Input placeholder="Username" {...field} disabled={isLoading} /></FormControl><FormMessage /></FormItem>
+                )}/>
+                <div className="grid grid-cols-2 gap-4">
+                  <FormField control={form.control} name="firstname" render={({ field }) => (
+                    <FormItem><FormLabel>Firstname</FormLabel><FormControl><Input placeholder="Firstname" {...field} disabled={isLoading} /></FormControl><FormMessage /></FormItem>
+                  )}/>
+                  <FormField control={form.control} name="lastname" render={({ field }) => (
+                    <FormItem><FormLabel>Lastname</FormLabel><FormControl><Input placeholder="Lastname" {...field} disabled={isLoading} /></FormControl><FormMessage /></FormItem>
+                  )}/>
                 </div>
+                 <FormField control={form.control} name="nickname" render={({ field }) => (
+                  <FormItem><FormLabel>Nickname</FormLabel><FormControl><Input placeholder="Nickname (Optional)" {...field} disabled={isLoading} /></FormControl><FormMessage /></FormItem>
+                )}/>
+                 <FormField control={form.control} name="phoneNumber" render={({ field }) => (
+                  <FormItem><FormLabel>Mobile Number</FormLabel><FormControl><Input type="tel" placeholder="Mobile Number" {...field} disabled={isLoading} /></FormControl><FormMessage /></FormItem>
+                )}/>
+                <FormField control={form.control} name="email" render={({ field }) => (
+                  <FormItem><FormLabel>Email</FormLabel><FormControl><Input type="email" placeholder="Email" {...field} disabled={isLoading} /></FormControl><FormMessage /></FormItem>
+                )}/>
+                <FormField control={form.control} name="password" render={({ field }) => (
+                  <FormItem><FormLabel>New Password</FormLabel><FormControl><Input type="password" placeholder="New Password" {...field} disabled={isLoading} /></FormControl><FormMessage /></FormItem>
+                )}/>
+                <FormField control={form.control} name="confirmPassword" render={({ field }) => (
+                  <FormItem><FormLabel>Confirm New Password</FormLabel><FormControl><Input type="password" placeholder="Confirm New Password" {...field} disabled={isLoading} /></FormControl><FormMessage /></FormItem>
+                )}/>
                 <div className="grid gap-2">
-                    <Label htmlFor="lastname">Lastname</Label>
-                    <Input id="lastname" placeholder="Lastname" value={lastname} onChange={(e) => setLastname(e.target.value)} disabled={isLoading} />
-                </div>
-              </div>
-
-               <div className="grid gap-2">
-                    <Label htmlFor="nickname">Nickname</Label>
-                    <Input id="nickname" placeholder="Nickname" value={nickname} onChange={(e) => setNickname(e.target.value)} disabled={isLoading} />
-              </div>
-
-               <div className="grid gap-2">
-                    <Label htmlFor="phoneNumber">Mobile Number</Label>
-                    <Input id="phoneNumber" placeholder="Mobile Number" type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} disabled={isLoading} />
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={isLoading} />
-              </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="password">New Password</Label>
-                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} disabled={isLoading} />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="confirm-password">Confirm New Password</Label>
-                <Input id="confirm-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} disabled={isLoading} />
-              </div>
-
-               <div className="grid gap-2">
                     <Label>Date of Birth</Label>
                     <div className="grid grid-cols-3 gap-2">
-                        <Select onValueChange={setBirthDay} value={birthDay}>
-                            <SelectTrigger><SelectValue placeholder="Day" /></SelectTrigger>
-                            <SelectContent>{days.map(d => <SelectItem key={d} value={String(d)}>{d}</SelectItem>)}</SelectContent>
-                        </Select>
-                         <Select onValueChange={setBirthMonth} value={birthMonth}>
-                            <SelectTrigger><SelectValue placeholder="Month" /></SelectTrigger>
-                            <SelectContent>{months.map(m => <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>)}</SelectContent>
-                        </Select>
-                         <Select onValueChange={setBirthYear} value={birthYear}>
-                            <SelectTrigger><SelectValue placeholder="Year" /></SelectTrigger>
-                            <SelectContent>{years.map(y => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}</SelectContent>
-                        </Select>
+                         <FormField control={form.control} name="birthDay" render={({ field }) => (
+                            <FormItem>
+                               <FormControl>
+                                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                      <SelectTrigger><SelectValue placeholder="Day" /></SelectTrigger>
+                                      <SelectContent>{days.map(d => <SelectItem key={d} value={String(d)}>{d}</SelectItem>)}</SelectContent>
+                                  </Select>
+                               </FormControl>
+                               <FormMessage/>
+                           </FormItem>
+                        )}/>
+                         <FormField control={form.control} name="birthMonth" render={({ field }) => (
+                           <FormItem>
+                               <FormControl>
+                                   <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                       <SelectTrigger><SelectValue placeholder="Month" /></SelectTrigger>
+                                       <SelectContent>{months.map(m => <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>)}</SelectContent>
+                                   </Select>
+                               </FormControl>
+                               <FormMessage/>
+                           </FormItem>
+                        )}/>
+                         <FormField control={form.control} name="birthYear" render={({ field }) => (
+                            <FormItem>
+                                <FormControl>
+                                   <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                       <SelectTrigger><SelectValue placeholder="Year" /></SelectTrigger>
+                                       <SelectContent>{years.map(y => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}</SelectContent>
+                                   </Select>
+                                </FormControl>
+                               <FormMessage/>
+                           </FormItem>
+                        )}/>
                     </div>
                 </div>
-
-                <div className="grid gap-2">
-                    <Label>Gender</Label>
-                    <RadioGroup onValueChange={setGender} value={gender} className="flex gap-4">
-                        <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
-                            <RadioGroupItem value="female" id="female" />
-                            <span>Female</span>
-                        </Label>
-                         <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
-                            <RadioGroupItem value="male" id="male" />
-                             <span>Male</span>
-                        </Label>
-                         <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
-                            <RadioGroupItem value="custom" id="custom" />
-                             <span>Custom</span>
-                        </Label>
-                    </RadioGroup>
-                </div>
-            </>
-          ) : (
+                 <FormField control={form.control} name="gender" render={({ field }) => (
+                    <FormItem>
+                        <FormLabel>Gender</FormLabel>
+                        <FormControl>
+                          <RadioGroup onValueChange={field.onChange} defaultValue={field.value} className="flex gap-4">
+                              <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
+                                  <RadioGroupItem value="female" id="female" />
+                                  <span>Female</span>
+                              </Label>
+                               <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
+                                  <RadioGroupItem value="male" id="male" />
+                                   <span>Male</span>
+                              </Label>
+                               <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
+                                  <RadioGroupItem value="custom" id="custom" />
+                                   <span>Custom</span>
+                              </Label>
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage/>
+                   </FormItem>
+                )}/>
+              </>
+            ) : (
              <>
-                <div className="grid gap-2">
-                    <Label htmlFor="email">
-                    Email
-                    </Label>
-                    <Input
-                    id="email"
-                    placeholder="name@example.com"
-                    type="email"
-                    autoCapitalize="none"
-                    autoComplete="email"
-                    autoCorrect="off"
-                    disabled={isLoading}
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div className="grid gap-2">
-                    <Label htmlFor="password">
-                    Password
-                    </Label>
-                    <Input
-                    id="password"
-                    placeholder="Your password"
-                    type="password"
-                    disabled={isLoading}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
+                <FormField control={form.control} name="email" render={({ field }) => (
+                    <FormItem><FormLabel>Email</FormLabel><FormControl><Input placeholder="name@example.com" {...field} disabled={isLoading} /></FormControl><FormMessage /></FormItem>
+                )}/>
+                <FormField control={form.control} name="password" render={({ field }) => (
+                  <FormItem><FormLabel>Password</FormLabel><FormControl><Input type="password" placeholder="Your password" {...field} disabled={isLoading} /></FormControl><FormMessage /></FormItem>
+                )}/>
              </>
-          )}
-
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-              </svg>
             )}
-            {action === "login" ? "Sign In" : "Sign Up"}
-          </Button>
-        </div>
-      </form>
+            <Button disabled={isLoading} className="w-full">
+              {isLoading && (
+                <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              )}
+              {action === "login" ? "Sign In" : "Sign Up"}
+            </Button>
+          </div>
+        </form>
+      </Form>
       { action === "login" && (
         <>
             <div className="relative">
