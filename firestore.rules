@@ -55,6 +55,22 @@ service cloud.firestore {
       allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
       allow delete: if isExistingOwner(userId);
     }
+    
+    /**
+     * @description Rules for the /mesy-members/{userId} collection. Allows any authenticated user to read, but write is restricted.
+     * @path /mesy-members/{userId}
+     * @allow (read) Any signed-in user can read the list of MESY members.
+     * @deny (write) Writes are currently disabled from the client for security. Should be handled by backend/admin processes.
+     * @principle Public read, restricted write for special member data.
+     */
+    match /mesy-members/{userId} {
+        function isSignedIn() {
+          return request.auth != null;
+        }
+        
+        allow read: if isSignedIn();
+        allow write: if false; // Restricted to admin/server-side operations
+    }
 
     /**
      * @description Rules for the /users/{userId}/profile/{profileId} collection. Allows users to read and write their own profile.
@@ -274,3 +290,4 @@ service cloud.firestore {
     }
   }
 }
+    
