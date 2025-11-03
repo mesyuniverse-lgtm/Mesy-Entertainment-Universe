@@ -39,6 +39,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   const [username, setUsername] = React.useState('');
   const [firstname, setFirstname] = React.useState('');
   const [lastname, setLastname] = React.useState('');
+  const [nickname, setNickname] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
   
   // Date of birth states
@@ -70,7 +71,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       await setDoc(userProfileDocRef, {
         userId: user.uid,
         username: username,
-        nickname: displayName, // Using Full Name as Nickname for now
+        nickname: nickname,
         firstname: firstname,
         lastname: lastname,
         dob: `${birthYear}-${birthMonth}-${birthDay}`,
@@ -222,6 +223,11 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
                     <Label htmlFor="lastname">Lastname</Label>
                     <Input id="lastname" placeholder="Lastname" value={lastname} onChange={(e) => setLastname(e.target.value)} disabled={isLoading} />
                 </div>
+              </div>
+
+               <div className="grid gap-2">
+                    <Label htmlFor="nickname">Nickname</Label>
+                    <Input id="nickname" placeholder="Nickname" value={nickname} onChange={(e) => setNickname(e.target.value)} disabled={isLoading} />
               </div>
 
                <div className="grid gap-2">
