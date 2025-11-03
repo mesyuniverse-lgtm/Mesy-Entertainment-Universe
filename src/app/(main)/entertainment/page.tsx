@@ -16,13 +16,6 @@ export default function EntertainmentPage() {
       comingSoon: false,
     },
     {
-      title: "Artist Showcase",
-      description: "Explore a feed of the latest posts, songs, and videos directly from your favorite artists. Like, comment, and support their work.",
-      icon: <div className="flex gap-2"><Sparkles className="text-primary"/><Video className="text-primary"/><Music className="text-primary"/></div>,
-      href: "/entertainment/showcase",
-      comingSoon: false,
-    },
-    {
       title: "Movies & Streaming",
       description: "Browse movie packages from Netflix, WeTV, and more. Subscribe using MESY Coins.",
       icon: <div className="flex gap-2"><Video className="text-primary"/><Ticket className="text-primary"/><Mic className="text-primary"/></div>,
@@ -62,13 +55,6 @@ export default function EntertainmentPage() {
       description: "Find local attractions, restaurants, and venues. Create your own page to promote your business.",
       icon: <div className="flex gap-2"><Map className="text-primary"/><Store className="text-primary"/><Video className="text-primary"/><Tv className="text-primary"/><Mic className="text-primary"/></div>,
       href: "/entertainment/venues",
-      comingSoon: false,
-    },
-    {
-      title: "Dating Zone",
-      description: "Discover meaningful connections and build relationships within the MESY Universe.",
-      icon: <div className="flex gap-2"><Heart className="text-primary"/><Users className="text-primary"/><Sparkles className="text-primary"/></div>,
-      href: "/entertainment/dating",
       comingSoon: false,
     },
   ];
