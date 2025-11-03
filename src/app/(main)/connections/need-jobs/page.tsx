@@ -1,6 +1,7 @@
 
 'use client';
 
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -12,7 +13,6 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 
@@ -84,6 +84,7 @@ const categoryGroups = [
         categories: [
             { name: 'ผู้จัดการส่วนตัว', icon: <Briefcase /> },
             { name: 'บอดี้การ์ด', icon: <ShieldCheck /> },
+            { name: 'นักสืบ', icon: <Search /> },
             { name: 'ทนายความ', icon: <Dumbbell /> },
             { name: 'ครูสอนพิเศษ', icon: <GraduationCap /> },
             { name: 'นักบัญชี', icon: <Calculator /> },

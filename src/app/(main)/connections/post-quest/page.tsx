@@ -117,6 +117,7 @@ const categoryGroups = [
         categories: [
             { name: 'ผู้จัดการส่วนตัว', icon: <Briefcase /> },
             { name: 'บอดี้การ์ด', icon: <ShieldCheck /> },
+            { name: 'นักสืบ', icon: <Search /> },
             { name: 'ทนายความ', icon: <Dumbbell /> },
             { name: 'ครูสอนพิเศษ', icon: <GraduationCap /> },
             { name: 'นักบัญชี', icon: <Calculator /> },
@@ -351,3 +352,4 @@ export default function PostQuestPage() {
     </div>
   );
 }
+
