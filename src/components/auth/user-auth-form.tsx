@@ -33,22 +33,18 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   const { toast } = useToast();
 
   React.useEffect(() => {
-    const handleRedirectResult = async () => {
-      setIsLoading(true);
-      try {
-        const result = await getRedirectResult(auth);
+    setIsLoading(true);
+    getRedirectResult(auth)
+      .then((result) => {
         if (result) {
-          // This is the signed-in user
-          router.push(redirectPath || '/home');
-        } else {
-            setIsLoading(false);
+          router.push(redirectPath || "/home");
         }
-      } catch (error: any) {
+        setIsLoading(false);
+      })
+      .catch((error) => {
         handleAuthError(error);
         setIsLoading(false);
-      }
-    };
-    handleRedirectResult();
+      });
   }, [auth, router, redirectPath]);
 
 
@@ -112,7 +108,6 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     try {
       const provider = new GoogleAuthProvider();
       await signInWithRedirect(auth, provider);
-      // No need to push to dashboard here, the redirect result handler will do it.
     } catch (error: any) {
       handleAuthError(error);
       setIsLoading(false);

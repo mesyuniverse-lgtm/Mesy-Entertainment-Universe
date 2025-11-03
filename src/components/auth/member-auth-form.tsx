@@ -24,7 +24,7 @@ interface MemberAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function MemberAuthForm({ className, action, ...props }: MemberAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(true);
+  const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const auth = useAuth();
@@ -33,21 +33,18 @@ export function MemberAuthForm({ className, action, ...props }: MemberAuthFormPr
   const redirectPath = "/dashboard";
 
   React.useEffect(() => {
-    const handleRedirectResult = async () => {
-      try {
-        const result = await getRedirectResult(auth);
+    setIsLoading(true);
+    getRedirectResult(auth)
+      .then((result) => {
         if (result) {
-          // This is the signed-in user
           router.push(redirectPath);
-        } else {
-            setIsLoading(false);
         }
-      } catch (error: any) {
+        setIsLoading(false);
+      })
+      .catch((error) => {
         handleAuthError(error);
         setIsLoading(false);
-      }
-    };
-    handleRedirectResult();
+      });
   }, [auth, router, redirectPath]);
 
 
@@ -111,7 +108,6 @@ export function MemberAuthForm({ className, action, ...props }: MemberAuthFormPr
     try {
       const provider = new GoogleAuthProvider();
       await signInWithRedirect(auth, provider);
-      // No need to push to dashboard here, the redirect result handler will do it.
     } catch (error: any) {
       handleAuthError(error);
       setIsLoading(false);
