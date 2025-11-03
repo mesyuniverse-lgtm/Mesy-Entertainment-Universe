@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
@@ -15,7 +16,7 @@ export default function PublicLayout({
     { name: 'Features', href: '/features' },
     { name: 'Chronicle', href: '/chronicle' },
     { name: 'Join Developer', href: '/join-developer' },
-    { name: 'Let\'s Startup', href: '/home' },
+    { name: 'Let\'s Startup', href: '/login' },
   ];
 
   return (

@@ -55,7 +55,7 @@ export default function WelcomePage() {
             A fantasy entertainment platform where creativity and community collide in a ceremonial journey.
           </p>
           <Button size="lg" asChild className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30">
-            <Link href="/home">
+            <Link href="/login">
               Let's Startup <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
           </Button>
