@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import React from 'react';
@@ -23,6 +22,8 @@ const quests = [
         hirer: 'Lord Valerius',
         hirerAvatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl,
         hirerType: 'Personal',
+        rating: 4.8,
+        reviews: 25,
         location: 'Siam Paragon, Bangkok',
         price: '3,000 MC',
         allowances: ['Advance Payment', 'Food Allowance'],
@@ -34,6 +35,9 @@ const quests = [
         hirer: 'Celestial Events',
         hirerAvatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl,
         hirerType: 'Company',
+        rating: 5.0,
+        reviews: 15,
+        yearsInBusiness: 10,
         location: 'Pattaya',
         price: '5,000 MC',
         allowances: ['Travel Expenses', 'Accommodation', 'Food Allowance'],
@@ -45,6 +49,8 @@ const quests = [
         hirer: 'Lady Elara',
         hirerAvatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl,
         hirerType: 'Personal',
+        rating: 4.9,
+        reviews: 32,
         location: 'Chiang Mai',
         price: '10,000 MC',
         allowances: ['Accommodation', 'Food Allowance'],
@@ -56,6 +62,9 @@ const quests = [
         hirer: 'Dragon Guild',
         hirerAvatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl,
         hirerType: 'Company',
+        rating: 4.7,
+        reviews: 150,
+        yearsInBusiness: 30,
         location: 'Remote (Online)',
         price: '1,500 MC',
         allowances: [],
@@ -67,6 +76,9 @@ const quests = [
         hirer: 'Scholar\'s Guild',
         hirerAvatar: 'https://picsum.photos/seed/scholar-guild/100',
         hirerType: 'Company',
+        rating: 4.6,
+        reviews: 89,
+        yearsInBusiness: 5,
         location: 'Remote (Online)',
         price: '500 MC',
         allowances: [],
@@ -152,17 +164,23 @@ const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
                 </div>
             </div>
             <CardContent className="p-4 flex-grow flex flex-col">
-                <div className="flex items-center gap-3 mb-3">
+                <div className="flex items-start gap-3 mb-3">
                     <Avatar className="h-10 w-10">
                         <AvatarImage src={quest.hirerAvatar} />
                         <AvatarFallback>{quest.hirer.charAt(0)}</AvatarFallback>
                     </Avatar>
                     <div>
                         <p className="font-semibold">{quest.hirer}</p>
-                        <p className="text-xs text-muted-foreground flex items-center gap-1">
-                            {quest.hirerType === 'Personal' ? <User className="h-3 w-3"/> : <Building className="h-3 w-3" />}
-                            {quest.hirerType}
-                        </p>
+                        <div className="text-xs text-muted-foreground flex items-center gap-2 flex-wrap">
+                            <span className="flex items-center gap-1">
+                                {quest.hirerType === 'Personal' ? <User className="h-3 w-3"/> : <Building className="h-3 w-3" />}
+                                {quest.hirerType}
+                            </span>
+                             <span className="flex items-center gap-1"><Star className="h-3 w-3 text-yellow-400 fill-current"/> {quest.rating} ({quest.reviews} reviews)</span>
+                             {quest.hirerType === 'Company' && quest.yearsInBusiness && (
+                                <span>• {quest.yearsInBusiness} years</span>
+                             )}
+                        </div>
                     </div>
                 </div>
 
@@ -353,3 +371,4 @@ export default function PostQuestPage() {
   );
 }
 
+    
