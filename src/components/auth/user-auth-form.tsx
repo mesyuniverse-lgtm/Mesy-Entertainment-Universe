@@ -36,6 +36,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [confirmPassword, setConfirmPassword] = React.useState('');
   const [username, setUsername] = React.useState('');
   const [firstname, setFirstname] = React.useState('');
   const [lastname, setLastname] = React.useState('');
@@ -67,14 +68,14 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         level: 0
       }, { merge: true });
 
-      const userProfileDocRef = doc(firestore, `users/${user.uid}/profile`, user.uid);
+      const userProfileDocRef = doc(firestore, `users/${'\'\'\''}{user.uid}/profile`, user.uid);
       await setDoc(userProfileDocRef, {
         userId: user.uid,
         username: username,
         nickname: nickname,
         firstname: firstname,
         lastname: lastname,
-        dob: `${birthYear}-${birthMonth}-${birthDay}`,
+        dob: `${'\'\'\''}{birthYear}-${'\'\'\''}{birthMonth}-${'\'\'\''}{birthDay}`,
         gender: gender,
         phoneNumber: {
             countryCode: "+66", // Assuming Thai country code for now
@@ -148,6 +149,17 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault()
     setIsLoading(true)
+
+    if (action === 'signup' && password !== confirmPassword) {
+        toast({
+            variant: "destructive",
+            title: "Passwords do not match",
+            description: "Please make sure your passwords match.",
+        });
+        setIsLoading(false);
+        return;
+    }
+
     if (!auth) {
         console.error("Auth service is not available.");
         setIsLoading(false);
@@ -242,6 +254,11 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
               <div className="grid gap-2">
                 <Label htmlFor="password">New Password</Label>
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} disabled={isLoading} />
+              </div>
+
+              <div className="grid gap-2">
+                <Label htmlFor="confirm-password">Confirm New Password</Label>
+                <Input id="confirm-password" type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} disabled={isLoading} />
               </div>
 
                <div className="grid gap-2">
