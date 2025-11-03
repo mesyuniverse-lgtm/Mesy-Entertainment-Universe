@@ -92,16 +92,33 @@ const talents = [
         requestedAllowances: [],
         aiRate: '3,500 MC / Model',
         status: 'paid',
+    },
+    {
+        title: 'Community Manager',
+        talentName: 'Lyra',
+        talentAvatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl,
+        talentSkill: 'Community Management',
+        experience: '3 years',
+        rating: 4.8,
+        reviews: 72,
+        availability: 'Remote (Online)',
+        residence: 'Phuket',
+        workPreference: ['Online'],
+        requestedAllowances: [],
+        aiRate: '2,000 MC / mo',
+        status: 'completed',
     }
 ];
 
 const statusConfig = {
     available: { text: "Hire Now", buttonVariant: "destructive" as "destructive", className: "", icon: <HandCoins className="mr-2 h-4 w-4"/> },
     pending: { text: "Waiting for Confirmation", buttonVariant: "secondary" as "secondary", className: "bg-yellow-500/80 hover:bg-yellow-500/90 text-white", icon: <Hourglass className="mr-2 h-4 w-4"/>, disabled: true },
-    approved: { text: "Confirmed - Ready to Start", buttonVariant: "default" as "default", className: "bg-blue-600 hover:bg-blue-700", icon: <CheckCircle className="mr-2 h-4 w-4"/> },
+    approved: { text: "Confirmed - Ready to Start", buttonVariant: "default" as "default", className: "bg-green-600 hover:bg-green-700", icon: <CheckCircle className="mr-2 h-4 w-4"/>, disabled: true },
     working: { text: "Mark as Complete & Get Paid", buttonVariant: "default" as "default", className: "bg-blue-600 hover:bg-blue-700", icon: <CircleDollarSign className="mr-2 h-4 w-4"/> },
-    paid: { text: "Payment Received: Claim Now", buttonVariant: "default" as "default", className: "bg-violet-600 hover:bg-violet-700", icon: <CheckCircle2 className="mr-2 h-4 w-4"/> }
+    paid: { text: "Payment Received: Claim Now", buttonVariant: "default" as "default", className: "bg-pink-600 hover:bg-pink-700", icon: <CheckCircle2 className="mr-2 h-4 w-4"/> },
+    completed: { text: "Completed", buttonVariant: "default" as "default", className: "bg-violet-600 hover:bg-violet-700", icon: <CheckCircle2 className="mr-2 h-4 w-4"/>, disabled: true }
 };
+
 
 const allowanceIcons = {
     'Advance Payment': <DollarSign className="h-4 w-4 text-green-400"/>,
@@ -323,7 +340,7 @@ export default function NeedJobsPage() {
             <Card className="bg-card/70 border-primary/30">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2"><PlusCircle/> Need A Job</CardTitle>
-                    <CardDescription>Let hirers know you're available. Post your skills and desired work.</CardDescription>
+                    <CardDescription>Post your availability and skills to let hirers find you.</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <Button asChild className="w-full">
@@ -371,5 +388,6 @@ export default function NeedJobsPage() {
     </div>
   );
 }
+
 
 
