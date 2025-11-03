@@ -141,7 +141,7 @@ export default function ConnectionsDatingPage() {
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
                                  <div className="absolute top-2 right-2">
                                     <Badge>{person.match}% Match</Badge>
-                                </div>
+                                 </div>
                                 <div className="absolute bottom-0 p-3 text-white w-full">
                                     <h3 className="text-lg font-bold truncate">{person.name}, {person.age}</h3>
                                     <p className="text-xs truncate">{person.location}</p>
