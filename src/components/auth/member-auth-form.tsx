@@ -17,6 +17,8 @@ import {
   getRedirectResult,
   UserCredential,
   signInAnonymously,
+  sendEmailVerification,
+  User,
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -36,22 +38,30 @@ export function MemberAuthForm({ className, action, ...props }: MemberAuthFormPr
   const { toast } = useToast();
   const redirectPath = "/dashboard";
 
+  const handleSuccessfulAuth = async (user: User) => {
+    if (action === 'signup') {
+      const userDocRef = doc(firestore, "users", user.uid);
+      await setDoc(userDocRef, {
+        id: user.uid,
+        email: user.email,
+        role: 'Member',
+        level: 1
+      }, { merge: true });
+      await sendEmailVerification(user);
+      toast({
+        title: "Verification Email Sent",
+        description: "Please check your email to verify your account.",
+      });
+    }
+    router.push(redirectPath);
+  };
+
   React.useEffect(() => {
     setIsLoading(true);
     getRedirectResult(auth)
       .then((result) => {
         if (result) {
-          if (action === 'signup') {
-            const user = result.user;
-            const userDocRef = doc(firestore, "users", user.uid);
-            setDoc(userDocRef, { 
-              id: user.uid,
-              email: user.email,
-              role: 'Member', 
-              level: 1 
-            }, { merge: true });
-          }
-          router.push(redirectPath);
+          handleSuccessfulAuth(result.user);
         }
         setIsLoading(false);
       })
@@ -59,7 +69,7 @@ export function MemberAuthForm({ className, action, ...props }: MemberAuthFormPr
         handleAuthError(error);
         setIsLoading(false);
       });
-  }, [auth, router, redirectPath, action, firestore]);
+  }, [auth]);
 
 
   const handleAuthError = (error: any) => {
@@ -107,19 +117,10 @@ export function MemberAuthForm({ className, action, ...props }: MemberAuthFormPr
       let userCredential: UserCredential;
       if (action === 'signup') {
         userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        const user = userCredential.user;
-        const userDocRef = doc(firestore, "users", user.uid);
-        // Create a user document in Firestore with 'Member' role
-        await setDoc(userDocRef, {
-          id: user.uid,
-          email: user.email,
-          role: 'Member',
-          level: 1
-        });
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        userCredential = await signInWithEmailAndPassword(auth, email, password);
       }
-      router.push(redirectPath);
+      await handleSuccessfulAuth(userCredential.user);
     } catch (error: any) {
       handleAuthError(error);
     } finally {
@@ -231,5 +232,3 @@ export function MemberAuthForm({ className, action, ...props }: MemberAuthFormPr
     </div>
   )
 }
-
-    

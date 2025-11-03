@@ -14,6 +14,14 @@ export default function LoginPage() {
       </div>
       <UserAuthForm action="login" />
       <p className="px-8 text-center text-sm text-muted-foreground">
+        <Link
+            href="/forgot-password"
+            className="underline underline-offset-4 hover:text-primary"
+        >
+            Forgot Password?
+        </Link>
+      </p>
+      <p className="px-8 text-center text-sm text-muted-foreground">
         Don't have an account?{" "}
         <Link
           href="/signup"
