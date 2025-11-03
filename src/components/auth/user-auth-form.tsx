@@ -38,6 +38,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   const [password, setPassword] = React.useState('');
   const [firstname, setFirstname] = React.useState('');
   const [lastname, setLastname] = React.useState('');
+  const [phoneNumber, setPhoneNumber] = React.useState('');
   
   // Date of birth states
   const [birthDay, setBirthDay] = React.useState('');
@@ -72,6 +73,10 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         lastname: lastname,
         dob: `${birthYear}-${birthMonth}-${birthDay}`,
         gender: gender,
+        phoneNumber: {
+            countryCode: "+66", // Assuming Thai country code for now
+            number: phoneNumber,
+        }
       });
 
       await sendEmailVerification(user);
@@ -214,6 +219,15 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
               </div>
 
                <div className="grid gap-2">
+                    <Label htmlFor="phoneNumber">หมายเลขโทรศัพท์มือถือ</Label>
+                    <Input id="phoneNumber" placeholder="หมายเลขโทรศัพท์มือถือ" type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} disabled={isLoading} />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="email">อีเมล</Label>
+                <Input id="email" placeholder="อีเมล" type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={isLoading} />
+              </div>
+
+               <div className="grid gap-2">
                     <Label>วันเกิด</Label>
                     <div className="grid grid-cols-3 gap-2">
                         <Select onValueChange={setBirthDay} value={birthDay}>
@@ -249,10 +263,6 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
                     </RadioGroup>
                 </div>
               
-              <div className="grid gap-2">
-                <Label htmlFor="email">หมายเลขโทรศัพท์มือถือหรืออีเมล</Label>
-                <Input id="email" placeholder="" type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={isLoading} />
-              </div>
               <div className="grid gap-2">
                 <Label htmlFor="password">รหัสผ่านใหม่</Label>
                 <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} disabled={isLoading} />
