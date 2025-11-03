@@ -2,18 +2,19 @@
 
 'use client';
 
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft, Building, User, FileText, Send, MessageSquare, Hand, ChefHat, Dumbbell, GraduationCap, Landmark, ShieldCheck, Calculator, Home, Stethoscope, HeartPulse, Boxes, Car, Camera, Wrench, Baby, HeartHandshake, Accessibility, ClipboardList, BrainCircuit, HandHeart } from "lucide-react";
+import { Search, Star, HandCoins, Users, MapPin, Briefcase, Filter, CheckCircle, Clock, Hourglass, CircleDollarSign, CheckCircle2, Plane, Bed, Utensils, DollarSign, PlusCircle, ArrowLeft, Building, User, FileText, Send, MessageSquare, Hand, ChefHat, Dumbbell, GraduationCap, Landmark, ShieldCheck, Calculator, Home, Stethoscope, HeartPulse, Boxes, Car, Camera, Wrench, Baby, HeartHandshake, Accessibility, ClipboardList, BrainCircuit, HandHeart, ChevronDown } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
 
 const quests = [
@@ -89,29 +90,49 @@ const allowanceIcons = {
     'Food Allowance': <Utensils className="h-4 w-4 text-orange-400"/>
 } as const;
 
-const categories = [
-    { name: 'จ้างผู้ช่วย', icon: <Hand /> },
-    { name: 'เพื่อนพาเที่ยว', icon: <Users /> },
-    { name: 'ไกด์นำเที่ยว', icon: <Landmark /> },
-    { name: 'แม่ครัว', icon: <ChefHat /> },
-    { name: 'แม่บ้าน', icon: <Home /> },
-    { name: 'บอดี้การ์ด', icon: <ShieldCheck /> },
-    { name: 'ผู้จัดการส่วนตัว', icon: <Briefcase /> },
-    { name: 'ทนายความ', icon: <Dumbbell /> },
-    { name: 'ครูสอนพิเศษ', icon: <GraduationCap /> },
-    { name: 'นักบัญชี', icon: <Calculator /> },
-    { name: 'หมอ', icon: <Stethoscope /> },
-    { name: 'พยาบาล', icon: <HeartPulse /> },
-    { name: 'พี่เลี้ยงดูแลเด็ก', icon: <Baby /> },
-    { name: 'ผู้ดูแลผู้สูงอายุ', icon: <HeartHandshake /> },
-    { name: 'ผู้ดูแลและบำบัดผู้พิการ', icon: <Accessibility /> },
-    { name: 'คนช่วยขนของ', icon: <Boxes /> },
-    { name: 'คนขับรถ', icon: <Car /> },
-    { name: 'ช่างภาพ', icon: <Camera /> },
-    { name: 'ช่างซ่อม', icon: <Wrench /> },
-    { name: 'เลขา', icon: <ClipboardList /> },
-    { name: 'ที่ปรึกษา', icon: <BrainCircuit /> },
-    { name: 'อาสาสมัคร', icon: <HandHeart /> },
+const categoryGroups = [
+    {
+        groupName: "Personal & Lifestyle",
+        categories: [
+            { name: 'จ้างผู้ช่วย', icon: <Hand /> },
+            { name: 'เพื่อนพาเที่ยว', icon: <Users /> },
+            { name: 'ไกด์นำเที่ยว', icon: <Landmark /> },
+            { name: 'แม่ครัว', icon: <ChefHat /> },
+            { name: 'แม่บ้าน', icon: <Home /> },
+            { name: 'คนขับรถ', icon: <Car /> },
+        ]
+    },
+    {
+        groupName: "Care & Wellness",
+        categories: [
+            { name: 'หมอ', icon: <Stethoscope /> },
+            { name: 'พยาบาล', icon: <HeartPulse /> },
+            { name: 'พี่เลี้ยงดูแลเด็ก', icon: <Baby /> },
+            { name: 'ผู้ดูแลผู้สูงอายุ', icon: <HeartHandshake /> },
+            { name: 'ผู้ดูแลผู้พิการ', icon: <Accessibility /> },
+        ]
+    },
+    {
+        groupName: "Professional Services",
+        categories: [
+            { name: 'ผู้จัดการส่วนตัว', icon: <Briefcase /> },
+            { name: 'บอดี้การ์ด', icon: <ShieldCheck /> },
+            { name: 'ทนายความ', icon: <Dumbbell /> },
+            { name: 'ครูสอนพิเศษ', icon: <GraduationCap /> },
+            { name: 'นักบัญชี', icon: <Calculator /> },
+            { name: 'ที่ปรึกษา', icon: <BrainCircuit /> },
+            { name: 'เลขา', icon: <ClipboardList /> },
+        ]
+    },
+    {
+        groupName: "Technical & Creative",
+        categories: [
+             { name: 'คนช่วยขนของ', icon: <Boxes /> },
+            { name: 'ช่างภาพ', icon: <Camera /> },
+            { name: 'ช่างซ่อม', icon: <Wrench /> },
+            { name: 'อาสาสมัคร', icon: <HandHeart /> },
+        ]
+    }
 ];
 
 const QuestCard = ({ quest }: { quest: typeof quests[0] }) => {
@@ -208,7 +229,7 @@ export default function PostQuestPage() {
             <Briefcase className="w-10 h-10 text-primary" />
             <Star className="w-10 h-10 text-primary" />
         </div>
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Post a Quest</h1>
+        <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">Post Quest (find Employees)</h1>
         <p className="max-w-3xl mx-auto mt-4 text-muted-foreground text-lg">
           Offer your skills and find part-time work. Browse through quests posted by other members and start earning.
         </p>
@@ -231,17 +252,30 @@ export default function PostQuestPage() {
         `}</style>
       
        <div className="my-8">
-            <ScrollArea className="w-full whitespace-nowrap rounded-md">
-                <div className="flex w-max space-x-2 p-2">
-                    {categories.map((category) => (
-                        <Button key={category.name} variant="outline" className="h-auto flex-col px-4 py-3 gap-2">
-                            {category.icon}
-                            <span className="text-xs font-semibold">{category.name}</span>
-                        </Button>
-                    ))}
-                </div>
-                <ScrollBar orientation="horizontal" />
-            </ScrollArea>
+            <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="outline" className="h-auto w-full md:w-auto">
+                        Browse Categories
+                        <ChevronDown className="ml-2 h-4 w-4"/>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="w-screen max-w-sm md:max-w-md lg:max-w-lg" align="start">
+                   {categoryGroups.map((group, index) => (
+                       <React.Fragment key={group.groupName}>
+                           <DropdownMenuLabel>{group.groupName}</DropdownMenuLabel>
+                           <DropdownMenuGroup>
+                            {group.categories.map(category => (
+                                <DropdownMenuItem key={category.name}>
+                                    {category.icon}
+                                    <span className="ml-2">{category.name}</span>
+                                </DropdownMenuItem>
+                            ))}
+                           </DropdownMenuGroup>
+                           {index < categoryGroups.length - 1 && <DropdownMenuSeparator />}
+                       </React.Fragment>
+                   ))}
+                </DropdownMenuContent>
+            </DropdownMenu>
         </div>
 
       <div className="grid lg:grid-cols-12 gap-8">
@@ -317,9 +351,3 @@ export default function PostQuestPage() {
     </div>
   );
 }
-
-    
-
-    
-
-
