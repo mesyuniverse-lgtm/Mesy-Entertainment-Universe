@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -57,8 +58,9 @@ export default function MemberProfilePage() {
                             <div className="w-full pt-4">
                                 <div className="flex flex-col sm:flex-row justify-between sm:items-end">
                                     <div className="text-center sm:text-left">
+                                        <h1 className="text-2xl md:text-3xl font-bold">Thisaya_Username</h1>
+                                        <p className="text-sm text-muted-foreground">Firstname Lastname (Nickname)</p>
                                         <p className="text-sm text-muted-foreground">Member ID:001  Level.1</p>
-                                        <h1 className="text-2xl md:text-3xl font-bold">Membername : Thisaya</h1>
                                         <p className="text-sm text-muted-foreground">Income: $1,213 | Fee (3%): $37.5</p>
                                     </div>
                                     <div className="flex gap-2 mt-4 sm:mt-0 justify-center">
@@ -175,3 +177,5 @@ export default function MemberProfilePage() {
         </div>
     );
 }
+
+    

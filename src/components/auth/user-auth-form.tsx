@@ -36,6 +36,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [username, setUsername] = React.useState('');
   const [firstname, setFirstname] = React.useState('');
   const [lastname, setLastname] = React.useState('');
   const [phoneNumber, setPhoneNumber] = React.useState('');
@@ -68,7 +69,8 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       const userProfileDocRef = doc(firestore, `users/${user.uid}/profile`, user.uid);
       await setDoc(userProfileDocRef, {
         userId: user.uid,
-        nickname: displayName,
+        username: username,
+        nickname: displayName, // Using Full Name as Nickname for now
         firstname: firstname,
         lastname: lastname,
         dob: `${birthYear}-${birthMonth}-${birthDay}`,
@@ -193,10 +195,10 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
     const months = [
-        { value: '01', label: 'ม.ค.' }, { value: '02', label: 'ก.พ.' }, { value: '03', label: 'มี.ค.' },
-        { value: '04', label: 'เม.ย.' }, { value: '05', label: 'พ.ค.' }, { value: '06', label: 'มิ.ย.' },
-        { value: '07', label: 'ก.ค.' }, { value: '08', label: 'ส.ค.' }, { value: '09', label: 'ก.ย.' },
-        { value: '10', label: 'ต.ค.' }, { value: '11', label: 'พ.ย.' }, { value: '12', label: 'ธ.ค.' }
+        { value: '01', label: 'January' }, { value: '02', label: 'February' }, { value: '03', label: 'March' },
+        { value: '04', label: 'April' }, { value: '05', label: 'May' }, { value: '06', label: 'June' },
+        { value: '07', label: 'July' }, { value: '08', label: 'August' }, { value: '09', label: 'September' },
+        { value: '10', label: 'October' }, { value: '11', label: 'November' }, { value: '12', label: 'December' }
     ];
     const currentYear = new Date().getFullYear();
     const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
@@ -207,66 +209,70 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         <div className="grid gap-4">
           {action === 'signup' ? (
             <>
+              <div className="grid gap-2">
+                  <Label htmlFor="username">Username</Label>
+                  <Input id="username" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} disabled={isLoading} />
+              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                    <Label htmlFor="firstname">ชื่อ</Label>
-                    <Input id="firstname" placeholder="ชื่อ" value={firstname} onChange={(e) => setFirstname(e.target.value)} disabled={isLoading} />
+                    <Label htmlFor="firstname">Firstname</Label>
+                    <Input id="firstname" placeholder="Firstname" value={firstname} onChange={(e) => setFirstname(e.target.value)} disabled={isLoading} />
                 </div>
                 <div className="grid gap-2">
-                    <Label htmlFor="lastname">นามสกุล</Label>
-                    <Input id="lastname" placeholder="นามสกุล" value={lastname} onChange={(e) => setLastname(e.target.value)} disabled={isLoading} />
+                    <Label htmlFor="lastname">Lastname</Label>
+                    <Input id="lastname" placeholder="Lastname" value={lastname} onChange={(e) => setLastname(e.target.value)} disabled={isLoading} />
                 </div>
               </div>
 
                <div className="grid gap-2">
-                    <Label htmlFor="phoneNumber">หมายเลขโทรศัพท์มือถือ</Label>
-                    <Input id="phoneNumber" placeholder="หมายเลขโทรศัพท์มือถือ" type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} disabled={isLoading} />
+                    <Label htmlFor="phoneNumber">Mobile Number</Label>
+                    <Input id="phoneNumber" placeholder="Mobile Number" type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} disabled={isLoading} />
               </div>
               <div className="grid gap-2">
-                <Label htmlFor="email">อีเมล</Label>
-                <Input id="email" placeholder="อีเมล" type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={isLoading} />
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" placeholder="Email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={isLoading} />
+              </div>
+              
+              <div className="grid gap-2">
+                <Label htmlFor="password">New Password</Label>
+                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} disabled={isLoading} />
               </div>
 
                <div className="grid gap-2">
-                    <Label>วันเกิด</Label>
+                    <Label>Date of Birth</Label>
                     <div className="grid grid-cols-3 gap-2">
                         <Select onValueChange={setBirthDay} value={birthDay}>
-                            <SelectTrigger><SelectValue placeholder="วัน" /></SelectTrigger>
+                            <SelectTrigger><SelectValue placeholder="Day" /></SelectTrigger>
                             <SelectContent>{days.map(d => <SelectItem key={d} value={String(d)}>{d}</SelectItem>)}</SelectContent>
                         </Select>
                          <Select onValueChange={setBirthMonth} value={birthMonth}>
-                            <SelectTrigger><SelectValue placeholder="เดือน" /></SelectTrigger>
+                            <SelectTrigger><SelectValue placeholder="Month" /></SelectTrigger>
                             <SelectContent>{months.map(m => <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>)}</SelectContent>
                         </Select>
                          <Select onValueChange={setBirthYear} value={birthYear}>
-                            <SelectTrigger><SelectValue placeholder="ปี" /></SelectTrigger>
+                            <SelectTrigger><SelectValue placeholder="Year" /></SelectTrigger>
                             <SelectContent>{years.map(y => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}</SelectContent>
                         </Select>
                     </div>
                 </div>
 
                 <div className="grid gap-2">
-                    <Label>เพศ</Label>
+                    <Label>Gender</Label>
                     <RadioGroup onValueChange={setGender} value={gender} className="flex gap-4">
                         <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
                             <RadioGroupItem value="female" id="female" />
-                            <span>หญิง</span>
+                            <span>Female</span>
                         </Label>
                          <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
                             <RadioGroupItem value="male" id="male" />
-                             <span>ชาย</span>
+                             <span>Male</span>
                         </Label>
                          <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
                             <RadioGroupItem value="custom" id="custom" />
-                             <span>กำหนดเอง</span>
+                             <span>Custom</span>
                         </Label>
                     </RadioGroup>
                 </div>
-              
-              <div className="grid gap-2">
-                <Label htmlFor="password">รหัสผ่านใหม่</Label>
-                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} disabled={isLoading} />
-              </div>
             </>
           ) : (
              <>
@@ -309,7 +315,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             )}
-            {action === "login" ? "Sign In" : "สมัคร"}
+            {action === "login" ? "Sign In" : "Sign Up"}
           </Button>
         </div>
       </form>
