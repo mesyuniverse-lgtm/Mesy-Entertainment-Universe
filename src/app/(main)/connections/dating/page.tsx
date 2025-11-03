@@ -3,7 +3,7 @@
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Heart, Users, Sparkles, UserCheck, Video, PlayCircle } from "lucide-react";
+import { Heart, Users, Sparkles, UserCheck, Video, PlayCircle, ArrowLeft } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import { usePathname } from 'next/navigation';
@@ -72,6 +72,14 @@ export default function ConnectionsDatingPage() {
         )}
 
         <div className="container py-12 relative z-10">
+          <div className="mb-8">
+            <Button asChild variant="outline">
+                <Link href="/connections">
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back to The Connection Hub
+                </Link>
+            </Button>
+          </div>
           <div className="text-center mb-12">
             <div className="flex justify-center gap-4 mb-4">
                 <Heart className="w-10 h-10 text-primary" />
