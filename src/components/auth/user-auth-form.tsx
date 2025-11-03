@@ -23,6 +23,8 @@ import {
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -34,10 +36,15 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
-  const [username, setUsername] = React.useState('');
   const [firstname, setFirstname] = React.useState('');
   const [lastname, setLastname] = React.useState('');
-  const [phoneNumber, setPhoneNumber] = React.useState('');
+  
+  // Date of birth states
+  const [birthDay, setBirthDay] = React.useState('');
+  const [birthMonth, setBirthMonth] = React.useState('');
+  const [birthYear, setBirthYear] = React.useState('');
+  const [gender, setGender] = React.useState('');
+
 
   const auth = useAuth();
   const firestore = useFirestore();
@@ -46,7 +53,8 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
 
   const handleSuccessfulAuth = async (user: User) => {
     if (action === 'signup') {
-      await updateProfile(user, { displayName: username });
+      const displayName = `${firstname} ${lastname}`.trim();
+      await updateProfile(user, { displayName });
 
       const userDocRef = doc(firestore, "users", user.uid);
       await setDoc(userDocRef, {
@@ -59,10 +67,11 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       const userProfileDocRef = doc(firestore, `users/${user.uid}/profile`, user.uid);
       await setDoc(userProfileDocRef, {
         userId: user.uid,
-        nickname: username,
+        nickname: displayName,
         firstname: firstname,
         lastname: lastname,
-        phoneNumber: { number: phoneNumber, countryCode: '' },
+        dob: `${birthYear}-${birthMonth}-${birthDay}`,
+        gender: gender,
       });
 
       await sendEmailVerification(user);
@@ -176,64 +185,113 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       setIsLoading(false);
     }
   }
+  
+    const days = Array.from({ length: 31 }, (_, i) => i + 1);
+    const months = [
+        { value: '01', label: 'ม.ค.' }, { value: '02', label: 'ก.พ.' }, { value: '03', label: 'มี.ค.' },
+        { value: '04', label: 'เม.ย.' }, { value: '05', label: 'พ.ค.' }, { value: '06', label: 'มิ.ย.' },
+        { value: '07', label: 'ก.ค.' }, { value: '08', label: 'ส.ค.' }, { value: '09', label: 'ก.ย.' },
+        { value: '10', label: 'ต.ค.' }, { value: '11', label: 'พ.ย.' }, { value: '12', label: 'ธ.ค.' }
+    ];
+    const currentYear = new Date().getFullYear();
+    const years = Array.from({ length: 100 }, (_, i) => currentYear - i);
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form onSubmit={onSubmit}>
         <div className="grid gap-4">
-          {action === 'signup' && (
+          {action === 'signup' ? (
             <>
-              <div className="grid gap-2">
-                <Label htmlFor="username">Username</Label>
-                <Input id="username" placeholder="Your username" value={username} onChange={(e) => setUsername(e.target.value)} disabled={isLoading} />
-              </div>
               <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                    <Label htmlFor="firstname">First Name</Label>
-                    <Input id="firstname" placeholder="First Name" value={firstname} onChange={(e) => setFirstname(e.target.value)} disabled={isLoading} />
+                    <Label htmlFor="firstname">ชื่อ</Label>
+                    <Input id="firstname" placeholder="ชื่อ" value={firstname} onChange={(e) => setFirstname(e.target.value)} disabled={isLoading} />
                 </div>
                 <div className="grid gap-2">
-                    <Label htmlFor="lastname">Last Name</Label>
-                    <Input id="lastname" placeholder="Last Name" value={lastname} onChange={(e) => setLastname(e.target.value)} disabled={isLoading} />
+                    <Label htmlFor="lastname">นามสกุล</Label>
+                    <Input id="lastname" placeholder="นามสกุล" value={lastname} onChange={(e) => setLastname(e.target.value)} disabled={isLoading} />
                 </div>
               </div>
+
+               <div className="grid gap-2">
+                    <Label>วันเกิด</Label>
+                    <div className="grid grid-cols-3 gap-2">
+                        <Select onValueChange={setBirthDay} value={birthDay}>
+                            <SelectTrigger><SelectValue placeholder="วัน" /></SelectTrigger>
+                            <SelectContent>{days.map(d => <SelectItem key={d} value={String(d)}>{d}</SelectItem>)}</SelectContent>
+                        </Select>
+                         <Select onValueChange={setBirthMonth} value={birthMonth}>
+                            <SelectTrigger><SelectValue placeholder="เดือน" /></SelectTrigger>
+                            <SelectContent>{months.map(m => <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>)}</SelectContent>
+                        </Select>
+                         <Select onValueChange={setBirthYear} value={birthYear}>
+                            <SelectTrigger><SelectValue placeholder="ปี" /></SelectTrigger>
+                            <SelectContent>{years.map(y => <SelectItem key={y} value={String(y)}>{y}</SelectItem>)}</SelectContent>
+                        </Select>
+                    </div>
+                </div>
+
+                <div className="grid gap-2">
+                    <Label>เพศ</Label>
+                    <RadioGroup onValueChange={setGender} value={gender} className="flex gap-4">
+                        <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
+                            <RadioGroupItem value="female" id="female" />
+                            <span>หญิง</span>
+                        </Label>
+                         <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
+                            <RadioGroupItem value="male" id="male" />
+                             <span>ชาย</span>
+                        </Label>
+                         <Label className="flex items-center gap-2 p-2 border rounded-md flex-1 justify-center cursor-pointer has-[:checked]:bg-secondary has-[:checked]:border-primary">
+                            <RadioGroupItem value="custom" id="custom" />
+                             <span>กำหนดเอง</span>
+                        </Label>
+                    </RadioGroup>
+                </div>
+              
+              <div className="grid gap-2">
+                <Label htmlFor="email">หมายเลขโทรศัพท์มือถือหรืออีเมล</Label>
+                <Input id="email" placeholder="" type="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={isLoading} />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="password">รหัสผ่านใหม่</Label>
+                <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} disabled={isLoading} />
+              </div>
             </>
+          ) : (
+             <>
+                <div className="grid gap-2">
+                    <Label htmlFor="email">
+                    Email
+                    </Label>
+                    <Input
+                    id="email"
+                    placeholder="name@example.com"
+                    type="email"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    autoCorrect="off"
+                    disabled={isLoading}
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div className="grid gap-2">
+                    <Label htmlFor="password">
+                    Password
+                    </Label>
+                    <Input
+                    id="password"
+                    placeholder="Your password"
+                    type="password"
+                    disabled={isLoading}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+             </>
           )}
-          <div className="grid gap-2">
-            <Label htmlFor="email">
-              Email
-            </Label>
-            <Input
-              id="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="grid gap-2">
-            <Label htmlFor="password">
-              Password
-            </Label>
-            <Input
-              id="password"
-              placeholder="Your password"
-              type="password"
-              disabled={isLoading}
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          {action === 'signup' && (
-            <div className="grid gap-2">
-              <Label htmlFor="phone">Phone Number</Label>
-              <Input id="phone" placeholder="Your phone number" type="tel" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} disabled={isLoading} />
-            </div>
-          )}
+
           <Button disabled={isLoading}>
             {isLoading && (
               <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-primary-foreground" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -241,44 +299,48 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             )}
-            {action === "login" ? "Sign In with Email" : "Create Account"}
+            {action === "login" ? "Sign In" : "สมัคร"}
           </Button>
         </div>
       </form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
-        </div>
-      </div>
-      <div className="grid grid-cols-2 gap-4">
-        <Button variant="outline" type="button" disabled={isLoading} onClick={onGoogleSignIn}>
-            {isLoading ? (
-            <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            ) : (
-            <Chrome className="mr-2 h-4 w-4" />
-            )}{" "}
-            Google
-        </Button>
-         <Button variant="outline" type="button" disabled={isLoading} onClick={onAnonymousSignIn}>
-            {isLoading ? (
-             <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            ) : (
-            <UserIcon className="mr-2 h-4 w-4" />
-            )}{" "}
-            Guest
-        </Button>
-      </div>
+      { action === "login" && (
+        <>
+            <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">
+                    Or continue with
+                </span>
+                </div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+                <Button variant="outline" type="button" disabled={isLoading} onClick={onGoogleSignIn}>
+                    {isLoading ? (
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    ) : (
+                    <Chrome className="mr-2 h-4 w-4" />
+                    )}{" "}
+                    Google
+                </Button>
+                <Button variant="outline" type="button" disabled={isLoading} onClick={onAnonymousSignIn}>
+                    {isLoading ? (
+                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    ) : (
+                    <UserIcon className="mr-2 h-4 w-4" />
+                    )}{" "}
+                    Guest
+                </Button>
+            </div>
+        </>
+      )}
     </div>
   )
 }

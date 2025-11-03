@@ -1,3 +1,4 @@
+
 import { UserAuthForm } from "@/components/auth/user-auth-form"
 import Link from "next/link"
 
@@ -6,39 +7,24 @@ export default function SignupPage() {
     <>
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Create an Account
+          สร้างบัญชีใหม่
         </h1>
         <p className="text-sm text-muted-foreground">
-          Enter your email below to begin your journey.
+          ง่ายและเร็ว
         </p>
       </div>
       <UserAuthForm action="signup" />
       <p className="px-8 text-center text-sm text-muted-foreground">
-        By clicking continue, you agree to our{" "}
-        <Link
-          href="/terms"
-          className="underline underline-offset-4 hover:text-primary"
-        >
-          Terms of Service
-        </Link>{" "}
-        and{" "}
-        <Link
-          href="/privacy"
-          className="underline underline-offset-4 hover:text-primary"
-        >
-          Privacy Policy
-        </Link>
-        .
+        เมื่อคลิกสมัคร แสดงว่าคุณยินยอมตามข้อกำหนด นโยบายความเป็นส่วนตัว และนโยบายคุกกี้ของเรา คุณอาจได้รับการแจ้งเตือนทาง SMS จากเราและสามารถเลือกไม่รับได้ทุกเมื่อ
       </p>
        <p className="px-8 text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
+        มีบัญชีแล้วใช่ไหม?{" "}
         <Link
           href="/login"
           className="underline underline-offset-4 hover:text-primary"
         >
-          Login
+          เข้าสู่ระบบ
         </Link>
-        .
       </p>
     </>
   )
