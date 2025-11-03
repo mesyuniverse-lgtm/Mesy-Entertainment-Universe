@@ -8,14 +8,16 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Chrome } from "lucide-react"
-import { useAuth } from "@/firebase";
+import { useAuth, useFirestore } from "@/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithRedirect,
   getRedirectResult,
+  UserCredential,
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -28,6 +30,7 @@ export function MemberAuthForm({ className, action, ...props }: MemberAuthFormPr
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
   const redirectPath = "/dashboard";
@@ -37,6 +40,16 @@ export function MemberAuthForm({ className, action, ...props }: MemberAuthFormPr
     getRedirectResult(auth)
       .then((result) => {
         if (result) {
+          if (action === 'signup') {
+            const user = result.user;
+            const userDocRef = doc(firestore, "users", user.uid);
+            setDoc(userDocRef, { 
+              id: user.uid,
+              email: user.email,
+              role: 'Member', 
+              level: 1 
+            }, { merge: true });
+          }
           router.push(redirectPath);
         }
         setIsLoading(false);
@@ -45,7 +58,7 @@ export function MemberAuthForm({ className, action, ...props }: MemberAuthFormPr
         handleAuthError(error);
         setIsLoading(false);
       });
-  }, [auth, router, redirectPath]);
+  }, [auth, router, redirectPath, action, firestore]);
 
 
   const handleAuthError = (error: any) => {
@@ -90,8 +103,18 @@ export function MemberAuthForm({ className, action, ...props }: MemberAuthFormPr
     setIsLoading(true)
 
     try {
+      let userCredential: UserCredential;
       if (action === 'signup') {
-        await createUserWithEmailAndPassword(auth, email, password);
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        const userDocRef = doc(firestore, "users", user.uid);
+        // Create a user document in Firestore with 'Member' role
+        await setDoc(userDocRef, {
+          id: user.uid,
+          email: user.email,
+          role: 'Member',
+          level: 1
+        });
       } else {
         await signInWithEmailAndPassword(auth, email, password);
       }

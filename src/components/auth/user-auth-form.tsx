@@ -8,14 +8,16 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Chrome } from "lucide-react"
-import { useAuth } from "@/firebase";
+import { useAuth, useFirestore } from "@/firebase";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithRedirect,
   getRedirectResult,
+  UserCredential,
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 
 
@@ -29,6 +31,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
   const { toast } = useToast();
 
@@ -37,6 +40,16 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     getRedirectResult(auth)
       .then((result) => {
         if (result) {
+          if (action === 'signup') {
+            const user = result.user;
+            const userDocRef = doc(firestore, "users", user.uid);
+            setDoc(userDocRef, { 
+              id: user.uid,
+              email: user.email,
+              role: 'User', 
+              level: 0 
+            }, { merge: true });
+          }
           router.push(redirectPath || "/home");
         }
         setIsLoading(false);
@@ -45,7 +58,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         handleAuthError(error);
         setIsLoading(false);
       });
-  }, [auth, router, redirectPath]);
+  }, [auth, router, redirectPath, action, firestore]);
 
 
   const handleAuthError = (error: any) => {
@@ -90,10 +103,21 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     setIsLoading(true)
 
     try {
+      let userCredential: UserCredential;
       if (action === 'signup') {
-        await createUserWithEmailAndPassword(auth, email, password);
+        userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        const userDocRef = doc(firestore, "users", user.uid);
+        // Create a user document in Firestore
+        await setDoc(userDocRef, {
+          id: user.uid,
+          email: user.email,
+          role: 'User',
+          level: 0
+        });
+
       } else {
-        await signInWithEmailAndPassword(auth, email, password);
+        userCredential = await signInWithEmailAndPassword(auth, email, password);
       }
       router.push(redirectPath || '/home');
     } catch (error: any) {
