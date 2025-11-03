@@ -44,11 +44,14 @@ export default function MainLayout({
 
 
   const handleLogout = async () => {
-    await signOut(auth);
+    if(auth) {
+      await signOut(auth);
+    }
     router.push('/welcome');
   };
 
-  const isMember = user?.email === 'admin@mesy.io';
+  const specialUsers = ['tipyatida@gmail.com', 'mesy.universe@gmail.com', 'admin@mesy.io'];
+  const isMember = user && user.email && specialUsers.includes(user.email);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -72,7 +75,7 @@ export default function MainLayout({
                 </Link>
               ))}
                  <Button asChild variant="link" className="text-lg">
-                    <Link href="/welcome">Back🎉</Link>
+                    <Link href="/login">Back🎉</Link>
                 </Button>
             </nav>
           </div>
@@ -157,7 +160,7 @@ export default function MainLayout({
                         </Link>
                       ))}
                       <Button asChild variant="link" className="text-lg">
-                        <Link href="/welcome">Back🎉</Link>
+                        <Link href="/login">Back🎉</Link>
                       </Button>
                     </nav>
                 </SheetContent>

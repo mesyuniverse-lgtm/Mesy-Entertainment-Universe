@@ -11,7 +11,8 @@ import Link from "next/link";
 
 export default function HomePage() {
     const { user } = useUser();
-    const isMember = user?.email === 'admin@mesy.io';
+    const specialUsers = ['tipyatida@gmail.com', 'mesy.universe@gmail.com', 'admin@mesy.io'];
+    const isMember = user && user.email && specialUsers.includes(user.email);
 
     const complexSections = [
         {

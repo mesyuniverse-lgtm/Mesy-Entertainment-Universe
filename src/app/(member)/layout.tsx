@@ -49,23 +49,27 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
 
+  const getRole = (user: any) => {
+    if (!user || !user.email) return 'User';
+    if (user.email === 'tipyatida@gmail.com') return 'Super-admin';
+    if (user.email === 'mesy.universe@gmail.com' || user.email === 'admin@mesy.io') return 'Admin';
+    return 'Member';
+  }
+  
+  const userRole = getRole(user);
+
   useEffect(() => {
-    // If not loading and no user, redirect to login page.
     if (!isUserLoading && !user) {
       router.replace('/member-login');
     }
     
-    // This is a simple role-based access control for demonstration.
-    // In a real application, you would fetch the user's role from your database (e.g., Firestore).
-    const mockUserRole = user?.email === 'admin@mesy.io' ? 'Admin' : 'Member';
-    
     if (!isUserLoading && user) {
-        if (pathname.startsWith('/admin') && mockUserRole !== 'Admin') {
+        if (pathname.startsWith('/admin') && userRole !== 'Admin' && userRole !== 'Super-admin') {
             router.replace('/access-denied');
         }
     }
 
-  }, [user, isUserLoading, router, pathname]);
+  }, [user, isUserLoading, router, pathname, userRole]);
 
   const handleLogout = async () => {
     if(auth) {
@@ -74,7 +78,6 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     router.push('/welcome');
   };
 
-  // Render a loading state while checking for user authentication
   if (isUserLoading || !user) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
@@ -83,8 +86,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  const userRole = user?.email === 'admin@mesy.io' ? 'Admin' : 'Member';
-  const isMember = user && (userRole === 'Admin' || userRole === 'Member');
+  const isMember = user && (userRole === 'Admin' || userRole === 'Member' || userRole === 'Super-admin');
 
 
   return (
@@ -100,7 +102,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
           <div className="flex-1 overflow-y-auto">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {sidebarNavItems.map((item) => {
-                if (item.adminOnly && userRole !== 'Admin') return null;
+                if (item.adminOnly && userRole !== 'Admin' && userRole !== 'Super-admin') return null;
                 return (
                   <Link
                     key={item.name}
@@ -143,7 +145,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
                   <span className="font-headline">MESY MEMBER</span>
                 </Link>
                  {sidebarNavItems.map((item) => {
-                    if (item.adminOnly && userRole !== 'Admin') return null;
+                    if (item.adminOnly && userRole !== 'Admin' && userRole !== 'Super-admin') return null;
                     return (
                         <Link
                             key={item.name}

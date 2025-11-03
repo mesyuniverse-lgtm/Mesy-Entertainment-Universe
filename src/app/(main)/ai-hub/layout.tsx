@@ -1,3 +1,4 @@
+
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -34,11 +35,14 @@ export default function AiHubLayout({
 
 
   const handleLogout = async () => {
-    await signOut(auth);
+    if(auth) {
+      await signOut(auth);
+    }
     router.push('/welcome');
   };
 
-  const isMember = user?.email === 'admin@mesy.io';
+  const specialUsers = ['tipyatida@gmail.com', 'mesy.universe@gmail.com', 'admin@mesy.io'];
+  const isMember = user && user.email && specialUsers.includes(user.email);
 
   const sidebarNav = {
     main: [
@@ -190,7 +194,7 @@ export default function AiHubLayout({
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href={isMember ? "/profile" : "/users"}>
+                      <Link href={isMember ? "/profile" : "/users/profile"}>
                         <UserCircle className="mr-2 h-4 w-4"/>Profile
                       </Link>
                     </DropdownMenuItem>
