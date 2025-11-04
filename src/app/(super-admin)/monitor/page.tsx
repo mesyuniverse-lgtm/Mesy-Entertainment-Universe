@@ -11,6 +11,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Monitor as MonitorIcon, Bot, Users, Shield, Code, Drama } from "lucide-react";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { Label } from "@/components/ui/label";
 
 const mockUsers = [
     { id: 'usr_001', email: 'user@mesy.io', role: 'User', status: 'Active', avatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
