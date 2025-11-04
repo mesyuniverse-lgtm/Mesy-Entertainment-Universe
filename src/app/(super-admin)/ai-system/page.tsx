@@ -20,10 +20,10 @@ import React from "react";
 
 
 const aiAgents = [
-    { id: 'agent-01', name: 'Warden', task: 'Content Moderation', model: 'Gemini 2.5 Flash', status: 'Active', credits: 850, maxCredits: 1000 },
+    { id: 'agent-01', name: 'Warden', task: 'Content Moderation', model: 'Gemini 2.5 Flash', status: 'Active', credits: 150, maxCredits: 1000 },
     { id: 'agent-02', name: 'Chronicler', task: 'Quest Generation', model: 'Gemini 1.5 Pro', status: 'Active', credits: 950, maxCredits: 1000 },
     { id: 'agent-03', name: 'Artisan', task: 'Image Generation', model: 'Imagen 4.0', status: 'Inactive', credits: 0, maxCredits: 500 },
-    { id: 'agent-04', name: 'Oracle', task: 'Data Analysis', model: 'Gemini 1.5 Pro', status: 'Active', credits: 150, maxCredits: 1000 },
+    { id: 'agent-04', name: 'Oracle', task: 'Data Analysis', model: 'Gemini 1.5 Pro', status: 'Active', credits: 850, maxCredits: 1000 },
     { id: 'agent-05', name: 'Lorekeeper', task: 'Local Knowledge Base', model: 'Local LLM (Free)', status: 'Active', credits: 0, maxCredits: 0 },
 ];
 
@@ -183,12 +183,20 @@ export default function AISystemPage() {
                                                 ) : (
                                                     <Dialog>
                                                         <DialogTrigger asChild>
-                                                            <div className="w-40 cursor-pointer group">
-                                                                <div className="flex justify-between text-xs mb-1">
-                                                                    <span className={cn("font-semibold", isLowCredit ? "text-red-400" : "text-primary")}>{agent.credits.toLocaleString()}</span>
-                                                                    <span className="text-muted-foreground">/ {agent.maxCredits.toLocaleString()}</span>
+                                                            <div className="w-40 cursor-pointer group flex items-center gap-2">
+                                                                 <div
+                                                                    className={cn(
+                                                                        "h-2 w-2 rounded-full bg-red-500",
+                                                                        isLowCredit && agent.status === 'Active' ? "animate-pulse-fast" : "opacity-0"
+                                                                    )}
+                                                                ></div>
+                                                                <div className="flex-grow">
+                                                                    <div className="flex justify-between text-xs mb-1">
+                                                                        <span className={cn("font-semibold", isLowCredit ? "text-red-400" : "text-primary")}>{agent.credits.toLocaleString()}</span>
+                                                                        <span className="text-muted-foreground">/ {agent.maxCredits.toLocaleString()}</span>
+                                                                    </div>
+                                                                    <Progress value={creditPercentage} className={cn("h-2", isLowCredit && "[&>div]:bg-red-500")} />
                                                                 </div>
-                                                                <Progress value={creditPercentage} className={cn("h-2", isLowCredit && "[&>div]:bg-red-500")} />
                                                             </div>
                                                         </DialogTrigger>
                                                         <DialogContent className="sm:max-w-md bg-card/80 backdrop-blur-sm border-primary/20 text-white">
