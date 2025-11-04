@@ -6,12 +6,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bot, Cpu, SlidersHorizontal, Shield, BrainCircuit, PlusCircle, KeyRound, Gem } from "lucide-react";
+import { Bot, Cpu, SlidersHorizontal, Shield, BrainCircuit, PlusCircle, KeyRound, Gem, Upload, Link as LinkIcon, FileText } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Separator } from "@/components/ui/separator";
 
 const aiAgents = [
     { id: 'agent-01', name: 'Warden', task: 'Content Moderation', model: 'Gemini 2.5 Flash', status: 'Active' },
@@ -40,60 +42,84 @@ export default function AISystemPage() {
                                     <DialogTrigger asChild>
                                         <Button variant="outline"><PlusCircle className="mr-2 h-4 w-4"/> Create AI Agent</Button>
                                     </DialogTrigger>
-                                    <DialogContent className="sm:max-w-[625px] bg-card/80 backdrop-blur-sm border-primary/20 text-white">
+                                    <DialogContent className="sm:max-w-2xl bg-card/80 backdrop-blur-sm border-primary/20 text-white">
                                         <DialogHeader>
                                             <DialogTitle>Create New AI Agent</DialogTitle>
                                             <DialogDescription>
-                                                Configure a new AI agent, assign its role, and provide it with instructions.
+                                                Configure a new AI agent, assign its role, and provide it with a knowledge base.
                                             </DialogDescription>
                                         </DialogHeader>
-                                        <div className="grid gap-4 py-4">
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="agent-name" className="text-right">Agent Name</Label>
-                                                <Input id="agent-name" placeholder="e.g., 'Librarian'" className="col-span-3 bg-background/50" />
+                                        <div className="grid md:grid-cols-2 gap-6 py-4">
+                                            {/* Left Column: Agent Configuration */}
+                                            <div className="space-y-4">
+                                                <h4 className="text-lg font-semibold text-primary">Agent Configuration</h4>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="agent-name">Agent Name</Label>
+                                                    <Input id="agent-name" placeholder="e.g., 'Librarian'" className="bg-background/50" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="agent-model">AI Model</Label>
+                                                    <Select>
+                                                        <SelectTrigger id="agent-model"><SelectValue placeholder="Select a base model" /></SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="gemini-2.5-flash">Gemini 2.5 Flash</SelectItem>
+                                                            <SelectItem value="gemini-1.5-pro">Gemini 1.5 Pro</SelectItem>
+                                                            <SelectItem value="imagen-4">Imagen 4.0</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="agent-task">Assigned Task</Label>
+                                                    <Input id="agent-task" placeholder="e.g., 'Answers lore questions'" className="bg-background/50" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="agent-zone">Zone</Label>
+                                                    <Select>
+                                                        <SelectTrigger id="agent-zone"><SelectValue placeholder="Select a zone to manage" /></SelectTrigger>
+                                                        <SelectContent>
+                                                            <SelectItem value="public">Public Zones</SelectItem>
+                                                            <SelectItem value="member">Member Zones</SelectItem>
+                                                            <SelectItem value="developer">Developer Zone</SelectItem>
+                                                            <SelectItem value="all">All Zones</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                </div>
+                                                 <div className="space-y-2">
+                                                    <Label htmlFor="api-key" className="flex items-center gap-2"><KeyRound className="h-4 w-4"/> API Key</Label>
+                                                    <Input id="api-key" placeholder="Enter API Key (optional)" className="bg-background/50" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="mcp-budget" className="flex items-center gap-2"><Gem className="h-4 w-4"/> MCP Budget</Label>
+                                                    <Input id="mcp-budget" type="number" placeholder="e.g., 1000" className="bg-background/50" />
+                                                </div>
                                             </div>
-                                             <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="agent-model" className="text-right">AI Model</Label>
-                                                <Select>
-                                                    <SelectTrigger id="agent-model" className="col-span-3">
-                                                        <SelectValue placeholder="Select a base model" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="gemini-2.5-flash">Gemini 2.5 Flash</SelectItem>
-                                                        <SelectItem value="gemini-1.5-pro">Gemini 1.5 Pro</SelectItem>
-                                                        <SelectItem value="imagen-4">Imagen 4.0</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="agent-task" className="text-right">Assigned Task</Label>
-                                                <Input id="agent-task" placeholder="e.g., 'Answers questions about MESY lore'" className="col-span-3 bg-background/50" />
-                                            </div>
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="agent-zone" className="text-right">Zone</Label>
-                                                <Select>
-                                                    <SelectTrigger id="agent-zone" className="col-span-3">
-                                                        <SelectValue placeholder="Select a zone to manage" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="public">Public Zones</SelectItem>
-                                                        <SelectItem value="member">Member Zones</SelectItem>
-                                                        <SelectItem value="developer">Developer Zone</SelectItem>
-                                                        <SelectItem value="all">All Zones</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                            <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="api-key" className="text-right flex justify-end items-center gap-2"><KeyRound className="h-4 w-4"/> API Key</Label>
-                                                <Input id="api-key" placeholder="Enter API Key (optional)" className="col-span-3 bg-background/50" />
-                                            </div>
-                                             <div className="grid grid-cols-4 items-center gap-4">
-                                                <Label htmlFor="mcp-budget" className="text-right flex justify-end items-center gap-2"><Gem className="h-4 w-4"/> MCP Budget</Label>
-                                                <Input id="mcp-budget" type="number" placeholder="e.g., 1000" className="col-span-3 bg-background/50" />
-                                            </div>
-                                            <div className="grid grid-cols-4 items-start gap-4">
-                                                <Label htmlFor="agent-script" className="text-right pt-2">Training Script</Label>
-                                                <Textarea id="agent-script" placeholder="You are a helpful and wise librarian. Your goal is to guide new users through the lore of the MESY Universe..." className="col-span-3 h-32 bg-background/50" />
+
+                                            {/* Right Column: Knowledge & Prompt */}
+                                            <div className="space-y-4">
+                                                <h4 className="text-lg font-semibold text-primary">Knowledge Base & Prompt</h4>
+                                                <Tabs defaultValue="upload" className="w-full">
+                                                    <TabsList className="grid w-full grid-cols-3">
+                                                        <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4"/>Upload</TabsTrigger>
+                                                        <TabsTrigger value="url"><LinkIcon className="mr-2 h-4 w-4"/>URL</TabsTrigger>
+                                                        <TabsTrigger value="text"><FileText className="mr-2 h-4 w-4"/>Text</TabsTrigger>
+                                                    </TabsList>
+                                                    <TabsContent value="upload" className="mt-4">
+                                                        <div className="h-48 border-2 border-dashed border-muted-foreground/50 rounded-lg flex flex-col items-center justify-center text-center">
+                                                            <Upload className="h-8 w-8 text-muted-foreground"/>
+                                                            <p className="mt-2 text-sm text-muted-foreground">Drag & drop files here or</p>
+                                                            <Button variant="link" className="text-primary">browse files</Button>
+                                                            <p className="text-xs text-muted-foreground/80">.txt, .md, .pdf</p>
+                                                        </div>
+                                                    </TabsContent>
+                                                    <TabsContent value="url" className="mt-4 space-y-2">
+                                                         <Label htmlFor="knowledge-url">Website URL</Label>
+                                                        <Input id="knowledge-url" placeholder="https://example.com/info" className="bg-background/50" />
+                                                        <Button className="w-full">Fetch Data</Button>
+                                                    </TabsContent>
+                                                    <TabsContent value="text" className="mt-4">
+                                                        <Textarea placeholder="You are a helpful and wise librarian. Your goal is to guide new users through the lore of the MESY Universe..." className="h-48 bg-background/50" />
+                                                    </TabsContent>
+                                                </Tabs>
                                             </div>
                                         </div>
                                         <DialogFooter>
