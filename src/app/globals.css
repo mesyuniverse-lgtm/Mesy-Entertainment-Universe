@@ -4,25 +4,23 @@
 
 @layer base {
   :root {
-    --background: 260 30% 9%; /* Dark Purple */
-    --foreground: 260 10% 95%;
-    --card: 260 30% 13%;
-    --card-foreground: 260 10% 95%;
-    --popover: 260 30% 9%;
-    --popover-foreground: 260 10% 95%;
-    --primary: 310 80% 75%; /* Pinkish Purple */
-    --primary-foreground: 310 80% 10%;
-    --secondary: 260 30% 16%;
-    --secondary-foreground: 260 10% 95%;
-    --muted: 260 30% 16%;
-    --muted-foreground: 260 10% 65%;
-    --accent: 310 70% 65%; /* Lighter Pinkish Purple for accents */
-    --accent-foreground: 310 70% 10%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 260 30% 16%;
-    --input: 260 30% 16%;
-    --ring: 310 80% 75%;
+    --background: 220 30% 10%; /* Dark Blue for Public */
+    --foreground: 220 10% 95%;
+    --card: 220 30% 14%;
+    --card-foreground: 220 10% 95%;
+    --popover: 220 30% 10%;
+    --popover-foreground: 220 10% 95%;
+    --primary: 0 70% 60%; /* Red for Public */
+    --primary-foreground: 0 70% 95%;
+    --secondary: 220 30% 18%;
+    --secondary-foreground: 220 10% 95%;
+    --muted: 220 30% 18%;
+    --muted-foreground: 220 10% 65%;
+    --accent: 0 60% 50%; /* Darker Red for accents */
+    --accent-foreground: 0 60% 95%;
+    --border: 220 30% 18%;
+    --input: 220 30% 18%;
+    --ring: 0 70% 60%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -32,13 +30,13 @@
   }
 
   .dark {
-    --background: 260 30% 9%; /* Dark Purple */
+    --background: 260 30% 9%; /* Dark Purple for Members/Main */
     --foreground: 260 10% 95%;
     --card: 260 30% 13%;
     --card-foreground: 260 10% 95%;
     --popover: 260 30% 9%;
     --popover-foreground: 260 10% 95%;
-    --primary: 310 80% 75%; /* Pinkish Purple */
+    --primary: 310 80% 75%; /* Pinkish Purple for Members/Main */
     --primary-foreground: 310 80% 10%;
     --secondary: 260 30% 16%;
     --secondary-foreground: 260 10% 95%;
@@ -58,28 +56,6 @@
     --chart-5: 340 75% 55%;
   }
 }
-
-/* Specific theme for public pages */
-.theme-public {
-  --background: 220 30% 10%; /* Dark Blue */
-  --foreground: 220 10% 95%;
-  --card: 220 30% 14%;
-  --card-foreground: 220 10% 95%;
-  --popover: 220 30% 10%;
-  --popover-foreground: 220 10% 95%;
-  --primary: 0 70% 60%; /* Red */
-  --primary-foreground: 0 70% 95%;
-  --secondary: 220 30% 18%;
-  --secondary-foreground: 220 10% 95%;
-  --muted: 220 30% 18%;
-  --muted-foreground: 220 10% 65%;
-  --accent: 0 60% 50%; /* Darker Red for accents */
-  --accent-foreground: 0 60% 95%;
-  --border: 220 30% 18%;
-  --input: 220 30% 18%;
-  --ring: 0 70% 60%;
-}
-
 
 @layer base {
   * {

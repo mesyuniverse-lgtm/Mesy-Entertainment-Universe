@@ -59,7 +59,7 @@ export default function UsersProfilePage() {
                                 <Button size="icon" variant="secondary" className="absolute bottom-2 right-2 h-8 w-8 rounded-full"><Camera className="h-4 w-4"/></Button>
                             </div>
                             <div className="flex-grow pt-4 text-center sm:text-left">
-                                <h1 className="text-2xl md:text-3xl font-bold">Sonya'z G Divaparadise's (ซอนญ่า)</h1>
+                                <h1 className="text-2xl md:text-3xl font-bold">G Divaparadise</h1>
                                 <p className="text-muted-foreground">5.1K followers • 2.1K following</p>
                             </div>
                             <div className="flex gap-2 mt-4 sm:mt-0">
