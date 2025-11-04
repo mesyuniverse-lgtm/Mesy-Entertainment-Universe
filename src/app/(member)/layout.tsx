@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, History, MessageCircle, Store, ShoppingBasket, Hammer, Cloud, Package, Orbit, Shirt } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -26,15 +26,9 @@ const MemberIcon = () => (
 
 const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'MESY Universe', href: '/universe', icon: Orbit },
   { name: 'Profile', href: '/profile', icon: UserCircle },
-  { name: 'Community', href: '/community', icon: MessageCircle },
-  { name: 'Inventory', href: '/inventory', icon: Package },
-  { name: 'Cloud', href: '/cloud', icon: Cloud },
-  { name: 'Build', href: '/build', icon: Hammer },
-  { name: 'Shop', href: '/shop', icon: Store },
-  { name: 'Market', href: '/market', icon: Wallet },
-  { name: 'Member System', href: '/member-system', icon: Shield },
+  { name: 'Memberships', href: '/memberships', icon: Shield },
+  { name: 'Wallet', href: '/wallet', icon: Wallet },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
   { name: 'Notifications', href: '/notifications', icon: Bell },
   { name: 'Settings', href: '/settings', icon: Settings },
@@ -49,27 +43,23 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
 
-  const getRole = (user: any) => {
-    if (!user || !user.email) return 'User';
-    if (user.email === 'tipyatida@gmail.com') return 'Super-admin';
-    if (user.email === 'mesy.universe@gmail.com' || user.email === 'admin@mesy.io') return 'Admin';
-    return 'Member';
-  }
-  
-  const userRole = getRole(user);
-
   useEffect(() => {
+    // If not loading and no user, redirect to login page.
     if (!isUserLoading && !user) {
       router.replace('/member-login');
     }
     
+    // This is a simple role-based access control for demonstration.
+    // In a real application, you would fetch the user's role from your database (e.g., Firestore).
+    const mockUserRole = user?.email === 'admin@mesy.io' ? 'Admin' : 'Member';
+    
     if (!isUserLoading && user) {
-        if (pathname.startsWith('/admin') && userRole !== 'Admin' && userRole !== 'Super-admin') {
+        if (pathname.startsWith('/admin') && mockUserRole !== 'Admin') {
             router.replace('/access-denied');
         }
     }
 
-  }, [user, isUserLoading, router, pathname, userRole]);
+  }, [user, isUserLoading, router, pathname]);
 
   const handleLogout = async () => {
     if(auth) {
@@ -78,6 +68,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     router.push('/welcome');
   };
 
+  // Render a loading state while checking for user authentication
   if (isUserLoading || !user) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
@@ -86,7 +77,8 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  const isMember = user && (userRole === 'Admin' || userRole === 'Member' || userRole === 'Super-admin');
+  const userRole = user?.email === 'admin@mesy.io' ? 'Admin' : 'Member';
+  const isMember = user && (userRole === 'Admin' || userRole === 'Member');
 
 
   return (
@@ -99,18 +91,17 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
               <span className="font-headline">MESY MEMBER</span>
             </Link>
           </div>
-          <div className="flex-1 overflow-y-auto">
+          <div className="flex-1">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {sidebarNavItems.map((item) => {
-                if (item.adminOnly && userRole !== 'Admin' && userRole !== 'Super-admin') return null;
+                if (item.adminOnly && userRole !== 'Admin') return null;
                 return (
                   <Link
                     key={item.name}
                     href={item.href}
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                      pathname.startsWith(item.href) && item.href !== '/dashboard' ? 'bg-muted text-primary' : pathname === item.href ? 'bg-muted text-primary' : '',
-                      pathname === '/dashboard' && item.href === '/dashboard' ? 'bg-muted text-primary' : ''
+                      pathname === item.href && "bg-muted text-primary"
                     )}
                   >
                     <item.icon className="h-4 w-4" />
@@ -136,7 +127,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
               </Button>
             </SheetTrigger>
             <SheetContent side="left" className="flex flex-col">
-              <nav className="grid gap-2 text-lg font-medium overflow-y-auto">
+              <nav className="grid gap-2 text-lg font-medium">
                 <Link
                   href="/home"
                   className="flex items-center gap-2 text-lg font-semibold mb-4"
@@ -145,15 +136,14 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
                   <span className="font-headline">MESY MEMBER</span>
                 </Link>
                  {sidebarNavItems.map((item) => {
-                    if (item.adminOnly && userRole !== 'Admin' && userRole !== 'Super-admin') return null;
+                    if (item.adminOnly && userRole !== 'Admin') return null;
                     return (
                         <Link
                             key={item.name}
                             href={item.href}
                             className={cn(
                             "flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
-                             pathname.startsWith(item.href) && item.href !== '/dashboard' ? 'bg-muted text-foreground' : pathname === item.href ? 'bg-muted text-foreground' : '',
-                             pathname === '/dashboard' && item.href === '/dashboard' ? 'bg-muted text-foreground' : ''
+                            pathname === item.href && "bg-muted text-foreground"
                             )}
                         >
                             <item.icon className="h-5 w-5" />
@@ -185,7 +175,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-56">
+            <DropdownMenuContent align="end">
               <DropdownMenuLabel className="font-normal">
                 <div className="flex flex-col space-y-1">
                   <p className="text-sm font-medium leading-none">{user.displayName || user.email}</p>
