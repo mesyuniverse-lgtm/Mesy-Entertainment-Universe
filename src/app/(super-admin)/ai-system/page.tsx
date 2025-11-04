@@ -21,11 +21,11 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 
 const aiAgents = [
-    { id: 'agent-01', name: 'Warden', task: 'Content Moderation', model: 'Gemini 2.5 Flash', status: 'Active', credits: 150, maxCredits: 1000, avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
-    { id: 'agent-02', name: 'Chronicler', task: 'Quest Generation', model: 'Gemini 1.5 Pro', status: 'Active', credits: 950, maxCredits: 1000, avatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
-    { id: 'agent-03', name: 'Artisan', task: 'Image Generation', model: 'Imagen 4.0', status: 'Inactive', credits: 0, maxCredits: 500, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
-    { id: 'agent-04', name: 'Oracle', task: 'Data Analysis', model: 'Gemini 1.5 Pro', status: 'Active', credits: 850, maxCredits: 1000, avatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl },
-    { id: 'agent-05', name: 'Lorekeeper', task: 'Local Knowledge Base', model: 'Local LLM (Free)', status: 'Active', credits: 0, maxCredits: 0, avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
+    { id: 'agent-01', name: 'Warden', task: 'Content Moderation', model: 'Gemini 2.5 Flash', status: 'Active', credits: 150, maxCredits: 1000, avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl, marketable: true },
+    { id: 'agent-02', name: 'Chronicler', task: 'Quest Generation', model: 'Gemini 1.5 Pro', status: 'Active', credits: 950, maxCredits: 1000, avatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl, marketable: true },
+    { id: 'agent-03', name: 'Artisan', task: 'Image Generation', model: 'Imagen 4.0', status: 'Inactive', credits: 0, maxCredits: 500, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl, marketable: false },
+    { id: 'agent-04', name: 'Oracle', task: 'Data Analysis', model: 'Gemini 1.5 Pro', status: 'Active', credits: 850, maxCredits: 1000, avatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl, marketable: true },
+    { id: 'agent-05', name: 'Lorekeeper', task: 'Local Knowledge Base', model: 'Local LLM (Free)', status: 'Active', credits: 0, maxCredits: 0, avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl, marketable: false },
 ];
 
 const modelOptions = [
@@ -40,7 +40,10 @@ export default function AISystemPage() {
 
     return (
         <div className="space-y-6">
-            <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3"><Bot className="h-8 w-8"/> AI System Configuration</h1>
+            <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3"><Bot className="h-8 w-8"/> AI Avatar Model Prototype Factory</h1>
+            <p className="text-muted-foreground -mt-4">
+                This system serves as the blueprint for creating, managing, and prototyping AI Avatar Models. These models can be packaged and sold in the MESY Market, member shops, and by partners.
+            </p>
             
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="lg:col-span-2">
@@ -50,7 +53,7 @@ export default function AISystemPage() {
                                 <div>
                                     <CardTitle>AI Agent Management (NPCs)</CardTitle>
                                     <CardDescription className="text-muted-foreground">
-                                        Activate, deactivate, and configure AI agents responsible for various tasks.
+                                        Manage and prototype AI agents. Agents marked as "Marketable" are examples of sellable models.
                                     </CardDescription>
                                 </div>
                                 <Dialog>
@@ -208,7 +211,10 @@ export default function AISystemPage() {
                                                         <AvatarImage src={agent.avatar} />
                                                         <AvatarFallback>{agent.name.charAt(0)}</AvatarFallback>
                                                     </Avatar>
-                                                    <span className="font-semibold">{agent.name}</span>
+                                                    <div>
+                                                        <span className="font-semibold">{agent.name}</span>
+                                                        {agent.marketable && <Badge variant="outline" className="ml-2 border-green-500 text-green-400">Marketable</Badge>}
+                                                    </div>
                                                 </div>
                                             </TableCell>
                                             <TableCell>{agent.task}</TableCell>
