@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -5,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bot, Cpu, SlidersHorizontal, Shield, BrainCircuit, PlusCircle } from "lucide-react";
+import { Bot, Cpu, SlidersHorizontal, Shield, BrainCircuit, PlusCircle, KeyRound, Gem } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -81,6 +82,14 @@ export default function AISystemPage() {
                                                         <SelectItem value="all">All Zones</SelectItem>
                                                     </SelectContent>
                                                 </Select>
+                                            </div>
+                                            <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label htmlFor="api-key" className="text-right flex justify-end items-center gap-2"><KeyRound className="h-4 w-4"/> API Key</Label>
+                                                <Input id="api-key" placeholder="Enter API Key (optional)" className="col-span-3 bg-background/50" />
+                                            </div>
+                                             <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label htmlFor="mcp-budget" className="text-right flex justify-end items-center gap-2"><Gem className="h-4 w-4"/> MCP Budget</Label>
+                                                <Input id="mcp-budget" type="number" placeholder="e.g., 1000" className="col-span-3 bg-background/50" />
                                             </div>
                                             <div className="grid grid-cols-4 items-start gap-4">
                                                 <Label htmlFor="agent-script" className="text-right pt-2">Training Script</Label>
