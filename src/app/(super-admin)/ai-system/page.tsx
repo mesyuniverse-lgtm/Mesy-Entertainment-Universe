@@ -16,6 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
+import React from "react";
 
 
 const aiAgents = [
@@ -23,9 +24,19 @@ const aiAgents = [
     { id: 'agent-02', name: 'Chronicler', task: 'Quest Generation', model: 'Gemini 1.5 Pro', status: 'Active', credits: 950, maxCredits: 1000 },
     { id: 'agent-03', name: 'Artisan', task: 'Image Generation', model: 'Imagen 4.0', status: 'Inactive', credits: 0, maxCredits: 500 },
     { id: 'agent-04', name: 'Oracle', task: 'Data Analysis', model: 'Gemini 1.5 Pro', status: 'Active', credits: 150, maxCredits: 1000 },
+    { id: 'agent-05', name: 'Lorekeeper', task: 'Local Knowledge Base', model: 'Local LLM (Free)', status: 'Active', credits: 0, maxCredits: 0 },
+];
+
+const modelOptions = [
+    { value: 'gemini-2.5-flash', label: 'Gemini 2.5 Flash', isFree: false },
+    { value: 'gemini-1.5-pro', label: 'Gemini 1.5 Pro', isFree: false },
+    { value: 'imagen-4', label: 'Imagen 4.0', isFree: false },
+    { value: 'local-llm', label: 'Local LLM (Free)', isFree: true },
 ];
 
 export default function AISystemPage() {
+    const [selectedModel, setSelectedModel] = React.useState<typeof modelOptions[0] | null>(null);
+
     return (
         <div className="space-y-6">
             <h1 className="text-3xl font-bold tracking-tight text-white flex items-center gap-3"><Bot className="h-8 w-8"/> AI System Configuration</h1>
@@ -62,12 +73,15 @@ export default function AISystemPage() {
                                                 </div>
                                                 <div className="space-y-2">
                                                     <Label htmlFor="agent-model">AI Model</Label>
-                                                    <Select>
+                                                    <Select onValueChange={(value) => {
+                                                        const model = modelOptions.find(m => m.value === value);
+                                                        setSelectedModel(model || null);
+                                                    }}>
                                                         <SelectTrigger id="agent-model"><SelectValue placeholder="Select a base model" /></SelectTrigger>
                                                         <SelectContent>
-                                                            <SelectItem value="gemini-2.5-flash">Gemini 2.5 Flash</SelectItem>
-                                                            <SelectItem value="gemini-1.5-pro">Gemini 1.5 Pro</SelectItem>
-                                                            <SelectItem value="imagen-4">Imagen 4.0</SelectItem>
+                                                            {modelOptions.map(model => (
+                                                                <SelectItem key={model.value} value={model.value}>{model.label}</SelectItem>
+                                                            ))}
                                                         </SelectContent>
                                                     </Select>
                                                 </div>
@@ -93,12 +107,16 @@ export default function AISystemPage() {
                                                 </div>
                                                 <div className="grid grid-cols-2 gap-4">
                                                     <div className="space-y-2">
-                                                        <Label htmlFor="mcp-budget" className="flex items-center gap-2"><Gem className="h-4 w-4"/> MCP Budget</Label>
-                                                        <Input id="mcp-budget" type="number" placeholder="e.g., 1000" className="bg-background/50" />
+                                                        <Label htmlFor="mcp-budget" className={cn("flex items-center gap-2", selectedModel?.isFree && "text-muted-foreground")}>
+                                                            <Gem className="h-4 w-4"/> MCP Budget
+                                                        </Label>
+                                                        <Input id="mcp-budget" type="number" placeholder={selectedModel?.isFree ? "No cost" : "e.g., 1000"} className="bg-background/50" disabled={selectedModel?.isFree} />
                                                     </div>
                                                     <div className="space-y-2">
-                                                        <Label htmlFor="credit" className="flex items-center gap-2"><Gem className="h-4 w-4"/> Credit</Label>
-                                                        <Input id="credit" type="number" placeholder="e.g., 500" className="bg-background/50" />
+                                                        <Label htmlFor="credit" className={cn("flex items-center gap-2", selectedModel?.isFree && "text-muted-foreground")}>
+                                                            <Gem className="h-4 w-4"/> Credit
+                                                        </Label>
+                                                        <Input id="credit" type="number" placeholder={selectedModel?.isFree ? "No cost" : "e.g., 500"} className="bg-background/50" disabled={selectedModel?.isFree} />
                                                     </div>
                                                 </div>
                                             </div>
@@ -153,41 +171,47 @@ export default function AISystemPage() {
                                     {aiAgents.map(agent => {
                                         const creditPercentage = (agent.credits / agent.maxCredits) * 100;
                                         const isLowCredit = creditPercentage < 20;
+                                        const isFree = agent.maxCredits === 0;
+
                                         return (
                                         <TableRow key={agent.id}>
                                             <TableCell className="font-semibold">{agent.name}</TableCell>
                                             <TableCell>{agent.task}</TableCell>
                                             <TableCell>
-                                                <Dialog>
-                                                    <DialogTrigger asChild>
-                                                        <div className="w-40 cursor-pointer group">
-                                                            <div className="flex justify-between text-xs mb-1">
-                                                                <span className={cn("font-semibold", isLowCredit ? "text-red-400" : "text-primary")}>{agent.credits.toLocaleString()}</span>
-                                                                <span className="text-muted-foreground">/ {agent.maxCredits.toLocaleString()}</span>
+                                                {isFree ? (
+                                                    <span className="text-muted-foreground text-xs italic">No cost for this model</span>
+                                                ) : (
+                                                    <Dialog>
+                                                        <DialogTrigger asChild>
+                                                            <div className="w-40 cursor-pointer group">
+                                                                <div className="flex justify-between text-xs mb-1">
+                                                                    <span className={cn("font-semibold", isLowCredit ? "text-red-400" : "text-primary")}>{agent.credits.toLocaleString()}</span>
+                                                                    <span className="text-muted-foreground">/ {agent.maxCredits.toLocaleString()}</span>
+                                                                </div>
+                                                                <Progress value={creditPercentage} className={cn("h-2", isLowCredit && "[&>div]:bg-red-500")} />
                                                             </div>
-                                                            <Progress value={creditPercentage} className={cn("h-2", isLowCredit && "[&>div]:bg-red-500")} />
-                                                        </div>
-                                                    </DialogTrigger>
-                                                    <DialogContent className="sm:max-w-md bg-card/80 backdrop-blur-sm border-primary/20 text-white">
-                                                        <DialogHeader>
-                                                            <DialogTitle>Top-up Credits for {agent.name}</DialogTitle>
-                                                            <DialogDescription>
-                                                                Add more credits to this agent to ensure continuous operation.
-                                                            </DialogDescription>
-                                                        </DialogHeader>
-                                                        <div className="space-y-4 py-4">
-                                                            <p>Current Credits: <span className="font-bold">{agent.credits.toLocaleString()}</span></p>
-                                                            <div className="space-y-2">
-                                                                <Label htmlFor="top-up-amount">Amount to Add</Label>
-                                                                <Input id="top-up-amount" type="number" placeholder="e.g., 500" className="bg-background/50"/>
+                                                        </DialogTrigger>
+                                                        <DialogContent className="sm:max-w-md bg-card/80 backdrop-blur-sm border-primary/20 text-white">
+                                                            <DialogHeader>
+                                                                <DialogTitle>Top-up Credits for {agent.name}</DialogTitle>
+                                                                <DialogDescription>
+                                                                    Add more credits to this agent to ensure continuous operation.
+                                                                </DialogDescription>
+                                                            </DialogHeader>
+                                                            <div className="space-y-4 py-4">
+                                                                <p>Current Credits: <span className="font-bold">{agent.credits.toLocaleString()}</span></p>
+                                                                <div className="space-y-2">
+                                                                    <Label htmlFor="top-up-amount">Amount to Add</Label>
+                                                                    <Input id="top-up-amount" type="number" placeholder="e.g., 500" className="bg-background/50"/>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <DialogFooter>
-                                                            <Button type="button" variant="secondary">Cancel</Button>
-                                                            <Button type="submit"><Plus className="mr-2 h-4 w-4"/> Top-up</Button>
-                                                        </DialogFooter>
-                                                    </DialogContent>
-                                                </Dialog>
+                                                            <DialogFooter>
+                                                                <Button type="button" variant="secondary">Cancel</Button>
+                                                                <Button type="submit"><Plus className="mr-2 h-4 w-4"/> Top-up</Button>
+                                                            </DialogFooter>
+                                                        </DialogContent>
+                                                    </Dialog>
+                                                )}
                                             </TableCell>
                                             <TableCell>
                                                 <Badge variant={agent.status === 'Active' ? 'default' : 'destructive'} className={cn(agent.status === 'Active' ? 'bg-green-500/80 hover:bg-green-500/70' : 'bg-red-500/80 hover:bg-red-500/70', "border-none")}>
