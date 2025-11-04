@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -6,9 +5,12 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bot, Cpu, SlidersHorizontal, Shield, BrainCircuit } from "lucide-react";
+import { Bot, Cpu, SlidersHorizontal, Shield, BrainCircuit, PlusCircle } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 const aiAgents = [
     { id: 'agent-01', name: 'Warden', task: 'Content Moderation', model: 'Gemini 2.5 Flash', status: 'Active' },
@@ -26,10 +28,71 @@ export default function AISystemPage() {
                 <div className="lg:col-span-2">
                     <Card className="bg-card/50 backdrop-blur-sm border-white/10 text-white">
                         <CardHeader>
-                            <CardTitle>AI Agent Management (NPCs)</CardTitle>
-                            <CardDescription className="text-muted-foreground">
-                                Activate, deactivate, and configure AI agents responsible for various tasks.
-                            </CardDescription>
+                            <div className="flex justify-between items-center">
+                                <div>
+                                    <CardTitle>AI Agent Management (NPCs)</CardTitle>
+                                    <CardDescription className="text-muted-foreground">
+                                        Activate, deactivate, and configure AI agents responsible for various tasks.
+                                    </CardDescription>
+                                </div>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button variant="outline"><PlusCircle className="mr-2 h-4 w-4"/> Create AI Agent</Button>
+                                    </DialogTrigger>
+                                    <DialogContent className="sm:max-w-[625px] bg-card/80 backdrop-blur-sm border-primary/20 text-white">
+                                        <DialogHeader>
+                                            <DialogTitle>Create New AI Agent</DialogTitle>
+                                            <DialogDescription>
+                                                Configure a new AI agent, assign its role, and provide it with instructions.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <div className="grid gap-4 py-4">
+                                            <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label htmlFor="agent-name" className="text-right">Agent Name</Label>
+                                                <Input id="agent-name" placeholder="e.g., 'Librarian'" className="col-span-3 bg-background/50" />
+                                            </div>
+                                             <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label htmlFor="agent-model" className="text-right">AI Model</Label>
+                                                <Select>
+                                                    <SelectTrigger id="agent-model" className="col-span-3">
+                                                        <SelectValue placeholder="Select a base model" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="gemini-2.5-flash">Gemini 2.5 Flash</SelectItem>
+                                                        <SelectItem value="gemini-1.5-pro">Gemini 1.5 Pro</SelectItem>
+                                                        <SelectItem value="imagen-4">Imagen 4.0</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                            <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label htmlFor="agent-task" className="text-right">Assigned Task</Label>
+                                                <Input id="agent-task" placeholder="e.g., 'Answers questions about MESY lore'" className="col-span-3 bg-background/50" />
+                                            </div>
+                                            <div className="grid grid-cols-4 items-center gap-4">
+                                                <Label htmlFor="agent-zone" className="text-right">Zone</Label>
+                                                <Select>
+                                                    <SelectTrigger id="agent-zone" className="col-span-3">
+                                                        <SelectValue placeholder="Select a zone to manage" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="public">Public Zones</SelectItem>
+                                                        <SelectItem value="member">Member Zones</SelectItem>
+                                                        <SelectItem value="developer">Developer Zone</SelectItem>
+                                                        <SelectItem value="all">All Zones</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            </div>
+                                            <div className="grid grid-cols-4 items-start gap-4">
+                                                <Label htmlFor="agent-script" className="text-right pt-2">Training Script</Label>
+                                                <Textarea id="agent-script" placeholder="You are a helpful and wise librarian. Your goal is to guide new users through the lore of the MESY Universe..." className="col-span-3 h-32 bg-background/50" />
+                                            </div>
+                                        </div>
+                                        <DialogFooter>
+                                            <Button type="submit">Create Agent</Button>
+                                        </DialogFooter>
+                                    </DialogContent>
+                                </Dialog>
+                            </div>
                         </CardHeader>
                         <CardContent>
                              <Table>
