@@ -52,7 +52,8 @@ export default function UsersDashboardLayout({
     router.push('/welcome');
   };
 
-  const isMember = user?.email === 'admin@mesy.io';
+  const specialUsers = ['tipyatida@gmail.com', 'mesy.universe@gmail.com', 'admin@mesy.io'];
+  const isMember = user && user.email && specialUsers.includes(user.email);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -109,7 +110,7 @@ export default function UsersDashboardLayout({
                     </DropdownMenuItem>
                      {!isMember && (
                       <DropdownMenuItem asChild>
-                        <Link href="/users/payment">
+                        <Link href="/member-plan">
                           <Star className="mr-2 h-4 w-4 text-primary"/>
                           <span className="text-primary font-semibold">Upgrade to Member</span>
                         </Link>

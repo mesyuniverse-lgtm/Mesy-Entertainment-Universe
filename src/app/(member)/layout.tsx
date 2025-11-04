@@ -55,7 +55,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     
     if (!isUserLoading && user) {
         if (pathname.startsWith('/admin') && mockUserRole !== 'Admin') {
-            router.replace('/access-denied');
+            router.replace('/access-denied'); // A page to show access denied message
         }
     }
 
