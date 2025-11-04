@@ -6,7 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bot, Cpu, SlidersHorizontal, Shield, BrainCircuit, PlusCircle, KeyRound, Gem, Upload, Link as LinkIcon, FileText } from "lucide-react";
+import { Bot, Cpu, SlidersHorizontal, Shield, BrainCircuit, PlusCircle, KeyRound, Gem, Upload, Link as LinkIcon, FileText, Plus } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -14,12 +14,15 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
+import { cn } from "@/lib/utils";
+
 
 const aiAgents = [
-    { id: 'agent-01', name: 'Warden', task: 'Content Moderation', model: 'Gemini 2.5 Flash', status: 'Active' },
-    { id: 'agent-02', name: 'Chronicler', task: 'Quest Generation', model: 'Gemini 1.5 Pro', status: 'Active' },
-    { id: 'agent-03', name: 'Artisan', task: 'Image Generation', model: 'Imagen 4.0', status: 'Inactive' },
-    { id: 'agent-04', name: 'Oracle', task: 'Data Analysis', model: 'Gemini 1.5 Pro', status: 'Active' },
+    { id: 'agent-01', name: 'Warden', task: 'Content Moderation', model: 'Gemini 2.5 Flash', status: 'Active', credits: 850, maxCredits: 1000 },
+    { id: 'agent-02', name: 'Chronicler', task: 'Quest Generation', model: 'Gemini 1.5 Pro', status: 'Active', credits: 950, maxCredits: 1000 },
+    { id: 'agent-03', name: 'Artisan', task: 'Image Generation', model: 'Imagen 4.0', status: 'Inactive', credits: 0, maxCredits: 500 },
+    { id: 'agent-04', name: 'Oracle', task: 'Data Analysis', model: 'Gemini 1.5 Pro', status: 'Active', credits: 150, maxCredits: 1000 },
 ];
 
 export default function AISystemPage() {
@@ -141,19 +144,53 @@ export default function AISystemPage() {
                                     <TableRow>
                                         <TableHead>NPC Name</TableHead>
                                         <TableHead>Assigned Task</TableHead>
-                                        <TableHead>Model</TableHead>
+                                        <TableHead>Credits</TableHead>
                                         <TableHead>Status</TableHead>
                                         <TableHead className="text-right">Actions</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
-                                    {aiAgents.map(agent => (
+                                    {aiAgents.map(agent => {
+                                        const creditPercentage = (agent.credits / agent.maxCredits) * 100;
+                                        const isLowCredit = creditPercentage < 20;
+                                        return (
                                         <TableRow key={agent.id}>
                                             <TableCell className="font-semibold">{agent.name}</TableCell>
                                             <TableCell>{agent.task}</TableCell>
-                                            <TableCell><Badge variant="outline">{agent.model}</Badge></TableCell>
                                             <TableCell>
-                                                <Badge variant={agent.status === 'Active' ? 'default' : 'destructive'} className={agent.status === 'Active' ? 'bg-green-500/80' : ''}>
+                                                <Dialog>
+                                                    <DialogTrigger asChild>
+                                                        <div className="w-40 cursor-pointer group">
+                                                            <div className="flex justify-between text-xs mb-1">
+                                                                <span className={cn("font-semibold", isLowCredit ? "text-red-400" : "text-primary")}>{agent.credits.toLocaleString()}</span>
+                                                                <span className="text-muted-foreground">/ {agent.maxCredits.toLocaleString()}</span>
+                                                            </div>
+                                                            <Progress value={creditPercentage} className={cn("h-2", isLowCredit && "[&>div]:bg-red-500")} />
+                                                        </div>
+                                                    </DialogTrigger>
+                                                    <DialogContent className="sm:max-w-md bg-card/80 backdrop-blur-sm border-primary/20 text-white">
+                                                        <DialogHeader>
+                                                            <DialogTitle>Top-up Credits for {agent.name}</DialogTitle>
+                                                            <DialogDescription>
+                                                                Add more credits to this agent to ensure continuous operation.
+                                                            </DialogDescription>
+                                                        </DialogHeader>
+                                                        <div className="space-y-4 py-4">
+                                                            <p>Current Credits: <span className="font-bold">{agent.credits.toLocaleString()}</span></p>
+                                                            <div className="space-y-2">
+                                                                <Label htmlFor="top-up-amount">Amount to Add</Label>
+                                                                <Input id="top-up-amount" type="number" placeholder="e.g., 500" className="bg-background/50"/>
+                                                            </div>
+                                                        </div>
+                                                        <DialogFooter>
+                                                            <Button type="button" variant="secondary">Cancel</Button>
+                                                            <Button type="submit"><Plus className="mr-2 h-4 w-4"/> Top-up</Button>
+                                                        </DialogFooter>
+                                                    </DialogContent>
+                                                </Dialog>
+                                            </TableCell>
+                                            <TableCell>
+                                                <Badge variant={agent.status === 'Active' ? 'default' : 'destructive'} className={cn(agent.status === 'Active' ? 'bg-green-500/80 hover:bg-green-500/70' : 'bg-red-500/80 hover:bg-red-500/70', "border-none")}>
                                                     {agent.status}
                                                 </Badge>
                                             </TableCell>
@@ -162,7 +199,7 @@ export default function AISystemPage() {
                                                 <Button variant="ghost" size="sm">Configure</Button>
                                             </TableCell>
                                         </TableRow>
-                                    ))}
+                                    )})}
                                 </TableBody>
                             </Table>
                         </CardContent>
@@ -238,5 +275,3 @@ export default function AISystemPage() {
         </div>
     );
 }
-
-    
