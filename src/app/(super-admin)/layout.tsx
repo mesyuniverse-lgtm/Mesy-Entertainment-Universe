@@ -49,7 +49,7 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
 
   if (isUserLoading || !user || user.email !== SUPER_ADMIN_EMAIL) {
     return (
-      <div className="flex h-screen items-center justify-center bg-background">
+      <div className="flex h-screen items-center justify-center bg-black">
         <Loader className="h-12 w-12 animate-spin text-primary" />
       </div>
     );

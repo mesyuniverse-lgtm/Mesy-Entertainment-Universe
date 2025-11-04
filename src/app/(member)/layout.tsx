@@ -41,21 +41,25 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const auth = useAuth();
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
-
+  
+  const ADMIN_EMAIL = 'admin@mesy.io';
+  const SUPER_ADMIN_EMAIL = 'mesy.universe@gmail.com';
 
   useEffect(() => {
-    // If not loading and no user, redirect to login page.
     if (!isUserLoading && !user) {
       router.replace('/member-login');
+      return;
     }
     
-    // This is a simple role-based access control for demonstration.
-    // In a real application, you would fetch the user's role from your database (e.g., Firestore).
-    const mockUserRole = user?.email === 'admin@mesy.io' ? 'Admin' : 'Member';
-    
     if (!isUserLoading && user) {
-        if (pathname.startsWith('/admin') && mockUserRole !== 'Admin') {
-            router.replace('/access-denied'); // A page to show access denied message
+        // Redirect if a super admin tries to access a normal member page
+        if(user.email === SUPER_ADMIN_EMAIL) {
+            router.replace('/sup-dashboard');
+            return;
+        }
+
+        if (pathname.startsWith('/admin') && user.email !== ADMIN_EMAIL) {
+            router.replace('/dashboard'); // Or an access-denied page
         }
     }
 
@@ -68,8 +72,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     router.push('/welcome');
   };
 
-  // Render a loading state while checking for user authentication
-  if (isUserLoading || !user) {
+  if (isUserLoading || !user || user.email === SUPER_ADMIN_EMAIL) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <Loader className="h-12 w-12 animate-spin text-primary" />
@@ -77,9 +80,8 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  const userRole = user?.email === 'admin@mesy.io' ? 'Admin' : 'Member';
-  const isMember = user && (userRole === 'Admin' || userRole === 'Member');
-
+  const userRole = user?.email === ADMIN_EMAIL ? 'Admin' : 'Member';
+  const isMember = true; // Since we are in the member layout
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
