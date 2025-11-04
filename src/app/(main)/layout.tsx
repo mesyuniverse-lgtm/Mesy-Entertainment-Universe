@@ -30,11 +30,9 @@ export default function MainLayout({
   const navItems = [
     { name: 'Socialive', href: '/socialive' },
     { name: 'Entertainment', href: '/entertainment' },
-    { name: 'The Connection', href: '/connections' },
     { name: 'AI Hub', href: '/ai-hub' },
     { name: 'Shopping Hub', href: '/shopping' },
     { name: 'Member Zones', href: '/dashboard' },
-    { name: 'Developer Zone', href: '/developer-zone' },
   ];
 
   const auth = useAuth();
@@ -74,9 +72,6 @@ export default function MainLayout({
                   {item.name}
                 </Link>
               ))}
-                 <Button asChild variant="link" className="text-lg">
-                    <Link href="/login">Back🎉</Link>
-                </Button>
             </nav>
           </div>
           <div className="flex flex-1 items-center justify-end space-x-2">
@@ -159,9 +154,6 @@ export default function MainLayout({
                           {item.name}
                         </Link>
                       ))}
-                      <Button asChild variant="link" className="text-lg">
-                        <Link href="/login">Back🎉</Link>
-                      </Button>
                     </nav>
                 </SheetContent>
             </Sheet>
