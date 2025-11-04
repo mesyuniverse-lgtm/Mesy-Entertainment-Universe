@@ -17,14 +17,16 @@ import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
 import { cn } from "@/lib/utils";
 import React from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 
 const aiAgents = [
-    { id: 'agent-01', name: 'Warden', task: 'Content Moderation', model: 'Gemini 2.5 Flash', status: 'Active', credits: 150, maxCredits: 1000 },
-    { id: 'agent-02', name: 'Chronicler', task: 'Quest Generation', model: 'Gemini 1.5 Pro', status: 'Active', credits: 950, maxCredits: 1000 },
-    { id: 'agent-03', name: 'Artisan', task: 'Image Generation', model: 'Imagen 4.0', status: 'Inactive', credits: 0, maxCredits: 500 },
-    { id: 'agent-04', name: 'Oracle', task: 'Data Analysis', model: 'Gemini 1.5 Pro', status: 'Active', credits: 850, maxCredits: 1000 },
-    { id: 'agent-05', name: 'Lorekeeper', task: 'Local Knowledge Base', model: 'Local LLM (Free)', status: 'Active', credits: 0, maxCredits: 0 },
+    { id: 'agent-01', name: 'Warden', task: 'Content Moderation', model: 'Gemini 2.5 Flash', status: 'Active', credits: 150, maxCredits: 1000, avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
+    { id: 'agent-02', name: 'Chronicler', task: 'Quest Generation', model: 'Gemini 1.5 Pro', status: 'Active', credits: 950, maxCredits: 1000, avatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
+    { id: 'agent-03', name: 'Artisan', task: 'Image Generation', model: 'Imagen 4.0', status: 'Inactive', credits: 0, maxCredits: 500, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
+    { id: 'agent-04', name: 'Oracle', task: 'Data Analysis', model: 'Gemini 1.5 Pro', status: 'Active', credits: 850, maxCredits: 1000, avatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl },
+    { id: 'agent-05', name: 'Lorekeeper', task: 'Local Knowledge Base', model: 'Local LLM (Free)', status: 'Active', credits: 0, maxCredits: 0, avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
 ];
 
 const modelOptions = [
@@ -175,7 +177,15 @@ export default function AISystemPage() {
 
                                         return (
                                         <TableRow key={agent.id}>
-                                            <TableCell className="font-semibold">{agent.name}</TableCell>
+                                            <TableCell>
+                                                <div className="flex items-center gap-3">
+                                                    <Avatar className="h-9 w-9">
+                                                        <AvatarImage src={agent.avatar} />
+                                                        <AvatarFallback>{agent.name.charAt(0)}</AvatarFallback>
+                                                    </Avatar>
+                                                    <span className="font-semibold">{agent.name}</span>
+                                                </div>
+                                            </TableCell>
                                             <TableCell>{agent.task}</TableCell>
                                             <TableCell>
                                                 {isFree ? (
