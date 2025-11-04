@@ -1,4 +1,3 @@
-
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -6,7 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Bot, Cpu, SlidersHorizontal, Shield, BrainCircuit, PlusCircle, KeyRound, Gem, Upload, Link as LinkIcon, FileText, Plus } from "lucide-react";
+import { Bot, Cpu, SlidersHorizontal, Shield, BrainCircuit, PlusCircle, KeyRound, Gem, Upload, Link as LinkIcon, FileText, Plus, Image as ImageIcon } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
@@ -58,21 +57,55 @@ export default function AISystemPage() {
                                     <DialogTrigger asChild>
                                         <Button variant="outline"><PlusCircle className="mr-2 h-4 w-4"/> Create AI Agent</Button>
                                     </DialogTrigger>
-                                    <DialogContent className="sm:max-w-2xl bg-card/80 backdrop-blur-sm border-primary/20 text-white">
+                                    <DialogContent className="sm:max-w-4xl bg-card/80 backdrop-blur-sm border-primary/20 text-white">
                                         <DialogHeader>
                                             <DialogTitle>Create New AI Agent</DialogTitle>
                                             <DialogDescription>
                                                 Configure a new AI agent, assign its role, and provide it with a knowledge base.
                                             </DialogDescription>
                                         </DialogHeader>
-                                        <div className="grid md:grid-cols-2 gap-6 py-4">
-                                            {/* Left Column: Agent Configuration */}
-                                            <div className="space-y-4">
-                                                <h4 className="text-lg font-semibold text-primary">Agent Configuration</h4>
-                                                <div className="space-y-2">
+                                        <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-6 py-4">
+                                            {/* Left Column: Agent Identity & Avatar */}
+                                            <div className="lg:col-span-2 space-y-4">
+                                                 <h4 className="text-lg font-semibold text-primary">Agent Identity</h4>
+                                                 <div className="space-y-2 text-center">
+                                                    <Avatar className="h-32 w-32 mx-auto border-2 border-dashed border-primary/50">
+                                                        <AvatarImage src={PlaceHolderImages.find(i=>i.id==='default-avatar')?.imageUrl} />
+                                                        <AvatarFallback><Bot/></AvatarFallback>
+                                                    </Avatar>
+                                                </div>
+                                                 <div className="space-y-2">
                                                     <Label htmlFor="agent-name">Agent Name</Label>
                                                     <Input id="agent-name" placeholder="e.g., 'Librarian'" className="bg-background/50" />
                                                 </div>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="agent-task">Assigned Task</Label>
+                                                    <Input id="agent-task" placeholder="e.g., 'Answers lore questions'" className="bg-background/50" />
+                                                </div>
+                                                <Separator />
+                                                <Tabs defaultValue="upload" className="w-full">
+                                                     <TabsList className="grid w-full grid-cols-3">
+                                                        <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4"/>Upload</TabsTrigger>
+                                                        <TabsTrigger value="link"><LinkIcon className="mr-2 h-4 w-4"/>Link</TabsTrigger>
+                                                        <TabsTrigger value="asset"><ImageIcon className="mr-2 h-4 w-4"/>Asset</TabsTrigger>
+                                                    </TabsList>
+                                                    <TabsContent value="upload" className="mt-4">
+                                                         <Input id="picture" type="file" className="bg-background/50" />
+                                                    </TabsContent>
+                                                    <TabsContent value="link" className="mt-4">
+                                                        <Input id="avatar-url" placeholder="http://.../avatar.gif" className="bg-background/50" />
+                                                         <p className="text-xs text-muted-foreground mt-2">Link to an image or animated avatar file.</p>
+                                                    </TabsContent>
+                                                     <TabsContent value="asset" className="mt-4">
+                                                        <Input id="asset-id" placeholder="Enter MESY Asset ID" className="bg-background/50" />
+                                                    </TabsContent>
+                                                </Tabs>
+
+                                            </div>
+
+                                            {/* Right Column: Configuration & Knowledge */}
+                                            <div className="lg:col-span-3 space-y-4">
+                                                 <h4 className="text-lg font-semibold text-primary">Configuration</h4>
                                                 <div className="space-y-2">
                                                     <Label htmlFor="agent-model">AI Model</Label>
                                                     <Select onValueChange={(value) => {
@@ -86,10 +119,6 @@ export default function AISystemPage() {
                                                             ))}
                                                         </SelectContent>
                                                     </Select>
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="agent-task">Assigned Task</Label>
-                                                    <Input id="agent-task" placeholder="e.g., 'Answers lore questions'" className="bg-background/50" />
                                                 </div>
                                                 <div className="space-y-2">
                                                     <Label htmlFor="agent-zone">Zone</Label>
@@ -121,11 +150,8 @@ export default function AISystemPage() {
                                                         <Input id="credit" type="number" placeholder={selectedModel?.isFree ? "No cost" : "e.g., 500"} className="bg-background/50" disabled={selectedModel?.isFree} />
                                                     </div>
                                                 </div>
-                                            </div>
-
-                                            {/* Right Column: Knowledge & Prompt */}
-                                            <div className="space-y-4">
-                                                <h4 className="text-lg font-semibold text-primary">Knowledge Base & Prompt</h4>
+                                                <Separator className="my-4"/>
+                                                 <h4 className="text-lg font-semibold text-primary">Knowledge Base & Prompt</h4>
                                                 <Tabs defaultValue="upload" className="w-full">
                                                     <TabsList className="grid w-full grid-cols-3">
                                                         <TabsTrigger value="upload"><Upload className="mr-2 h-4 w-4"/>Upload</TabsTrigger>
@@ -133,11 +159,10 @@ export default function AISystemPage() {
                                                         <TabsTrigger value="text"><FileText className="mr-2 h-4 w-4"/>Text</TabsTrigger>
                                                     </TabsList>
                                                     <TabsContent value="upload" className="mt-4">
-                                                        <div className="h-48 border-2 border-dashed border-muted-foreground/50 rounded-lg flex flex-col items-center justify-center text-center">
+                                                        <div className="h-32 border-2 border-dashed border-muted-foreground/50 rounded-lg flex flex-col items-center justify-center text-center">
                                                             <Upload className="h-8 w-8 text-muted-foreground"/>
-                                                            <p className="mt-2 text-sm text-muted-foreground">Drag & drop files here or</p>
+                                                            <p className="mt-2 text-sm text-muted-foreground">Drag & drop files or</p>
                                                             <Button variant="link" className="text-primary">browse files</Button>
-                                                            <p className="text-xs text-muted-foreground/80">.txt, .md, .pdf</p>
                                                         </div>
                                                     </TabsContent>
                                                     <TabsContent value="url" className="mt-4 space-y-2">
@@ -146,7 +171,7 @@ export default function AISystemPage() {
                                                         <Button className="w-full">Fetch Data</Button>
                                                     </TabsContent>
                                                     <TabsContent value="text" className="mt-4">
-                                                        <Textarea placeholder="You are a helpful and wise librarian. Your goal is to guide new users through the lore of the MESY Universe..." className="h-48 bg-background/50" />
+                                                        <Textarea placeholder="You are a helpful and wise librarian..." className="h-32 bg-background/50" />
                                                     </TabsContent>
                                                 </Tabs>
                                             </div>
