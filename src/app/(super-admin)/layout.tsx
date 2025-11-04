@@ -21,10 +21,10 @@ const sidebarNavItems = [
   { name: 'Analysis', href: '/analysis', icon: BarChart },
   { name: 'Reports', href: '/report', icon: FileText },
   { name: 'Notifications', href: '/notification', icon: Bell },
-  { name: 'Profile', href: '/sup-profile', icon: UserCircle },
+  { name: 'AI System', href: '/ai-system', icon: Bot },
   { name: 'UI/UX Studio', href: '/sup-studo', icon: Brush },
   { name: 'Settings', href: '/sup-setting', icon: Settings },
-  { name: 'AI Config', href: '/ai-config', icon: Bot },
+  { name: 'Profile', href: '/sup-profile', icon: UserCircle },
 ];
 
 export default function SuperAdminLayout({ children }: { children: React.ReactNode }) {
@@ -57,7 +57,7 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
   }
 
   return (
-    <div className={cn("grid min-h-screen w-full", styles.supAdminLayout)}>
+    <div className={cn("grid min-h-screen w-full md:grid-cols-[280px_1fr]", styles.supAdminLayout)}>
       <aside className="hidden border-r bg-black/30 backdrop-blur-sm md:block">
         <div className="flex h-full max-h-screen flex-col gap-2">
           <div className="flex h-14 items-center border-b border-primary/20 px-4 lg:h-[60px] lg:px-6">
