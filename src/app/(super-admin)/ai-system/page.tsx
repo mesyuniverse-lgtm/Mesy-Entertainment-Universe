@@ -88,9 +88,15 @@ export default function AISystemPage() {
                                                     <Label htmlFor="api-key" className="flex items-center gap-2"><KeyRound className="h-4 w-4"/> API Key</Label>
                                                     <Input id="api-key" placeholder="Enter API Key (optional)" className="bg-background/50" />
                                                 </div>
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="mcp-budget" className="flex items-center gap-2"><Gem className="h-4 w-4"/> MCP Budget</Label>
-                                                    <Input id="mcp-budget" type="number" placeholder="e.g., 1000" className="bg-background/50" />
+                                                <div className="grid grid-cols-2 gap-4">
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="mcp-budget" className="flex items-center gap-2"><Gem className="h-4 w-4"/> MCP Budget</Label>
+                                                        <Input id="mcp-budget" type="number" placeholder="e.g., 1000" className="bg-background/50" />
+                                                    </div>
+                                                    <div className="space-y-2">
+                                                        <Label htmlFor="credit" className="flex items-center gap-2"><Gem className="h-4 w-4"/> Credit</Label>
+                                                        <Input id="credit" type="number" placeholder="e.g., 500" className="bg-background/50" />
+                                                    </div>
                                                 </div>
                                             </div>
 
@@ -232,3 +238,5 @@ export default function AISystemPage() {
         </div>
     );
 }
+
+    
