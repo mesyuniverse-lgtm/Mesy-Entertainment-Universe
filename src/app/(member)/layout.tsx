@@ -28,7 +28,7 @@ const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'Profile', href: '/profile', icon: UserCircle },
   { name: 'Memberships', href: '/memberships', icon: Shield },
-  { name: 'Wallet', href: '/wallet', icon: Wallet },
+  { name: 'Payment', href: '/payment', icon: Wallet },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
   { name: 'Notifications', href: '/notifications', icon: Bell },
   { name: 'Settings', href: '/settings', icon: Settings },
