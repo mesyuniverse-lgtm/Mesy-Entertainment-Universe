@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser, useAuth } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, Bell, Settings, LogOut, Menu, BarChart, FileText, Bot, Brush, Monitor } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, Bell, Settings, LogOut, Menu, BarChart, FileText, Bot, Brush, Monitor, Calculator } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -19,6 +19,7 @@ const sidebarNavItems = [
   { name: 'Dashboard', href: '/sup-dashboard', icon: LayoutDashboard },
   { name: 'Monitor', href: '/monitor', icon: Monitor },
   { name: 'Analysis', href: '/analysis', icon: BarChart },
+  { name: 'Accounting', href: '/accounting', icon: Calculator },
   { name: 'Reports', href: '/report', icon: FileText },
   { name: 'Notifications', href: '/notification', icon: Bell },
   { name: 'AI System', href: '/ai-system', icon: Bot },
