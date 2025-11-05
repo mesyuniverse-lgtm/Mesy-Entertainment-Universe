@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useUser } from "@/firebase";
@@ -11,8 +12,20 @@ import Link from "next/link";
 
 export default function HomePage() {
     const { user } = useUser();
+    const [greeting, setGreeting] = useState('');
+
     const specialUsers = ['tipyatida@gmail.com', 'mesy.universe@gmail.com', 'admin@mesy.io'];
     const isMember = user && user.email && specialUsers.includes(user.email);
+
+    useEffect(() => {
+        const getGreeting = () => {
+            const hour = new Date().getHours();
+            if (hour < 12) return 'Good morning';
+            if (hour < 18) return 'Good afternoon';
+            return 'Good evening';
+        };
+        setGreeting(getGreeting());
+    }, []);
 
     const complexSections = [
         {
@@ -69,6 +82,12 @@ export default function HomePage() {
     return (
         <div className="container py-12">
             <div className="text-center mb-12">
+                {user && greeting && (
+                    <div className="mb-8">
+                        <h2 className="text-3xl font-semibold">{greeting}, {user.displayName || user.email}!</h2>
+                        <p className="text-muted-foreground">How are you today?</p>
+                    </div>
+                )}
                 <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">MESY ENTERTAINMENT COMPLEX</h1>
                 <p className="max-w-3xl mx-auto mt-4 text-muted-foreground text-lg">
                     Your portal to a universe of social, creative, and commercial experiences. Explore what awaits.
