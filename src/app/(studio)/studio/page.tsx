@@ -11,7 +11,7 @@ import { Slider } from "@/components/ui/slider";
 import { Separator } from "@/components/ui/separator";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
-import { Video, Mic, Music, Wand2, Sparkles, Tv, Users, ShoppingBag, Baby, Heart, Shield, RadioTower, Settings, UserCircle, UsersRound, VideoIcon, Volume2, Monitor, Sun, Moon } from 'lucide-react';
+import { Video, Mic, Music, Wand2, Sparkles, Tv, Users, ShoppingBag, Baby, Heart, Shield, RadioTower, Settings, UserCircle, UsersRound, VideoIcon, Volume2, Monitor, Sun, Moon, Camera, CameraOff } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 const streamDestinations = [
@@ -38,14 +38,16 @@ const audienceOptions = [
 export default function StudioPage() {
     const { toast } = useToast();
     const videoRef = useRef<HTMLVideoElement>(null);
+    const [mediaStream, setMediaStream] = useState<MediaStream | null>(null);
     const [hasCameraPermission, setHasCameraPermission] = useState(false);
+    const [isCameraOn, setIsCameraOn] = useState(true);
 
-    useEffect(() => {
-        const getCameraPermission = async () => {
-          try {
+    const getCameraStream = async () => {
+        try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+            setMediaStream(stream);
             setHasCameraPermission(true);
-    
+            setIsCameraOn(true);
             if (videoRef.current) {
               videoRef.current.srcObject = stream;
             }
@@ -58,17 +60,24 @@ export default function StudioPage() {
               description: 'Please enable camera permissions in your browser settings to use the studio.',
             });
           }
-        };
-    
-        getCameraPermission();
+    }
+
+    useEffect(() => {
+        getCameraStream();
 
         return () => {
-            if(videoRef.current && videoRef.current.srcObject) {
-                const stream = videoRef.current.srcObject as MediaStream;
-                stream.getTracks().forEach(track => track.stop());
-            }
+            mediaStream?.getTracks().forEach(track => track.stop());
         }
-    }, [toast]);
+    }, []);
+
+    const toggleCamera = () => {
+        if (isCameraOn && mediaStream) {
+            mediaStream.getVideoTracks().forEach(track => track.stop());
+            setIsCameraOn(false);
+        } else {
+            getCameraStream();
+        }
+    };
 
 
     return (
@@ -94,6 +103,11 @@ export default function StudioPage() {
                                             <p className="text-muted-foreground">Please grant camera and microphone permissions to begin.</p>
                                         </div>
                                      )}
+                                     <div className="absolute bottom-4 left-4">
+                                        <Button onClick={toggleCamera} size="icon" variant={isCameraOn ? "default" : "destructive"} className="rounded-full h-12 w-12">
+                                            {isCameraOn ? <Camera className="h-6 w-6" /> : <CameraOff className="h-6 w-6" />}
+                                        </Button>
+                                    </div>
                                 </div>
                             </AspectRatio>
                         </CardContent>
