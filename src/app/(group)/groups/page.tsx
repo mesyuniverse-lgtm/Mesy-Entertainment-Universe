@@ -216,8 +216,8 @@ export default function GroupsPage() {
                                 <h4 className="font-semibold text-sm">Host Controls</h4>
                                 <p className="text-xs text-muted-foreground">Manage participants and audio.</p>
                             </div>
-                           <Button className="w-full">
-                                Go to Studio
+                           <Button className="w-full" asChild>
+                               <Link href="/studio">Go to Studio</Link>
                            </Button>
                         </CardContent>
                     </Card>

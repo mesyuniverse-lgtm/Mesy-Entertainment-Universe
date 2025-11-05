@@ -242,8 +242,8 @@ export default function LivePage() {
                                 <h4 className="font-semibold text-sm">Stream Title</h4>
                                 <p className="text-xs text-muted-foreground">Set a captivating title.</p>
                             </div>
-                           <Button className="w-full">
-                                Go to Studio
+                           <Button className="w-full" asChild>
+                               <Link href="/studio">Go to Studio</Link>
                            </Button>
                         </CardContent>
                     </Card>
