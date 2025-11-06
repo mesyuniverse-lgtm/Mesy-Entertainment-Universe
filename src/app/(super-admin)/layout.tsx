@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser, useAuth } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, Bell, Settings, LogOut, Menu, BarChart, FileText, Bot, Brush, Monitor, Calculator } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, Bell, Settings, LogOut, Menu, BarChart, FileText, Bot, Brush, Monitor, Calculator, Home, Shield, Code, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -121,7 +121,19 @@ export default function SuperAdminLayout({ children }: { children: React.ReactNo
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuLabel>{user.email}</DropdownMenuLabel>
+              <DropdownMenuLabel className="font-normal">
+                <div className="flex flex-col space-y-1">
+                  <p className="text-sm font-medium leading-none">Super Admin</p>
+                  <p className="text-xs leading-none text-muted-foreground">
+                    {user.email}
+                  </p>
+                </div>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+               <DropdownMenuItem asChild><Link href="/home"><Home className="mr-2 h-4 w-4"/>Home</Link></DropdownMenuItem>
+               <DropdownMenuItem asChild><Link href="#"><Shield className="mr-2 h-4 w-4"/>MESY Members</Link></DropdownMenuItem>
+               <DropdownMenuItem asChild><Link href="/developer-zone"><Code className="mr-2 h-4 w-4"/>Developers</Link></DropdownMenuItem>
+               <DropdownMenuItem asChild><Link href="#"><Users className="mr-2 h-4 w-4"/>Teams</Link></DropdownMenuItem>
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={handleLogout}>
                 <LogOut className="mr-2 h-4 w-4" /> Logout
