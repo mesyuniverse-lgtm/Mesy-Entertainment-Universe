@@ -100,23 +100,26 @@ export default function UsersDashboardLayout({
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                      <DropdownMenuItem asChild>
-                      <Link href={isMember ? "/dashboard" : "/users"}>
+                      <Link href="/users">
                         <LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href={isMember ? "/profile" : "/users/profile"}>
+                      <Link href="/users/profile">
                         <UserCircle className="mr-2 h-4 w-4"/>Profile
                       </Link>
                     </DropdownMenuItem>
-                     {!isMember && (
-                      <DropdownMenuItem asChild>
-                        <Link href="/member-plan">
+                    <DropdownMenuItem asChild>
+                      <Link href="/users/payment">
                           <Star className="mr-2 h-4 w-4 text-primary"/>
                           <span className="text-primary font-semibold">Upgrade to Member</span>
-                        </Link>
-                      </DropdownMenuItem>
-                    )}
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <Link href="/users/settings">
+                        <Settings className="mr-2 h-4 w-4"/>Setting
+                      </Link>
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                      <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
                   </DropdownMenuContent>
