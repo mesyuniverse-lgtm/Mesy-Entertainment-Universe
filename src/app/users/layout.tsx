@@ -38,9 +38,7 @@ export default function UsersDashboardLayout({
   const sidebarNavItems = [
     { name: 'Dashboard', href: '/users', icon: LayoutDashboard },
     { name: 'Profile', href: '/users/profile', icon: UserCircle },
-    { name: 'Payment', href: '/users/payment', icon: Wallet },
-    { name: 'Notification', href: '/users/notifications', icon: Bell },
-    { name: 'History', href: '/users/history', icon: History },
+    { name: 'Upgrade to Member', href: '/users/payment', icon: Star, highlight: true },
     { name: 'Setting', href: '/users/settings', icon: Settings },
   ];
 
@@ -139,11 +137,8 @@ export default function UsersDashboardLayout({
                    <nav className="grid gap-4 text-lg font-medium mt-8">
                        {user && (
                          <div className="flex flex-col items-start gap-2 px-4 mb-4">
-                            <Avatar className="h-16 w-16">
-                              <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} />
-                              <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
-                            </Avatar>
-                            <p className="text-base font-semibold">{user.displayName || 'User'}</p>
+                            <p className="text-lg font-semibold">User</p>
+                            <p className="text-base font-medium">{user.displayName || 'Grace Divaparadise'}</p>
                             <p className="text-sm text-muted-foreground">{user.email}</p>
                           </div>
                         )}
@@ -154,7 +149,8 @@ export default function UsersDashboardLayout({
                             href={item.href}
                             className={cn(
                               "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                              pathname === item.href && "text-primary bg-muted"
+                              pathname === item.href && "text-primary bg-muted",
+                              item.highlight && "text-primary font-semibold"
                             )}
                           >
                             <item.icon className="h-4 w-4" />
@@ -163,9 +159,6 @@ export default function UsersDashboardLayout({
                         ))}
                         </div>
                         <div className="mt-auto flex flex-col gap-4 pt-4">
-                            <Button asChild>
-                               <Link href="/users/payment"><Star className="mr-2 h-4 w-4"/> Upgrade to Member</Link>
-                            </Button>
                             <Button variant="outline" onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/> Logout</Button>
                         </div>
                     </nav>
@@ -182,32 +175,32 @@ export default function UsersDashboardLayout({
             <div className="h-full py-6 pr-6 lg:py-8">
               <div className="flex flex-col h-full">
                 {user && (
-                  <div className="flex flex-col items-start gap-2 px-4 mb-4">
-                    <p className="text-sm font-semibold">Users</p>
-                    <p className="text-sm text-muted-foreground truncate">{user.displayName || 'User'}</p>
-                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  <div className="flex flex-col items-start gap-1 px-4 mb-4">
+                    <p className="text-lg font-semibold">User</p>
+                    <p className="text-base font-medium text-foreground">{user.displayName || 'Grace Divaparadise'}</p>
+                    <p className="text-sm text-muted-foreground truncate">{user.email}</p>
                   </div>
                 )}
-                <nav className="relative flex flex-col gap-2 flex-grow">
+                <nav className="relative flex flex-col gap-2 flex-grow mt-4">
                     {sidebarNavItems.map((item) => (
                       <Link
                         key={item.name}
                         href={item.href}
                         className={cn(
                           "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted/50",
-                          pathname === item.href && "text-primary bg-muted"
+                          pathname === item.href && "text-primary bg-muted",
+                          item.highlight && "text-primary font-semibold"
                         )}
                       >
-                        <item.icon className="h-4 w-4" />
+                        <item.icon className={cn("h-4 w-4", item.highlight && "text-primary")} />
                         {item.name}
                       </Link>
                     ))}
                 </nav>
                  <div className="mt-auto flex flex-col gap-4">
-                    <Button asChild>
-                       <Link href="/users/payment"><Star className="mr-2 h-4 w-4"/> Upgrade to Member</Link>
+                    <Button variant="ghost" onClick={handleLogout} className="justify-start px-3 text-muted-foreground hover:text-primary">
+                        <LogOut className="mr-3 h-4 w-4"/> Log out
                     </Button>
-                    <Button variant="outline" onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/> Logout</Button>
                 </div>
               </div>
             </div>
