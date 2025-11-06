@@ -7,21 +7,12 @@ import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Bell, Wallet, History, Settings, Calendar, Home, Star, Camera } from 'lucide-react';
+import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Settings, Home, Star, Camera } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-
-const MemberIcon = () => (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="absolute bottom-0 left-0 text-purple-400 bg-background/80 rounded-full p-0.5">
-        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="#8A2BE2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-        <circle cx="8.5" cy="7" r="4" stroke="#8A2BE2" strokeWidth="2"/>
-        <path d="M18 8a2 2 0 0 1 2-2" stroke="#8A2BE2" strokeWidth="2" strokeLinecap="round"/>
-        <path d="M20 6a6 6 0 0 1 0 12" stroke="#8A2BE2" strokeWidth="2" strokeLinecap="round"/>
-    </svg>
-);
 
 export default function UsersDashboardLayout({
   children,
@@ -39,7 +30,7 @@ export default function UsersDashboardLayout({
     { name: 'Dashboard', href: '/users', icon: LayoutDashboard },
     { name: 'Profile', href: '/users/profile', icon: UserCircle },
     { name: 'Upgrade to Member', href: '/users/payment', icon: Star, highlight: true },
-    { name: 'Setting', href: '/users/settings', icon: Settings },
+    { name: 'Settings', href: '/users/settings', icon: Settings },
   ];
 
   const handleLogout = async () => {
@@ -76,20 +67,13 @@ export default function UsersDashboardLayout({
                         <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} alt="User Avatar" />
                         <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
                       </Avatar>
-                       {isMember ? (
-                          <>
-                            <MemberIcon />
-                            <div className="absolute bottom-0 right-0 bg-background/80 rounded-full p-0.5">
-                                <Camera className="h-3 w-3 text-white" />
-                            </div>
-                          </>
-                      ) : null}
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-56" align="end" forceMount>
                     <DropdownMenuLabel className="font-normal">
                       <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">{user.displayName || 'User Divaparadise'}</p>
+                        <p className="text-sm font-medium leading-none">User</p>
+                        <p className="text-sm font-bold leading-none">{user.displayName || 'Grace Divaparadise'}</p>
                         <p className="text-xs leading-none text-muted-foreground">
                           {user.email}
                         </p>
