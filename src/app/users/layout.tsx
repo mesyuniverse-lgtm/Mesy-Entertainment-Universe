@@ -38,7 +38,6 @@ export default function UsersDashboardLayout({
   const sidebarNavItems = [
     { name: 'Dashboard', href: '/users', icon: LayoutDashboard },
     { name: 'Profile', href: '/users/profile', icon: UserCircle },
-    { name: 'My Timeline', href: '/users/timeline', icon: Calendar },
     { name: 'Payment', href: '/users/payment', icon: Wallet },
     { name: 'Notification', href: '/users/notifications', icon: Bell },
     { name: 'History', href: '/users/history', icon: History },
@@ -137,7 +136,18 @@ export default function UsersDashboardLayout({
                     </Button>
                 </SheetTrigger>
                 <SheetContent side="left">
-                    <nav className="grid gap-4 text-lg font-medium mt-16">
+                   <nav className="grid gap-4 text-lg font-medium mt-8">
+                       {user && (
+                         <div className="flex flex-col items-start gap-2 px-4 mb-4">
+                            <Avatar className="h-16 w-16">
+                              <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} />
+                              <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
+                            </Avatar>
+                            <p className="text-base font-semibold">{user.displayName || 'User'}</p>
+                            <p className="text-sm text-muted-foreground">{user.email}</p>
+                          </div>
+                        )}
+                        <div className="flex flex-col gap-2">
                         {sidebarNavItems.map((item) => (
                           <Link
                             key={item.name}
@@ -151,6 +161,13 @@ export default function UsersDashboardLayout({
                             {item.name}
                           </Link>
                         ))}
+                        </div>
+                        <div className="mt-auto flex flex-col gap-4 pt-4">
+                            <Button asChild>
+                               <Link href="/users/payment"><Star className="mr-2 h-4 w-4"/> Upgrade to Member</Link>
+                            </Button>
+                            <Button variant="outline" onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/> Logout</Button>
+                        </div>
                     </nav>
                 </SheetContent>
             </Sheet>
@@ -163,7 +180,15 @@ export default function UsersDashboardLayout({
         {/* Sidebar */}
         <aside className="fixed top-16 z-30 -ml-2 hidden h-[calc(100vh-4rem)] w-full shrink-0 md:sticky md:block">
             <div className="h-full py-6 pr-6 lg:py-8">
-                <nav className="relative flex flex-col gap-2">
+              <div className="flex flex-col h-full">
+                {user && (
+                  <div className="flex flex-col items-start gap-2 px-4 mb-4">
+                    <p className="text-sm font-semibold">Users</p>
+                    <p className="text-sm text-muted-foreground truncate">{user.displayName || 'User'}</p>
+                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                  </div>
+                )}
+                <nav className="relative flex flex-col gap-2 flex-grow">
                     {sidebarNavItems.map((item) => (
                       <Link
                         key={item.name}
@@ -178,6 +203,13 @@ export default function UsersDashboardLayout({
                       </Link>
                     ))}
                 </nav>
+                 <div className="mt-auto flex flex-col gap-4">
+                    <Button asChild>
+                       <Link href="/users/payment"><Star className="mr-2 h-4 w-4"/> Upgrade to Member</Link>
+                    </Button>
+                    <Button variant="outline" onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/> Logout</Button>
+                </div>
+              </div>
             </div>
         </aside>
 
