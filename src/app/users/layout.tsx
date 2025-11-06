@@ -91,9 +91,9 @@ export default function UsersDashboardLayout({
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href="/users/payment">
-                          <Star className="mr-2 h-4 w-4 text-primary"/>
-                          <span className="text-primary font-semibold">Upgrade to Member</span>
+                      <Link href="/users/payment" className="text-primary focus:text-primary">
+                          <Star className="mr-2 h-4 w-4"/>
+                          <span className="font-semibold">Upgrade to Member</span>
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
