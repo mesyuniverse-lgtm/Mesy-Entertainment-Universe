@@ -52,8 +52,9 @@ export default function UsersDashboardLayout({
     router.push('/welcome');
   };
 
-  const specialUsers = ['tipyatida@gmail.com', 'mesy.universe@gmail.com', 'admin@mesy.io'];
-  const isMember = user && user.email && specialUsers.includes(user.email);
+  const adminEmail = 'admin@mesy.io';
+  const superAdminEmail = 'mesy.universe@gmail.com';
+  const isMember = user && user.email && (user.email === adminEmail || user.email === superAdminEmail);
 
   return (
     <div className="flex min-h-screen flex-col">

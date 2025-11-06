@@ -48,9 +48,9 @@ export default function MainLayout({
     router.push('/welcome');
   };
   
-  const memberUsers = ['tipyatida@gmail.com', 'admin@mesy.io'];
+  const adminEmail = 'admin@mesy.io';
   const superAdminEmail = 'mesy.universe@gmail.com';
-  const isMember = user && user.email && (memberUsers.includes(user.email) || user.email === superAdminEmail);
+  const isMember = user && user.email && (user.email === adminEmail || user.email === superAdminEmail);
 
 
   return (
