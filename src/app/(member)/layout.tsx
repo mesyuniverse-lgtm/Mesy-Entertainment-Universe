@@ -44,6 +44,10 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   
   const ADMIN_EMAIL = 'admin@mesy.io';
   const SUPER_ADMIN_EMAIL = 'mesy.universe@gmail.com';
+  const EDITOR_EMAIL = 'tipyatida@gmail.com';
+  const VIEWER_EMAIL = 'g.divaparadise@gmail.com';
+
+  const memberEmails = [ADMIN_EMAIL, EDITOR_EMAIL];
 
   useEffect(() => {
     if (!isUserLoading && !user) {
@@ -52,13 +56,18 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     }
     
     if (!isUserLoading && user) {
-        // Redirect if a super admin tries to access a normal member page
         if(user.email === SUPER_ADMIN_EMAIL) {
             router.replace('/sup-dashboard');
             return;
         }
 
-        if (pathname.startsWith('/admin') && user.email !== ADMIN_EMAIL) {
+        // If user is not a member or super admin, redirect them out of member zone
+        if (!memberEmails.includes(user.email ?? '') && user.email !== SUPER_ADMIN_EMAIL) {
+            router.replace('/users'); // or a "not authorized" page
+            return;
+        }
+
+        if (pathname.startsWith('/admin') && user.email !== ADMIN_EMAIL && user.email !== SUPER_ADMIN_EMAIL) {
             router.replace('/dashboard'); // Or an access-denied page
         }
     }
@@ -72,7 +81,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     router.push('/welcome');
   };
 
-  if (isUserLoading || !user || user.email === SUPER_ADMIN_EMAIL) {
+  if (isUserLoading || !user || !user.email || user.email === VIEWER_EMAIL) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <Loader className="h-12 w-12 animate-spin text-primary" />

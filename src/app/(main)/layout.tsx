@@ -47,9 +47,11 @@ export default function MainLayout({
     }
     router.push('/welcome');
   };
+  
+  const memberUsers = ['tipyatida@gmail.com', 'admin@mesy.io'];
+  const superAdminEmail = 'mesy.universe@gmail.com';
+  const isMember = user && user.email && (memberUsers.includes(user.email) || user.email === superAdminEmail);
 
-  const specialUsers = ['tipyatida@gmail.com', 'mesy.universe@gmail.com', 'admin@mesy.io'];
-  const isMember = user && user.email && specialUsers.includes(user.email);
 
   return (
     <div className="flex min-h-screen flex-col">
