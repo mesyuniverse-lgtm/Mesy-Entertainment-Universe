@@ -1,5 +1,7 @@
+
 'use client';
 
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useUser } from "@/firebase";
@@ -9,7 +11,15 @@ import Link from "next/link";
 export default function MembershipsLandingPage() {
     const { user } = useUser();
     const displayName = user?.displayName?.split(' ')[0] || 'Member';
+    const [totalRegistered, setTotalRegistered] = useState(137794);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setTotalRegistered(prev => prev + Math.floor(Math.random() * 3) + 1);
+        }, 2500); // Update every 2.5 seconds
+
+        return () => clearInterval(interval);
+    }, []);
 
     return (
         <div className="container mx-auto py-12">
@@ -70,7 +80,9 @@ export default function MembershipsLandingPage() {
                             <p className="text-sm text-muted-foreground/80">Total register</p>
                         </div>
                     </div>
-                    <p className="text-6xl font-bold text-red-500 my-4 tracking-wider">137,794</p>
+                    <p className="text-6xl font-bold text-red-500 my-4 tracking-wider tabular-nums">
+                        {totalRegistered.toLocaleString()}
+                    </p>
                     <Button variant="secondary" className="bg-primary/80 text-primary-foreground hover:bg-primary">Stake Now</Button>
                 </CardContent>
             </Card>
