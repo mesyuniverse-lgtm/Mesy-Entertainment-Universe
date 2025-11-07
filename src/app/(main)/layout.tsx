@@ -32,7 +32,7 @@ export default function MainLayout({
     { name: 'Entertainment', href: '/entertainment' },
     { name: 'AI Hub', href: '/ai-hub' },
     { name: 'Shopping Hub', href: '/shopping' },
-    { name: 'Member Zones', href: '/dashboard' },
+    { name: 'Member Zones', href: '/member-zones/member-portal' },
   ];
 
   const auth = useAuth();
@@ -50,7 +50,7 @@ export default function MainLayout({
   
   const adminEmail = 'admin@mesy.io';
   const superAdminEmail = 'mesy.universe@gmail.com';
-  const isMember = user && user.email && (user.email === adminEmail || user.email === superAdminEmail);
+  const isMember = user && user.email && (memberUsers.includes(user.email) || user.email === superAdminEmail);
 
 
   return (
