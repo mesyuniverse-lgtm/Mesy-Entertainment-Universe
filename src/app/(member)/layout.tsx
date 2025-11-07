@@ -4,7 +4,7 @@
 import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useUser } from '@/firebase';
+import { useUser, useAuth } from '@/firebase';
 import { Loader, Gem, LayoutDashboard, UserCircle, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -12,7 +12,6 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { signOut } from 'firebase/auth';
-import { useAuth } from '@/firebase';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const MemberIcon = () => (
@@ -46,29 +45,34 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   const SUPER_ADMIN_EMAIL = 'mesy.universe@gmail.com';
   
   // This defines who is considered a full member for accessing this layout.
-  const memberEmails = [ADMIN_EMAIL];
+  const memberEmails = [ADMIN_EMAIL, 'tipyatida@gmail.com'];
 
   useEffect(() => {
-    if (!isUserLoading && !user) {
-      router.replace('/member-login');
+    if (isUserLoading) return; // Wait until user status is known
+
+    if (!user) {
+      router.replace('/the-door'); // Unauthenticated users go to the door
       return;
     }
     
-    if (!isUserLoading && user) {
-        if(user.email === SUPER_ADMIN_EMAIL) {
+    // Authenticated users
+    if (user.email === SUPER_ADMIN_EMAIL) {
+        // Super admin should be in their own zone
+        if (!pathname.startsWith('/sup-')) {
             router.replace('/sup-dashboard');
-            return;
         }
+        return;
+    }
 
-        // If user is not a full member, redirect them out of the member zone.
-        if (!memberEmails.includes(user.email ?? '')) {
-            router.replace('/users'); 
-            return;
-        }
+    // Check if the user is a member
+    if (!memberEmails.includes(user.email ?? '')) {
+        router.replace('/users'); // Non-members go to the regular user dashboard
+        return;
+    }
 
-        if (pathname.startsWith('/admin') && user.email !== ADMIN_EMAIL) {
-            router.replace('/dashboard');
-        }
+    // Handle admin-only routes for members
+    if (pathname.startsWith('/admin') && user.email !== ADMIN_EMAIL) {
+        router.replace('/dashboard'); // Non-admin members can't access /admin
     }
 
   }, [user, isUserLoading, router, pathname]);
@@ -80,6 +84,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     router.push('/welcome');
   };
 
+  // Show a loading screen while we verify the user's status
   if (isUserLoading || !user || !memberEmails.includes(user.email ?? '')) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">

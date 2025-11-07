@@ -36,16 +36,19 @@ export default function UsersDashboardLayout({
 
   const adminEmail = 'admin@mesy.io';
   const superAdminEmail = 'mesy.universe@gmail.com';
-  const pendingMemberEmail = 'tipyatida@gmail.com';
+  const memberEmails = [adminEmail, 'tipyatida@gmail.com'];
 
   useEffect(() => {
-    if (!isUserLoading && user) {
-        if (user.email === adminEmail || user.email === pendingMemberEmail) {
-            router.replace('/dashboard');
+    if (isUserLoading) return; // Wait until user status is known
+
+    if (user) {
+        if (memberEmails.includes(user.email ?? '')) {
+            router.replace('/the-door'); // Members should use the door
         } else if (user.email === superAdminEmail) {
             router.replace('/sup-dashboard');
         }
     }
+    // If no user, or user is a regular user, stay in this layout.
   }, [user, isUserLoading, router]);
 
   const handleLogout = async () => {
@@ -55,7 +58,8 @@ export default function UsersDashboardLayout({
     router.push('/welcome');
   };
   
-  if (isUserLoading || (user && (user.email === adminEmail || user.email === pendingMemberEmail || user.email === superAdminEmail))) {
+  // Show loading screen while verifying, or if user is a member and redirecting
+  if (isUserLoading || (user && (memberEmails.includes(user.email ?? '') || user.email === superAdminEmail))) {
       return (
           <div className="flex h-screen items-center justify-center bg-background">
               <Loader className="h-12 w-12 animate-spin text-primary" />
@@ -63,7 +67,7 @@ export default function UsersDashboardLayout({
       );
   }
 
-  const isMember = user && user.email && (user.email === adminEmail || user.email === superAdminEmail);
+  const isMember = false; // This layout is for non-members
 
   return (
     <div className="flex min-h-screen flex-col">
