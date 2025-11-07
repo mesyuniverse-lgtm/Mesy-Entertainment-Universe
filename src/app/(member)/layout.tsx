@@ -44,35 +44,30 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   const ADMIN_EMAIL = 'admin@mesy.io';
   const SUPER_ADMIN_EMAIL = 'mesy.universe@gmail.com';
   
-  // This defines who is considered a full member for accessing this layout.
   const memberEmails = [ADMIN_EMAIL, 'tipyatida@gmail.com'];
 
   useEffect(() => {
-    if (isUserLoading) return; // Wait until user status is known
+    if (isUserLoading) return;
 
     if (!user) {
-      router.replace('/the-door'); // Unauthenticated users go to the door
+      router.replace('/memberships'); 
       return;
     }
     
-    // Authenticated users
     if (user.email === SUPER_ADMIN_EMAIL) {
-        // Super admin should be in their own zone
         if (!pathname.startsWith('/sup-')) {
             router.replace('/sup-dashboard');
         }
         return;
     }
 
-    // Check if the user is a member
     if (!memberEmails.includes(user.email ?? '')) {
-        router.replace('/users'); // Non-members go to the regular user dashboard
+        router.replace('/users'); 
         return;
     }
 
-    // Handle admin-only routes for members
     if (pathname.startsWith('/admin') && user.email !== ADMIN_EMAIL) {
-        router.replace('/dashboard'); // Non-admin members can't access /admin
+        router.replace('/dashboard'); 
     }
 
   }, [user, isUserLoading, router, pathname]);
@@ -84,7 +79,6 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     router.push('/welcome');
   };
 
-  // Show a loading screen while we verify the user's status
   if (isUserLoading || !user || !memberEmails.includes(user.email ?? '')) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
@@ -94,7 +88,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   const userRole = user?.email === ADMIN_EMAIL ? 'Admin' : 'Member';
-  const isMember = true; // Since we are in the member layout
+  const isMember = true;
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">

@@ -68,7 +68,7 @@ export default function HomePage() {
         {
             title: "Member Zones",
             description: "Exclusive member-only content, dashboard, and creation tools.",
-            href: "/the-door",
+            href: "/memberships",
             image: PlaceHolderImages.find((i) => i.id === "member-zone-preview"),
             locked: !isMember,
         },
@@ -114,7 +114,7 @@ export default function HomePage() {
                             <CardTitle>{section.title}</CardTitle>
                             <CardDescription className="mt-2 flex-grow">{section.description}</CardDescription>
                             <Button asChild className="mt-4 w-full" variant={section.locked ? "secondary" : "default"}>
-                                <Link href={section.locked ? (user ? "/member-plan" : "/member-login") : section.href}>
+                                <Link href={section.locked ? (user ? "/memberships" : "/memberships") : section.href}>
                                     {section.locked ? <Lock className="mr-2 h-4 w-4" /> : null}
                                     {section.locked ? "Access Locked" : "Enter"}
                                     {!section.locked ? <ArrowRight className="ml-2 h-4 w-4" /> : null}
