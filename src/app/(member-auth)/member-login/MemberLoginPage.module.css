@@ -1,0 +1,89 @@
+
+.gateContainer {
+    position: relative;
+    width: 100%;
+    max-width: 450px;
+    aspect-ratio: 9 / 12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gateFrame {
+    position: absolute;
+    inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1693939423676-fe3efb21becf?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxtYWdpYyUyMGRvb3J8ZW58MHx8fHwxNzYwOTY2NjgyfDA&ixlib.rb-4.1.0&q=80&w=1080');
+    background-size: cover;
+    background-position: center;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.door {
+    position: absolute;
+    top: 15%;
+    bottom: 15%;
+    width: 50%;
+    background: #1a1a2e;
+    background-image: radial-gradient(ellipse at center, hsl(var(--primary)/0.1), #111 80%);
+    border: 1px solid hsl(var(--primary) / 0.3);
+    transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+    box-shadow: 0 0 20px hsl(var(--primary) / 0.2);
+}
+
+.doorLeft {
+    left: 10%;
+    transform-origin: left;
+}
+
+.doorRight {
+    right: 10%;
+    transform-origin: right;
+}
+
+.gateOpen .doorLeft {
+    transform: perspective(1200px) rotateY(110deg);
+}
+
+.gateOpen .doorRight {
+    transform: perspective(1200px) rotateY(-110deg);
+}
+
+.loadingVortex {
+    position: absolute;
+    inset: 0;
+    background: black;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 1s 1s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+}
+
+.gateOpen .loadingVortex {
+    opacity: 1;
+}
+
+.stars {
+    position: absolute;
+    width: 2px;
+    height: 2px;
+    background: white;
+    border-radius: 50%;
+    box-shadow: 0 0 5px white;
+    animation: travel 5s linear infinite;
+}
+
+@keyframes travel {
+    from {
+        transform: translateZ(0) rotate(0deg);
+        opacity: 1;
+    }
+    to {
+        transform: translateZ(2000px) rotate(360deg);
+        opacity: 0;
+    }
+}
