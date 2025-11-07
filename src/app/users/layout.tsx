@@ -1,7 +1,7 @@
 
 'use client';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -10,9 +10,10 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Settings, Home, Star, Camera } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import React, { useEffect } from 'react';
+import { Loader } from 'lucide-react';
 
 export default function UsersDashboardLayout({
   children,
@@ -33,15 +34,35 @@ export default function UsersDashboardLayout({
     { name: 'Settings', href: '/users/settings', icon: Settings },
   ];
 
+  const adminEmail = 'admin@mesy.io';
+  const superAdminEmail = 'mesy.universe@gmail.com';
+  const pendingMemberEmail = 'tipyatida@gmail.com';
+
+  useEffect(() => {
+    if (!isUserLoading && user) {
+        if (user.email === adminEmail || user.email === pendingMemberEmail) {
+            router.replace('/dashboard');
+        } else if (user.email === superAdminEmail) {
+            router.replace('/sup-dashboard');
+        }
+    }
+  }, [user, isUserLoading, router]);
+
   const handleLogout = async () => {
     if (auth) {
         await signOut(auth);
     }
     router.push('/welcome');
   };
+  
+  if (isUserLoading || (user && (user.email === adminEmail || user.email === pendingMemberEmail || user.email === superAdminEmail))) {
+      return (
+          <div className="flex h-screen items-center justify-center bg-background">
+              <Loader className="h-12 w-12 animate-spin text-primary" />
+          </div>
+      );
+  }
 
-  const adminEmail = 'admin@mesy.io';
-  const superAdminEmail = 'mesy.universe@gmail.com';
   const isMember = user && user.email && (user.email === adminEmail || user.email === superAdminEmail);
 
   return (
