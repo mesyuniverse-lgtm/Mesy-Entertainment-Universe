@@ -1,5 +1,24 @@
 # Blueprint: Super Admin Dashboard
+ใช้เชื่อมต่อกับ Project: Firestore app ของ Project ID: studio-3890599599
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAI0rs2LasnbJlq6aeDTJ4HxJzQW2-oDEs",
+  authDomain: "studio-3890599599-53972.firebaseapp.com",
+  databaseURL: "https://studio-3890599599-53972-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "studio-3890599599-53972",
+  storageBucket: "studio-3890599599-53972.firebasestorage.app",
+  messagingSenderId: "73463325437",
+  appId: "1:73463325437:web:236dc1da097d8a1a07d494"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
 เอกสารนี้คือพิมพ์เขียว (Blueprint) เฉพาะสำหรับ **แดชบอร์ดหลักของผู้ดูแลระบบสูงสุด (Super Admin Dashboard)** ซึ่งเป็นหน้าแรกและเป็นศูนย์กลางข้อมูลภาพรวมทั้งหมดเมื่อ Super Admin เข้าสู่ระบบ ณ `/sup-dashboard`
 
 ## 1. แนวคิดหลัก (Core Concept)
