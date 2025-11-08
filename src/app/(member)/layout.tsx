@@ -45,32 +45,35 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   const SUPER_ADMIN_EMAIL = 'mesy.universe@gmail.com';
   
   const memberEmails = [ADMIN_EMAIL, 'tipyatida@gmail.com'];
+  const isMemberUser = user && memberEmails.includes(user.email || '');
+  const isSuperAdmin = user && user.email === SUPER_ADMIN_EMAIL;
 
   useEffect(() => {
     if (isUserLoading) return;
 
     if (!user) {
-      router.replace('/memberships'); 
+      router.replace('/the-door'); 
       return;
     }
     
-    if (user.email === SUPER_ADMIN_EMAIL) {
-        if (!pathname.startsWith('/sup-')) {
-            router.replace('/sup-dashboard');
-        }
+    // Redirect non-members away from member routes
+    if (!isMemberUser && !isSuperAdmin) {
+        router.replace('/users');
+        return;
+    }
+    
+    // Redirect members to super-admin if they land there
+    if (isSuperAdmin && !pathname.startsWith('/sup-')) {
+        router.replace('/sup-dashboard');
         return;
     }
 
-    if (!memberEmails.includes(user.email ?? '')) {
-        router.replace('/users'); 
-        return;
-    }
-
+    // Admin role access control
     if (pathname.startsWith('/admin') && user.email !== ADMIN_EMAIL) {
         router.replace('/dashboard'); 
     }
 
-  }, [user, isUserLoading, router, pathname]);
+  }, [user, isUserLoading, router, pathname, isMemberUser, isSuperAdmin]);
 
   const handleLogout = async () => {
     if(auth) {
@@ -79,7 +82,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     router.push('/welcome');
   };
 
-  if (isUserLoading || !user || !memberEmails.includes(user.email ?? '')) {
+  if (isUserLoading || !user || (!isMemberUser && !isSuperAdmin)) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <Loader className="h-12 w-12 animate-spin text-primary" />
@@ -88,7 +91,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   }
 
   const userRole = user?.email === ADMIN_EMAIL ? 'Admin' : 'Member';
-  const isMember = true;
+  const isMember = true; // Simplified for this layout
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">

@@ -38,19 +38,16 @@ export default function UsersDashboardLayout({
 
   const adminEmail = 'admin@mesy.io';
   const superAdminEmail = 'mesy.universe@gmail.com';
-  const memberEmails = [adminEmail, 'tipyatida@gmail.com'];
+  const memberEmails = [adminEmail, 'tipyatida@gmail.com', superAdminEmail];
 
   useEffect(() => {
     if (isUserLoading) return;
 
-    if (user) {
-        if (memberEmails.includes(user.email ?? '')) {
-            router.replace('/the-door');
-        } else if (user.email === superAdminEmail) {
-            router.replace('/sup-dashboard');
-        }
-    } else {
+    if (!user) {
         router.replace('/login');
+    } else if (memberEmails.includes(user.email || '')) {
+        // If a member or admin lands here, redirect them to their correct portal entry.
+        router.replace('/the-door');
     }
   }, [user, isUserLoading, router]);
 
@@ -61,7 +58,7 @@ export default function UsersDashboardLayout({
     router.push('/welcome');
   };
   
-  if (isUserLoading || !user || memberEmails.includes(user.email ?? '') || user.email === superAdminEmail) {
+  if (isUserLoading || !user || memberEmails.includes(user.email ?? '')) {
       return (
           <div className="flex h-screen items-center justify-center bg-background">
               <Loader className="h-12 w-12 animate-spin text-primary" />
