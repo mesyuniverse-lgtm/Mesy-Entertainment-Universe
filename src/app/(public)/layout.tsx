@@ -1,4 +1,5 @@
 
+'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
@@ -46,7 +47,7 @@ export default function PublicLayout({
               <Link href="/login">Login</Link>
             </Button>
             <Button asChild>
-                <Link href="/signup">Register</Link>
+                <Link href="/member-signup">Register</Link>
             </Button>
             <Sheet>
                 <SheetTrigger asChild>
