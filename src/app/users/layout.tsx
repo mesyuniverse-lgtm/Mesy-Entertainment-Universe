@@ -27,6 +27,7 @@ export default function UsersDashboardLayout({
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
   const mainNavItems = [
+    { name: 'Home', href: '/home' },
     { name: 'Users', href: '/users' },
     { name: 'Socialive', href: '/socialive' },
     { name: 'Entertainment', href: '/entertainment' },
@@ -36,9 +37,7 @@ export default function UsersDashboardLayout({
     { name: 'Developer Zone', href: '/developer-zone' },
   ];
 
-  const adminEmail = 'admin@mesy.io';
-  const superAdminEmail = 'mesy.universe@gmail.com';
-  const memberEmails = [adminEmail, 'tipyatida@gmail.com', superAdminEmail];
+  const memberEmails = ['admin@mesy.io', 'tipyatida@gmail.com', 'mesy.universe@gmail.com'];
 
   useEffect(() => {
     if (isUserLoading) return;
