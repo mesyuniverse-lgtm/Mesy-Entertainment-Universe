@@ -28,6 +28,7 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   const navItems = [
+    { name: 'Users', href: '/users' },
     { name: 'Socialive', href: '/socialive' },
     { name: 'Entertainment', href: '/entertainment' },
     { name: 'AI Hub', href: '/ai-hub' },
