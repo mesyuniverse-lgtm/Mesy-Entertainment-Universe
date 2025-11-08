@@ -33,6 +33,7 @@ export default function MainLayout({
     { name: 'AI Hub', href: '/ai-hub' },
     { name: 'Shopping Hub', href: '/shopping' },
     { name: 'Member Zones', href: '/member-zones/member-portal' },
+    { name: 'Developer Zone', href: '/developer-zone' },
   ];
 
   const auth = useAuth();

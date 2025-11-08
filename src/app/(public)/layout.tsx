@@ -15,7 +15,7 @@ export default function PublicLayout({
     { name: 'Member Plan', href: '/member-plan' },
     { name: 'Features', href: '/features' },
     { name: 'Chronicle', href: '/chronicle' },
-    { name: 'Join Developer', href: '/join-developer' },
+    { name: 'Developer Zone', href: '/developer-zone' },
   ];
 
   return (
