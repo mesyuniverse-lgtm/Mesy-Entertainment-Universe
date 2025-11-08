@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect } from 'react';
@@ -42,7 +41,7 @@ const sidebarNavItems = [
   { name: 'Admin', href: '/admin', icon: Shield, adminOnly: true },
 ];
 
-const MemberLayout = ({ children }: { children: React.ReactNode }) => {
+export default function MemberLayout({ children }: { children: React.ReactNode }) {
   const { user, isUserLoading } = useUser();
   const router = useRouter();
   const pathname = usePathname();
@@ -59,28 +58,19 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (isUserLoading) return;
 
-    if (!user) {
+    // If no user, or user is not a member/super-admin, redirect to member login
+    if (!user || (!isMemberUser && !isSuperAdmin)) {
       router.replace('/the-door'); 
       return;
     }
     
-    // If a regular user tries to access a member route, redirect them
-    if (!isMemberUser && !isSuperAdmin) {
-        router.replace('/users');
-        return;
-    }
-    
-    // If a member lands on a super-admin route, or a super-admin lands on a member route, redirect them
-    if (isSuperAdmin && !pathname.startsWith('/sup-')) {
+    // Redirect super-admins away from member pages
+    if (isSuperAdmin) {
         router.replace('/sup-dashboard');
         return;
     }
-    if (isMemberUser && pathname.startsWith('/sup-')) {
-        router.replace('/dashboard');
-        return;
-    }
 
-    // Admin role access control
+    // Admin role access control for /admin page
     if (pathname.startsWith('/admin') && user.email !== ADMIN_EMAIL) {
         router.replace('/dashboard'); 
     }
@@ -94,7 +84,8 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     router.push('/welcome');
   };
 
-  if (isUserLoading || !user || (!isMemberUser && !isSuperAdmin)) {
+  // Loading state while verifying user
+  if (isUserLoading || !user || !isMemberUser) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <Loader className="h-12 w-12 animate-spin text-primary" />
@@ -233,6 +224,4 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
     </div>
   );
-};
-
-export default MemberLayout;
+}

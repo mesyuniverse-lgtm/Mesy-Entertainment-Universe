@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { DownlineTable } from "@/components/dashboard/downline-table";
 import { IncomeCalculator } from "@/components/dashboard/income-chart";
