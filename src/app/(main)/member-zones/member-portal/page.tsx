@@ -11,11 +11,22 @@ import Link from "next/link";
 export default function MembershipsLandingPage() {
     const { user } = useUser();
     const displayName = user?.displayName?.split(' ')[0] || 'Member';
-    const [totalRegistered, setTotalRegistered] = useState(137794);
+    
+    const [stats, setStats] = useState({
+        loggedIn: 1234,
+        questSuccess: 56,
+        prizeWinners: 78,
+        totalRegistered: 137794,
+    });
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setTotalRegistered(prev => prev + Math.floor(Math.random() * 3) + 1);
+            setStats(prevStats => ({
+                loggedIn: prevStats.loggedIn + Math.floor(Math.random() * 5),
+                questSuccess: prevStats.questSuccess + Math.floor(Math.random() * 2),
+                prizeWinners: prevStats.prizeWinners + (Math.random() > 0.5 ? 1 : 0),
+                totalRegistered: prevStats.totalRegistered + Math.floor(Math.random() * 3) + 1,
+            }));
         }, 2500); // Update every 2.5 seconds
 
         return () => clearInterval(interval);
@@ -32,9 +43,9 @@ export default function MembershipsLandingPage() {
                     สวัสดีค่ะ คุณ {displayName}, ยินดีต้อนรับสู่พื้นที่สำหรับสมาชิก
                 </p>
                 <div className="mt-4 flex justify-center gap-6 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-2"><Users className="h-4 w-4 text-primary"/> 1,234 ผู้เข้า Login</span>
-                    <span className="flex items-center gap-2"><Diamond className="h-4 w-4 text-primary"/> 56 ผู้สำเร็จ Quest</span>
-                    <span className="flex items-center gap-2"><Users className="h-4 w-4 text-primary"/> 78 ผู้รับรางวัล</span>
+                    <span className="flex items-center gap-2"><Users className="h-4 w-4 text-primary"/> {stats.loggedIn.toLocaleString()} ผู้เข้า Login</span>
+                    <span className="flex items-center gap-2"><Diamond className="h-4 w-4 text-primary"/> {stats.questSuccess.toLocaleString()} ผู้สำเร็จ Quest</span>
+                    <span className="flex items-center gap-2"><Users className="h-4 w-4 text-primary"/> {stats.prizeWinners.toLocaleString()} ผู้รับรางวัล</span>
                 </div>
             </div>
 
@@ -82,7 +93,7 @@ export default function MembershipsLandingPage() {
                         </div>
                     </div>
                     <p className="text-6xl font-bold text-red-500 my-4 tracking-wider tabular-nums">
-                        {totalRegistered.toLocaleString()}
+                        {stats.totalRegistered.toLocaleString()}
                     </p>
                     <Button variant="secondary" className="bg-primary/80 text-primary-foreground hover:bg-primary">Stake Now</Button>
                 </CardContent>
