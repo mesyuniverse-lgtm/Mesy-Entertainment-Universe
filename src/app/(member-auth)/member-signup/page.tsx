@@ -40,9 +40,7 @@ export default function MemberSignupPage() {
                 </div>
                  <div className="flex items-center justify-between p-4 rounded-lg bg-secondary/50 border border-border">
                     <span className="font-medium flex items-center gap-3">4. Pay Registration Fee ($9.99)</span>
-                    <span className="text-xs text-muted-foreground">
-                        {allPreviousStepsDone ? <Button size="sm">Pay Now</Button> : "Complete previous steps"}
-                    </span>
+                    <Button size="sm" disabled={!allPreviousStepsDone}>Pay Now</Button>
                 </div>
             </div>
 
