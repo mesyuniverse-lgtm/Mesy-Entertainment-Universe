@@ -5,39 +5,66 @@ import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useUser } from "@/firebase";
-import { BookOpen, Diamond, LogIn, UserPlus, Users } from "lucide-react";
+import { BookOpen, CheckCircle, LogIn, Trophy, UserPlus, Users } from "lucide-react";
 import Link from "next/link";
+
+const StatCard = ({ icon, title, value }: { icon: React.ReactNode, title: string, value: string }) => (
+    <Card className="bg-card/70 backdrop-blur-sm border-white/10">
+        <CardContent className="p-6 flex items-center gap-4">
+            <div className="p-3 bg-primary/10 rounded-full">
+                {icon}
+            </div>
+            <div>
+                <p className="text-muted-foreground text-sm">{title}</p>
+                <p className="text-2xl font-bold">{value}</p>
+            </div>
+        </CardContent>
+    </Card>
+);
 
 export default function MembershipsLandingPage() {
     const { user } = useUser();
     const displayName = user?.displayName?.split(' ')[0] || 'Member';
-    const [totalRegistered, setTotalRegistered] = useState(137794);
+    
+    const [stats, setStats] = useState({
+        loggedIn: 1344,
+        questSuccess: 87657,
+        prizeWinners: 2453,
+        totalRegistered: 137794,
+    });
 
     useEffect(() => {
         const interval = setInterval(() => {
-            setTotalRegistered(prev => prev + Math.floor(Math.random() * 3) + 1);
-        }, 2500); // Update every 2.5 seconds
+            setStats(prevStats => ({
+                loggedIn: prevStats.loggedIn + Math.floor(Math.random() * 3),
+                questSuccess: prevStats.questSuccess + Math.floor(Math.random() * 10),
+                prizeWinners: prevStats.prizeWinners + (Math.random() > 0.7 ? 1 : 0),
+                totalRegistered: prevStats.totalRegistered + Math.floor(Math.random() * 3) + 1,
+            }));
+        }, 3000); // Update every 3 seconds
 
         return () => clearInterval(interval);
     }, []);
 
+
     return (
         <div className="container mx-auto py-12">
-            <div className="text-center">
+            <div className="text-center mb-12">
                 <h1 className="text-5xl font-headline font-bold tracking-wider text-white" style={{ textShadow: '0 0 10px hsl(var(--primary))' }}>
                     MEMBERS ZONE
                 </h1>
                 <p className="mt-4 text-lg text-muted-foreground">
                     สวัสดีค่ะ คุณ {displayName}, ยินดีต้อนรับสู่พื้นที่สำหรับสมาชิก
                 </p>
-                <div className="mt-4 flex justify-center gap-6 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-2"><Users className="h-4 w-4 text-primary"/> 1,234 ผู้เข้า Login</span>
-                    <span className="flex items-center gap-2"><Diamond className="h-4 w-4 text-primary"/> 56 ผู้สำเร็จ Quest</span>
-                    <span className="flex items-center gap-2"><Users className="h-4 w-4 text-primary"/> 78 ผู้รับรางวัล</span>
-                </div>
             </div>
 
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <StatCard icon={<Users className="h-6 w-6 text-primary"/>} title="ผู้ที่ล็อกอินอยู่" value={stats.loggedIn.toLocaleString()} />
+                <StatCard icon={<CheckCircle className="h-6 w-6 text-primary"/>} title="เควสที่สำเร็จ" value={stats.questSuccess.toLocaleString()} />
+                <StatCard icon={<Trophy className="h-6 w-6 text-primary"/>} title="ผู้รับรางวัล" value={stats.prizeWinners.toLocaleString()} />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <Card className="bg-card/70 backdrop-blur-sm border-white/10 text-white hover:border-primary/50 transition-all">
                     <CardHeader>
                         <CardTitle className="flex items-center gap-3"><BookOpen className="text-primary"/> MEMBERS NEWS</CardTitle>
@@ -81,7 +108,7 @@ export default function MembershipsLandingPage() {
                         </div>
                     </div>
                     <p className="text-6xl font-bold text-red-500 my-4 tracking-wider tabular-nums">
-                        {totalRegistered.toLocaleString()}
+                        {stats.totalRegistered.toLocaleString()}
                     </p>
                     <Button variant="secondary" className="bg-primary/80 text-primary-foreground hover:bg-primary">Stake Now</Button>
                 </CardContent>
