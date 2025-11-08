@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser, useAuth } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, Orbit, MessageCircle, History, Package, Hammer, Cloud } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -25,11 +25,19 @@ const MemberIcon = () => (
 
 const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-  { name: 'Profile', href: '/profile', icon: UserCircle },
-  { name: 'Memberships', href: '/memberships', icon: Shield },
-  { name: 'Payment', href: '/payment', icon: Wallet },
+  { name: 'MESY Universe', href: '/universe', icon: Orbit },
+  { name: 'My Profile', href: '/profile', icon: UserCircle },
+  { name: 'My Timeline', href: '/timeline', icon: History },
+  { name: 'Community', href: '/community', icon: MessageCircle },
+  { name: 'Member System', href: '/member-system', icon: Shield },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
-  { name: 'Notifications', href: '/notifications', icon: Bell },
+  { name: 'My Bag', href: '/bag', icon: Package },
+  { name: 'My Inventory', href: '/inventory', icon: Package },
+  { name: 'My Cloud', href: '/cloud', icon: Cloud },
+  { name: 'Build', href: '/build', icon: Hammer },
+  { name: 'Shop', href: '/shop', icon: Wallet },
+  { name: 'Market', href: '/market', icon: Wallet },
+  { name: 'Customize', href: '/customize', icon: Wallet },
   { name: 'Settings', href: '/settings', icon: Settings },
   { name: 'Admin', href: '/admin', icon: Shield, adminOnly: true },
 ];
@@ -45,7 +53,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
   const SUPER_ADMIN_EMAIL = 'mesy.universe@gmail.com';
   
   const memberEmails = [ADMIN_EMAIL, 'tipyatida@gmail.com'];
-  const isMemberUser = user && memberEmails.includes(user.email || '');
+  const isMemberUser = user && user.email && memberEmails.includes(user.email);
   const isSuperAdmin = user && user.email === SUPER_ADMIN_EMAIL;
 
   useEffect(() => {
@@ -56,15 +64,19 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
       return;
     }
     
-    // Redirect non-members away from member routes
+    // If a regular user tries to access a member route, redirect them
     if (!isMemberUser && !isSuperAdmin) {
         router.replace('/users');
         return;
     }
     
-    // Redirect members to super-admin if they land there
+    // If a member lands on a super-admin route, or a super-admin lands on a member route, redirect them
     if (isSuperAdmin && !pathname.startsWith('/sup-')) {
         router.replace('/sup-dashboard');
+        return;
+    }
+    if (isMemberUser && pathname.startsWith('/sup-')) {
+        router.replace('/dashboard');
         return;
     }
 
@@ -90,8 +102,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
     );
   }
 
-  const userRole = user?.email === ADMIN_EMAIL ? 'Admin' : 'Member';
-  const isMember = true; // Simplified for this layout
+  const userRole = user.email === ADMIN_EMAIL ? 'Admin' : 'Member';
 
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
@@ -103,7 +114,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
               <span className="font-headline">MESY MEMBER</span>
             </Link>
           </div>
-          <div className="flex-1">
+          <div className="flex-1 overflow-y-auto">
             <nav className="grid items-start px-2 text-sm font-medium lg:px-4">
               {sidebarNavItems.map((item) => {
                 if (item.adminOnly && userRole !== 'Admin') return null;
@@ -113,7 +124,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
                     href={item.href}
                     className={cn(
                       "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                      pathname === item.href && "bg-muted text-primary"
+                      pathname === item.href ? 'bg-muted text-primary' : ''
                     )}
                   >
                     <item.icon className="h-4 w-4" />
@@ -155,7 +166,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
                             href={item.href}
                             className={cn(
                             "flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground",
-                            pathname === item.href && "bg-muted text-foreground"
+                            pathname === item.href ? 'bg-muted text-foreground' : ''
                             )}
                         >
                             <item.icon className="h-5 w-5" />
@@ -166,24 +177,18 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
               </nav>
             </SheetContent>
           </Sheet>
-          <div className="w-full flex-1">
-             {/* Can add a search bar here if needed */}
-          </div>
+          <div className="w-full flex-1" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="secondary" size="icon" className="rounded-full relative">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} alt="@shadcn" />
+                  <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} alt="User Avatar" />
                   <AvatarFallback>{user?.email?.[0].toUpperCase() ?? 'M'}</AvatarFallback>
                 </Avatar>
-                 {isMember ? (
-                    <>
-                    <MemberIcon />
-                    <div className="absolute bottom-0 right-0 bg-background/80 rounded-full p-0.5">
-                        <Camera className="h-3 w-3 text-white" />
-                    </div>
-                    </>
-                ) : null}
+                <MemberIcon />
+                <div className="absolute bottom-0 right-0 bg-background/80 rounded-full p-0.5">
+                    <Camera className="h-3 w-3 text-white" />
+                </div>
                 <span className="sr-only">Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>
@@ -222,7 +227,7 @@ const MemberLayout = ({ children }: { children: React.ReactNode }) => {
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
+        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 overflow-auto">
           {children}
         </main>
       </div>
