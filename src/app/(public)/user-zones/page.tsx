@@ -4,32 +4,24 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useUser } from "@/firebase";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { CheckCircle, Gift, MessageSquare, Star, Trophy, Users, Video } from "lucide-react";
+import { CheckCircle, Gift, MessageSquare, Trophy, Users, Video } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { cn } from '@/lib/utils';
 
 const StatCard = ({ icon, title, value, unit }: { icon: React.ReactNode, title: string, value: string, unit?: string }) => (
-    <Card className="bg-transparent border-none shadow-none">
-        <CardContent className="p-0 flex items-center gap-4">
-            <div className="p-3 text-primary">
+    <Card className="bg-card/70 backdrop-blur-sm border-white/10">
+        <CardContent className="p-6 text-center">
+            <div className="mx-auto w-fit p-3 bg-primary/10 rounded-full mb-2 text-primary">
                 {icon}
             </div>
-            <div>
-                <p className="text-muted-foreground text-sm">{title}</p>
-                <p className="text-2xl font-bold">{value} <span className='text-base font-normal'>{unit}</span></p>
-            </div>
+            <p className="text-3xl font-bold">{value}</p>
+            <p className="text-muted-foreground text-sm">{title}</p>
         </CardContent>
     </Card>
 );
 
 export default function UsersZonePage() {
-    const { user } = useUser();
-    const displayName = user?.displayName?.split(' ')[0] || 'Tipyatida';
-    
     const [stats, setStats] = useState({
         totalRegister: 137799,
         online: 1349,
@@ -67,8 +59,8 @@ export default function UsersZonePage() {
 
 
     return (
-        <div className="space-y-6">
-            <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm shadow-inner shadow-primary/10">
+        <div className="container py-12">
+             <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm mb-6">
                 <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
                     <span className="mx-4">Aria has received a Legendary Item: Shadowfire Bow! ✨</span>
                     <span className="mx-4">Kael reached Level 15! 🚀</span>
@@ -91,7 +83,6 @@ export default function UsersZonePage() {
                 <div className='lg:col-span-1 xl:col-span-1 space-y-6'>
                      <Card className="bg-card/70 backdrop-blur-sm border-white/10">
                         <CardContent className="p-6 text-center">
-                            <Users className="h-8 w-8 text-primary mx-auto mb-2"/>
                             <p className="text-muted-foreground text-sm">จำนวนผู้สมัคร</p>
                             <p className="text-4xl font-bold text-red-500">{stats.totalRegister.toLocaleString()}</p>
                         </CardContent>
@@ -131,7 +122,6 @@ export default function UsersZonePage() {
                         <main className="xl:col-span-3 space-y-6">
                             <div className="text-center">
                                 <h1 className="text-5xl font-headline font-bold tracking-wider text-white" style={{ textShadow: '0 0 10px hsl(var(--primary))' }}>USERS ZONE</h1>
-                                <p className="mt-2 text-lg text-muted-foreground">สวัสดีค่ะ คุณ {displayName}, ยินดีต้อนรับสู่พื้นที่สำหรับ</p>
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {allUsers.map((user, index) => (

@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect } from 'react';
@@ -58,19 +59,16 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
   useEffect(() => {
     if (isUserLoading) return;
 
-    // If no user, or user is not a member/super-admin, redirect to member login
     if (!user || (!isMemberUser && !isSuperAdmin)) {
       router.replace('/the-door'); 
       return;
     }
     
-    // Redirect super-admins away from member pages
     if (isSuperAdmin) {
         router.replace('/sup-dashboard');
         return;
     }
 
-    // Admin role access control for /admin page
     if (pathname.startsWith('/admin') && user.email !== ADMIN_EMAIL) {
         router.replace('/dashboard'); 
     }
@@ -84,7 +82,6 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
     router.push('/welcome');
   };
 
-  // Loading state while verifying user
   if (isUserLoading || !user || !isMemberUser) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
@@ -114,7 +111,7 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
                     key={item.name}
                     href={item.href}
                     className={cn(
-                      "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                      "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted",
                       pathname === item.href ? 'bg-muted text-primary' : ''
                     )}
                   >

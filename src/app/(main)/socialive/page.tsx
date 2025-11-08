@@ -109,9 +109,9 @@ export default function SocialivePage() {
     const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
 
   return (
-    <div className="min-h-screen bg-background/90 text-foreground p-4 lg:p-6" style={{background: 'radial-gradient(ellipse at bottom, hsl(var(--primary)/0.1), hsl(var(--background)) 70%)'}}>
+    <div className="min-h-screen bg-background/90 text-foreground" style={{background: 'radial-gradient(ellipse at bottom, hsl(var(--primary)/0.1), hsl(var(--background)) 70%)'}}>
         {/* Marquee */}
-        <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 shadow-inner shadow-primary/10 mb-4">
+        <div className="relative flex overflow-x-hidden bg-primary/10 border-b border-primary/30 py-2 shadow-inner shadow-primary/10">
             <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
                 <span className="mx-4 tracking-wider">Aria has received a Legendary Item: Shadowfire Bow! ✨</span>
                 <span className="mx-4 tracking-wider">Kael reached Level 15! 🚀</span>
@@ -130,25 +130,20 @@ export default function SocialivePage() {
 
         {/* Content Tabs */}
         <Tabs defaultValue={pathname === '/socialive' ? 'video' : ''} className="w-full">
-            <TabsList className="h-auto flex-wrap justify-center">
-            <TabsTrigger value="video" asChild><Link href="/socialive"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
-            <TabsTrigger value="live" asChild><Link href="/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
-            <TabsTrigger value="friends" asChild>
-                <Link href="/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
-            </TabsTrigger>
-            <TabsTrigger value="followers" asChild>
-                <Link href="/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link>
-            </TabsTrigger>
-            <TabsTrigger value="groups" asChild>
-                <Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link>
-            </TabsTrigger>
-            <TabsTrigger value="home" asChild><Link href="/home"><Home className="h-4 w-4 mr-1 sm:hidden"/>Home</Link></TabsTrigger>
-            </TabsList>
-            <TabsContent value="video" className="mt-4">
+            <div className="border-b">
+                <TabsList className="h-auto flex-wrap justify-center bg-transparent rounded-none gap-4 p-0 container">
+                    <TabsTrigger value="video" asChild><Link href="/socialive" className="flex items-center gap-2"><Video className="h-4 w-4" />Social Video</Link></TabsTrigger>
+                    <TabsTrigger value="live" asChild><Link href="/live" className="flex items-center gap-2"><Clapperboard className="h-4 w-4"/>Live</Link></TabsTrigger>
+                    <TabsTrigger value="friends" asChild><Link href="/friends" className="flex items-center gap-2"><UserPlus className="h-4 w-4"/>Friends</Link></TabsTrigger>
+                    <TabsTrigger value="followers" asChild><Link href="/followers" className="flex items-center gap-2"><Rss className="h-4 w-4"/>Followers</Link></TabsTrigger>
+                    <TabsTrigger value="groups" asChild><Link href="/groups" className="flex items-center gap-2"><UsersRound className="h-4 w-4"/>Groups</Link></TabsTrigger>
+                </TabsList>
+            </div>
+            <TabsContent value="video" className="mt-4 container">
                  <div className="flex justify-end mb-4">
                     <Button variant="outline" onClick={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}>
                         {layout === 'vertical' ? <LayoutGrid className="mr-2 h-4 w-4" /> : <Rows className="mr-2 h-4 w-4" />}
-                        {layout === 'vertical' ? 'Horizontal View' : 'Vertical View'}
+                        {layout === 'vertical' ? 'Grid View' : 'Feed View'}
                     </Button>
                 </div>
 

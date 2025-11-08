@@ -2,53 +2,60 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Check, DollarSign, Gift, Star, Users, History } from 'lucide-react';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Image from 'next/image';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Check, DollarSign, Gift, Star, Users } from 'lucide-react';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const timelineEvents = [
     {
         icon: <Star className="h-6 w-6 text-yellow-400" />,
-        title: "Leveled Up!",
-        description: "You've reached a new milestone. The journey continues!",
-        timestamp: "2 days ago",
+        title: "Leveled Up to Level 5!",
+        description: "Congratulations! Your community has grown, unlocking new potential and higher income.",
+        timestamp: "2 hours ago",
         image: PlaceHolderImages.find(i => i.id === 'glowing-gem-1'),
     },
     {
         icon: <Users className="h-6 w-6 text-blue-400" />,
-        title: "New Follower: Aria",
-        description: "Your community grows! 'Aria' is now following you.",
-        timestamp: "5 days ago",
+        title: "New Downline Member: Aria",
+        description: "'Aria' has joined your downline, contributing to your growth.",
+        timestamp: "1 day ago",
         image: PlaceHolderImages.find(i => i.id === 'female-archer-1'),
     },
      {
         icon: <Gift className="h-6 w-6 text-pink-400" />,
-        title: "Received a Gift",
-        description: "Kael sent you a 'Dragon's Breath' potion!",
-        timestamp: "1 week ago",
+        title: "Daily Reward Claimed",
+        description: "You claimed your Day 3 reward: 1-Hour EXP Boost.",
+        timestamp: "2 days ago",
+        image: null,
+    },
+    {
+        icon: <DollarSign className="h-6 w-6 text-green-400" />,
+        title: "Income Received",
+        description: "You received a monthly income of $970.00 from your downline.",
+        timestamp: "5 days ago",
         image: null,
     },
     {
         icon: <Check className="h-6 w-6 text-primary" />,
-        title: "Joined the MESY Universe",
-        description: "Your journey began. Welcome to a new era of entertainment and community.",
+        title: "Became a MESY Member",
+        description: "Your ceremonial journey has officially begun. Welcome to the inner circle.",
         timestamp: "1 month ago",
         image: PlaceHolderImages.find(i => i.id === 'member-zone-preview'),
     }
 ];
 
-export default function UserTimelinePage() {
+export default function MemberTimelinePage() {
   return (
     <div className="space-y-6">
         <div>
-            <h1 className="text-3xl font-bold tracking-tight">Your Timeline</h1>
+            <h1 className="text-3xl font-bold tracking-tight">My Timeline</h1>
             <p className="text-muted-foreground">A record of your journey and significant achievements in the MESY Universe.</p>
         </div>
         <Card>
             <CardHeader>
                 <CardTitle>Timeline</CardTitle>
-                <CardDescription>Your recent activities and milestones.</CardDescription>
+                <CardDescription>Your recent activities and milestones as a MESY Member.</CardDescription>
             </CardHeader>
             <CardContent className="p-6">
                 <div className="relative pl-8">

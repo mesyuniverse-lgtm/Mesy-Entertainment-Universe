@@ -28,9 +28,10 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   const navItems = [
-    { name: 'User Zone', href: '/user-zones' },
+    { name: 'Home', href: '/home' },
     { name: 'Socialive', href: '/socialive' },
     { name: 'Entertainment', href: '/entertainment' },
+    { name: 'Connections', href: '/connections' },
     { name: 'AI Hub', href: '/ai-hub' },
     { name: 'Shopping Hub', href: '/shopping' },
     { name: 'Member Zones', href: '/member-zones/member-portal' },
@@ -110,12 +111,12 @@ export default function MainLayout({
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <Link href={isMember ? "/dashboard" : "/users"}>
+                      <Link href={isMember ? "/dashboard" : "/home"}>
                         <LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard
                       </Link>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
-                      <Link href={isMember ? "/profile" : "/users/profile"}>
+                      <Link href={isMember ? "/profile" : "/home"}>
                         <UserCircle className="mr-2 h-4 w-4"/>Profile
                       </Link>
                     </DropdownMenuItem>
