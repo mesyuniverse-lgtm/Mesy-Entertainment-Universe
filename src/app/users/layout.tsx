@@ -7,7 +7,7 @@ import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle, LogIn, Settings, Home, Star, Camera, History, Bell } from 'lucide-react';
+import { Menu, LogOut, LayoutDashboard, UserCircle, Settings, Star } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { cn } from '@/lib/utils';
@@ -23,17 +23,17 @@ export default function UsersDashboardLayout({
   const auth = useAuth();
   const { user, isUserLoading } = useUser();
   const router = useRouter();
-  const pathname = usePathname();
   
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
-  const sidebarNavItems = [
-    { name: 'Dashboard', href: '/users', icon: LayoutDashboard },
-    { name: 'Profile', href: '/users/profile', icon: UserCircle },
-    { name: 'Timeline', href: '/users/history', icon: History },
-    { name: 'Notifications', href: '/users/notifications', icon: Bell },
-    { name: 'Upgrade to Member', href: '/member-signup', icon: Star, highlight: true },
-    { name: 'Settings', href: '/users/settings', icon: Settings },
+  const mainNavItems = [
+    { name: 'Users', href: '/users' },
+    { name: 'Socialive', href: '/socialive' },
+    { name: 'Entertainment', href: '/entertainment' },
+    { name: 'AI Hub', href: '/ai-hub' },
+    { name: 'Shopping Hub', href: '/shopping' },
+    { name: 'Member Zones', href: '/member-zones/member-portal' },
+    { name: 'Developer Zone', href: '/developer-zone' },
   ];
 
   const adminEmail = 'admin@mesy.io';
@@ -46,7 +46,6 @@ export default function UsersDashboardLayout({
     if (!user) {
         router.replace('/login');
     } else if (memberEmails.includes(user.email || '')) {
-        // If a member or admin lands here, redirect them to their correct portal entry.
         router.replace('/the-door');
     }
   }, [user, isUserLoading, router]);
@@ -77,6 +76,17 @@ export default function UsersDashboardLayout({
                 MESY
               </span>
             </Link>
+             <nav className="hidden items-center gap-6 text-sm md:flex">
+              {mainNavItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="transition-colors hover:text-foreground/80 text-foreground/60"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </nav>
           </div>
           <div className="flex flex-1 items-center justify-end space-x-2">
             <DropdownMenu>
@@ -121,20 +131,11 @@ export default function UsersDashboardLayout({
                           </div>
                         )}
                         <div className="flex flex-col gap-2">
-                        {sidebarNavItems.map((item) => (
-                          <Link
-                            key={item.name}
-                            href={item.href}
-                            className={cn(
-                              "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
-                              pathname === item.href && "text-primary bg-muted",
-                              item.highlight && "text-primary font-semibold"
-                            )}
-                          >
-                            <item.icon className={cn("h-4 w-4", item.highlight && "text-primary")} />
-                            {item.name}
-                          </Link>
-                        ))}
+                            {mainNavItems.map((item) => (
+                                <Link key={item.name} href={item.href} className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
+                                    {item.name}
+                                </Link>
+                            ))}
                         </div>
                         <div className="mt-auto flex flex-col gap-4 pt-4">
                             <Button variant="outline" onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/> Logout</Button>
@@ -145,34 +146,11 @@ export default function UsersDashboardLayout({
           </div>
         </div>
       </header>
-      
-      <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
-        <aside className="fixed top-16 z-30 -ml-2 hidden h-[calc(100vh-4rem)] w-full shrink-0 md:sticky md:block">
-            <div className="h-full py-6 pr-6 lg:py-8">
-              <div className="flex flex-col h-full">
-                <nav className="relative flex flex-col gap-2 flex-grow mt-4">
-                    {sidebarNavItems.map((item) => (
-                      <Link
-                        key={item.name}
-                        href={item.href}
-                        className={cn(
-                          "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary hover:bg-muted/50",
-                          pathname === item.href && "text-primary bg-muted",
-                          item.highlight && "text-primary font-semibold"
-                        )}
-                      >
-                        <item.icon className={cn("h-4 w-4", item.highlight && "text-primary")} />
-                        {item.name}
-                      </Link>
-                    ))}
-                </nav>
-              </div>
-            </div>
-        </aside>
-        <main className="relative py-6 lg:py-8">
+      <main className="flex-1 py-6 lg:py-8">
+        <div className="container">
           {children}
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }
