@@ -1,140 +1,201 @@
 
 'use client';
 
-import React, { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { DollarSign, Shield, Star, Users, Loader2 } from "lucide-react";
-import { useUser } from "@/firebase";
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
-import { useRouter } from "next/navigation";
-import styles from './users.module.css';
-import { cn } from "@/lib/utils";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { useUser } from "@/firebase";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { CheckCircle, Gift, MessageSquare, Star, Trophy, Users, Video } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { cn } from '@/lib/utils';
 
-const RegistrationAnimation = ({ onAnimationEnd }: { onAnimationEnd: () => void }) => {
-    React.useEffect(() => {
-        const timer = setTimeout(onAnimationEnd, 4000); // Animation duration + delay
-        return () => clearTimeout(timer);
-    }, [onAnimationEnd]);
+const StatCard = ({ icon, title, value, unit }: { icon: React.ReactNode, title: string, value: string, unit?: string }) => (
+    <Card className="bg-transparent border-none shadow-none">
+        <CardContent className="p-0 flex items-center gap-4">
+            <div className="p-3 text-primary">
+                {icon}
+            </div>
+            <div>
+                <p className="text-muted-foreground text-sm">{title}</p>
+                <p className="text-2xl font-bold">{value} <span className='text-base font-normal'>{unit}</span></p>
+            </div>
+        </CardContent>
+    </Card>
+);
+
+export default function UsersZonePage() {
+    const { user } = useUser();
+    const displayName = user?.displayName?.split(' ')[0] || 'Tipyatida';
+    
+    const [stats, setStats] = useState({
+        totalRegister: 137799,
+        online: 1349,
+        questSuccess: 87675,
+        prizeWinners: 2454,
+    });
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setStats(prevStats => ({
+                totalRegister: prevStats.totalRegister + 1,
+                online: prevStats.online + Math.floor(Math.random() * 5) - 2,
+                questSuccess: prevStats.questSuccess + Math.floor(Math.random() * 3),
+                prizeWinners: prevStats.prizeWinners + (Math.random() > 0.9 ? 1 : 0),
+            }));
+        }, 3000);
+        return () => clearInterval(interval);
+    }, []);
+    
+    const onlineFriends = [
+        { name: 'Kael', level: 12, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
+        { name: 'Lyra', level: 10, avatar: PlaceHolderImages.find(i => i.id === 'explorer-1')?.imageUrl },
+    ];
+    
+    const allUsers = [
+        ...onlineFriends,
+        { name: 'Zane', level: 20, avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl },
+        { name: 'Aria', level: 15, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
+        { name: 'Echo', level: 18, avatar: PlaceHolderImages.find(i => i.id === 'glowing-gem-1')?.imageUrl },
+        { name: 'Silas', level: 22, avatar: PlaceHolderImages.find(i => i.id === 'fighter-silhouette')?.imageUrl },
+    ];
+
+    const adImage = PlaceHolderImages.find(i => i.id === 'glowing-gem-1');
+    const videoAdImage = PlaceHolderImages.find(i => i.id === 'rose-background');
+
 
     return (
-        <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center animate-in fade-in-50">
-            {/* Flower Petals */}
-            <div className={styles.petalContainer}>
-                {Array.from({ length: 15 }).map((_, i) => (
-                    <div key={i} className={styles.petal}></div>
-                ))}
+        <div className="space-y-6">
+            <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm shadow-inner shadow-primary/10">
+                <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
+                    <span className="mx-4">Aria has received a Legendary Item: Shadowfire Bow! ✨</span>
+                    <span className="mx-4">Kael reached Level 15! 🚀</span>
+                </div>
+                <div className="absolute top-0 animate-marquee2 whitespace-nowrap text-primary font-semibold">
+                    <span className="mx-4">Aria has received a Legendary Item: Shadowfire Bow! ✨</span>
+                    <span className="mx-4">Kael reached Level 15! 🚀</span>
+                </div>
             </div>
+             <style jsx>{`
+                @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+                @keyframes marquee2 { from { transform: translateX(100%); } to { transform: translateX(0); } }
+                .animate-marquee { animation: marquee 20s linear infinite; }
+                .animate-marquee2 { animation: marquee2 20s linear infinite; }
+            `}</style>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+                
+                {/* Left Column */}
+                <div className='lg:col-span-1 xl:col-span-1 space-y-6'>
+                     <Card className="bg-card/70 backdrop-blur-sm border-white/10">
+                        <CardContent className="p-6 text-center">
+                            <Users className="h-8 w-8 text-primary mx-auto mb-2"/>
+                            <p className="text-muted-foreground text-sm">จำนวนผู้สมัคร</p>
+                            <p className="text-4xl font-bold text-red-500">{stats.totalRegister.toLocaleString()}</p>
+                        </CardContent>
+                    </Card>
+                    <div className="grid grid-cols-1 gap-6">
+                       <StatCard icon={<Users className="h-6 w-6"/>} title="ผู้ที่ล็อกอินอยู่" value={stats.online.toLocaleString()} />
+                       <StatCard icon={<CheckCircle className="h-6 w-6"/>} title="เควสที่สำเร็จ" value={stats.questSuccess.toLocaleString()} />
+                       <StatCard icon={<Trophy className="h-6 w-6"/>} title="ผู้รับรางวัล" value={stats.prizeWinners.toLocaleString()} />
+                    </div>
+                     <Card className="bg-card/70 backdrop-blur-sm border-white/10">
+                         <CardHeader>
+                            <CardTitle className="text-base text-primary">ALL USERS TOTALLY</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-4">
+                            {[...onlineFriends, ...onlineFriends, ...onlineFriends].map((friend, index) => (
+                                <div key={index} className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                        <Avatar className="h-10 w-10">
+                                            <AvatarImage src={friend.avatar} />
+                                            <AvatarFallback>{friend.name.charAt(0)}</AvatarFallback>
+                                        </Avatar>
+                                        <div>
+                                            <p className="font-semibold text-sm">{friend.name}</p>
+                                            <p className="text-xs text-muted-foreground">Level {friend.level}</p>
+                                        </div>
+                                    </div>
+                                    <Button variant="ghost" size="icon"><MessageSquare className="h-5 w-5 text-muted-foreground"/></Button>
+                                </div>
+                            ))}
+                        </CardContent>
+                    </Card>
+                </div>
 
-            {/* Door Animation */}
-            <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
-                <div className={cn(styles.door, styles.doorLeft)}></div>
-                <div className={cn(styles.door, styles.doorRight)}></div>
-                <div className="z-10 text-center text-white animate-in fade-in-0 delay-1000 duration-1000">
-                    <Loader2 className="h-16 w-16 animate-spin text-primary" />
-                    <p className="mt-4 text-xl font-semibold">Unlocking Membership...</p>
+                {/* Main Content */}
+                <div className='lg:col-span-3 xl:col-span-4'>
+                    <div className="grid grid-cols-1 xl:grid-cols-4 gap-6">
+                        <main className="xl:col-span-3 space-y-6">
+                            <div className="text-center">
+                                <h1 className="text-5xl font-headline font-bold tracking-wider text-white" style={{ textShadow: '0 0 10px hsl(var(--primary))' }}>USERS ZONE</h1>
+                                <p className="mt-2 text-lg text-muted-foreground">สวัสดีค่ะ คุณ {displayName}, ยินดีต้อนรับสู่พื้นที่สำหรับ</p>
+                            </div>
+                            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                                {allUsers.map((user, index) => (
+                                    <Card key={index} className="overflow-hidden text-center group relative bg-card/70 border-border/50 hover:border-primary/50 transition-all shadow-lg">
+                                        <div className="relative">
+                                            <Image src={user.avatar || ''} alt={user.name} width={200} height={200} className="aspect-[4/5] w-full object-cover"/>
+                                            <span className="absolute top-2 right-2 block h-3 w-3 rounded-full bg-green-500 ring-2 ring-background" title="Online"></span>
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent"></div>
+                                            <div className="absolute bottom-2 left-0 right-0 px-2">
+                                                <p className="text-white font-bold text-lg truncate">{user.name}</p>
+                                                <p className="text-xs text-white/80">Level {user.level}</p>
+                                            </div>
+                                        </div>
+                                        <div className="p-3 bg-background/50">
+                                            <div className="flex gap-2">
+                                                <Button variant="outline" size="sm" className="flex-1">Profile</Button>
+                                                <Button variant="secondary" size="sm" className="flex-1"><Gift className="h-4 w-4 mr-1"/> Gift</Button>
+                                            </div>
+                                        </div>
+                                    </Card>
+                                ))}
+                            </div>
+                        </main>
+                        {/* Right sidebar inside main area */}
+                        <aside className="xl:col-span-1 space-y-6">
+                            <Card className="bg-card/70 border-primary/50 shadow-lg shadow-primary/10">
+                                <CardHeader className="p-0">
+                                {videoAdImage && (
+                                    <div className="relative aspect-video">
+                                        <Image src={videoAdImage.imageUrl} alt={videoAdImage.description} data-ai-hint={videoAdImage.imageHint} fill className="object-cover rounded-t-lg"/>
+                                        <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                                            <Button variant="ghost" size="icon" className="h-16 w-16 bg-white/20 hover:bg-white/30 rounded-full backdrop-blur-sm">
+                                                <Video className="h-8 w-8 text-white"/>
+                                            </Button>
+                                        </div>
+                                    </div>
+                                )}
+                                </CardHeader>
+                                <CardContent className="p-4">
+                                <CardTitle className="text-lg">Featured Promotion</CardTitle>
+                                <p className="text-muted-foreground text-sm mt-1">Discover the new 'Chrono Blade' in the marketplace!</p>
+                                <Button className="w-full mt-3">Watch Trailer</Button>
+                                </CardContent>
+                            </Card>
+                            <Card className="bg-card/70">
+                                <CardHeader>
+                                    <CardTitle>Sponsored Ads</CardTitle>
+                                    <CardDescription>Promotions from across the universe.</CardDescription>
+                                </CardHeader>
+                                <CardContent className="space-y-4">
+                                <div className="flex items-center gap-4 p-3 rounded-lg bg-background/30">
+                                        {adImage && <Image src={adImage.imageUrl} alt={adImage.description} data-ai-hint={adImage.imageHint} width={50} height={50} className="rounded-md"/>}
+                                        <div className="flex-grow">
+                                            <p className="font-semibold text-sm">Genesis Gem Dating</p>
+                                            <p className="text-xs text-muted-foreground">Find your soulmate in the stars!</p>
+                                        </div>
+                                        <Button variant="secondary" size="sm">Visit</Button>
+                                </div>
+                                </CardContent>
+                            </Card>
+                        </aside>
+                    </div>
                 </div>
             </div>
         </div>
-    );
-};
-
-
-export default function UsersPage() {
-    const { user } = useUser();
-    const router = useRouter();
-    const { toast } = useToast();
-    const [isRegistering, setIsRegistering] = useState(false);
-
-    const editorEmail = 'tipyatida@gmail.com';
-    const isPendingMember = user?.email === editorEmail;
-
-    const handleRegistration = () => {
-        setIsRegistering(true);
-    };
-
-    const handleAnimationEnd = () => {
-        toast({
-            title: "Congratulations!",
-            description: "You have unlocked Level 0 membership. You can now earn from $1-$50,000 across levels 0-50 with 1-50,000 downline members.",
-        });
-        router.push('/dashboard');
-    };
-
-    return (
-        <>
-            {isRegistering && <RegistrationAnimation onAnimationEnd={handleAnimationEnd} />}
-            <div className="space-y-6">
-                <h1 className="text-3xl font-bold tracking-tight">User Dashboard</h1>
-                
-                {isPendingMember && (
-                    <Card className="bg-primary/10 border-primary/50">
-                        <CardHeader>
-                            <CardTitle>Complete Your Membership</CardTitle>
-                            <CardDescription>
-                                Your account is verified. Complete the final step to unlock all MESY Member benefits and start your journey.
-                            </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                            <Button size="lg" onClick={handleRegistration} disabled={isRegistering}>
-                                {isRegistering ? 'Processing...' : 'Register to become a full member'}
-                            </Button>
-                        </CardContent>
-                    </Card>
-                )}
-
-                <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Followers</CardTitle>
-                            <Users className="text-muted-foreground h-4 w-4"/>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">5,100</div>
-                            <p className="text-xs text-muted-foreground">+201 since last month</p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Following</CardTitle>
-                            <Users className="text-muted-foreground h-4 w-4"/>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">2,100</div>
-                            <p className="text-xs text-muted-foreground">+18 since last month</p>
-                        </CardContent>
-                    </Card>
-                     <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">Account Status</CardTitle>
-                            <Shield className="text-muted-foreground h-4 w-4"/>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">User</div>
-                            <p className="text-xs text-muted-foreground">Not a Member</p>
-                        </CardContent>
-                    </Card>
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <CardTitle className="text-sm font-medium">MESY Coins</CardTitle>
-                            <DollarSign className="text-muted-foreground h-4 w-4"/>
-                        </CardHeader>
-                        <CardContent>
-                            <div className="text-2xl font-bold">0.00</div>
-                            <p className="text-xs text-muted-foreground">Verify payment to earn</p>
-                        </CardContent>
-                    </Card>
-                </div>
-                <Card className="col-span-4">
-                    <CardHeader>
-                        <CardTitle>Welcome!</CardTitle>
-                        <CardDescription>This is your personal dashboard. Explore the MESY universe and consider becoming a member to unlock more features!</CardDescription>
-                    </CardHeader>
-                    <CardContent className="pl-2">
-                       <p>Your journey begins here. Connect with others, explore content, and build your presence.</p>
-                    </CardContent>
-                </Card>
-            </div>
-        </>
     );
 }

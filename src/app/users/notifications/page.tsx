@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Bell, Gift, Zap, Star } from "lucide-react";
 
@@ -12,7 +13,7 @@ export default function UserNotificationsPage() {
         {
             icon: <Star className="h-5 w-5 text-yellow-400" />,
             title: "Unlock Full Potential",
-            description: "คุณจะต้องเป็น member ก่อน จึงจะไม่พลาด Daily Rewards และสิทธิ์มากมาย (Become a member to not miss out on Daily Rewards and many benefits).",
+            description: "Become a member to not miss out on Daily Rewards and many benefits.",
             time: "30 minutes ago"
         },
         {

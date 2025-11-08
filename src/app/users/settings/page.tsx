@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -15,7 +16,6 @@ export default function UserSettingsPage() {
                 <p className="text-muted-foreground">Manage your account and personal information.</p>
             </div>
 
-            {/* Account Information Card */}
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-3"><User className="text-primary"/> Account Information</CardTitle>
@@ -27,7 +27,6 @@ export default function UserSettingsPage() {
                             <Label htmlFor="email" className="flex items-center gap-2"><Mail className="h-4 w-4"/> Email Address</Label>
                             <Input id="email" type="email" defaultValue="user@mesy.io" />
                         </div>
-                        <Button variant="outline">Update</Button>
                         <Button>Verify</Button>
                     </div>
                     <div className="flex items-end gap-4 p-4 border rounded-lg">
@@ -40,7 +39,6 @@ export default function UserSettingsPage() {
                 </CardContent>
             </Card>
 
-            {/* Personal Details Card */}
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-3"><Badge className="text-primary"/> Personal Details</CardTitle>
@@ -69,7 +67,6 @@ export default function UserSettingsPage() {
                 </CardContent>
             </Card>
 
-             {/* Address Card */}
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-3"><MapPin className="text-primary"/> Address</CardTitle>
@@ -83,7 +80,6 @@ export default function UserSettingsPage() {
                 </CardContent>
             </Card>
 
-            {/* Security Card */}
             <Card>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-3"><Shield className="text-primary"/> Security</CardTitle>

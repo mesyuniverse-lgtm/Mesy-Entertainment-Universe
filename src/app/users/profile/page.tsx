@@ -1,20 +1,19 @@
+
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Camera, Clapperboard, Edit, Ellipsis, HandCoins, Heart, Image as ImageIcon, MapPin, MessageCircle, MoreHorizontal, Music, Rss, Search, Share2, Shield, Video, Users as UsersIcon, Briefcase, CheckCircle2, XCircle, CreditCard, QrCode } from "lucide-react";
+import { Camera, Edit, Ellipsis, Gift, Heart, MessageCircle, Share2, Users as UsersIcon, Briefcase, MapPin, Music } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
+import { Video, ImageIcon, Clapperboard } from "lucide-react";
 
 export default function UsersProfilePage() {
     const coverImage = PlaceHolderImages.find(i => i.id === 'fantasy-landscape-1');
     const profileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
-    const featuredImage = PlaceHolderImages.find(i => i.id === 'explorer-1');
     const galleryImages = PlaceHolderImages.slice(2, 8);
     const friends = [
         { name: 'Kael', avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
@@ -28,9 +27,9 @@ export default function UsersProfilePage() {
     const timelinePosts = [
     { 
         type: 'image',
-        user: { name: 'Sonya\'z G Divaparadise\'s', avatar: profileImage?.imageUrl },
+        user: { name: 'Aria', avatar: profileImage?.imageUrl },
         time: '5 days ago',
-        text: 'เทศกาลกินเจเมืองพัทยาเริ่มแล้ว วันนี้ถึง 30 ตุลาคม 68 ณ โรงเจสว่างบริบูรณ์ นาเกลือ #Kinteawpattaya',
+        text: 'Just exploring some ancient ruins. The view was amazing! #AdventureTime',
         media: PlaceHolderImages.find(i => i.id === 'shopping-preview'),
         likes: 128,
         comments: 32,
@@ -38,7 +37,6 @@ export default function UsersProfilePage() {
     
     return (
         <div className="bg-background/90 text-foreground">
-            {/* Profile Header */}
             <header className="bg-card shadow-sm">
                 <div className="container px-0 lg:px-8">
                     <div className="relative h-48 md:h-64 lg:h-80 rounded-b-lg overflow-hidden">
@@ -54,17 +52,17 @@ export default function UsersProfilePage() {
                             <div className="relative">
                                 <Avatar className="h-32 w-32 md:h-40 md:w-40 border-4 border-background shadow-lg">
                                     <AvatarImage src={profileImage?.imageUrl} />
-                                    <AvatarFallback>S</AvatarFallback>
+                                    <AvatarFallback>A</AvatarFallback>
                                 </Avatar>
                                 <Button size="icon" variant="secondary" className="absolute bottom-2 right-2 h-8 w-8 rounded-full"><Camera className="h-4 w-4"/></Button>
                             </div>
                             <div className="flex-grow pt-4 text-center sm:text-left">
-                                <h1 className="text-2xl md:text-3xl font-bold">G Divaparadise</h1>
+                                <h1 className="text-2xl md:text-3xl font-bold">Aria</h1>
                                 <p className="text-muted-foreground">5.1K followers • 2.1K following</p>
                             </div>
                             <div className="flex gap-2 mt-4 sm:mt-0">
-                                <Button><Shield className="mr-2 h-4 w-4"/> Professional Dashboard</Button>
-                                <Button variant="secondary"><Edit className="mr-2 h-4 w-4"/> Edit</Button>
+                                <Button><UsersIcon className="mr-2 h-4 w-4"/> Friends</Button>
+                                <Button variant="secondary"><Edit className="mr-2 h-4 w-4"/> Edit Profile</Button>
                                 <Button variant="secondary" size="icon"><Ellipsis /></Button>
                             </div>
                         </div>
@@ -83,21 +81,19 @@ export default function UsersProfilePage() {
                 </div>
             </header>
 
-            {/* Main Content */}
             <main className="container py-6">
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                    {/* Left Sidebar */}
                     <aside className="lg:col-span-5 space-y-6">
                         <Card>
                             <CardHeader><CardTitle>Intro</CardTitle></CardHeader>
                             <CardContent className="space-y-4 text-center">
-                                <p>ทิพย์หงษ์ชชญา พัสวีรุ่งจิรา กลับมายืนที่เดิมที่เคยคุ้นตา ชะตานำพามาให้พบเจอ</p>
+                                <p>"Archer of the Whispering Woods, seeking adventure wherever the wind blows."</p>
                                 <Button variant="secondary" className="w-full">Edit Bio</Button>
                                 <div className="space-y-3 text-left pt-4">
-                                    <div className="flex items-center gap-3"><UsersIcon className="h-5 w-5 text-muted-foreground"/><p>Profile: Digital Creator</p></div>
-                                    <div className="flex items-center gap-3"><Music className="h-5 w-5 text-muted-foreground"/><p>Singer at Past times</p></div>
-                                    <div className="flex items-center gap-3"><Briefcase className="h-5 w-5 text-muted-foreground"/><p>Owner at Divaparadise's Shop</p></div>
-                                    <div className="flex items-center gap-3"><MapPin className="h-5 w-5 text-muted-foreground"/><p>Was lead vocalist at Siam Bayshore Resort & Spa, Pattaya</p></div>
+                                    <div className="flex items-center gap-3"><UsersIcon className="h-5 w-5 text-muted-foreground"/><p>Digital Creator</p></div>
+                                    <div className="flex items-center gap-3"><Music className="h-5 w-5 text-muted-foreground"/><p>Plays the lute</p></div>
+                                    <div className="flex items-center gap-3"><Briefcase className="h-5 w-5 text-muted-foreground"/><p>Explorer at The Adventurer's Guild</p></div>
+                                    <div className="flex items-center gap-3"><MapPin className="h-5 w-5 text-muted-foreground"/><p>From Silvermoon Glade</p></div>
                                 </div>
                                 <Button variant="secondary" className="w-full">Edit Details</Button>
                             </CardContent>
@@ -137,15 +133,12 @@ export default function UsersProfilePage() {
                         </Card>
                     </aside>
 
-                    {/* Right Content */}
                     <main className="lg:col-span-7 space-y-6">
                         <Card>
                             <CardContent className="p-3">
                                 <div className='flex gap-3 items-center'>
-                                    <Avatar>
-                                        <AvatarImage src={profileImage?.imageUrl} />
-                                    </Avatar>
-                                    <Textarea placeholder="What's on your mind, Sonya'z?" className="bg-muted border-0 focus-visible:ring-1 focus-visible:ring-primary flex-grow rounded-full px-4 py-2 h-10 resize-none" />
+                                    <Avatar><AvatarImage src={profileImage?.imageUrl} /></Avatar>
+                                    <Textarea placeholder="What's on your mind, Aria?" className="bg-muted border-0 focus-visible:ring-1 focus-visible:ring-primary flex-grow rounded-full px-4 py-2 h-10 resize-none" />
                                 </div>
                                 <hr className="my-3 border-border"/>
                                 <div className='flex justify-around items-center'>
@@ -160,21 +153,15 @@ export default function UsersProfilePage() {
                             <Card key={index} className="overflow-hidden">
                                 <CardHeader className='p-4'>
                                     <div className='flex items-center gap-3'>
-                                        <Avatar>
-                                            <AvatarImage src={post.user.avatar} />
-                                            <AvatarFallback>{post.user.name?.charAt(0)}</AvatarFallback>
-                                        </Avatar>
-                                        <div className="flex-grow">
-                                            <p className="font-semibold">{post.user.name}</p>
-                                            <p className="text-xs text-muted-foreground">{post.time}</p>
-                                        </div>
+                                        <Avatar><AvatarImage src={post.user.avatar} /><AvatarFallback>{post.user.name?.charAt(0)}</AvatarFallback></Avatar>
+                                        <div className="flex-grow"><p className="font-semibold">{post.user.name}</p><p className="text-xs text-muted-foreground">{post.time}</p></div>
                                         <Button variant="ghost" size="icon"><MoreHorizontal className="h-5 w-5"/></Button>
                                     </div>
                                 </CardHeader>
                                 <CardContent className="px-4 pb-4 space-y-4">
                                     <p className='whitespace-pre-wrap text-sm'>{post.text}</p>
                                     {post.media && (
-                                        <div className="relative aspect-[4/5] rounded-lg overflow-hidden border">
+                                        <div className="relative aspect-video rounded-lg overflow-hidden border">
                                             <Image src={post.media.imageUrl} alt={post.media.description} data-ai-hint={post.media.imageHint} fill objectFit="cover" />
                                         </div>
                                     )}
