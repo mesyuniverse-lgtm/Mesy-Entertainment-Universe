@@ -5,7 +5,7 @@ import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 export default function MemberAuthLayout({ children }: { children: React.ReactNode }) {
-  const bgImage = PlaceHolderImages.find(i => i.id === 'member-zone-preview');
+  const bgImage = PlaceHolderImages.find(i => i.id === 'auth-background');
   return (
     <div className="min-h-screen antialiased">
       <div className="container relative grid h-screen flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0">
