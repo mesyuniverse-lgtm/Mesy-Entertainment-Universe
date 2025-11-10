@@ -91,7 +91,7 @@ export default function DeveloperPortalPage() {
                     </CardHeader>
                     <CardContent>
                         <Button asChild className="w-full bg-primary/80 text-primary-foreground hover:bg-primary">
-                            <Link href="/developer-zone">เข้าสู่ระบบ</Link>
+                            <Link href="/developer-login">เข้าสู่ระบบ</Link>
                         </Button>
                     </CardContent>
                 </Card>
