@@ -4,7 +4,7 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "User",
       "type": "object",
-      "description": "Represents a user of the Mesy Entertainment Universe platform. This entity stores core account information and the user's role, which dictates their permissions across the app (User, Member, Admin, Super-admin, Developer).",
+      "description": "Represents a user account in the Mesy Entertainment Universe. This entity distinguishes between different account types: 'User' (general users), 'Member' (users who can earn income, open shops, and become developers), and 'Developer' (members with advanced development and monetization rights). It also includes administrative roles like 'Admin' and 'Super-admin'.",
       "properties": {
         "id": {
           "type": "string",
@@ -17,7 +17,7 @@
         },
         "role": {
           "type": "string",
-          "description": "User's role within the platform (User, Member, Admin, Super-admin, Developer)."
+          "description": "Defines the user's account type and permissions: 'User' (general), 'Member' (income/brand features), 'Developer' (development/services income), 'Admin', 'Super-admin'."
         },
         "level": {
           "type": "number",
