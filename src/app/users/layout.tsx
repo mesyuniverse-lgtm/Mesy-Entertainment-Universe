@@ -26,14 +26,14 @@ export default function UsersDashboardLayout({
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
   const mainNavItems = [
-    { name: 'Home', href: '/home' },
+    { name: 'Profile', href: '/users/profile' },
     { name: 'Socialive', href: '/socialive' },
-    { name: 'Entertainment', href: '/entertainment' },
-    { name: 'Connections', href: '/connections' },
-    { name: 'AI Hub', href: '/ai-hub' },
-    { name: 'Shopping Hub', href: '/shopping' },
+    { name: 'Friends', href: '/friends' },
+    { name: 'Followers', href: '/followers' },
+    { name: 'Shopping', href: '/shopping' },
+    { name: 'AI', href: '/ai-hub' },
   ];
-  
+
   const memberEmails = ['admin@mesy.io', 'tipyatida@gmail.com', 'mesy.universe@gmail.com'];
   const isMember = user && user.email && memberEmails.includes(user.email);
 
