@@ -31,7 +31,7 @@ export default function TheGatePage() {
       title: "Developer Zone",
       description: "Build the future. Access SDKs, contribute to projects, and earn through the developer ecosystem.",
       icon: <Code className="w-10 h-10 text-primary" />,
-      href: "/developer-zone",
+      href: "/developer-zone/developer-portal",
       image: PlaceHolderImages.find(i => i.id === 'auth-background'),
       buttonText: "Enter Developer Zone"
     }
