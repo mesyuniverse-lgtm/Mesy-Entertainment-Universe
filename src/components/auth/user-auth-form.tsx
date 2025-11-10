@@ -1,3 +1,4 @@
+
 "use client"
 
 import * as React from "react"
@@ -122,7 +123,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         description: "Please check your email to verify your account.",
       });
     }
-    router.push(redirectPath || '/home');
+    router.push(redirectPath || '/users');
   };
 
   React.useEffect(() => {
@@ -224,7 +225,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     setIsLoading(true);
     try {
       await signInAnonymously(auth);
-      router.push(redirectPath || "/home");
+      router.push(redirectPath || "/users");
     } catch (error: any) {
       handleAuthError(error);
     } finally {
