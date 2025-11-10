@@ -59,13 +59,18 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
   useEffect(() => {
     if (isUserLoading) return;
 
-    if (!user || (!isMemberUser && !isSuperAdmin)) {
-      router.replace('/the-door'); 
-      return;
+    if (!user) {
+        router.replace('/the-door'); 
+        return;
     }
     
     if (isSuperAdmin) {
         router.replace('/sup-dashboard');
+        return;
+    }
+
+    if (!isMemberUser) {
+        router.replace('/users');
         return;
     }
 
@@ -82,7 +87,7 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
     router.push('/welcome');
   };
 
-  if (isUserLoading || !user || !isMemberUser) {
+  if (isUserLoading || !user || !isMemberUser || isSuperAdmin) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <Loader className="h-12 w-12 animate-spin text-primary" />
