@@ -102,7 +102,7 @@ export default function DeveloperPortalPage() {
                     </CardHeader>
                     <CardContent>
                         <Button asChild className="w-full bg-primary/80 text-primary-foreground hover:bg-primary">
-                           <Link href="/join-developer">ลงทะเบียน</Link>
+                           <Link href="/developer-signup">ลงทะเบียน</Link>
                         </Button>
                     </CardContent>
                 </Card>
