@@ -1,4 +1,3 @@
-
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -6,12 +5,15 @@ import { Gem } from '@/components/icons';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useUser } from '@/firebase';
 
 export default function PublicLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { user, isUserLoading } = useUser();
+
   const navItems = [
     { name: 'Member Plan', href: '/member-plan' },
     { name: 'Features', href: '/features' },
@@ -44,12 +46,21 @@ export default function PublicLayout({
             </nav>
           </div>
           <div className="flex flex-1 items-center justify-end space-x-2">
-            <Button asChild variant="ghost" className='hidden sm:inline-flex'>
-              <Link href="/login">Login</Link>
-            </Button>
-            <Button asChild>
-                <Link href="/member-signup">Register</Link>
-            </Button>
+             {!isUserLoading && !user && (
+                <>
+                    <Button asChild variant="ghost" className='hidden sm:inline-flex'>
+                      <Link href="/login">Login</Link>
+                    </Button>
+                    <Button asChild>
+                        <Link href="/signup">Register</Link>
+                    </Button>
+                </>
+             )}
+             {!isUserLoading && user && (
+                <Button asChild>
+                    <Link href="/home">Enter App</Link>
+                </Button>
+             )}
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant="outline" size="icon" className="md:hidden">
@@ -67,12 +78,14 @@ export default function PublicLayout({
                           {item.name}
                         </Link>
                       ))}
-                      <Link
-                          href="/login"
-                          className="hover:text-foreground/80 text-foreground/60"
-                        >
-                          Login
+                      {!user && (
+                        <Link
+                            href="/login"
+                            className="hover:text-foreground/80 text-foreground/60"
+                            >
+                            Login
                         </Link>
+                      )}
                     </nav>
                 </SheetContent>
             </Sheet>

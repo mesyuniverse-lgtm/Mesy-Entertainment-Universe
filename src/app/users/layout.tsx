@@ -38,13 +38,13 @@ export default function UsersDashboardLayout({
   const isMember = user && user.email && memberEmails.includes(user.email);
 
   useEffect(() => {
-    if (!isUserLoading) {
-      if (!user) {
-        router.replace('/login');
-      } else if (isMember) {
-        // If user is a member, redirect them to the member dashboard
-        router.replace('/dashboard');
-      }
+    if (isUserLoading) return; // Wait until user status is resolved
+
+    if (!user) {
+      router.replace('/login');
+    } else if (isMember) {
+      // If user is a member, redirect them to the member dashboard
+      router.replace('/dashboard');
     }
   }, [user, isUserLoading, isMember, router]);
 
@@ -55,6 +55,7 @@ export default function UsersDashboardLayout({
     router.push('/welcome');
   };
   
+  // Display a loading spinner while checking auth state or if user is not a regular user
   if (isUserLoading || !user || isMember) {
       return (
           <div className="flex h-screen items-center justify-center bg-background">
@@ -63,6 +64,7 @@ export default function UsersDashboardLayout({
       );
   }
 
+  // Render the layout for regular users
   return (
     <div className="flex min-h-screen flex-col">
       <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">

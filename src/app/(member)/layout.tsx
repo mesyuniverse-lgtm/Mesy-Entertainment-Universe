@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useEffect } from 'react';
@@ -52,8 +51,8 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
   const ADMIN_EMAIL = 'admin@mesy.io';
   const SUPER_ADMIN_EMAIL = 'mesy.universe@gmail.com';
   
-  const memberEmails = [ADMIN_EMAIL, 'tipyatida@gmail.com'];
-  const isMemberUser = user && user.email && memberEmails.includes(user.email);
+  const memberEmails = [ADMIN_EMAIL, 'tipyatida@gmail.com', SUPER_ADMIN_EMAIL];
+  const isMember = user && user.email && memberEmails.includes(user.email);
   const isSuperAdmin = user && user.email === SUPER_ADMIN_EMAIL;
 
   useEffect(() => {
@@ -65,20 +64,31 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
     }
     
     if (isSuperAdmin) {
-        router.replace('/sup-dashboard');
+        // Super Admins should be in their own zone
+        if (!pathname.startsWith('/sup-')) {
+            router.replace('/sup-dashboard');
+        }
         return;
     }
 
-    if (!isMemberUser) {
+    if (!isMember) {
+        // If they are not a member at all, send to user zone
         router.replace('/users');
         return;
     }
 
-    if (pathname.startsWith('/admin') && user.email !== ADMIN_EMAIL) {
+    // If an Admin tries to access a non-admin member page (example logic)
+    if (user.email === ADMIN_EMAIL && !pathname.startsWith('/admin') && pathname !== '/dashboard') {
+       // Allow admins on dashboard, but maybe redirect from other member pages
+       // This logic can be adjusted. For now, we allow admins everywhere in member zone.
+    }
+    
+    // If a non-admin member tries to access admin page
+    if (user.email !== ADMIN_EMAIL && pathname.startsWith('/admin')) {
         router.replace('/dashboard'); 
     }
 
-  }, [user, isUserLoading, router, pathname, isMemberUser, isSuperAdmin]);
+  }, [user, isUserLoading, router, pathname, isMember, isSuperAdmin]);
 
   const handleLogout = async () => {
     if(auth) {
@@ -87,7 +97,7 @@ export default function MemberLayout({ children }: { children: React.ReactNode }
     router.push('/welcome');
   };
 
-  if (isUserLoading || !user || !isMemberUser || isSuperAdmin) {
+  if (isUserLoading || !user || !isMember || isSuperAdmin) {
     return (
       <div className="flex h-screen items-center justify-center bg-background">
         <Loader className="h-12 w-12 animate-spin text-primary" />
