@@ -8,6 +8,7 @@ import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { CheckCircle, Gift, MessageSquare, Trophy, Users, Video } from "lucide-react";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { redirect } from 'next/navigation';
 
 const StatCard = ({ icon, title, value, unit }: { icon: React.ReactNode, title: string, value: string, unit?: string }) => (
     <Card className="bg-card/70 backdrop-blur-sm border-white/10">

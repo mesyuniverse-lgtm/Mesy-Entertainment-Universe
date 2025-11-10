@@ -1,11 +1,11 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { User, Mail, Phone, Lock, MapPin, Badge, Pen, Shield } from "lucide-react";
+import { User, Mail, Phone, Badge } from "lucide-react";
 import { useUser, useFirestore, useMemoFirebase } from "@/firebase";
 import { doc } from 'firebase/firestore';
 import { useDoc } from '@/firebase/firestore/use-doc';
