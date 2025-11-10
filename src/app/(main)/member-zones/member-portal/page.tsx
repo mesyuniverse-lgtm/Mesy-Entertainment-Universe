@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { useUser } from "@/firebase";
-import { BookOpen, CheckCircle, Diamond, LogIn, Trophy, UserPlus, Users } from "lucide-react";
+import { BookOpen, CheckCircle, Diamond, LogIn, Trophy, UserPlus, Users, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
 const StatCard = ({ icon, title, value }: { icon: React.ReactNode, title: string, value: string }) => (
@@ -49,6 +49,14 @@ export default function MembershipsLandingPage() {
 
     return (
         <div className="container mx-auto py-12">
+            <div className="mb-8">
+                <Button asChild variant="outline">
+                    <Link href="/the-gate">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back to The Gate
+                    </Link>
+                </Button>
+            </div>
             <div className="text-center mb-12">
                 <h1 className="text-5xl font-headline font-bold tracking-wider text-white" style={{ textShadow: '0 0 10px hsl(var(--primary))' }}>
                     MEMBERS ZONE
