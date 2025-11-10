@@ -59,7 +59,7 @@ export default function MainLayout({
   const isMember = user && user.email && (memberUsers.includes(user.email) || user.email === superAdminEmail);
 
   // Do not render navbar on specific pages
-  const showNavbar = !['/the-gate', '/developer-zone/developer-portal'].includes(pathname);
+  const showNavbar = !['/the-gate', '/developer-zone/developer-portal', '/member-zones/member-portal'].includes(pathname);
 
   return (
     <div className="flex min-h-screen flex-col">
