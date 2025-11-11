@@ -1,0 +1,53 @@
+.pageContainer {
+    background-color: #1A1229; /* Deep purple background */
+}
+
+.mainTitle {
+    font-size: 3rem;
+    color: #E0B0FF; /* Light lavender color */
+    text-shadow: 0 0 8px rgba(224, 176, 255, 0.6), 0 0 16px rgba(224, 176, 255, 0.4);
+}
+
+.statCard {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.statCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(224, 176, 255, 0.1);
+}
+
+.actionCard {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.actionCard:hover {
+    transform: translateY(-5px);
+    border-color: rgba(224, 176, 255, 0.4);
+    box-shadow: 0 8px 25px rgba(224, 176, 255, 0.1);
+}
+
+.actionButton {
+    background-color: #A960D5;
+    color: white;
+    font-weight: bold;
+    border: none;
+    box-shadow: 0 4px 15px rgba(169, 96, 213, 0.3);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.actionButton:hover {
+    background-color: #C47CFF;
+    box-shadow: 0 6px 20px rgba(196, 124, 255, 0.4);
+}
+
+.totalCard {
+     border-color: rgba(224, 176, 255, 0.2);
+}
+
+.totalNumber {
+    font-size: 5rem;
+    line-height: 1;
+    color: #F44336; /* Red color as in the image */
+    text-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+}

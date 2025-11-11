@@ -10,17 +10,17 @@
     --card-foreground: 260 10% 95%;
     --popover: 260 30% 9%;
     --popover-foreground: 260 10% 95%;
-    --primary: 0 84% 50%; /* Vibrant Red */
+    --primary: 271 76% 53%; /* Vivid Violet/Pink */
     --primary-foreground: 0 0% 100%;
     --secondary: 260 30% 16%;
     --secondary-foreground: 260 10% 95%;
     --muted: 260 30% 16%;
     --muted-foreground: 260 10% 65%;
-    --accent: 0 84% 55%; /* Lighter Vibrant Red for accents */
+    --accent: 330 84% 55%; /* Changed to a vibrant Pink/Red for accents */
     --accent-foreground: 0 0% 100%;
     --border: 260 30% 16%;
     --input: 260 30% 16%;
-    --ring: 0 84% 50%;
+    --ring: 271 76% 63%; /* Lighter shade for ring */
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
@@ -36,19 +36,19 @@
     --card-foreground: 260 10% 95%;
     --popover: 260 30% 9%;
     --popover-foreground: 260 10% 95%;
-    --primary: 0 84% 50%; /* Vibrant Red */
+    --primary: 271 76% 53%; /* Vivid Violet/Pink */
     --primary-foreground: 0 0% 100%;
     --secondary: 260 30% 16%;
     --secondary-foreground: 260 10% 95%;
     --muted: 260 30% 16%;
     --muted-foreground: 260 10% 65%;
-    --accent: 0 84% 55%; /* Lighter Vibrant Red for accents */
+    --accent: 330 84% 55%; /* Changed to a vibrant Pink/Red for accents */
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 260 30% 16%;
     --input: 260 30% 16%;
-    --ring: 0 84% 50%;
+    --ring: 271 76% 63%; /* Lighter shade for ring */
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;
