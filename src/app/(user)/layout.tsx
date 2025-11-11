@@ -1,4 +1,3 @@
-
 'use client';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -25,7 +24,9 @@ export default function UsersDashboardLayout({
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
   const mainNavItems = [
-    { name: 'Social', href: '/socialive', icon: <Users/> },
+    { name: 'Social', href: '/socialive', icon: <Video/> },
+    { name: 'Friends', href: '/friends', icon: <UserPlus/> },
+    { name: 'Followers', href: '/followers', icon: <Rss/> },
     { name: 'Shopping', href: '/shopping', icon: <ShoppingBag/> },
     { name: 'AI', href: '/ai-hub', icon: <Bot/> },
   ];

@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -6,10 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Clapperboard, Crown, Gift, Heart, MessageCircle, Share2, Gem, Star, LayoutGrid, Video, ArrowLeft, Rss, UserPlus } from 'lucide-react';
+import { Users, Clapperboard, Crown, Gift, Heart, MessageCircle, Share2, Gem, Star, LayoutGrid, Video, ArrowLeft, Rss, UserPlus, Send } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
 
 const videoPost = {
     user: { name: 'Aria', avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
@@ -72,6 +74,10 @@ const VideoPlayerCard = ({ post }: { post: typeof videoPost }) => {
                         <Button variant="ghost" size="icon" className="bg-white/10 rounded-full h-12 w-12 hover:bg-white/20"><Star className="text-yellow-400 h-6 w-6" /></Button>
                         <Button variant="ghost" size="icon" className="bg-white/10 rounded-full h-12 w-12 hover:bg-white/20"><Gem className="text-cyan-400 h-6 w-6" /></Button>
                     </div>
+                </div>
+                 <div className="flex items-center gap-2 mt-3 pointer-events-auto">
+                    <Input placeholder="Add a comment..." className="bg-black/50 border-white/20 h-10"/>
+                    <Button size="icon" className="h-10 w-10"><Send /></Button>
                 </div>
             </div>
         </Card>
