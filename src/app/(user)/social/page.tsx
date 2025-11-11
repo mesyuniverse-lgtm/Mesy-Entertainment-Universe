@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -7,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Clapperboard, Crown, Gift, Heart, MessageCircle, Share2, Gem, Star, LayoutGrid, Video, ArrowLeft } from 'lucide-react';
+import { Users, Clapperboard, Crown, Gift, Heart, MessageCircle, Share2, Gem, Star, LayoutGrid, Video, ArrowLeft, Rss, UserPlus } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -113,7 +112,7 @@ export default function SocialPage() {
         `}</style>
             
         <div className="container mx-auto p-4 lg:p-6">
-            <div className="mb-6">
+             <div className="mb-6">
                 <Button asChild variant="outline">
                     <Link href="/users">
                         <ArrowLeft className="mr-2 h-4 w-4" />
@@ -215,11 +214,11 @@ export default function SocialPage() {
                 <main className="lg:col-span-6">
                     <Tabs defaultValue="video" className="w-full">
                         <div className="flex justify-between items-center mb-4">
-                            <TabsList>
-                                <TabsTrigger value="video">Social Video</TabsTrigger>
-                                <TabsTrigger value="live">Live</TabsTrigger>
-                                <TabsTrigger value="friends">Friends</TabsTrigger>
-                                <TabsTrigger value="followers">Followers</TabsTrigger>
+                            <TabsList className="h-auto flex-wrap justify-center">
+                                <TabsTrigger value="video" asChild><Link href="/social"><Video className="h-4 w-4 mr-1 sm:hidden"/>Social Video</Link></TabsTrigger>
+                                <TabsTrigger value="live" asChild><Link href="/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
+                                <TabsTrigger value="friends" asChild><Link href="/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link></TabsTrigger>
+                                <TabsTrigger value="followers" asChild><Link href="/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link></TabsTrigger>
                             </TabsList>
                              <Button variant="outline"><LayoutGrid className="mr-2 h-4 w-4"/> Grid View</Button>
                         </div>
