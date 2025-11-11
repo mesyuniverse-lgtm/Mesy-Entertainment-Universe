@@ -155,10 +155,6 @@ export default function FriendsPage() {
                             <TabsTrigger value="followers" asChild>
                                 <Link href="/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link>
                             </TabsTrigger>
-                            <TabsTrigger value="groups" asChild>
-                                <Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link>
-                            </TabsTrigger>
-                            <TabsTrigger value="home" asChild><Link href="/home"><Home className="h-4 w-4 mr-1 sm:hidden"/>Home</Link></TabsTrigger>
                         </TabsList>
                         <TabsContent value="friends" className="mt-4">
                             <Card>
