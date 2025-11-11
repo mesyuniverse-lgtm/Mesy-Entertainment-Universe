@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Check, Gift, Search, UserPlus, Users, X, MessageSquare, Video, Clapperboard, Rss, UsersRound, Home } from "lucide-react";
+import { Check, Gift, Search, UserPlus, Users, X, MessageSquare, Video, Clapperboard, Rss, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -39,6 +39,14 @@ export default function FriendsPage() {
 
     return (
         <div className="min-h-screen bg-background text-foreground p-4 lg:p-6">
+            <div className="mb-6">
+                <Button asChild variant="outline">
+                    <Link href="/users">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back to Dashboard
+                    </Link>
+                </Button>
+            </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                 {/* Left Sidebar */}
@@ -147,7 +155,7 @@ export default function FriendsPage() {
                     {/* Content Tabs */}
                     <Tabs defaultValue="friends" className="w-full">
                         <TabsList className="h-auto flex-wrap justify-center">
-                            <TabsTrigger value="video" asChild><Link href="/socialive"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
+                            <TabsTrigger value="video" asChild><Link href="/social"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
                             <TabsTrigger value="live" asChild><Link href="/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
                             <TabsTrigger value="friends" asChild>
                                 <Link href="/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
