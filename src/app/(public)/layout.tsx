@@ -51,7 +51,7 @@ export default function PublicLayout({
           <div className="flex flex-1 items-center justify-end space-x-2">
              {isWelcomePage ? (
                 <Button asChild>
-                    <Link href="/the-door">Launch App</Link>
+                    <Link href="/the-gate">Launch App</Link>
                 </Button>
              ) : !isUserLoading && !user ? (
                 <>
