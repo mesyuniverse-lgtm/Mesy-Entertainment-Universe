@@ -25,7 +25,7 @@ export default function UsersDashboardLayout({
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
   const mainNavItems = [
-    { name: 'Social', href: '/socialive' }, // Path is /socialive, but label is Social
+    { name: 'Social', href: '/social' },
     { name: 'Friends', href: '/friends' },
     { name: 'Followers', href: '/followers' },
     { name: 'Shopping', href: '/shopping' },
