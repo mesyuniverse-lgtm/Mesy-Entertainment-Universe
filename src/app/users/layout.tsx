@@ -7,7 +7,7 @@ import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle, Settings, Star, ShoppingBag, Bot, Users, Rss, Clapperboard } from 'lucide-react';
+import { Menu, LogOut, LayoutDashboard, UserCircle, Settings, Star, ShoppingBag, Bot, Users, Rss, Clapperboard, Home } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { cn } from '@/lib/utils';
@@ -67,18 +67,26 @@ export default function UsersDashboardLayout({
 
   // Render the layout for regular users
   return (
-    <div className="flex min-h-screen flex-col" style={{'--background': 'hsl(220 40% 8%)'} as React.CSSProperties}>
+    <div className="flex min-h-screen flex-col bg-background/95">
       <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 max-w-screen-2xl items-center">
           <div className="mr-4 flex items-center">
             <Link href="/home" className="mr-6 flex items-center space-x-2">
               <Gem className="h-6 w-6 text-primary" />
-              <span className="font-bold font-headline sm:inline-block">
-                MESY
-              </span>
             </Link>
              <nav className="hidden items-center gap-6 text-sm md:flex">
-              {mainNavItems.map((item) => (
+                <Link
+                  href="/users/profile"
+                  className="flex items-center gap-2 transition-colors hover:text-foreground/80 text-foreground/60"
+                >
+                  <Avatar className="h-6 w-6 border-2 border-primary/50">
+                    <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} alt="User Avatar" />
+                    <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
+                  </Avatar>
+                  USER
+                </Link>
+
+              {mainNavItems.slice(1).map((item) => ( // Start from the second item
                 <Link
                   key={item.name}
                   href={item.href}
@@ -90,33 +98,9 @@ export default function UsersDashboardLayout({
             </nav>
           </div>
           <div className="flex flex-1 items-center justify-end space-x-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-9 w-9 rounded-full">
-                  <Avatar className="h-9 w-9 border-2 border-primary/50">
-                    <AvatarImage src={user.photoURL || userProfileImage?.imageUrl} alt="User Avatar" />
-                    <AvatarFallback>{user.email?.[0].toUpperCase() || 'U'}</AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56" align="end" forceMount>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm font-medium leading-none">{user.displayName || 'User'}</p>
-                    <p className="text-xs leading-none text-muted-foreground">
-                      {user.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem asChild><Link href="/users"><LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/users/profile"><UserCircle className="mr-2 h-4 w-4"/>Profile</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/member-signup" className="text-primary focus:text-primary"><Star className="mr-2 h-4 w-4"/>Upgrade to Member</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/users/settings"><Settings className="mr-2 h-4 w-4"/>Setting</Link></DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleLogout}><LogOut className="mr-2 h-4 w-4"/>Log out</DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button asChild>
+                <Link href="/member-signup"><Star className="mr-2 h-4 w-4"/>Become a Member</Link>
+            </Button>
             <Sheet>
                 <SheetTrigger asChild>
                     <Button variant="outline" size="icon" className="lg:hidden">
