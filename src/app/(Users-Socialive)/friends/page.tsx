@@ -146,12 +146,12 @@ export default function FriendsPage() {
                             <span className="mx-4">It's Echo's birthday today! 🎂</span>
                         </div>
                     </div>
-                     <style jsx>{\`
+                     <style jsx>{`
                         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-100%); } }
                         @keyframes marquee2 { from { transform: translateX(100%); } to { transform: translateX(0); } }
                         .animate-marquee { animation: marquee 30s linear infinite; }
                         .animate-marquee2 { animation: marquee2 30s linear infinite; }
-                    \`}</style>
+                    `}</style>
                     
                     {/* Content Tabs */}
                     <Tabs defaultValue="friends" className="w-full">

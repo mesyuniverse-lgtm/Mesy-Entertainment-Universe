@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -13,7 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 
-export default function FollowersPage() {
+export default function FollowingPage() {
     const followers = [
         { name: 'Zane', level: 20, avatar: PlaceHolderImages.find(i => i.id === 'fighter-character')?.imageUrl, online: true, supportTier: 'Gold' },
         { name: 'Aria', level: 15, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl, online: false, supportTier: 'Silver' },
@@ -118,13 +117,13 @@ export default function FollowersPage() {
                     {/* Content Tabs */}
                     <Tabs defaultValue="followers" className="w-full">
                         <TabsList className="h-auto flex-wrap justify-center">
-                            <TabsTrigger value="video" asChild><Link href="/socialive"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
-                            <TabsTrigger value="live" asChild><Link href="/socialive/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
+                            <TabsTrigger value="video" asChild><Link href="/social"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
+                            <TabsTrigger value="live" asChild><Link href="/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
                             <TabsTrigger value="friends" asChild>
-                                <Link href="/socialive/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
+                                <Link href="/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
                             </TabsTrigger>
                             <TabsTrigger value="followers" asChild>
-                                <Link href="/socialive/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link>
+                                <Link href="/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link>
                             </TabsTrigger>
                         </TabsList>
 
@@ -261,3 +260,4 @@ export default function FollowersPage() {
 
     
 
+    
