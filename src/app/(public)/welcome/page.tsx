@@ -11,6 +11,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ArrowRight, CheckCircle } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 export default function WelcomePage() {
   const slideshowImages = PlaceHolderImages.filter((img) =>
@@ -54,7 +55,7 @@ export default function WelcomePage() {
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-white/90 mb-8" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.7)'}}>
             A fantasy entertainment platform where creativity and community collide in a ceremonial journey.
           </p>
-          <Button size="lg" asChild className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30">
+          <Button size="lg" asChild className="text-lg h-12 px-8">
             <Link href="/the-gate">
               Let's Startup <ArrowRight className="ml-2 h-5 w-5" />
             </Link>
