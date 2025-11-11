@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -60,7 +61,7 @@ export default function TheGatePage() {
                     </CardContent>
                     <div className="p-6 pt-0">
                          <Button asChild className="w-full">
-                            <Link href="/users">
+                            <Link href="/login">
                                 Enter User Zone <ArrowRight className="ml-2" />
                             </Link>
                         </Button>
