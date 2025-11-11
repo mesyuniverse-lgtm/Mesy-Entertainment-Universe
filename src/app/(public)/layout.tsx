@@ -6,6 +6,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUser } from '@/firebase';
+import { usePathname } from 'next/navigation';
 
 export default function PublicLayout({
   children,
@@ -13,6 +14,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   const { user, isUserLoading } = useUser();
+  const pathname = usePathname();
 
   const navItems = [
     { name: 'Member Plan', href: '/member-plan' },
@@ -20,6 +22,8 @@ export default function PublicLayout({
     { name: 'Chronicle', href: '/chronicle' },
     { name: 'Join Developer', href: '/join-developer' },
   ];
+
+  const isWelcomePage = pathname === '/welcome';
 
   return (
     <div className={cn("flex min-h-screen flex-col")}>
@@ -45,7 +49,11 @@ export default function PublicLayout({
             </nav>
           </div>
           <div className="flex flex-1 items-center justify-end space-x-2">
-             {!isUserLoading && !user && (
+             {isWelcomePage ? (
+                <Button asChild>
+                    <Link href="/the-door">Launch App</Link>
+                </Button>
+             ) : !isUserLoading && !user ? (
                 <>
                     <Button asChild variant="ghost" className='hidden sm:inline-flex'>
                       <Link href="/login">Login</Link>
@@ -54,10 +62,10 @@ export default function PublicLayout({
                         <Link href="/signup">Register</Link>
                     </Button>
                 </>
-             )}
+             ) : null}
              {!isUserLoading && user && (
                 <Button asChild>
-                    <Link href="/the-gate">Enter App</Link>
+                    <Link href="/the-door">Enter App</Link>
                 </Button>
              )}
             <Sheet>
@@ -77,7 +85,7 @@ export default function PublicLayout({
                           {item.name}
                         </Link>
                       ))}
-                      {!user && (
+                      {!user && !isWelcomePage && (
                         <Link
                             href="/login"
                             className="hover:text-foreground/80 text-foreground/60"
