@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import { Gem } from '@/components/icons';
+import { Gem } from 'lucide-react';
 
 export default function NotFound() {
   return (
