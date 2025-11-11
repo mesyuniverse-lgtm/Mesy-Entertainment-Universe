@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState } from 'react';
@@ -236,15 +235,10 @@ export default function SocialPage() {
                     <Tabs defaultValue="video" className="w-full">
                         <div className="flex justify-between items-center mb-4">
                             <TabsList>
-                                <TabsTrigger value="video" asChild>
-                                    <Link href="/socialive" className="flex items-center gap-2"><Video className="h-4 w-4" />Social Video</Link>
-                                </TabsTrigger>
-                                <TabsTrigger value="friends" asChild>
-                                    <Link href="/friends" className="flex items-center gap-2"><UserPlus className="h-4 w-4" />Friends</Link>
-                                </TabsTrigger>
-                                <TabsTrigger value="followers" asChild>
-                                    <Link href="/followers" className="flex items-center gap-2"><Rss className="h-4 w-4" />Followers</Link>
-                                </TabsTrigger>
+                                <TabsTrigger value="video">Social Video</TabsTrigger>
+                                <TabsTrigger value="live">Live</TabsTrigger>
+                                <TabsTrigger value="friends">Friends</TabsTrigger>
+                                <TabsTrigger value="followers">Followers</TabsTrigger>
                             </TabsList>
                              <Button variant="outline"><LayoutGrid className="mr-2 h-4 w-4"/> Grid View</Button>
                         </div>
@@ -260,9 +254,6 @@ export default function SocialPage() {
                 
                  {/* Right Sidebar */}
                 <aside className="lg:col-span-3 space-y-6">
-                    <Button size="lg" className="w-full !text-base" asChild>
-                        <Link href="/member-signup"><Star className="mr-2 h-4 w-4"/> Become a Member</Link>
-                    </Button>
                     <Card className="bg-card/50 border-primary/50 shadow-lg shadow-primary/10">
                         <CardHeader className="p-0">
                            {videoAdImage && (
