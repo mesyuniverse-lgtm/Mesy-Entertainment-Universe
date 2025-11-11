@@ -1,5 +1,5 @@
 
-export default function SocialLayout({
+export default function SocialiveLayout({
   children,
 }: {
   children: React.ReactNode;

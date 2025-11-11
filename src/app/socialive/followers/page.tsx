@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -8,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Clapperboard, Video, UserPlus, Rss, ArrowLeft } from "lucide-react";
+import { Search, Clapperboard, Video, UserPlus, Rss, UsersRound, Home, Crown, Gift, Users, UserCheck, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -61,11 +60,31 @@ export default function FollowersPage() {
 
                     <Card className="bg-card/50">
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><Rss />Following</CardTitle>
+                            <CardTitle className="flex items-center gap-2"><UserCheck />Following</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <p className="text-4xl font-bold">{following.length}</p>
                             <p className="text-sm text-muted-foreground">People you follow</p>
+                        </CardContent>
+                    </Card>
+
+                    <Card className="bg-card/50">
+                        <CardHeader>
+                            <CardTitle className="text-base flex items-center gap-2"><Crown className="text-yellow-400" />Top Supporters</CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-3">
+                            {topSupporters.map((supporter, index) => (
+                                <div key={index} className="flex items-center gap-3">
+                                    <Avatar className="h-10 w-10">
+                                        <AvatarImage src={supporter.avatar} />
+                                        <AvatarFallback>{supporter.name.charAt(0)}</AvatarFallback>
+                                    </Avatar>
+                                    <div className="flex-grow">
+                                        <p className="font-semibold text-sm">{supporter.name}</p>
+                                        <p className="text-xs text-primary flex items-center gap-1"><Gift className="h-3 w-3"/> Gave ${supporter.amount}</p>
+                                    </div>
+                                </div>
+                            ))}
                         </CardContent>
                     </Card>
                 </aside>
@@ -98,7 +117,7 @@ export default function FollowersPage() {
                     {/* Content Tabs */}
                     <Tabs defaultValue="followers" className="w-full">
                         <TabsList className="h-auto flex-wrap justify-center">
-                            <TabsTrigger value="video" asChild><Link href="/socialive/social"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
+                            <TabsTrigger value="video" asChild><Link href="/socialive"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
                             <TabsTrigger value="live" asChild><Link href="/socialive/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
                             <TabsTrigger value="friends" asChild>
                                 <Link href="/socialive/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
@@ -236,5 +255,3 @@ export default function FollowersPage() {
         </div>
     );
 }
-
-

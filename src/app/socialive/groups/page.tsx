@@ -1,5 +1,4 @@
 
-
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -111,7 +110,7 @@ export default function GroupsPage() {
                     {/* Content Tabs */}
                      <Tabs defaultValue="groups" className="w-full">
                          <TabsList className="h-auto flex-wrap justify-center">
-                            <TabsTrigger value="video" asChild><Link href="/socialive/social"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
+                            <TabsTrigger value="video" asChild><Link href="/socialive"><Video className="h-4 w-4 mr-1 sm:hidden" />Social Video</Link></TabsTrigger>
                             <TabsTrigger value="live" asChild><Link href="/socialive/live"><Clapperboard className="h-4 w-4 mr-1 sm:hidden"/>Live</Link></TabsTrigger>
                             <TabsTrigger value="friends" asChild>
                                 <Link href="/socialive/friends"><UserPlus className="h-4 w-4 mr-1 sm:hidden"/>Friends</Link>
