@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Search, Clapperboard, Video, UserPlus, Rss, UsersRound, Home, Crown, Gift, Users, UserCheck } from "lucide-react";
+import { Search, Clapperboard, Video, UserPlus, Rss, UsersRound, Home, Crown, Gift, Users, UserCheck, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -36,6 +36,14 @@ export default function FollowersPage() {
 
     return (
         <div className="min-h-screen bg-background text-foreground p-4 lg:p-6">
+            <div className="mb-6">
+                <Button asChild variant="outline">
+                    <Link href="/users">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back to Dashboard
+                    </Link>
+                </Button>
+            </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                  {/* Left Sidebar */}
@@ -117,10 +125,6 @@ export default function FollowersPage() {
                             <TabsTrigger value="followers" asChild>
                                 <Link href="/followers"><Rss className="h-4 w-4 mr-1 sm:hidden"/>Followers</Link>
                             </TabsTrigger>
-                            <TabsTrigger value="groups" asChild>
-                                <Link href="/groups"><UsersRound className="h-4 w-4 mr-1 sm:hidden"/>Groups</Link>
-                            </TabsTrigger>
-                            <TabsTrigger value="home" asChild><Link href="/home"><Home className="h-4 w-4 mr-1 sm:hidden"/>Home</Link></TabsTrigger>
                         </TabsList>
 
                         <Card className="mt-4">
@@ -251,3 +255,5 @@ export default function FollowersPage() {
         </div>
     );
 }
+
+    
