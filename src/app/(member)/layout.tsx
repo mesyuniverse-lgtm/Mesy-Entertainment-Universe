@@ -5,7 +5,7 @@ import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useUser, useAuth } from '@/firebase';
-import { Loader, Gem, LayoutDashboard, UserCircle, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, Orbit, MessageCircle, History, Package, Hammer, Cloud } from 'lucide-react';
+import { Loader, Gem, LayoutDashboard, UserCircle, Wallet, Bell, Gift, Settings, Shield, LogOut, Menu, Home, Star, Camera, Orbit, MessageCircle, History, Package, Hammer, Cloud, Users } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -27,8 +27,7 @@ const sidebarNavItems = [
   { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
   { name: 'MESY Universe', href: '/universe', icon: Orbit },
   { name: 'My Profile', href: '/profile', icon: UserCircle },
-  { name: 'My Timeline', href: '/timeline', icon: History },
-  { name: 'Community', href: '/community', icon: MessageCircle },
+  { name: 'Social', href: '/social', icon: Users },
   { name: 'Member System', href: '/member-system', icon: Shield },
   { name: 'Daily Rewards', href: '/daily-rewards', icon: Gift },
   { name: 'My Bag', href: '/bag', icon: Package },

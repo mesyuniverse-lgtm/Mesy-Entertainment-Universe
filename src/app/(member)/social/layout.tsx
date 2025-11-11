@@ -1,4 +1,5 @@
-export default function CommunityLayout({
+
+export default function SocialLayout({
   children,
 }: {
   children: React.ReactNode;
