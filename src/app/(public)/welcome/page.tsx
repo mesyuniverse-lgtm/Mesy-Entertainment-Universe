@@ -51,7 +51,7 @@ export default function WelcomePage() {
           <h1 className="text-4xl md:text-7xl font-bold tracking-tighter mb-4" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>
             Enter the MESY Universe
           </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-primary-foreground/90 mb-8" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.7)'}}>
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-white/90 mb-8" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.7)'}}>
             A fantasy entertainment platform where creativity and community collide in a ceremonial journey.
           </p>
           <Button size="lg" asChild className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg shadow-primary/30">
