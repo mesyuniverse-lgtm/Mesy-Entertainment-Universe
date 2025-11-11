@@ -59,7 +59,8 @@ export default function MainLayout({
   const isMember = user && user.email && (memberUsers.includes(user.email) || user.email === superAdminEmail);
 
   // Do not render navbar on specific pages
-  const showNavbar = !['/the-gate', '/developer-zone/developer-portal', '/member-zones/member-portal'].includes(pathname);
+  const noNavPages = ['/the-gate', '/developer-zone/developer-portal', '/member-zones/member-portal', '/user-portal'];
+  const showNavbar = !noNavPages.includes(pathname);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -139,8 +140,8 @@ export default function MainLayout({
                     </DropdownMenu>
                 ) : (
                     <>
-                    <Button asChild variant="ghost">
-                        <Link href="/login">Login</Link>
+                    <Button asChild variant="ghost" className='hidden sm:inline-flex'>
+                      <Link href="/login">Login</Link>
                     </Button>
                     <Button asChild>
                         <Link href="/signup">Register</Link>
@@ -165,8 +166,16 @@ export default function MainLayout({
                             {item.name}
                             </Link>
                         ))}
-                        </nav>
-                    </SheetContent>
+                        {!user && (
+                        <Link
+                            href="/login"
+                            className="hover:text-foreground/80 text-foreground/60"
+                            >
+                            Login
+                        </Link>
+                      )}
+                    </nav>
+                </SheetContent>
                 </Sheet>
             </div>
             </div>

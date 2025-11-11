@@ -15,7 +15,7 @@ export default function TheGatePage() {
       title: "User Zone",
       description: "Explore the universe, connect with others, and enjoy content as a general user.",
       icon: <User className="w-10 h-10 text-primary" />,
-      href: "/login",
+      href: "/user-portal",
       image: PlaceHolderImages.find(i => i.id === 'socialive-preview'),
       buttonText: "Enter User Zone"
     },
