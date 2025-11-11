@@ -5,12 +5,10 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, LayoutDashboard, UserCircle, Settings, Star, ShoppingBag, Bot, Users, Rss, Clapperboard, Home } from 'lucide-react';
+import { Menu, LogOut, Star, ShoppingBag, Bot, Users, Home } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
-import { cn } from '@/lib/utils';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import React, { useEffect } from 'react';
 import { Loader } from 'lucide-react';
@@ -27,8 +25,7 @@ export default function UsersDashboardLayout({
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
   const mainNavItems = [
-    { name: 'Profile', href: '/users/profile' },
-    { name: 'Social', href: '/socialive' },
+    { name: 'Social', href: '/socialive' }, // Path is /socialive, but label is Social
     { name: 'Friends', href: '/friends' },
     { name: 'Followers', href: '/followers' },
     { name: 'Shopping', href: '/shopping' },
@@ -86,7 +83,7 @@ export default function UsersDashboardLayout({
                   USER
                 </Link>
 
-              {mainNavItems.slice(1).map((item) => ( // Start from the second item
+              {mainNavItems.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
@@ -116,6 +113,7 @@ export default function UsersDashboardLayout({
                           </div>
                         )}
                         <div className="flex flex-col gap-2">
+                             <Link href="/users/profile" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">USER</Link>
                             {mainNavItems.map((item) => (
                                 <Link key={item.name} href={item.href} className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
                                     {item.name}

@@ -1,56 +1,33 @@
+
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Video, Clapperboard, UserPlus, Rss, Tv, UsersRound, Home, Heart, MessageCircle, Share2, Gem, ThumbsUp, ThumbsDown, Star, Maximize, Minimize, LayoutGrid, Rows, Crown, Gift, Upload } from 'lucide-react';
+import { Users, Clapperboard, Crown, Gift, Heart, MessageCircle, Share2, Gem, Star, LayoutGrid, Video } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
-const videoPosts = [
-  {
-    id: 1,
+const videoPost = {
     user: { name: 'Aria', avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
     title: 'Exploring the Crystal Caves',
     description: 'Found this breathtaking place during my last quest! The crystals sing a unique melody. #Adventure #MESYUniverse',
     videoUrl: 'https://cdn.pixabay.com/video/2023/07/29/173359-849539322_large.mp4',
     likes: 1800,
     comments: 250,
-  },
-  {
-    id: 2,
-    user: { name: 'Kael', avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
-    title: 'Forging the Chrono Blade',
-    description: 'A glimpse into the creation of a legendary weapon. The process requires patience and a bit of magic. #Crafting #Blacksmith',
-    videoUrl: 'https://cdn.pixabay.com/video/2022/10/31/136009-768524458_large.mp4',
-    likes: 2500,
-    comments: 450,
-  },
-  {
-    id: 3,
-    user: { name: 'Draconis', avatar: PlaceHolderImages.find(i => i.id === 'dragon-1')?.imageUrl },
-    title: 'A Flight Over Aethelgard',
-    description: 'The world looks different from above. The mountains, the forests... everything connected.',
-    videoUrl: 'https://cdn.pixabay.com/video/2024/04/23/209140-933334614_large.mp4',
-    likes: 3200,
-    comments: 600,
-  },
-];
+};
 
-
-const VideoPlayerCard = ({ post }: { post: typeof videoPosts[0] }) => {
+const VideoPlayerCard = ({ post }: { post: typeof videoPost }) => {
     return (
         <Card className={cn(
             "w-full mx-auto relative overflow-hidden shadow-2xl shadow-primary/20 bg-black aspect-[9/16] max-h-[80vh] sm:max-h-[calc(100vh-200px)]"
         )}>
             <video
                 key={post.videoUrl}
-                controls
                 className="absolute top-0 left-0 w-full h-full object-cover z-0"
                 playsInline
                 loop
@@ -102,10 +79,7 @@ const VideoPlayerCard = ({ post }: { post: typeof videoPosts[0] }) => {
     );
 };
 
-
 export default function SocialPage() {
-    const pathname = usePathname();
-    
     const topStreamers = [
         { name: 'Aria', viewers: 1200, avatar: PlaceHolderImages.find(i => i.id === 'female-archer-1')?.imageUrl },
         { name: 'Kael', viewers: 950, avatar: PlaceHolderImages.find(i => i.id === 'knight-1')?.imageUrl },
@@ -118,7 +92,6 @@ export default function SocialPage() {
     ];
     
     const videoAdImage = PlaceHolderImages.find(i => i.id === 'rose-background');
-
 
   return (
     <div className="min-h-screen bg-background/90 text-foreground">
@@ -208,7 +181,7 @@ export default function SocialPage() {
                     </Card>
                      <Card className="bg-card/50">
                         <CardHeader>
-                            <CardTitle className="flex items-center gap-2"><UsersRound />Friends Live</CardTitle>
+                            <CardTitle className="flex items-center gap-2">Friends Live</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3">
                              {friendsLive.length > 0 ? friendsLive.map((friend, index) => (
@@ -244,9 +217,7 @@ export default function SocialPage() {
                         </div>
                         <TabsContent value="video">
                              <div className="space-y-8 max-w-md mx-auto">
-                                {videoPosts.map(post => (
-                                   <VideoPlayerCard key={post.id} post={post} />
-                                ))}
+                                <VideoPlayerCard post={videoPost} />
                             </div>
                         </TabsContent>
                     </Tabs>
@@ -275,16 +246,16 @@ export default function SocialPage() {
                     </Card>
                      <Card className="bg-card/50 border-dashed border-border hover:border-primary/50 transition-colors">
                         <CardContent className="p-4 h-32 flex flex-col items-center justify-center text-center">
-                            <Upload className="h-8 w-8 text-muted-foreground mb-2"/>
-                           <p className="text-sm text-muted-foreground">UPLOAD<br/>PICTURE / VIDEO</p>
-                           <p className="text-xs text-muted-foreground">ADD LINK / URL</p>
+                           <p className="text-sm font-semibold">UPLOAD</p>
+                           <p className="text-xs text-muted-foreground">PICTURE / VIDEO</p>
+                           <p className="text-xs text-muted-foreground mt-2">ADD LINK / URL</p>
                         </CardContent>
                     </Card>
                      <Card className="bg-card/50 border-dashed border-border hover:border-primary/50 transition-colors">
                         <CardContent className="p-4 h-32 flex flex-col items-center justify-center text-center">
-                             <Upload className="h-8 w-8 text-muted-foreground mb-2"/>
-                             <p className="text-sm text-muted-foreground">UPLOAD<br/>PICTURE / VIDEO</p>
-                             <p className="text-xs text-muted-foreground">ADD LINK / URL</p>
+                           <p className="text-sm font-semibold">UPLOAD</p>
+                           <p className="text-xs text-muted-foreground">PICTURE / VIDEO</p>
+                           <p className="text-xs text-muted-foreground mt-2">ADD LINK / URL</p>
                         </CardContent>
                     </Card>
                 </aside>
