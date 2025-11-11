@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, LogOut, Star, ShoppingBag, Bot, Users, Home } from 'lucide-react';
+import { Menu, LogOut, Star, ShoppingBag, Bot, Users, Home, User, Video, Clapperboard, Rss } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -25,11 +25,11 @@ export default function UsersDashboardLayout({
   const userProfileImage = PlaceHolderImages.find(i => i.id === 'female-archer-1');
 
   const mainNavItems = [
-    { name: 'Social', href: '/social' },
-    { name: 'Friends', href: '/friends' },
-    { name: 'Followers', href: '/followers' },
-    { name: 'Shopping', href: '/shopping' },
-    { name: 'AI', href: '/ai-hub' },
+    { name: 'Social', href: '/socialive', icon: <Video/> },
+    { name: 'Friends', href: '/friends', icon: <UserPlus/> },
+    { name: 'Followers', href: '/followers', icon: <Rss/> },
+    { name: 'Shopping', href: '/shopping', icon: <ShoppingBag/> },
+    { name: 'AI', href: '/ai-hub', icon: <Bot/> },
   ];
 
   const memberEmails = ['admin@mesy.io', 'tipyatida@gmail.com', 'mesy.universe@gmail.com'];
@@ -73,7 +73,7 @@ export default function UsersDashboardLayout({
             </Link>
              <nav className="hidden items-center gap-6 text-sm md:flex">
                 <Link
-                  href="/users/profile"
+                  href="/users"
                   className="flex items-center gap-2 transition-colors hover:text-foreground/80 text-foreground/60"
                 >
                   <Avatar className="h-6 w-6 border-2 border-primary/50">
@@ -87,9 +87,9 @@ export default function UsersDashboardLayout({
                 <Link
                   key={item.name}
                   href={item.href}
-                  className="transition-colors hover:text-foreground/80 text-foreground/60"
+                  className="flex items-center gap-2 transition-colors hover:text-foreground/80 text-foreground/60"
                 >
-                  {item.name}
+                  {item.icon} {item.name}
                 </Link>
               ))}
             </nav>
@@ -116,7 +116,7 @@ export default function UsersDashboardLayout({
                              <Link href="/users/profile" className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">USER</Link>
                             {mainNavItems.map((item) => (
                                 <Link key={item.name} href={item.href} className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
-                                    {item.name}
+                                    {item.icon} {item.name}
                                 </Link>
                             ))}
                         </div>
