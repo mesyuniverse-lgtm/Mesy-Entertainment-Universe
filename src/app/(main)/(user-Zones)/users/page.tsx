@@ -14,6 +14,7 @@ const StatCard = ({ title, value, icon, colorClass }: { title: string, value: st
 
     useEffect(() => {
         const numValue = parseInt(value.replace(/,/g, ''));
+        if (isNaN(numValue)) return;
         let start = 0;
         const duration = 1500;
         const increment = numValue / (duration / 16);
@@ -84,9 +85,9 @@ export default function UsersZonePage() {
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <StatCard title="ผู้ที่ล็อกอินอยู่" value="1,346" icon={<Users className="w-6 h-6 text-pink-400" />} />
-                <StatCard title="เควสที่สำเร็จ" value="87,677" icon={<CheckCircle className="w-6 h-6 text-pink-400" />} />
-                <StatCard title="ผู้รับรางวัล" value="2,454" icon={<Trophy className="w-6 h-6 text-pink-400" />} />
+                <StatCard title="ผู้ที่ล็อกอินอยู่" value="1346" icon={<Users className="w-6 h-6 text-pink-400" />} />
+                <StatCard title="เควสที่สำเร็จ" value="87677" icon={<CheckCircle className="w-6 h-6 text-pink-400" />} />
+                <StatCard title="ผู้รับรางวัล" value="2454" icon={<Trophy className="w-6 h-6 text-pink-400" />} />
             </div>
 
             {/* Action Cards */}

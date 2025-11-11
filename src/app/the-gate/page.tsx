@@ -61,7 +61,7 @@ export default function TheGatePage() {
                     </CardContent>
                     <div className="p-6 pt-0">
                          <Button asChild className="w-full">
-                            <Link href="/login">
+                            <Link href="/user-Zones">
                                 Enter User Zone <ArrowRight className="ml-2" />
                             </Link>
                         </Button>
