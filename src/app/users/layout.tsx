@@ -1,7 +1,7 @@
 
 'use client';
 import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -67,7 +67,7 @@ export default function UsersDashboardLayout({
 
   // Render the layout for regular users
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col" style={{'--background': 'hsl(220 40% 8%)'} as React.CSSProperties}>
       <header className="sticky top-0 z-40 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-16 max-w-screen-2xl items-center">
           <div className="mr-4 flex items-center">
@@ -147,10 +147,8 @@ export default function UsersDashboardLayout({
           </div>
         </div>
       </header>
-      <main className="flex-1 py-6 lg:py-8">
-        <div className="container">
-          {children}
-        </div>
+      <main className="flex-1">
+        {children}
       </main>
     </div>
   );

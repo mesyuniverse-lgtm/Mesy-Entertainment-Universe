@@ -60,7 +60,7 @@ export default function UsersZonePage() {
 
 
     return (
-        <div className="container py-12">
+        <div className="container py-6">
              <div className="relative flex overflow-x-hidden bg-primary/10 border border-primary/30 rounded-lg py-2 text-sm mb-6">
                 <div className="animate-marquee whitespace-nowrap text-primary font-semibold">
                     <span className="mx-4">Aria has received a Legendary Item: Shadowfire Bow! ✨</span>
@@ -123,6 +123,7 @@ export default function UsersZonePage() {
                         <main className="xl:col-span-3 space-y-6">
                             <div className="text-center">
                                 <h1 className="text-5xl font-headline font-bold tracking-wider text-white" style={{ textShadow: '0 0 10px hsl(var(--primary))' }}>USERS ZONE</h1>
+                                <p className="text-muted-foreground mt-2">สวัสดีค่ะ คุณ Tipyatida, ยินดีต้อนรับสู่พื้นที่สำหรับ</p>
                             </div>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                                 {allUsers.map((user, index) => (
