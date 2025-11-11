@@ -28,7 +28,7 @@ export default function UsersDashboardLayout({
 
   const mainNavItems = [
     { name: 'Profile', href: '/users/profile' },
-    { name: 'Socialive', href: '/socialive' },
+    { name: 'Social', href: '/socialive' },
     { name: 'Friends', href: '/friends' },
     { name: 'Followers', href: '/followers' },
     { name: 'Shopping', href: '/shopping' },
@@ -137,3 +137,5 @@ export default function UsersDashboardLayout({
     </div>
   );
 }
+
+    
