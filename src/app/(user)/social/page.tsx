@@ -7,7 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Users, Clapperboard, Crown, Gift, Heart, MessageCircle, Share2, Gem, Star, LayoutGrid, Video } from 'lucide-react';
+import { Users, Clapperboard, Crown, Gift, Heart, MessageCircle, Share2, Gem, Star, LayoutGrid, Video, ArrowLeft } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -113,6 +113,14 @@ export default function SocialPage() {
         `}</style>
             
         <div className="container mx-auto p-4 lg:p-6">
+            <div className="mb-6">
+                <Button asChild variant="outline">
+                    <Link href="/users">
+                        <ArrowLeft className="mr-2 h-4 w-4" />
+                        Back to Dashboard
+                    </Link>
+                </Button>
+            </div>
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                 {/* Left Sidebar */}
