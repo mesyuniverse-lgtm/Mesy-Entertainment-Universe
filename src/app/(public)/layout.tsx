@@ -65,7 +65,7 @@ export default function PublicLayout({
              ) : null}
              {!isUserLoading && user && (
                 <Button asChild>
-                    <Link href="/the-door">Enter App</Link>
+                    <Link href="/dashboard">Enter App</Link>
                 </Button>
              )}
             <Sheet>
