@@ -289,11 +289,12 @@ export default function AISystemPage() {
                         <CardContent className="space-y-4">
                              <div>
                                 <Label>Default Text Generation</Label>
-                                <Select defaultValue="gemini-2.5-flash">
+                                <Select defaultValue="local-llm">
                                     <SelectTrigger><SelectValue/></SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="gemini-2.5-flash">Gemini 2.5 Flash</SelectItem>
-                                        <SelectItem value="gemini-1.5-pro">Gemini 1.5 Pro</SelectItem>
+                                        <SelectItem value="gemini-2.5-flash">Gemini 2.5 Flash (Pay-as-you-go)</SelectItem>
+                                        <SelectItem value="gemini-1.5-pro">Gemini 1.5 Pro (Pay-as-you-go)</SelectItem>
+                                        <SelectItem value="local-llm">Local LLM (No Cost)</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
@@ -302,7 +303,7 @@ export default function AISystemPage() {
                                 <Select defaultValue="imagen-4">
                                     <SelectTrigger><SelectValue/></SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="imagen-4">Imagen 4.0</SelectItem>
+                                        <SelectItem value="imagen-4">Imagen 4.0 (Pay-as-you-go)</SelectItem>
                                         <SelectItem value="dall-e-3">DALL-E 3 (via API)</SelectItem>
                                     </SelectContent>
                                 </Select>
@@ -348,3 +349,5 @@ export default function AISystemPage() {
         </div>
     );
 }
+
+    
