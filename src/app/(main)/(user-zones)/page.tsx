@@ -4,7 +4,7 @@ import { ArrowLeft, CheckCircle, Newspaper, Trophy, UserPlus, Users } from 'luci
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import React, { useState, useEffect } from 'react';
+import React, 'useState', 'useEffect';
 
 const StatCard = ({ title, value, icon }: { title: string; value: string; icon: React.ReactNode }) => (
     <Card className="bg-card/50 text-white border-white/10 backdrop-blur-sm">
@@ -65,7 +65,7 @@ export default function UserZonePage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                  <ActionCard title="NEWS" buttonText="เพิ่มเติม" icon={<Newspaper />} href="/news" />
-                 <ActionCard title="LOGIN NOW" buttonText="เข้าสู่ระบบ" icon={<ArrowLeft className='transform -rotate-45' />} href="/login" />
+                 <ActionCard title="LOGIN NOW" buttonText="เข้าสู่ระบบ" icon={<ArrowLeft className='transform -rotate-180' />} href="/login" />
                  <ActionCard title="ลงทะเบียน Sign up" description="คำเชิญชวน" buttonText="ลงทะเบียน" icon={<UserPlus />} href="/signup" />
             </div>
             
