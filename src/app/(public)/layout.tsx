@@ -26,8 +26,9 @@ export default function PublicLayout({
   const isWelcomePage = pathname === '/welcome';
   const isUserZonesPage = pathname === '/user-zones';
 
+  // If it's the user-zones page, render a simplified layout
   if (isUserZonesPage) {
-    return <div className="flex min-h-screen flex-col">{children}</div>;
+    return <div className="flex min-h-screen flex-col bg-background">{children}</div>;
   }
   
   return (

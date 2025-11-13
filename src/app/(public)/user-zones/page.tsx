@@ -34,13 +34,19 @@ const ActionCard = ({ title, description, buttonText, icon, href }: { title: str
 
 export default function UserZonePage() {
     const [totalRegistered, setTotalRegistered] = useState(137800);
+    const [isClient, setIsClient] = useState(false);
 
     useEffect(() => {
+        setIsClient(true);
         const interval = setInterval(() => {
             setTotalRegistered(prev => prev + Math.floor(Math.random() * 5) + 1);
         }, 2000);
         return () => clearInterval(interval);
     }, []);
+
+    if (!isClient) {
+        return null;
+    }
 
 
     return (
