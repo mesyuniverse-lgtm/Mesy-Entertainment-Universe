@@ -27,7 +27,7 @@ export default function UserHubLayout({
     if (auth) {
       await signOut(auth);
     }
-    router.push('/welcome');
+    router.push('/user-zones');
   };
 
   // Mock data for notification badges
@@ -142,7 +142,7 @@ export default function UserHubLayout({
                       <DropdownMenuSeparator />
                       <DropdownMenuItem onClick={handleLogout}>
                           <LogOut className="mr-2 h-4 w-4" />
-                          Logout
+                          <span>Logout & Back to User Zone</span>
                       </DropdownMenuItem>
                   </DropdownMenuContent>
               </DropdownMenu>
