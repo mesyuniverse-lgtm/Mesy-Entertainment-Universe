@@ -10,8 +10,6 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
-import { CrystalAccent } from '@/components/ui/crystal-accent';
-
 
 export default function UserHubLayout({
   children,
@@ -74,11 +72,6 @@ export default function UserHubLayout({
           </Sheet>
           </div>
 
-          {/* 3D Crystal Accent */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-48 pointer-events-none">
-            <CrystalAccent />
-          </div>
-          
           {/* Desktop Menu */}
           <div className="hidden md:flex md:items-center md:gap-6 text-sm z-10">
              {userHubNavLinks.map((link) => (
