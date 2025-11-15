@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -29,10 +28,11 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     };
 
     const navLinks = [
-        { href: '/dashboard', label: 'Dashboard', roles: ['User', 'Member'] },
-        { href: '/socialive', label: 'Socialive', roles: ['User', 'Member'] },
-        { href: '/memberships', label: 'Membership', roles: ['Member'] },
-        { href: '/shop', label: 'Shop', roles: ['User', 'Member'] },
+        { href: '/user-hub', label: 'User Hub', roles: ['User', 'Member', 'Super-admin'] },
+        { href: '/dashboard', label: 'Dashboard', roles: ['Member', 'Super-admin'] },
+        { href: '/socialive', label: 'Socialive', roles: ['User', 'Member', 'Super-admin'] },
+        { href: '/memberships', label: 'Membership', roles: ['Member', 'Super-admin'] },
+        { href: '/shop', label: 'Shop', roles: ['User', 'Member', 'Super-admin'] },
     ];
     
     // Mock user role - in a real app, this would come from your user data
