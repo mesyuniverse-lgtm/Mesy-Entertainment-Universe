@@ -55,6 +55,19 @@ export default function UserHubLayout({
   return (
     <div className="flex flex-col h-screen bg-background">
       <header className="flex h-14 items-center gap-4 border-b border-border/20 bg-background/50 px-4 lg:h-[60px] lg:px-6">
+          <Link href="/welcome" className="flex items-center gap-2 font-semibold md:hidden">
+            <Gem className="h-6 w-6 text-primary" />
+            <span className="sr-only">MESY</span>
+          </Link>
+          
+          <div className="hidden md:flex md:items-center md:gap-6 text-sm">
+             {mainNavLinks.map((link) => (
+                  <Link key={link.href} href={link.href} className={cn("transition-colors hover:text-foreground/80", pathname === link.href ? "text-foreground" : "text-foreground/60")}>
+                      {link.label}
+                  </Link>
+              ))}
+          </div>
+
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
