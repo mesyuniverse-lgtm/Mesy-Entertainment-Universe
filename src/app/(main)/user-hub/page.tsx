@@ -58,15 +58,11 @@ export default function UserHubPage() {
                 <p className="text-muted-foreground">สวัสดีค่ะ คุณ {userDisplayName}, ยินดีต้อนรับสู่พื้นที่สำหรับ users</p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <div className="md:col-span-1">
-                    <StatCard title="จำนวนผู้สมัคร" value={totalRegistered.toLocaleString()} icon={<Users />} unit="Total register" />
-                </div>
-                 <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    <StatCard title="ผู้ที่ล็อกอินอยู่" value="1,349" icon={<Users />} />
-                    <StatCard title="เควสที่สำเร็จ" value="87,675" icon={<CheckCircle />} />
-                    <StatCard title="ผู้รับรางวัล" value="2,454" icon={<Trophy />} />
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <StatCard title="จำนวนผู้สมัคร" value={totalRegistered.toLocaleString()} icon={<Users />} unit="Total register" />
+                <StatCard title="ผู้ที่ล็อกอินอยู่" value="1,349" icon={<Users />} />
+                <StatCard title="เควสที่สำเร็จ" value="87,675" icon={<CheckCircle />} />
+                <StatCard title="ผู้ยืนยันตนสำเร็จ" value="2,454" icon={<CheckCircle2 />} />
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
