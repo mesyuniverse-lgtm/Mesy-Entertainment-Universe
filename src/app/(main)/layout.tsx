@@ -3,7 +3,8 @@
 import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
-import { useAuth, useUser } from '@/firebase'; // Assuming useUser gives role info
+import { useAuth } from '@/firebase'; 
+import { useUser } from '@/firebase/auth/use-user';
 import { signOut } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
 import { Gem, LogOut, Menu, User, Shield } from 'lucide-react';
@@ -15,9 +16,9 @@ import './main-module.global.css';
 
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
-    const { user, isUserLoading } = useUser();
-    const router = useRouter();
     const auth = useAuth();
+    const { user, isUserLoading } = useUser(auth);
+    const router = useRouter();
     const pathname = usePathname();
 
     useEffect(() => {

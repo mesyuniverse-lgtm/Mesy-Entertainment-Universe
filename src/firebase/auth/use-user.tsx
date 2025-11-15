@@ -46,5 +46,3 @@ export const useUser = (auth: Auth): UserHookResult => {
 
   return userAuthState;
 };
-
-    
