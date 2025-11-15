@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth, useUser } from '@/firebase'; // Assuming useUser gives role info
@@ -19,6 +19,12 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     const router = useRouter();
     const auth = useAuth();
     const pathname = usePathname();
+
+    useEffect(() => {
+        if (!isUserLoading && !user) {
+            router.push('/login');
+        }
+    }, [isUserLoading, user, router]);
 
     const handleLogout = async () => {
         if(auth) {
@@ -41,13 +47,8 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     const accessibleLinks = navLinks.filter(link => link.roles.includes(userRole));
 
 
-    if (isUserLoading) {
+    if (isUserLoading || !user) {
         return <div className="flex h-screen items-center justify-center bg-background"><Gem className="h-12 w-12 animate-spin text-primary" /></div>;
-    }
-
-    if (!user) {
-         router.push('/login');
-         return <div className="flex h-screen items-center justify-center bg-background"><Gem className="h-12 w-12 animate-spin text-primary" /></div>;
     }
 
     return (
