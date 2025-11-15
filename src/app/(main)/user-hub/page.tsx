@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, AlertTriangle, Users, Trophy, CheckCircle, MessageSquare, Gift } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, Users, Trophy, CheckCircle, MessageSquare, Gift, ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useUser } from '@/firebase';
@@ -61,7 +61,7 @@ export default function UserHubPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <StatCard title="จำนวนผู้สมัคร" value={totalRegistered.toLocaleString()} icon={<Users />} unit="Total register" />
                 <StatCard title="ผู้ที่ล็อกอินอยู่" value="1,349" icon={<Users />} />
-                <StatCard title="เควสที่สำเร็จ" value="87,675" icon={<CheckCircle />} />
+                <StatCard title="จำนวนผู้ช็อปปิ้ง" value="1,234" icon={<ShoppingCart />} />
                 <StatCard title="ผู้ยืนยันตนสำเร็จ" value="2,454" icon={<CheckCircle2 />} />
             </div>
             
