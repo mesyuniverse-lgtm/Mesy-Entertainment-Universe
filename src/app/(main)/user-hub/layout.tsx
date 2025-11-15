@@ -30,12 +30,19 @@ export default function UserHubLayout({
     router.push('/welcome');
   };
 
+  // Mock data for notification badges
+  const notificationCounts = {
+    friend: 5,
+    follower: 2,
+    live: 3,
+  };
+
   const userHubNavLinks = [
     { href: '/user-hub', label: 'User Hub', icon: <Users /> },
     { href: '/profile', label: 'Profile', icon: <User /> },
-    { href: '/live', label: 'Live', icon: <Video /> },
-    { href: '/friends', label: 'Friend', icon: <Users /> },
-    { href: '/followers', label: 'Follower', icon: <UserPlus /> },
+    { href: '/live', label: 'Live', icon: <Video />, notification: notificationCounts.live },
+    { href: '/friends', label: 'Friend', icon: <Users />, notification: notificationCounts.friend },
+    { href: '/followers', label: 'Follower', icon: <UserPlus />, notification: notificationCounts.follower },
     { href: '/following', label: 'Following', icon: <Rss /> },
     { href: '/shopping', label: 'Shopping', icon: <ShoppingCart /> },
   ];
@@ -61,9 +68,14 @@ export default function UserHubLayout({
               <SheetContent side="left" className="flex flex-col bg-background/80 backdrop-blur-sm border-r-primary/20">
                    <nav className="grid gap-2 text-lg font-medium">
                       {userHubNavLinks.map(link => (
-                           <Link key={link.href} href={link.href} className="text-muted-foreground hover:text-primary flex items-center gap-3 py-2">
+                           <Link key={link.href} href={link.href} className="text-muted-foreground hover:text-primary flex items-center gap-3 py-2 relative">
                             {link.icon}
-                            {link.label}
+                            <span>{link.label}</span>
+                            {link.notification && (
+                                <span className="absolute left-6 top-1.5 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs text-white">
+                                    {link.notification}
+                                </span>
+                            )}
                            </Link>
                       ))}
                    </nav>
@@ -74,9 +86,14 @@ export default function UserHubLayout({
           {/* Desktop Menu */}
           <div className="hidden md:flex md:items-center md:gap-6 text-sm z-10">
              {userHubNavLinks.map((link) => (
-                  <Link key={link.href} href={link.href} className={cn("flex items-center gap-1.5 transition-colors hover:text-primary", pathname === link.href ? "text-primary font-semibold" : "text-muted-foreground")}>
+                  <Link key={link.href} href={link.href} className={cn("flex items-center gap-1.5 transition-colors hover:text-primary relative", pathname === link.href ? "text-primary font-semibold" : "text-muted-foreground")}>
                       {link.icon}
-                      {link.label}
+                      <span>{link.label}</span>
+                      {link.notification && (
+                        <div className="absolute -top-1 -right-2 flex h-4 w-4 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white">
+                            {link.notification}
+                        </div>
+                      )}
                   </Link>
               ))}
           </div>
