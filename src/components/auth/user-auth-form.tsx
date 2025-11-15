@@ -123,7 +123,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         description: "Please check your email to verify your account.",
       });
     }
-    router.push(redirectPath || '/users');
+    router.push(redirectPath || '/dashboard');
   };
 
   React.useEffect(() => {
@@ -225,7 +225,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     setIsLoading(true);
     try {
       await signInAnonymously(auth);
-      router.push(redirectPath || "/users");
+      router.push(redirectPath || "/dashboard");
     } catch (error: any) {
       handleAuthError(error);
     } finally {
@@ -400,3 +400,5 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     </div>
   )
 }
+
+    
