@@ -8,7 +8,7 @@ import { useAuth } from '@/firebase';
 import { useUser } from '@/firebase/auth/use-user';
 import { signOut } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
-import { Gem, LogOut, Menu, User, Shield } from 'lucide-react';
+import { Gem, LogOut, Menu, User, Shield, Bell } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetTrigger, SheetContent } from '@/components/ui/sheet';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -49,7 +49,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     const accessibleLinks = navLinks.filter(link => link.roles.includes(userRole));
 
 
-    if (isUserLoading || !user) {
+    if (isUserLoading) {
         return <div className="flex h-screen items-center justify-center bg-background"><Gem className="h-12 w-12 animate-spin text-primary" /></div>;
     }
 
@@ -110,6 +110,22 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                     </Sheet>
                     
                     <div className="w-full flex-1" />
+
+                     {/* Notification Dropdown */}
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="ghost" size="icon">
+                                <Bell className="h-5 w-5" />
+                                <span className="sr-only">Notifications</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>Welcome to MESY Universe!</DropdownMenuItem>
+                            <DropdownMenuItem>The 3D library issue will be fixed soon.</DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
 
                     {/* User Dropdown */}
                     <DropdownMenu>

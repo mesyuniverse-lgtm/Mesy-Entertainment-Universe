@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Gem, LogOut, Menu, Shield, ShoppingCart, User, Users, Video, UserPlus, Rss } from 'lucide-react';
+import { Bell, LogOut, Menu, Shield, ShoppingCart, User, Users, Video, UserPlus, Rss } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
@@ -60,12 +60,11 @@ export default function UserHubLayout({
               </SheetTrigger>
               <SheetContent side="left" className="flex flex-col bg-background/80 backdrop-blur-sm border-r-primary/20">
                    <nav className="grid gap-2 text-lg font-medium">
-                      <Link href="/welcome" className="flex items-center gap-2 text-lg font-semibold mb-4">
-                          <Gem className="h-6 w-6 text-primary" />
-                          <span>MESY</span>
-                      </Link>
                       {userHubNavLinks.map(link => (
-                           <Link key={link.href} href={link.href} className="text-muted-foreground hover:text-primary">{link.label}</Link>
+                           <Link key={link.href} href={link.href} className="text-muted-foreground hover:text-primary flex items-center gap-3 py-2">
+                            {link.icon}
+                            {link.label}
+                           </Link>
                       ))}
                    </nav>
               </SheetContent>
@@ -85,10 +84,25 @@ export default function UserHubLayout({
           <div className="w-full flex-1" />
 
           {/* Right side actions */}
-          <div className="flex items-center gap-4 z-10">
+          <div className="flex items-center gap-2 z-10">
               <Button asChild variant="destructive" className="bg-red-600 hover:bg-red-700 text-white font-bold shadow-lg hidden sm:flex">
                   <Link href="/member-signup">UPGRADE</Link>
               </Button>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon">
+                        <Bell className="h-5 w-5" />
+                        <span className="sr-only">Notifications</span>
+                    </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end">
+                    <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem>Welcome to the User Hub!</DropdownMenuItem>
+                    <DropdownMenuItem>3D crystal effect will be back soon!</DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
 
               <DropdownMenu>
                   <DropdownMenuTrigger asChild>

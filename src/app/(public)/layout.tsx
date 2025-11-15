@@ -3,10 +3,11 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Gem } from '@/components/icons';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu } from 'lucide-react';
+import { Bell, Menu } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useUser } from '@/firebase';
 import { usePathname } from 'next/navigation';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export default function PublicLayout({
   children,
@@ -55,6 +56,22 @@ export default function PublicLayout({
             </nav>
           </div>
           <div className="flex flex-1 items-center justify-end space-x-2">
+             {!isUserLoading && user && (
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button variant="ghost" size="icon">
+                            <Bell className="h-5 w-5" />
+                            <span className="sr-only">Notifications</span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                        <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem>Welcome to MESY Universe!</DropdownMenuItem>
+                        <DropdownMenuItem>Your daily reward is available.</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+             )}
              {isWelcomePage ? (
                 <Button asChild style={{ backgroundColor: '#D10000', color: 'white' }}>
                     <Link href="/the-gate">Launch App</Link>
