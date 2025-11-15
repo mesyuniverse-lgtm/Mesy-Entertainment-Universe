@@ -41,13 +41,22 @@ const contentGrid = [
 export default function UserHubPage() {
     const { user } = useUser();
     const [totalRegistered, setTotalRegistered] = React.useState(137799);
+    const [loggedInUsers, setLoggedInUsers] = React.useState(1349);
+    const [shoppers, setShoppers] = React.useState(1234);
+    const [verifiedUsers, setVerifiedUsers] = React.useState(2454);
+
 
     React.useEffect(() => {
-        const interval = setInterval(() => {
-            setTotalRegistered(prev => prev + Math.floor(Math.random() * 3) + 1);
-        }, 2500);
-        return () => clearInterval(interval);
+        const intervals = [
+            setInterval(() => setTotalRegistered(prev => prev + Math.floor(Math.random() * 3) + 1), 2500),
+            setInterval(() => setLoggedInUsers(prev => prev + (Math.random() > 0.5 ? 1 : -1) * Math.floor(Math.random() * 2)), 3000),
+            setInterval(() => setShoppers(prev => prev + (Math.random() > 0.6 ? 1 : 0)), 2000),
+            setInterval(() => setVerifiedUsers(prev => prev + (Math.random() > 0.9 ? 1 : 0)), 5000),
+        ];
+        
+        return () => intervals.forEach(clearInterval);
     }, []);
+
 
     const userDisplayName = user?.displayName || user?.email?.split('@')[0] || 'User';
 
@@ -60,9 +69,9 @@ export default function UserHubPage() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                 <StatCard title="จำนวนผู้สมัคร" value={totalRegistered.toLocaleString()} icon={<Users />} unit="Total register" />
-                <StatCard title="ผู้ที่ล็อกอินอยู่" value="1,349" icon={<Users />} />
-                <StatCard title="จำนวนผู้ช็อปปิ้ง" value="1,234" icon={<ShoppingCart />} />
-                <StatCard title="ผู้ยืนยันตนสำเร็จ" value="2,454" icon={<CheckCircle2 />} />
+                <StatCard title="ผู้ที่ล็อกอินอยู่" value={loggedInUsers.toLocaleString()} icon={<Users />} />
+                <StatCard title="จำนวนผู้ช็อปปิ้ง" value={shoppers.toLocaleString()} icon={<ShoppingCart />} />
+                <StatCard title="ผู้ยืนยันตนสำเร็จ" value={verifiedUsers.toLocaleString()} icon={<CheckCircle2 />} />
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -131,3 +140,5 @@ export default function UserHubPage() {
         </div>
     );
 }
+
+    
