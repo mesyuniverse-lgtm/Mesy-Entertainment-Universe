@@ -1,4 +1,3 @@
-
 'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -11,6 +10,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel,
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
+import { CrystalAccent } from '@/components/ui/crystal-accent';
 
 
 export default function UserHubLayout({
@@ -45,30 +45,22 @@ export default function UserHubLayout({
 
   return (
     <div className="flex flex-col h-screen bg-background">
-      <header className="flex h-14 items-center gap-4 border-b border-border/20 bg-background/50 px-4 lg:h-[60px] lg:px-6">
-          <Link href="/welcome" className="flex items-center gap-2 font-semibold md:hidden">
-            <Gem className="h-6 w-6 text-primary" />
-            <span className="sr-only">MESY</span>
-          </Link>
-
-          <div className="hidden md:flex md:items-center md:gap-6 text-sm">
-             {userHubNavLinks.map((link) => (
-                  <Link key={link.href} href={link.href} className={cn("flex items-center gap-1.5 transition-colors hover:text-primary", pathname === link.href ? "text-primary" : "text-muted-foreground")}>
-                      {link.icon}
-                      {link.label}
-                  </Link>
-              ))}
-          </div>
-
+      <header 
+        className="relative flex h-16 items-center gap-4 border-b border-primary/10 bg-black/30 px-4 lg:px-6 shadow-lg shadow-primary/5"
+        style={{
+          backgroundImage: 'radial-gradient(ellipse 80% 50% at 50% -20%, hsl(var(--primary)/0.15), transparent)'
+        }}
+      >
+          {/* Mobile Menu */}
           <div className="md:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                  <Button variant="outline" size="icon" className="shrink-0">
+                  <Button variant="outline" size="icon" className="shrink-0 bg-transparent border-primary/20">
                       <Menu className="h-5 w-5" />
                       <span className="sr-only">Toggle navigation menu</span>
                   </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="flex flex-col bg-background/80 backdrop-blur-sm">
+              <SheetContent side="left" className="flex flex-col bg-background/80 backdrop-blur-sm border-r-primary/20">
                    <nav className="grid gap-2 text-lg font-medium">
                       <Link href="/welcome" className="flex items-center gap-2 text-lg font-semibold mb-4">
                           <Gem className="h-6 w-6 text-primary" />
@@ -81,39 +73,56 @@ export default function UserHubLayout({
               </SheetContent>
           </Sheet>
           </div>
+
+          {/* 3D Crystal Accent */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 h-full w-48 pointer-events-none">
+            <CrystalAccent />
+          </div>
+          
+          {/* Desktop Menu */}
+          <div className="hidden md:flex md:items-center md:gap-6 text-sm z-10">
+             {userHubNavLinks.map((link) => (
+                  <Link key={link.href} href={link.href} className={cn("flex items-center gap-1.5 transition-colors hover:text-primary", pathname === link.href ? "text-primary font-semibold" : "text-muted-foreground")}>
+                      {link.icon}
+                      {link.label}
+                  </Link>
+              ))}
+          </div>
           
           <div className="w-full flex-1" />
 
-          <Button asChild variant="destructive" className="bg-red-600 hover:bg-red-700 text-white font-bold shadow-lg hidden sm:flex">
-              <Link href="/member-signup">UPGRADE</Link>
-          </Button>
+          {/* Right side actions */}
+          <div className="flex items-center gap-4 z-10">
+              <Button asChild variant="destructive" className="bg-red-600 hover:bg-red-700 text-white font-bold shadow-lg hidden sm:flex">
+                  <Link href="/member-signup">UPGRADE</Link>
+              </Button>
 
-          {/* User Dropdown */}
-          <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                  <Button variant="secondary" size="icon" className="rounded-full">
-                      <Avatar className="h-8 w-8">
-                          <AvatarImage src={user?.photoURL || undefined} />
-                          <AvatarFallback>
-                              {user?.email?.[0].toUpperCase()}
-                          </AvatarFallback>
-                      </Avatar>
-                  </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                      {userRole === 'Member' ? <Shield className="mr-2 h-4 w-4" /> : <User className="mr-2 h-4 w-4" />}
-                      {userRole} Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout}>
-                      <LogOut className="mr-2 h-4 w-4" />
-                      Logout
-                  </DropdownMenuItem>
-              </DropdownMenuContent>
-          </DropdownMenu>
+              <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                      <Button variant="secondary" size="icon" className="rounded-full bg-background/50 hover:bg-secondary">
+                          <Avatar className="h-8 w-8">
+                              <AvatarImage src={user?.photoURL || undefined} />
+                              <AvatarFallback>
+                                  {user?.email?.[0].toUpperCase()}
+                              </AvatarFallback>
+                          </Avatar>
+                      </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end">
+                      <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem>
+                          {userRole === 'Member' ? <Shield className="mr-2 h-4 w-4" /> : <User className="mr-2 h-4 w-4" />}
+                          {userRole} Profile
+                      </DropdownMenuItem>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem onClick={handleLogout}>
+                          <LogOut className="mr-2 h-4 w-4" />
+                          Logout
+                      </DropdownMenuItem>
+                  </DropdownMenuContent>
+              </DropdownMenu>
+          </div>
       </header>
 
       <div className="bg-black/20 text-xs text-muted-foreground py-1.5 overflow-hidden">
