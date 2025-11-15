@@ -3,10 +3,8 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle2, Gem, LogOut, Menu, Shield, ShoppingCart, User, MessageSquare, Users, Video, UserPlus, Rss } from 'lucide-react';
+import { Gem, LogOut, Menu, Shield, ShoppingCart, User, Users, Video, UserPlus, Rss } from 'lucide-react';
 import { useAuth, useUser } from '@/firebase';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { signOut } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -34,15 +32,8 @@ export default function UserHubLayout({
     router.push('/welcome');
   };
 
-  const mainNavLinks = [
-    { href: '/user-hub', label: 'User Hub' },
-    { href: '/dashboard', label: 'Dashboard' },
-    { href: '/socialive', label: 'Socialive' },
-    { href: '/memberships', label: 'Membership' },
-    { href: '/shop', label: 'Shop' },
-  ];
-
   const userHubNavLinks = [
+    { href: '/user-hub', label: 'User Hub', icon: <Users /> },
     { href: '/profile', label: 'Profile', icon: <User /> },
     { href: '/live', label: 'Live', icon: <Video /> },
     { href: '/friends', label: 'Friend', icon: <Users /> },
@@ -59,10 +50,11 @@ export default function UserHubLayout({
             <Gem className="h-6 w-6 text-primary" />
             <span className="sr-only">MESY</span>
           </Link>
-          
+
           <div className="hidden md:flex md:items-center md:gap-6 text-sm">
-             {mainNavLinks.map((link) => (
-                  <Link key={link.href} href={link.href} className={cn("transition-colors hover:text-foreground/80", pathname === link.href ? "text-foreground" : "text-foreground/60")}>
+             {userHubNavLinks.map((link) => (
+                  <Link key={link.href} href={link.href} className={cn("flex items-center gap-1.5 transition-colors hover:text-primary", pathname === link.href ? "text-primary" : "text-muted-foreground")}>
+                      {link.icon}
                       {link.label}
                   </Link>
               ))}
@@ -82,7 +74,7 @@ export default function UserHubLayout({
                           <Gem className="h-6 w-6 text-primary" />
                           <span>MESY</span>
                       </Link>
-                      {mainNavLinks.map(link => (
+                      {userHubNavLinks.map(link => (
                            <Link key={link.href} href={link.href} className="text-muted-foreground hover:text-primary">{link.label}</Link>
                       ))}
                    </nav>
@@ -123,28 +115,6 @@ export default function UserHubLayout({
               </DropdownMenuContent>
           </DropdownMenu>
       </header>
-
-      {/* User Hub Navigation */}
-      <nav className="bg-black/20 text-sm font-medium">
-        <div className="container mx-auto px-4">
-            <div className="flex items-center justify-between h-14">
-                <div className="flex items-center space-x-6">
-                    <Link href="/user-hub" className="flex flex-col items-center gap-1 text-primary">
-                        <Users className="h-6 w-6"/>
-                        <span className="text-xs font-bold">User Hub</span>
-                    </Link>
-                    <div className="hidden md:flex items-center space-x-6">
-                        {userHubNavLinks.map((link) => (
-                           <Link key={link.href} href={link.href} className={cn("flex items-center gap-1.5 transition-colors hover:text-primary", pathname === link.href ? "text-primary" : "text-muted-foreground")}>
-                                {link.icon}
-                                {link.label}
-                           </Link>
-                        ))}
-                    </div>
-                </div>
-            </div>
-        </div>
-      </nav>
 
       <div className="bg-black/20 text-xs text-muted-foreground py-1.5 overflow-hidden">
           <div className="animate-marquee whitespace-nowrap">
