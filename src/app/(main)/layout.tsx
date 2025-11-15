@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect } from 'react';
@@ -50,6 +51,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
     if (isUserLoading || !user) {
         return <div className="flex h-screen items-center justify-center bg-background"><Gem className="h-12 w-12 animate-spin text-primary" /></div>;
+    }
+
+    if (pathname === '/user-hub') {
+        return <>{children}</>;
     }
 
     return (
