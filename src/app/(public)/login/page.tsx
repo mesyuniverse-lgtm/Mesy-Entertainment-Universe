@@ -12,7 +12,7 @@ export default function LoginPage() {
           Enter your credentials to access your account.
         </p>
       </div>
-      <UserAuthForm action="login" redirectPath="/dashboard" />
+      <UserAuthForm action="login" redirectPath="/user-hub" />
       <p className="px-8 text-center text-sm text-muted-foreground">
         Don't have an account?{" "}
         <Link
@@ -25,5 +25,3 @@ export default function LoginPage() {
     </>
   );
 }
-
-    

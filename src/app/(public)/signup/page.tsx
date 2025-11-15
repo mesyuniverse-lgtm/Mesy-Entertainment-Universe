@@ -12,7 +12,7 @@ export default function SignupPage() {
           Enter your details below to create your account and join the universe.
         </p>
       </div>
-      <UserAuthForm action="signup" redirectPath="/dashboard" />
+      <UserAuthForm action="signup" redirectPath="/user-hub" />
       <p className="px-8 text-center text-sm text-muted-foreground">
         By clicking continue, you agree to our{" "}
         <Link
@@ -42,5 +42,3 @@ export default function SignupPage() {
     </>
   );
 }
-
-    
