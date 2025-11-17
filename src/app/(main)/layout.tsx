@@ -47,7 +47,7 @@ import { useRouter } from 'next/navigation';
 const memberNavItems = [
     {name: 'MEMBERS', href: '/members'},
     {name: 'SOCIAL', href: '#'},
-    {name: 'ENTERTAINMENT', href: '#'},
+    {name: 'ENTERTAINMENT', href: '/entertainment'},
     {name: 'CONNECTIONS', href: '#'},
     {name: 'AI HUB', href: '#'},
     {name: 'SHOPPING HUB', href: '#'},
