@@ -71,12 +71,12 @@ export default function MemberLayout({
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
+      <header className="sticky top-0 z-30 flex h-20 items-center gap-4 border-b border-primary/20 bg-gradient-to-r from-background to-primary/10 px-4 drop-shadow-[0_4px_15px_rgba(var(--primary-rgb),0.1)] sm:px-6">
         
-        <div className='flex items-center gap-4'>
+        <div className='flex items-center gap-6'>
            <Link href="/home" className="flex items-center gap-2 font-semibold">
-              <Gem className="h-6 w-6 text-primary" />
-              <span>MESY</span>
+              <Gem className="h-8 w-8 text-primary drop-shadow-[0_0_5px_hsl(var(--primary))]" />
+              <span className='text-xl'>MESY</span>
             </Link>
             <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
                 {memberNavItems.map(item => (
@@ -120,21 +120,21 @@ export default function MemberLayout({
             </nav>
           </SheetContent>
         </Sheet>
-        <div className="flex items-center gap-2 ml-auto">
-            <Button variant="ghost" size="icon"><Search className="h-5 w-5"/></Button>
-            <Button variant="ghost" size="icon"><Mail className="h-5 w-5"/></Button>
-            <Button variant="ghost" size="icon"><Bell className="h-5 w-5"/></Button>
-            <Button variant="ghost" size="icon"><MessageSquare className="h-5 w-5"/></Button>
-            <Button variant="ghost" size="icon"><Settings className="h-5 w-5"/></Button>
+        <div className="flex items-center gap-1 ml-auto">
+            <Button variant="ghost" size="icon" className="h-10 w-10 bg-black/20 hover:bg-black/40"><Search className="h-5 w-5"/></Button>
+            <Button variant="ghost" size="icon" className="h-10 w-10 bg-black/20 hover:bg-black/40"><Mail className="h-5 w-5"/></Button>
+            <Button variant="ghost" size="icon" className="h-10 w-10 bg-black/20 hover:bg-black/40"><Bell className="h-5 w-5"/></Button>
+            <Button variant="ghost" size="icon" className="h-10 w-10 bg-black/20 hover:bg-black/40"><MessageSquare className="h-5 w-5"/></Button>
+            <Button variant="ghost" size="icon" className="h-10 w-10 bg-black/20 hover:bg-black/40"><Settings className="h-5 w-5"/></Button>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
              <Button
                 variant="outline"
                 size="icon"
-                className="overflow-hidden rounded-full ml-2"
+                className="overflow-hidden rounded-full ml-2 h-12 w-12 border-2 border-primary/50 bg-black/20 hover:bg-black/40"
               >
-                <User className="h-5 w-5" />
+                <User className="h-6 w-6" />
               </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
