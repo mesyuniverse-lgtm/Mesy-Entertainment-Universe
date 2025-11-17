@@ -49,7 +49,7 @@ const memberNavItems = [
     {name: 'SOCIAL', href: '/social'},
     {name: 'ENTERTAINMENT', href: '/entertainment'},
     {name: 'CONNECTIONS', href: '/connections'},
-    {name: 'AI HUB', href: '#'},
+    {name: 'AI HUB', href: '/ai-hub'},
     {name: 'SHOPPING HUB', href: '#'},
 ]
 
