@@ -46,7 +46,7 @@ export default function CreateAvatarPage() {
     <div className="flex h-screen w-full flex-col bg-[#383838] text-white">
       <header className="flex h-12 items-center justify-between border-b border-gray-600 px-4">
         <Button variant="ghost" size="icon" asChild>
-            <Link href="/the-gate">
+            <Link href="/create-member-id">
               <ChevronLeft />
             </Link>
         </Button>
@@ -167,8 +167,8 @@ export default function CreateAvatarPage() {
       </div>
 
        <footer className="flex h-16 items-center justify-end border-t border-gray-600 px-4 bg-[#2a2a2a] space-x-2">
-        <Button variant="secondary" className="bg-gray-600 hover:bg-gray-500">Finish</Button>
-        <Button variant="ghost">Cancel</Button>
+        <Button variant="secondary" className="bg-gray-600 hover:bg-gray-500" asChild><Link href="/create-member-id">Finish</Link></Button>
+        <Button variant="ghost" asChild><Link href="/create-member-id">Cancel</Link></Button>
       </footer>
     </div>
   );
