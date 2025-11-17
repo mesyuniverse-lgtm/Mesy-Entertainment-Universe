@@ -8,7 +8,6 @@ import Link from "next/link"
 import { membershipData, MembershipLevel } from "@/lib/data"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card"
-import { Slider } from "@/components/ui/slider";
 import { Input } from "@/components/ui/input";
 
 function formatCurrency(value: number) {
@@ -26,8 +25,6 @@ export default function MemberPlanPage() {
   }, [memberCount]);
 
   const currentLevel = useMemo(() => {
-    // Find the highest level where member count is less than or equal to the level's requirement
-    // Start from the end of the sorted array for efficiency
     for (let i = membershipData.length - 1; i >= 0; i--) {
       if (memberCount < membershipData[i].members) {
          if(i > 0 && memberCount >= (membershipData[i-1].members - (i > 1 ? 1: 0) ) ) return membershipData[i-1].level;
@@ -84,22 +81,15 @@ export default function MemberPlanPage() {
             </CardHeader>
             <CardContent className="space-y-6 pt-6">
                 <div>
-                    <div className="flex justify-between items-center mb-2">
-                        <label htmlFor="member-count-input" className="text-sm font-medium">Number of Members</label>
-                        <Input 
-                            id="member-count-input"
-                            type="number"
-                            value={memberCount}
-                            onChange={(e) => setMemberCount(Math.min(50000, Math.max(0, parseInt(e.target.value) || 0)))}
-                            className="w-28"
-                        />
-                    </div>
-                     <Slider
-                        value={[memberCount]}
-                        onValueChange={(value) => setMemberCount(value[0])}
-                        max={50000}
-                        step={100}
-                     />
+                    <label htmlFor="member-count-input" className="text-sm font-medium mb-2 block">Number of Members</label>
+                    <Input 
+                        id="member-count-input"
+                        type="number"
+                        placeholder="e.g., 5000"
+                        value={memberCount}
+                        onChange={(e) => setMemberCount(Math.min(50000, Math.max(0, parseInt(e.target.value) || 0)))}
+                        className="w-full h-12 text-lg"
+                    />
                 </div>
                 
                 <div className="space-y-4 rounded-lg bg-secondary/50 p-4 border border-border">
