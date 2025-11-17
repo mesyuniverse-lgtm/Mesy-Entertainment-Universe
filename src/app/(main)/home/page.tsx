@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import {
   Carousel,
@@ -29,28 +29,36 @@ import {
 import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 
-const statsCards = [
+const initialStats = {
+  totalMembers: 139789,
+  newMembers: 127895,
+  totalLive: 127895,
+  questComplete: 127895,
+  totalApplicants: 137846,
+};
+
+const statsCardsConfig = [
   {
     title: 'Total Members',
-    value: '139,789',
+    key: 'totalMembers' as keyof typeof initialStats,
     change: '+12.5% from last month',
     icon: <Users className="h-6 w-6 text-muted-foreground" />,
   },
   {
     title: 'New Members (Today)',
-    value: '127,895',
+    key: 'newMembers' as keyof typeof initialStats,
     change: '+3 since last hour',
     icon: <UserPlus className="h-6 w-6 text-muted-foreground" />,
   },
   {
     title: 'Total Live',
-    value: '127,895',
+    key: 'totalLive' as keyof typeof initialStats,
     change: '+3 since last hour',
     icon: <Radio className="h-6 w-6 text-muted-foreground" />,
   },
   {
     title: 'Quest Complete',
-    value: '127,895',
+    key: 'questComplete' as keyof typeof initialStats,
     change: '+3 since last hour',
     icon: <Trophy className="h-6 w-6 text-muted-foreground" />,
   },
@@ -107,7 +115,22 @@ const promotions = [
 ]
 
 export default function HomePage() {
-  const slideImages = PlaceHolderImages.filter(i => ['fantasy-landscape-2', 'fantasy-landscape-3', 'fantasy-landscape-4'].includes(i.id))
+  const slideImages = PlaceHolderImages.filter(i => ['fantasy-landscape-2', 'fantasy-landscape-3', 'fantasy-landscape-4'].includes(i.id));
+  const [stats, setStats] = useState(initialStats);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStats(prevStats => ({
+        totalMembers: prevStats.totalMembers + Math.floor(Math.random() * 5) + 1,
+        newMembers: prevStats.newMembers + Math.floor(Math.random() * 3),
+        totalLive: prevStats.totalLive + Math.floor(Math.random() * 50 - 10),
+        questComplete: prevStats.questComplete + Math.floor(Math.random() * 2),
+        totalApplicants: prevStats.totalApplicants + Math.floor(Math.random() * 5) + 1,
+      }));
+    }, 2000);
+
+    return () => clearInterval(interval);
+  }, []);
   
   return (
     <div className="p-4 sm:p-6 lg:p-8">
@@ -119,17 +142,17 @@ export default function HomePage() {
                 <span className="font-semibold">จำนวนผู้สมัคร</span>
             </div>
             <p className="text-5xl font-bold tracking-tighter text-red-500" style={{textShadow: '0 0 10px #ef4444'}}>
-                137,846
+                {stats.totalApplicants.toLocaleString()}
             </p>
         </Card>
-        {statsCards.map((stat, index) => (
+        {statsCardsConfig.map((stat, index) => (
           <Card key={index} className="bg-card/50 border-primary/20">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
               {stat.icon}
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stat.value}</div>
+              <div className="text-2xl font-bold">{stats[stat.key].toLocaleString()}</div>
               <p className="text-xs text-muted-foreground">{stat.change}</p>
             </CardContent>
           </Card>
@@ -178,7 +201,7 @@ export default function HomePage() {
 
              <Card className="bg-card/50 border-primary/20">
                 <CardHeader>
-                    <CardTitle className="text-md">LIVE NOW <span className="text-red-500 animate-pulse">12,248</span></CardTitle>
+                    <CardTitle className="text-md">LIVE NOW <span className="text-red-500 animate-pulse">{stats.totalLive.toLocaleString()}</span></CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-3">
