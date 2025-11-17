@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils';
 import { useUser } from '@/firebase';
 import { usePathname } from 'next/navigation';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useMounted } from '@/hooks/use-mounted';
 
 export default function PublicLayout({
   children,
@@ -16,6 +17,7 @@ export default function PublicLayout({
 }) {
   const { user, isUserLoading } = useUser();
   const pathname = usePathname();
+  const isMounted = useMounted();
 
   const navItems = [
     { name: 'Member Plan', href: '/member-plan' },
@@ -77,26 +79,28 @@ export default function PublicLayout({
                     <Link href="/dashboard">Enter App</Link>
                 </Button>
              )}
-            <Sheet>
-                <SheetTrigger asChild>
-                    <Button variant="outline" size="icon" className="md:hidden">
-                        <Menu className="h-4 w-4" />
-                    </Button>
-                </SheetTrigger>
-                <SheetContent side="right">
-                    <nav className="grid gap-6 text-lg font-medium mt-16">
-                        {navItems.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className="hover:text-foreground/80 text-foreground/60"
-                        >
-                          {item.name}
-                        </Link>
-                      ))}
-                    </nav>
-                </SheetContent>
-            </Sheet>
+             {isMounted && (
+              <Sheet>
+                  <SheetTrigger asChild>
+                      <Button variant="outline" size="icon" className="md:hidden">
+                          <Menu className="h-4 w-4" />
+                      </Button>
+                  </SheetTrigger>
+                  <SheetContent side="right">
+                      <nav className="grid gap-6 text-lg font-medium mt-16">
+                          {navItems.map((item) => (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            className="hover:text-foreground/80 text-foreground/60"
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                      </nav>
+                  </SheetContent>
+              </Sheet>
+            )}
           </div>
         </div>
       </header>
