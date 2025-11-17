@@ -114,8 +114,8 @@ export default function CreateMemberIdPage() {
                     </button>
                 ))}
             </div>
-            <Button className="mt-8 w-full max-w-xs h-12 text-lg font-bold bg-gradient-to-r from-amber-400 to-yellow-600 text-black shadow-lg hover:shadow-yellow-400/50" asChild>
-                <Link href="/dashboard">Start</Link>
+            <Button className="mt-8 w-full max-w-xs h-12 text-lg font-bold bg-gradient-to-r from-amber-400 to-yellow-600 text-black shadow-lg hover:shadow-yellow-400/50">
+                Start
             </Button>
         </div>
       </main>
