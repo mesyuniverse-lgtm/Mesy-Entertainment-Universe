@@ -287,19 +287,4 @@ export default function DashboardPage() {
   );
 }
 
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
-}
-
-@keyframes marquee2 {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
-}
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-.animate-marquee2 {
-  animation: marquee2 30s linear infinite;
-}
+    
