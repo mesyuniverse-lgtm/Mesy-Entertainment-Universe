@@ -36,15 +36,15 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     };
 
     const navLinks = [
-        { href: '/user-hub', label: 'User Hub', roles: ['User', 'Member', 'Super-admin'] },
         { href: '/dashboard', label: 'Dashboard', roles: ['Member', 'Super-admin'] },
-        { href: '/socialive', label: 'Socialive', roles: ['User', 'Member', 'Super-admin'] },
+        { href: '/socialive', label: 'Socialive', roles: ['Member', 'Super-admin'] },
         { href: '/memberships', label: 'Membership', roles: ['Member', 'Super-admin'] },
-        { href: '/shop', label: 'Shop', roles: ['User', 'Member', 'Super-admin'] },
+        { href: '/shop', label: 'Shop', roles: ['Member', 'Super-admin'] },
+        { href: '/sup-dashboard', label: 'Super Admin', roles: ['Super-admin'] },
     ];
     
-    // Mock user role - in a real app, this would come from your user data
-    const userRole = user?.email === 'mesy.universe@gmail.com' ? 'Super-admin' : user?.email === 'member@mesy.io' ? 'Member' : 'User';
+    // Simplified role check
+    const userRole = user?.email === 'mesy.universe@gmail.com' ? 'Super-admin' : 'Member';
 
     const accessibleLinks = navLinks.filter(link => link.roles.includes(userRole));
 
@@ -52,9 +52,10 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     if (isUserLoading) {
         return <div className="flex h-screen items-center justify-center bg-background"><Gem className="h-12 w-12 animate-spin text-primary" /></div>;
     }
-
-    if (pathname === '/user-hub') {
-        return <>{children}</>;
+    
+    // Redirect non-authenticated users, except for super-admin specific pages which are handled in their own layout
+    if (!user && !pathname.startsWith('/sup-')) {
+        return <div className="flex h-screen items-center justify-center bg-background"><Gem className="h-12 w-12 animate-spin text-primary" /></div>;
     }
 
     return (
@@ -123,7 +124,6 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                             <DropdownMenuLabel>Notifications</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>Welcome to MESY Universe!</DropdownMenuItem>
-                            <DropdownMenuItem>The 3D library issue will be fixed soon.</DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
 
@@ -143,7 +143,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
                             <DropdownMenuLabel>My Account</DropdownMenuLabel>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem>
-                                {userRole === 'Member' ? <Shield className="mr-2 h-4 w-4" /> : <User className="mr-2 h-4 w-4" />}
+                                {userRole === 'Super-admin' ? <Shield className="mr-2 h-4 w-4" /> : <User className="mr-2 h-4 w-4" />}
                                 {userRole} Profile
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />

@@ -2,6 +2,6 @@
 import { redirect } from 'next/navigation';
 
 export default function MainPage() {
-  // Redirect to the user hub by default.
-  redirect('/user-hub');
+  // Redirect to the member dashboard by default.
+  redirect('/dashboard');
 }

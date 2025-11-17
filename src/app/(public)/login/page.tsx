@@ -6,20 +6,20 @@ export default function LoginPage() {
     <>
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Welcome Back
+          Welcome Back, Member
         </h1>
         <p className="text-sm text-muted-foreground">
-          Enter your credentials to access your account.
+          Enter your credentials to access your dashboard.
         </p>
       </div>
-      <UserAuthForm action="login" redirectPath="/user-hub" />
+      <UserAuthForm action="login" redirectPath="/dashboard" />
       <p className="px-8 text-center text-sm text-muted-foreground">
-        Don't have an account?{" "}
+        Not a member yet?{" "}
         <Link
           href="/signup"
           className="underline underline-offset-4 hover:text-primary"
         >
-          Sign Up
+          Sign Up Now
         </Link>
       </p>
     </>

@@ -4,11 +4,11 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "User",
       "type": "object",
-      "description": "Represents a user account in the Mesy Entertainment Universe. This entity distinguishes between different account types: 'User' (general users), 'Member' (users who can earn income, open shops, and become developers), and 'Developer' (members with advanced development and monetization rights). It also includes administrative roles like 'Admin' and 'Super-admin'.",
+      "description": "Represents a user account in the Mesy Entertainment Universe. All users are considered 'Members' upon registration, with varying levels of access based on their verification status. The system includes administrative roles like 'Admin' and 'Super-admin'.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the user entity."
+          "description": "Unique identifier for the user entity, matching Firebase Auth UID."
         },
         "email": {
           "type": "string",
@@ -17,11 +17,16 @@
         },
         "role": {
           "type": "string",
-          "description": "Defines the user's account type and permissions: 'User' (general), 'Member' (income/brand features), 'Developer' (development/services income), 'Admin', 'Super-admin'."
+          "description": "Defines the user's account type and permissions. Defaults to 'Member'. Other roles include 'Developer', 'Admin', 'Super-admin'."
         },
         "level": {
           "type": "number",
-          "description": "User's membership level."
+          "description": "User's membership level, which determines income potential."
+        },
+        "verificationStatus": {
+          "type": "string",
+          "description": "Indicates the member's verification state: 'unverified', 'pending', 'verified'. Controls access to financial transactions and full features.",
+          "enum": ["unverified", "pending", "verified"]
         },
         "profileId": {
           "type": "string",
@@ -52,7 +57,8 @@
         "id",
         "email",
         "role",
-        "level"
+        "level",
+        "verificationStatus"
       ]
     },
     "MesyMember": {

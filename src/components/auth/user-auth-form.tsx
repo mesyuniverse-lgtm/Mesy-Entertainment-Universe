@@ -98,8 +98,9 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       await setDoc(userDocRef, {
         id: user.uid,
         email: user.email,
-        role: 'User',
-        level: 0
+        role: 'Member', // Default role is now 'Member'
+        level: 0,
+        verificationStatus: 'unverified'
       }, { merge: true });
 
       const userProfileDocRef = doc(firestore, `users/${user.uid}/profile`, user.uid);
@@ -119,11 +120,11 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
 
       await sendEmailVerification(user);
        toast({
-        title: "Verification Email Sent",
+        title: "Welcome, New Member!",
         description: "Please check your email to verify your account.",
       });
     }
-    router.push(redirectPath || '/user-hub');
+    router.push(redirectPath || '/dashboard');
   };
 
   React.useEffect(() => {
@@ -225,7 +226,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     setIsLoading(true);
     try {
       await signInAnonymously(auth);
-      router.push(redirectPath || "/user-hub");
+      router.push(redirectPath || "/dashboard");
     } catch (error: any) {
       handleAuthError(error);
     } finally {
@@ -354,51 +355,46 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
               )}
-              {action === "login" ? "Sign In" : "Sign Up"}
+              {action === "login" ? "Sign In" : "Create Member Account"}
             </Button>
           </div>
         </form>
       </Form>
-      { action === "login" && (
-        <>
-            <div className="relative">
-                <div className="absolute inset-0 flex items-center">
-                <span className="w-full border-t" />
-                </div>
-                <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-background px-2 text-muted-foreground">
-                    Or continue with
-                </span>
-                </div>
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-                <Button variant="outline" type="button" disabled={isLoading} onClick={onGoogleSignIn}>
-                    {isLoading ? (
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    ) : (
-                    <Chrome className="mr-2 h-4 w-4" />
-                    )}{" "}
-                    Google
-                </Button>
-                <Button variant="outline" type="button" disabled={isLoading} onClick={onAnonymousSignIn}>
-                    {isLoading ? (
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    ) : (
-                    <UserIcon className="mr-2 h-4 w-4" />
-                    )}{" "}
-                    Guest
-                </Button>
-            </div>
-        </>
-      )}
+      
+      <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+          </span>
+          </div>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+          <Button variant="outline" type="button" disabled={isLoading} onClick={onGoogleSignIn}>
+              {isLoading ? (
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              ) : (
+              <Chrome className="mr-2 h-4 w-4" />
+              )}{" "}
+              Google
+          </Button>
+          <Button variant="outline" type="button" disabled={isLoading} onClick={onAnonymousSignIn}>
+              {isLoading ? (
+              <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              ) : (
+              <UserIcon className="mr-2 h-4 w-4" />
+              )}{" "}
+              Viewer
+          </Button>
+      </div>
     </div>
   )
 }
-
-    

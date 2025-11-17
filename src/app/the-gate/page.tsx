@@ -11,11 +11,6 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function TheGatePage() {
 
-    const userZoneImage = {
-        src: 'https://picsum.photos/seed/101/600/400',
-        alt: 'A couple playing video games together.',
-        hint: 'couple gaming'
-    };
     const memberZoneImage = {
         src: 'https://picsum.photos/seed/102/600/400',
         alt: 'An ancient stone doorway covered in vines in a forest.',
@@ -36,37 +31,7 @@ export default function TheGatePage() {
                 Choose Your Destiny. Your journey into the MESY Universe starts here.
             </p>
 
-            <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">
-                {/* User Zone Card */}
-                <Card className="bg-card/50 border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-primary/20 flex flex-col">
-                    <CardHeader>
-                        <div className="relative aspect-[16/9] rounded-md overflow-hidden mb-4">
-                            <Image
-                                src={userZoneImage.src}
-                                alt={userZoneImage.alt}
-                                data-ai-hint={userZoneImage.hint}
-                                fill
-                                className="object-cover"
-                            />
-                        </div>
-                        <CardTitle className="flex items-center gap-3 text-left">
-                            <User className="w-7 h-7 text-primary" />
-                            <span className="text-2xl">User Zone</span>
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent className="text-left flex-grow">
-                        <CardDescription>
-                            Explore the universe, connect with others, and enjoy content as a general user.
-                        </CardDescription>
-                    </CardContent>
-                    <div className="p-6 pt-0">
-                         <Button asChild className="w-full">
-                            <Link href="/user-zones">
-                                Enter User Zone <ArrowRight className="ml-2" />
-                            </Link>
-                        </Button>
-                    </div>
-                </Card>
+            <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
 
                 {/* Member Zone Card */}
                 <Card className="bg-card/50 border-primary/20 hover:border-primary/50 transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-primary/20 flex flex-col">
@@ -92,7 +57,7 @@ export default function TheGatePage() {
                     </CardContent>
                     <div className="p-6 pt-0">
                          <Button asChild className="w-full">
-                            <Link href="/member-login">
+                            <Link href="/login">
                                 Access Member Zone <ArrowRight className="ml-2" />
                             </Link>
                         </Button>

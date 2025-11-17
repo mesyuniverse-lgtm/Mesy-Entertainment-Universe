@@ -6,13 +6,13 @@ export default function SignupPage() {
     <>
       <div className="flex flex-col space-y-2 text-center">
         <h1 className="text-2xl font-semibold tracking-tight">
-          Create an Account
+          Become a Member
         </h1>
         <p className="text-sm text-muted-foreground">
-          Enter your details below to create your account and join the universe.
+          Enter your details below to create your member account.
         </p>
       </div>
-      <UserAuthForm action="signup" redirectPath="/user-hub" />
+      <UserAuthForm action="signup" redirectPath="/dashboard" />
       <p className="px-8 text-center text-sm text-muted-foreground">
         By clicking continue, you agree to our{" "}
         <Link
@@ -31,7 +31,7 @@ export default function SignupPage() {
         .
       </p>
       <p className="text-center text-sm text-muted-foreground">
-        Already have an account?{" "}
+        Already a member?{" "}
         <Link
           href="/login"
           className="underline underline-offset-4 hover:text-primary"
