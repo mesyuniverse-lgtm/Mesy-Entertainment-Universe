@@ -42,14 +42,6 @@ import { Button } from '@/components/ui/button';
 import { useAuth, useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 
-const mainNavItems = [
-  { href: '/dashboard', icon: Home, label: 'Dashboard' },
-  { href: '/orders', icon: ShoppingCart, label: 'Orders' },
-  { href: '/products', icon: Package, label: 'Products' },
-  { href: '/customers', icon: Users, label: 'Customers' },
-  { href: '/analytics', icon: LineChart, label: 'Analytics' },
-];
-
 const memberNavItems = [
     {name: 'MEMBERS'},
     {name: 'SOCIAL'},
@@ -80,7 +72,7 @@ export default function MemberLayout({
       <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
         
         <div className='flex items-center gap-4'>
-           <Link href="/dashboard" className="flex items-center gap-2 font-semibold">
+           <Link href="/home" className="flex items-center gap-2 font-semibold">
               <Gem className="h-6 w-6 text-primary" />
               <span>MESY</span>
             </Link>
