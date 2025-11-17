@@ -15,7 +15,9 @@ import {
   Search,
   Settings,
   User,
-  LogOut
+  LogOut,
+  Mail,
+  MessageSquare
 } from 'lucide-react';
 
 import {
@@ -118,15 +120,19 @@ export default function MemberLayout({
             </nav>
           </SheetContent>
         </Sheet>
-        <div className="relative ml-auto flex-1 md:grow-0">
-          {/* This can be a search bar in the future */}
+        <div className="flex items-center gap-2 ml-auto">
+            <Button variant="ghost" size="icon"><Search className="h-5 w-5"/></Button>
+            <Button variant="ghost" size="icon"><Mail className="h-5 w-5"/></Button>
+            <Button variant="ghost" size="icon"><Bell className="h-5 w-5"/></Button>
+            <Button variant="ghost" size="icon"><MessageSquare className="h-5 w-5"/></Button>
+            <Button variant="ghost" size="icon"><Settings className="h-5 w-5"/></Button>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
              <Button
                 variant="outline"
                 size="icon"
-                className="overflow-hidden rounded-full"
+                className="overflow-hidden rounded-full ml-2"
               >
                 <User className="h-5 w-5" />
               </Button>
