@@ -21,7 +21,7 @@
     {
       "id": "glowing-gem-1",
       "description": "A glowing gem in a dark cave.",
-      "imageUrl": "https://images.unsplash.com/photo-1746420800119-90a148efeb7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnbG93aW5nJTIwZ2VtfGVufDB8fHx8MTc2MDk4MDE0NXww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1746420800119-90a148efeb7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnbG93aW5nJTIwZ2VtfGVufDB8fHx8MTc2MDk4MDE0NXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "glowing gem"
     },
     {
@@ -39,19 +39,19 @@
     {
       "id": "fantasy-landscape-3",
       "description": "A beautiful fantasy landscape with a crystal cave.",
-      "imageUrl": "https://images.unsplash.com/photo-1591807467654-70e8142e7480?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y3J5c3RhbCUyMGNhdmV8ZW58MHx8fHwxNzYxMDU5MjMzfDA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1591807467654-70e8142e7480?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y3J5c3RhbCUyMGNhdmV8ZW58MHx8fHwxNzYxMDU5MjMzfDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "crystal cave"
     },
     {
       "id": "fantasy-landscape-4",
       "description": "A beautiful fantasy landscape with an ancient tree.",
-      "imageUrl": "https://images.unsplash.com/photo-1601239389304-83cb62cd6106?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhbmNpZW50JTIwdHJlZXxlbnwwfHx8fDE3NjEwNjg5ODd8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1601239389304-83cb62cd6106?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxhbmNpZW50JTIwdHJlZXxlbnwwfHx8fDE3NjEwNjg5ODd8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "ancient tree"
     },
     {
       "id": "fantasy-landscape-5",
       "description": "A beautiful fantasy landscape with a mystical portal.",
-      "imageUrl": "https://images.unsplash.com/photo-1670779431437-9723ebfcaaec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxteXN0aWNhbCUyMHBvcnRhbHxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1670779431437-9723ebfcaaec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxteXN0aWNhbCUyMHBvcnRhbHxlbnwwfHx8fDE3NjA5NjY2ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "mystical portal"
     },
     {
@@ -127,6 +127,12 @@
       "imageHint": "female archer"
     },
     {
+      "id": "female-warrior-1",
+      "description": "A female warrior in ornate golden armor.",
+      "imageUrl": "https://images.unsplash.com/photo-1561577732-12fffa81b37e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmZW1hbGUlMjB3YXJyaW9yfGVufDB8fHx8MTc2MzM1MDI0Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "female warrior"
+    },
+    {
       "id": "knight-1",
       "description": "A knight in shining armor.",
       "imageUrl": "https://images.unsplash.com/photo-1759719441123-f29b39db6a90?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxmYW50YXN5JTIwa25pZ2h0fGVufDB8fHx8MTc2MDk5Mjc3Nnww&ixlib.rb-4.1.0&q=80&w=1080",
@@ -159,7 +165,7 @@
     {
       "id": "celebration-2026",
       "description": "People celebrating new year 2026 with champagne and fireworks.",
-      "imageUrl": "https://images.unsplash.com/photo-1667835949495-78a1ea9ecd77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZWxlYnJhdGlvbiUyMGZpcmV3b3Jrc3xlbnwwfHx8fDE3NjEwNDQ0MjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1667835949495-78a1ea9ecd77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZWxlYnJhdGlvbiUyMGZpcmV3b3Jrc3xlbnwwfHx8fDE3NjEwNDQ0MjR8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "celebration fireworks"
     }
   ]
