@@ -45,12 +45,12 @@ import { useAuth, useUser } from '@/firebase';
 import { useRouter } from 'next/navigation';
 
 const memberNavItems = [
-    {name: 'MEMBERS'},
-    {name: 'SOCIAL'},
-    {name: 'ENTERTAINMENT'},
-    {name: 'CONNECTIONS'},
-    {name: 'AI HUB'},
-    {name: 'SHOPPING HUB'},
+    {name: 'MEMBERS', href: '/members'},
+    {name: 'SOCIAL', href: '#'},
+    {name: 'ENTERTAINMENT', href: '#'},
+    {name: 'CONNECTIONS', href: '#'},
+    {name: 'AI HUB', href: '#'},
+    {name: 'SHOPPING HUB', href: '#'},
 ]
 
 export default function MemberLayout({
@@ -82,7 +82,7 @@ export default function MemberLayout({
                 {memberNavItems.map(item => (
                     <Link
                         key={item.name}
-                        href="#"
+                        href={item.href}
                         className="text-muted-foreground transition-colors hover:text-foreground"
                     >
                         {item.name}
@@ -111,7 +111,7 @@ export default function MemberLayout({
               {memberNavItems.map(item => (
                     <Link
                         key={item.name}
-                        href="#"
+                        href={item.href}
                         className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
                     >
                         {item.name}
