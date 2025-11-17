@@ -12,7 +12,7 @@ export default function LoginPage() {
           Enter your credentials to access your dashboard.
         </p>
       </div>
-      <UserAuthForm action="login" redirectPath="/dashboard" />
+      <UserAuthForm action="login" redirectPath="/create-member-id" />
       <p className="px-8 text-center text-sm text-muted-foreground">
         Not a member yet?{" "}
         <Link
