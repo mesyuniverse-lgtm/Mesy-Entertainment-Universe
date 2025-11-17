@@ -55,7 +55,7 @@ export default function WelcomePage() {
           <p className="max-w-2xl mx-auto text-lg md:text-xl text-white/90 mb-8" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.7)'}}>
             A fantasy entertainment platform where creativity and community collide in a ceremonial journey.
           </p>
-          <Button size="lg" asChild className="text-lg h-12 px-8" style={{ backgroundColor: '#D10000', color: 'white' }}>
+          <Button size="lg" asChild className="text-lg h-12 px-8">
             <Link href="/the-gate">
               Let's Startup <ArrowRight className="ml-2 h-5 w-5" />
             </Link>

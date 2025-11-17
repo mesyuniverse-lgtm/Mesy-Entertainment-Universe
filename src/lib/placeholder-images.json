@@ -21,7 +21,7 @@
     {
       "id": "glowing-gem-1",
       "description": "A glowing gem in a dark cave.",
-      "imageUrl": "https://images.unsplash.com/photo-1746420800119-90a148efeb7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnbG93aW5nJTIwZ2VtfGVufDB8fHx8MTc2MDk4MDE0NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1746420800119-90a148efeb7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnbG93aW5nJTIwZ2VtfGVufDB8fHx8MTc2MDk4MDE0NXww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "glowing gem"
     },
     {
@@ -39,7 +39,7 @@
     {
       "id": "fantasy-landscape-3",
       "description": "A beautiful fantasy landscape with a crystal cave.",
-      "imageUrl": "https://images.unsplash.com/photo-1591807467654-70e8142e7480?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y3J5c3RhbCUyMGNhdmV8ZW58MHx8fHwxNzYxMDU5MjMzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1591807467654-70e8142e7480?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8Y3J5c3RhbCUyMGNhdmV8ZW58MHx8fHwxNzYxMDU5MjMzfDA&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "crystal cave"
     },
     {
@@ -57,7 +57,7 @@
     {
       "id": "fantasy-landscape-6",
       "description": "A beautiful fantasy landscape with a sky city.",
-      "imageUrl": "https://images.unsplash.com/photo-1600178503558-5ecdf7f854ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxza3klMjBjaXR5fGVufDB8fHx8MTc2MDk2NjY4Mnww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1600178503558-5ecdf7f854ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxza3klMjBjaXR5fGVufDB8fHx8MTc2MDk2NjY4Mnww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "sky city"
     },
     {
@@ -155,6 +155,12 @@
       "description": "A soft background of pink roses.",
       "imageUrl": "https://images.unsplash.com/photo-1565531233379-71c73b065163?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "imageHint": "roses background"
+    },
+    {
+      "id": "celebration-2026",
+      "description": "People celebrating new year 2026 with champagne and fireworks.",
+      "imageUrl": "https://images.unsplash.com/photo-1667835949495-78a1ea9ecd77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZWxlYnJhdGlvbiUyMGZpcmV3b3Jrc3xlbnwwfHx8fDE3NjEwNDQ0MjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "celebration fireworks"
     }
   ]
 }

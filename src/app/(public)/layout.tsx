@@ -66,11 +66,13 @@ export default function PublicLayout({
                     </DropdownMenuContent>
                 </DropdownMenu>
              )}
-             {isWelcomePage ? (
-                <Button asChild style={{ backgroundColor: '#D10000', color: 'white' }}>
+             {isWelcomePage && (
+                 <Button asChild>
                     <Link href="/the-gate">Launch App</Link>
                 </Button>
-             ) : !isUserLoading && !user ? (
+             )}
+             
+             { !isUserLoading && !user && !isWelcomePage && (
                 <>
                     <Button asChild variant="ghost" className='hidden sm:inline-flex'>
                       <Link href="/login">Login</Link>
@@ -79,7 +81,8 @@ export default function PublicLayout({
                         <Link href="/signup">Register</Link>
                     </Button>
                 </>
-             ) : null}
+             )}
+
              {!isUserLoading && user && (
                 <Button asChild>
                     <Link href="/dashboard">Enter App</Link>
