@@ -1,9 +1,10 @@
-import { MembershipTable } from "@/components/dashboard/membership-table"
-import { IncomeCalculator } from "@/components/dashboard/income-chart"
 import Image from "next/image"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { membershipData } from "@/lib/data"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card"
 
 export default function MemberPlanPage() {
   return (
@@ -17,10 +18,45 @@ export default function MemberPlanPage() {
 
       <div className="grid lg:grid-cols-5 gap-8">
         <div className="lg:col-span-3">
-          <MembershipTable />
+          <Card>
+            <CardHeader>
+                <CardTitle>Membership Level & Income Structure</CardTitle>
+                <CardDescription>Based on a 3% service fee. Income is calculated monthly.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Table>
+                    <TableHeader>
+                        <TableRow>
+                        <TableHead>Level</TableHead>
+                        <TableHead>Members</TableHead>
+                        <TableHead className="text-right">Net Income (USD)</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        {membershipData.map((level) => (
+                        <TableRow key={level.level}>
+                            <TableCell className="font-medium">{level.level}</TableCell>
+                            <TableCell>&lt; {level.members.toLocaleString()}</TableCell>
+                            <TableCell className="text-right">${level.netIncome.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</TableCell>
+                        </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
+            </CardContent>
+          </Card>
         </div>
         <div className="lg:col-span-2 space-y-8">
-          <IncomeCalculator />
+          <Card>
+            <CardHeader>
+              <CardTitle>Income Calculator</CardTitle>
+              <CardDescription>Estimate your potential monthly earnings.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-center text-muted-foreground py-8">
+                The interactive income calculator component will be restored here soon.
+              </p>
+            </CardContent>
+          </Card>
            <div className="relative aspect-video rounded-lg overflow-hidden shadow-xl">
               <Image
                   src={PlaceHolderImages.find((img) => img.id === 'member-plan-video')?.imageUrl || ''}
