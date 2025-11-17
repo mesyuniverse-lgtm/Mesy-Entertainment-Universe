@@ -48,7 +48,7 @@ const memberNavItems = [
     {name: 'MEMBERS', href: '/members'},
     {name: 'SOCIAL', href: '/social'},
     {name: 'ENTERTAINMENT', href: '/entertainment'},
-    {name: 'CONNECTIONS', href: '#'},
+    {name: 'CONNECTIONS', href: '/connections'},
     {name: 'AI HUB', href: '#'},
     {name: 'SHOPPING HUB', href: '#'},
 ]
