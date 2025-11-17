@@ -50,7 +50,7 @@ const memberNavItems = [
     {name: 'ENTERTAINMENT', href: '/entertainment'},
     {name: 'CONNECTIONS', href: '/connections'},
     {name: 'AI HUB', href: '/ai-hub'},
-    {name: 'SHOPPING HUB', href: '#'},
+    {name: 'SHOPPING HUB', href: '/shopping-hub'},
 ]
 
 export default function MemberLayout({
