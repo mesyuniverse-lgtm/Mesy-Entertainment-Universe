@@ -72,17 +72,6 @@ export default function PublicLayout({
                 </Button>
              )}
              
-             { !isUserLoading && !user && !isWelcomePage && (
-                <>
-                    <Button asChild variant="ghost" className='hidden sm:inline-flex'>
-                      <Link href="/login">Login</Link>
-                    </Button>
-                    <Button asChild>
-                        <Link href="/signup">Register</Link>
-                    </Button>
-                </>
-             )}
-
              {!isUserLoading && user && (
                 <Button asChild>
                     <Link href="/dashboard">Enter App</Link>
@@ -105,14 +94,6 @@ export default function PublicLayout({
                           {item.name}
                         </Link>
                       ))}
-                      {!user && !isWelcomePage && (
-                        <Link
-                            href="/login"
-                            className="hover:text-foreground/80 text-foreground/60"
-                            >
-                            Login
-                        </Link>
-                      )}
                     </nav>
                 </SheetContent>
             </Sheet>
