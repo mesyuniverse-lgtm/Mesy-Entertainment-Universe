@@ -34,6 +34,9 @@ import {
   Radio,
   UserPlus,
   Users2,
+  HandCoins,
+  Shield,
+  User
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
@@ -129,7 +132,15 @@ const statsCardsConfig = [
   },
 ];
 
-const centerNavItems = ["Trading", "Live", "friends", "Follow", "Groups", "Profile"];
+const centerNavItems = [
+    { label: "Trading", icon: <HandCoins /> },
+    { label: "Live", icon: <Radio /> },
+    { label: "Friends", icon: <Users /> },
+    { label: "Follow", icon: <UserPlus /> },
+    { label: "Groups", icon: <Shield /> },
+    { label: "Profile", icon: <User /> }
+];
+
 
 export default function SocialPage() {
   const [stats, setStats] = useState(initialStats);
@@ -205,12 +216,13 @@ export default function SocialPage() {
       
       {/* Center Nav */}
       <nav className="my-4">
-        <div className="bg-card/50 rounded-lg p-2 max-w-lg mx-auto">
+        <div className="bg-card/50 rounded-lg p-1 max-w-2xl mx-auto">
             <ul className="flex justify-around items-center">
                 {centerNavItems.map(item => (
-                    <li key={item}>
-                        <Button variant="ghost" className="text-foreground/80 font-bold hover:text-primary hover:bg-primary/10 transition-colors">
-                            {item}
+                    <li key={item.label}>
+                        <Button variant="ghost" className="text-foreground/80 font-bold hover:text-primary hover:bg-primary/10 transition-colors text-base p-3">
+                           {React.cloneElement(item.icon, { className: "w-5 h-5 mr-2" })}
+                            {item.label}
                         </Button>
                     </li>
                 ))}
