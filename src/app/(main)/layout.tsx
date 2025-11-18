@@ -6,18 +6,23 @@ import {
   Bell,
   Gem,
   Home,
-  LineChart,
-  Package,
-  Package2,
-  ShoppingCart,
+  LayoutGrid,
   Users,
+  Calculator,
+  CreditCard,
+  Wallet,
+  ArrowRightLeft,
+  History,
+  Send,
   PanelLeft,
   Search,
   Settings,
   User,
   LogOut,
   Mail,
-  MessageSquare
+  MessageSquare,
+  Landmark,
+  FileClock
 } from 'lucide-react';
 
 import {
@@ -28,29 +33,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
 import {
   Sheet,
   SheetContent,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
 import { Button } from '@/components/ui/button';
 import { useAuth, useUser } from '@/firebase';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
+import { cn } from '@/lib/utils';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-const memberNavItems = [
-    {name: 'MEMBERS', href: '/members'},
-    {name: 'SOCIAL', href: '/social'},
-    {name: 'ENTERTAINMENT', href: '/entertainment'},
-    {name: 'CONNECTIONS', href: '/connections'},
-    {name: 'AI HUB', href: '/ai-hub'},
-    {name: 'SHOPPING HUB', href: '/shopping-hub'},
+
+const mainNavItems = [
+    {name: 'Dashboard', href: '/dashboard', icon: <Home />},
+    {name: 'Schedule Posts', href: '#', icon: <LayoutGrid />},
+    {name: 'Downline', href: '/members', icon: <Users />},
+    {name: 'Income', href: '#', icon: <Calculator />},
+    {name: 'Billing', href: '#', icon: <CreditCard />},
+];
+
+const walletNavItems = [
+    {name: 'My Wallet', href: '#', icon: <Wallet />},
+    {name: 'Transfer', href: '#', icon: <ArrowRightLeft />},
+    {name: 'Transactions', href: '#', icon: <History />},
+    {name: 'Payment', href: '#', icon: <Send />},
+    {name: 'Exchange', href: '#', icon: <Landmark />},
 ]
 
 export default function MemberLayout({
@@ -61,6 +70,7 @@ export default function MemberLayout({
   const { user } = useUser();
   const auth = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   const handleSignOut = async () => {
     if (auth) {
@@ -68,28 +78,59 @@ export default function MemberLayout({
       router.push('/welcome');
     }
   };
+  
+  const userAvatar = PlaceHolderImages.find((i) => i.id === 'default-avatar');
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-muted/40">
-      <header className="sticky top-0 z-30 flex h-20 items-center gap-4 border-b border-primary/20 bg-gradient-to-r from-background to-primary/10 px-4 drop-shadow-[0_4px_15px_rgba(var(--primary-rgb),0.1)] sm:px-6">
+    <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
+      <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b border-border/40 bg-card px-4 md:px-6">
         
-        <div className='flex items-center gap-6'>
+        <div className='flex items-center gap-2'>
            <Link href="/home" className="flex items-center gap-2 font-semibold">
-              <Gem className="h-8 w-8 text-primary drop-shadow-[0_0_5px_hsl(var(--primary))]" />
-              <span className='text-xl'>MESY</span>
+              <Gem className="h-6 w-6 text-primary" />
+              <span className='font-bold text-lg'>MESY</span>
             </Link>
-            <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-                {memberNavItems.map(item => (
+        </div>
+
+        <nav className="hidden md:flex items-center gap-1.5">
+            {mainNavItems.map(item => {
+                const isActive = pathname === item.href;
+                return (
                     <Link
                         key={item.name}
                         href={item.href}
-                        className="text-muted-foreground transition-colors hover:text-foreground"
+                        className={cn(
+                            "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-all hover:text-foreground",
+                            isActive && "bg-primary/20 text-primary-foreground shadow-inner shadow-primary/20"
+                        )}
                     >
+                        {React.cloneElement(item.icon, { className: "h-4 w-4"})}
                         {item.name}
                     </Link>
-                ))}
-            </nav>
-        </div>
+                )
+            })}
+        </nav>
+        
+        <div className="hidden h-8 w-px bg-border/50 md:block mx-4"></div>
+
+        <nav className="hidden md:flex items-center gap-1.5">
+             {walletNavItems.map(item => {
+                const isActive = pathname === item.href;
+                return (
+                    <Link
+                        key={item.name}
+                        href={item.href}
+                        className={cn(
+                            "flex items-center gap-2 rounded-md px-3 py-2 text-sm font-medium text-muted-foreground transition-all hover:text-foreground",
+                             isActive && "text-foreground"
+                        )}
+                    >
+                        {React.cloneElement(item.icon, { className: "h-4 w-4"})}
+                        {item.name}
+                    </Link>
+                )
+            })}
+        </nav>
 
 
         <Sheet>
@@ -100,63 +141,63 @@ export default function MemberLayout({
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="sm:max-w-xs">
-            <nav className="grid gap-6 text-lg font-medium">
-              <Link
-                href="#"
-                className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
-              >
-                <Gem className="h-5 w-5 transition-all group-hover:scale-110" />
-                <span className="sr-only">MESY</span>
-              </Link>
-              {memberNavItems.map(item => (
+             <nav className="grid gap-2 text-base font-medium">
+                {[...mainNavItems, ...walletNavItems].map(item => (
                     <Link
                         key={item.name}
                         href={item.href}
-                        className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
+                        className={cn(
+                            "flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary",
+                            pathname === item.href && "bg-muted text-primary"
+                        )}
                     >
+                         {React.cloneElement(item.icon, { className: "h-5 w-5"})}
                         {item.name}
                     </Link>
                 ))}
-            </nav>
+             </nav>
           </SheetContent>
         </Sheet>
-        <div className="flex items-center gap-1 ml-auto">
-            <Button variant="ghost" size="icon" className="h-10 w-10 bg-black/20 hover:bg-black/40"><Search className="h-5 w-5"/></Button>
-            <Button variant="ghost" size="icon" className="h-10 w-10 bg-black/20 hover:bg-black/40"><Mail className="h-5 w-5"/></Button>
-            <Button variant="ghost" size="icon" className="h-10 w-10 bg-black/20 hover:bg-black/40"><Bell className="h-5 w-5"/></Button>
-            <Button variant="ghost" size="icon" className="h-10 w-10 bg-black/20 hover:bg-black/40"><MessageSquare className="h-5 w-5"/></Button>
-            <Button variant="ghost" size="icon" className="h-10 w-10 bg-black/20 hover:bg-black/40"><Settings className="h-5 w-5"/></Button>
+        <div className="flex items-center gap-2 ml-auto">
+            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full"><FileClock className="h-5 w-5"/></Button>
+            <Button variant="ghost" size="icon" className="h-9 w-9 rounded-full relative">
+                <Bell className="h-5 w-5"/>
+                <span className="absolute top-1 right-1.5 h-2 w-2 rounded-full bg-red-500"></span>
+            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                 <button className="h-9 w-9 rounded-full border-2 border-primary/50 overflow-hidden">
+                    <Avatar className='h-full w-full'>
+                        {userAvatar && <AvatarImage src={userAvatar.imageUrl} />}
+                        <AvatarFallback>U</AvatarFallback>
+                    </Avatar>
+                </button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuLabel>{user?.displayName || user?.email || 'My Account'}</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem>
+                  <Settings className="mr-2 h-4 w-4" />
+                  Settings
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Bell className="mr-2 h-4 w-4" />
+                  Notifications
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleSignOut}>
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+             <Button variant="ghost" className="hidden md:flex items-center gap-2 text-muted-foreground hover:text-foreground">
+                <Settings className="h-5 w-5"/>
+                Settings
+             </Button>
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-             <Button
-                variant="outline"
-                size="icon"
-                className="overflow-hidden rounded-full ml-2 h-12 w-12 border-2 border-primary/50 bg-black/20 hover:bg-black/40"
-              >
-                <User className="h-6 w-6" />
-              </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>{user?.displayName || user?.email || 'My Account'}</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Bell className="mr-2 h-4 w-4" />
-              Notifications
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleSignOut}>
-                <LogOut className="mr-2 h-4 w-4" />
-                Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
       </header>
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 bg-muted/40">{children}</main>
     </div>
   );
 }
