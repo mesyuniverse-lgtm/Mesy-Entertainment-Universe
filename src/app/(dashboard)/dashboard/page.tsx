@@ -178,7 +178,7 @@ function formatCurrency(value: number) {
 export default function DashboardPage() {
     const [stats, setStats] = useState(initialStats);
     const [memberCount, setMemberCount] = useState(18000);
-    const [today, setToday] = useState<Date>(new Date());
+    const [today, setToday] = useState<Date | null>(null);
     const [days, setDays] = useState<Date[]>([]);
 
     const calculatedIncome = useMemo(() => {
@@ -267,7 +267,9 @@ export default function DashboardPage() {
         <div className="col-span-12 lg:col-span-2 space-y-6">
           <Card className="bg-card/50">
             <CardHeader>
-                <CardTitle className="text-sm">Today, {today.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' })}</CardTitle>
+                <CardTitle className="text-sm">
+                  {today ? `Today, ${today.toLocaleDateString('en-US', { day: '2-digit', month: 'long', year: 'numeric' })}` : 'Loading date...'}
+                </CardTitle>
             </CardHeader>
             <CardContent>
                 <div className='p-2 rounded-lg bg-secondary/50 text-center'>
