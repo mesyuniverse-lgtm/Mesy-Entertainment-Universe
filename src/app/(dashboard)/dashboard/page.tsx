@@ -291,7 +291,7 @@ export default function DashboardPage() {
               <nav className="space-y-2">
                 <Button variant="ghost" className="w-full justify-start gap-2"><Users2 className="text-muted-foreground" /> Leads</Button>
                 <Button variant="ghost" className="w-full justify-start gap-2"><Mail className="text-muted-foreground" /> Emails</Button>
-                <Button variant="secondary" className="w-full justify-start gap-2"><Users className="text-muted-foreground" /> Members System</Button>
+                <Button variant="secondary" className="w-full justify-start gap-2"><Users className="text-muted-foreground" /> System's</Button>
                 <Button variant="ghost" className="w-full justify-start gap-2"><FileText className="text-muted-foreground" /> Page Views</Button>
                 <Button variant="ghost" className="w-full justify-start gap-2"><TrendingUp className="text-muted-foreground" /> Reports</Button>
               </nav>
@@ -521,5 +521,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    
