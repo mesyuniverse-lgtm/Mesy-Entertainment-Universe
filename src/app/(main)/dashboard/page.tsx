@@ -186,13 +186,11 @@ export default function DashboardPage() {
     }, [memberCount]);
 
     const currentLevel = useMemo(() => {
-      for (let i = membershipData.length - 1; i >= 0; i--) {
-        if (memberCount < membershipData[i].members) {
-           if(i > 0 && memberCount >= (membershipData[i-1].members - (i > 1 ? 1: 0) ) ) return membershipData[i-1].level;
-           if(i === 0) return 0;
-        }
+      if (memberCount >= 50000) {
+        return 50;
       }
-      return membershipData[membershipData.length - 1].level;
+      const levelData = membershipData.find(l => memberCount < l.members);
+      return levelData ? levelData.level - 1 : 50;
     }, [memberCount]);
 
 
@@ -468,11 +466,11 @@ export default function DashboardPage() {
            <div className="grid grid-cols-2 gap-4">
                 <Card className="bg-blue-900/50 border-blue-500/50 text-center p-3">
                     <p className="text-sm">Member Level</p>
-                    <p className="text-3xl font-bold">18</p>
+                    <p className="text-3xl font-bold">{currentLevel}</p>
                 </Card>
                  <Card className="bg-blue-900/50 border-blue-500/50 text-center p-3">
                     <p className="text-sm">Downlines</p>
-                    <p className="text-3xl font-bold">18,000</p>
+                    <p className="text-3xl font-bold">{memberCount.toLocaleString()}</p>
                 </Card>
                  <Card className="bg-blue-900/50 border-blue-500/50 text-center p-3">
                     <p className="text-sm">Members Services Fees</p>
@@ -534,3 +532,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    
