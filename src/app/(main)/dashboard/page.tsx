@@ -369,29 +369,6 @@ export default function DashboardPage() {
                         <span>June, $30,732</span>
                         <span>July, $30,032</span>
                     </div>
-                    <div className="mt-4 space-y-3">
-                        <div className="flex justify-between items-center">
-                            <div className="flex items-center gap-2">
-                                <div className="p-2 bg-secondary rounded-md"><DollarSign className="w-4 h-4 text-green-400" /></div>
-                                <p>Income</p>
-                            </div>
-                            <p>$15,300</p>
-                        </div>
-                        <div className="flex justify-between items-center">
-                            <div className="flex items-center gap-2">
-                                <div className="p-2 bg-secondary rounded-md"><CreditCard className="w-4 h-4 text-red-400" /></div>
-                                <p>Service Fee</p>
-                            </div>
-                            <p>$9,750</p>
-                        </div>
-                        <div className="flex justify-between items-center font-bold">
-                            <div className="flex items-center gap-2">
-                                <div className="p-2 bg-secondary rounded-md"><Wallet className="w-4 h-4 text-primary" /></div>
-                                <p>Total Income</p>
-                            </div>
-                            <p>$11,200</p>
-                        </div>
-                    </div>
                  </div>
              </CardContent>
           </Card>
