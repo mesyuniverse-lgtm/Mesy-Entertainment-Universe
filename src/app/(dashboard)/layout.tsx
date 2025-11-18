@@ -49,7 +49,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 const mainNavItems = [
     {name: 'Dashboard', href: '/dashboard', icon: <Home />},
     {name: 'Schedule Posts', href: '#', icon: <LayoutGrid />},
-    {name: 'Downline', href: '/dashboard/member-system', icon: <Users />},
+    {name: 'Downline', href: '#', icon: <Users />},
     {name: 'Income', href: '#', icon: <Calculator />},
     {name: 'Billing', href: '#', icon: <CreditCard />},
     {name: 'My Wallet', href: '#', icon: <Wallet />},
