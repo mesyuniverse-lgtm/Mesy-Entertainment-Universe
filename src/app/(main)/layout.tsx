@@ -56,10 +56,6 @@ const mainNavItems = [
 
 const walletNavItems = [
     {name: 'My Wallet', href: '#', icon: <Wallet />},
-    {name: 'Transfer', href: '#', icon: <ArrowRightLeft />},
-    {name: 'Transactions', href: '#', icon: <History />},
-    {name: 'Payment', href: '#', icon: <Send />},
-    {name: 'Exchange', href: '#', icon: <Landmark />},
 ]
 
 export default function MemberLayout({
@@ -111,7 +107,7 @@ export default function MemberLayout({
             })}
         </nav>
         
-        <div className="hidden h-8 w-px bg-border/50 md:block mx-4"></div>
+        {walletNavItems.length > 0 && <div className="hidden h-8 w-px bg-border/50 md:block mx-4"></div>}
 
         <nav className="hidden md:flex items-center gap-1.5">
              {walletNavItems.map(item => {
