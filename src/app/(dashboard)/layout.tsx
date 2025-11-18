@@ -48,8 +48,8 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const mainNavItems = [
     {name: 'Dashboard', href: '/dashboard', icon: <Home />},
-    {name: 'Schedule Posts', href: '#', icon: <LayoutGrid />},
-    {name: 'Downline', href: '#', icon: <Users />},
+    {name: 'Profile', href: '/dashboard/profile', icon: <User />},
+    {name: 'System\'s', href: '/members/systems', icon: <Users />},
     {name: 'Income', href: '#', icon: <Calculator />},
     {name: 'Billing', href: '#', icon: <CreditCard />},
     {name: 'My Wallet', href: '#', icon: <Wallet />},
@@ -171,6 +171,10 @@ export default function MemberLayout({
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>{user?.displayName || user?.email || 'My Account'}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => router.push('/dashboard/profile')}>
+                  <User className="mr-2 h-4 w-4" />
+                  Profile
+                </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Settings className="mr-2 h-4 w-4" />
                   Settings

@@ -52,7 +52,8 @@ import {
   TrendingUp,
   CreditCard,
   Trophy,
-  UserPlus
+  UserPlus,
+  User as UserIcon
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -93,7 +94,7 @@ const downlineData = [
     joinDate: '2023-01-01',
     downlines: 50000,
     monthlyIncome: 48500,
-    fee: 'pay3%',
+    fee: 1500,
   },
   {
     rank: 2,
@@ -102,8 +103,8 @@ const downlineData = [
     level: 'Level.0',
     joinDate: '2023-11-05',
     downlines: 5,
-    monthlyIncome: -5,
-    fee: 'pay3%',
+    monthlyIncome: 5,
+    fee: 0.15,
   },
   {
     rank: 3,
@@ -112,8 +113,8 @@ const downlineData = [
     level: 'Level.0',
     joinDate: '2023-10-15',
     downlines: 4,
-    monthlyIncome: -4,
-    fee: 'pay3%',
+    monthlyIncome: 4,
+    fee: 0.12,
   },
     {
     rank: 4,
@@ -122,8 +123,8 @@ const downlineData = [
     level: 'Level.0',
     joinDate: '2023-09-20',
     downlines: 3,
-    monthlyIncome: -53,
-    fee: 'pay3%',
+    monthlyIncome: 3,
+    fee: 0.09,
   },
   {
     rank: 5,
@@ -132,8 +133,8 @@ const downlineData = [
     level: 'Level.0',
     joinDate: '2023-09-01',
     downlines: 2,
-    monthlyIncome: -2,
-    fee: 'pay3%',
+    monthlyIncome: 2,
+    fee: 0.06,
   },
   {
     rank: 6,
@@ -142,8 +143,8 @@ const downlineData = [
     level: 'Level.0',
     joinDate: '2023-08-12',
     downlines: 1,
-    monthlyIncome: -1,
-    fee: 'pay3%',
+    monthlyIncome: 1,
+    fee: 0.03,
   },
     {
     rank: 7,
@@ -311,7 +312,7 @@ export default function DashboardPage() {
             </CardHeader>
             <CardContent>
               <nav className="space-y-2">
-                <Button variant="ghost" className="w-full justify-start gap-2"><Users2 className="text-muted-foreground" /> Leads</Button>
+                <Button variant="ghost" className="w-full justify-start gap-2"><UserIcon className="text-muted-foreground" /> Profile</Button>
                 <Button variant="ghost" className="w-full justify-start gap-2"><Mail className="text-muted-foreground" /> Emails</Button>
                 <Button variant="secondary" className="w-full justify-start gap-2" asChild>
                     <Link href="/members/systems">
@@ -537,7 +538,7 @@ export default function DashboardPage() {
                                     <TableCell>{member.joinDate}</TableCell>
                                     <TableCell>{member.downlines}</TableCell>
                                     <TableCell>${member.monthlyIncome}</TableCell>
-                                    <TableCell>{member.fee}</TableCell>
+                                    <TableCell>{typeof member.fee === 'number' ? `$${member.fee.toFixed(2)}` : 'Free'}</TableCell>
                                 </TableRow>
                             ))}
                         </TableBody>
