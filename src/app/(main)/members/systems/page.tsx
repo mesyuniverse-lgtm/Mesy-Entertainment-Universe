@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useMemo } from 'react';
+import Image from 'next/image';
 import {
   Table,
   TableBody,
@@ -12,26 +13,36 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { useFirebase, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, query, orderBy } from 'firebase/firestore';
+import { useFirebase, useCollection, useMemoFirebase, useDoc } from '@/firebase';
+import { collection, query, orderBy, doc } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users } from 'lucide-react';
+import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users, CheckCircle, Settings, BarChart } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 
 export default function MemberSystemPage() {
   const { firestore, user } = useFirebase();
+
+  const userProfileRef = useMemoFirebase(() => {
+    if (!user) return null;
+    return doc(firestore, `users/${user.uid}/profile`, user.uid);
+  }, [firestore, user]);
+
+  const { data: userProfile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
   const downlineQuery = useMemoFirebase(() => {
     if (!user) return null;
     return query(collection(firestore, `users/${user.uid}/downline`), orderBy('level', 'desc'));
   }, [firestore, user]);
 
-  const { data: downlineData, isLoading, error } = useCollection(downlineQuery);
+  const { data: downlineData, isLoading: isDownlineLoading, error } = useCollection(downlineQuery);
+  
+  const isLoading = isProfileLoading || isDownlineLoading;
 
   const calculateIncome = (downlines: number) => downlines * 1;
   const calculateFee = (income: number) => income * 0.03;
@@ -45,18 +56,20 @@ export default function MemberSystemPage() {
         netIncome: 0,
       };
     }
-    const totalMembers = downlineData.reduce((acc, member) => acc + (member.downlines || 0), 0) + downlineData.length;
+    const totalMembers = downlineData.reduce((acc, member) => acc + (member.downlines || 0), downlineData.length);
     const totalIncome = calculateIncome(totalMembers);
     const totalFees = calculateFee(totalIncome);
     const netIncome = totalIncome - totalFees;
     return { totalMembers, totalIncome, totalFees, netIncome };
   }, [downlineData]);
   
-  const renderContent = () => {
+  const avatarImage = PlaceHolderImages.find((i) => i.id === 'female-warrior-1');
+
+  const renderTableContent = () => {
     if (isLoading) {
       return (
         <TableBody>
-          {[...Array(5)].map((_, i) => (
+          {[...Array(3)].map((_, i) => (
             <TableRow key={i}>
               <TableCell><Skeleton className="h-4 w-6" /></TableCell>
               <TableCell><Skeleton className="h-4 w-20" /></TableCell>
@@ -146,6 +159,67 @@ export default function MemberSystemPage() {
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+        {/* Top User Info Section */}
+        <section className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+            <div className="lg:col-span-3">
+                {avatarImage && (
+                    <Image 
+                        src={avatarImage.imageUrl} 
+                        alt="User Avatar"
+                        width={300}
+                        height={300}
+                        className='rounded-lg shadow-lg shadow-primary/20 aspect-square object-cover'
+                    />
+                )}
+            </div>
+            <div className="lg:col-span-5 flex flex-col justify-center space-y-2">
+                <h2 className="text-xl font-semibold text-primary/80">My Financial Overview</h2>
+                {isLoading ? (
+                    <>
+                        <Skeleton className="h-6 w-48" />
+                        <Skeleton className="h-5 w-32" />
+                        <Skeleton className="h-5 w-24" />
+                        <Skeleton className="h-5 w-40" />
+                        <Skeleton className="h-5 w-52" />
+                    </>
+                ) : (
+                    <>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Username:</span> {userProfile?.username || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Member ID:</span> {user?.uid.substring(0, 6) || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Levels:</span> {userProfile?.level || 0}</div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Tel:</span> ***-***-**{userProfile?.phoneNumber?.number?.slice(-2) || 'XX'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Email:</span> {user?.email} <CheckCircle className='w-5 h-5 text-green-500' /></div>
+                    </>
+                )}
+            </div>
+            <div className="lg:col-span-4 space-y-4">
+                <Card className='bg-card/50'>
+                    <CardHeader className='pb-2'>
+                        <div className='flex justify-between items-center'>
+                            <CardTitle className="text-lg">Payments</CardTitle>
+                            <Settings className='w-5 h-5 text-muted-foreground' />
+                        </div>
+                    </CardHeader>
+                    <CardContent className='space-y-3'>
+                        <div className='p-3 rounded-lg bg-indigo-900/40 border border-indigo-500/50 flex items-center gap-4'>
+                            <Progress value={60} className='w-12 h-12 rounded-full bg-indigo-500/30 [&>div]:bg-indigo-400' type="radial" />
+                            <div>
+                                <p className='text-sm text-muted-foreground'>Average Income</p>
+                                <p className='text-xl font-bold'>$5,230</p>
+                            </div>
+                        </div>
+                        <div className='p-3 rounded-lg bg-green-900/40 border border-green-500/50 flex items-center gap-4'>
+                            <Progress value={40} className='w-12 h-12 rounded-full bg-green-500/30 [&>div]:bg-green-400' type="radial" />
+                            <div>
+                                <p className='text-sm text-muted-foreground'>Average Spend</p>
+                                <p className='text-xl font-bold'>$2,110</p>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+        </section>
+
        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card className='bg-card/50'>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -199,10 +273,10 @@ export default function MemberSystemPage() {
 
       <Card className="bg-card/50">
         <CardHeader>
-          <CardTitle>Mesy Members System's</CardTitle>
-          <CardDescription>
+          <CardTitle className='text-primary'>MESY UNIVERSE Financial & Membership Overview</CardTitle>
+          <p className="text-muted-foreground">
             Here are the members in your direct downline, sorted by level.
-          </CardDescription>
+          </p>
         </CardHeader>
         <CardContent>
           <Table>
@@ -218,10 +292,52 @@ export default function MemberSystemPage() {
                 <TableHead>หัก3%จากรายได้</TableHead>
               </TableRow>
             </TableHeader>
-            {renderContent()}
+            {renderTableContent()}
           </Table>
         </CardContent>
       </Card>
     </div>
   );
 }
+
+// Add a custom radial progress component for the payments card
+declare module "@/components/ui/progress" {
+    interface ProgressProps {
+        type?: 'linear' | 'radial';
+    }
+}
+
+// Monkey-patching Progress component to support radial type
+const OriginalProgress = Progress;
+const PatchedProgress = React.forwardRef<
+  React.ElementRef<typeof OriginalProgress>,
+  React.ComponentPropsWithoutRef<typeof OriginalProgress>
+>(({ className, value, type = 'linear', ...props }, ref) => {
+  if (type === 'radial') {
+    const r = 40;
+    const circ = 2 * Math.PI * r;
+    const strokePct = ((value || 0) * circ) / 100;
+    return (
+      <div ref={ref} className={className}>
+        <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+            <circle
+                className="stroke-current text-secondary"
+                strokeWidth="10"
+                cx="50" cy="50" r={r} fill="transparent"
+            ></circle>
+            <circle
+                className="stroke-current"
+                strokeWidth="10"
+                strokeLinecap="round"
+                cx="50" cy="50" r={r} fill="transparent"
+                strokeDasharray={circ}
+                strokeDashoffset={circ - strokePct}
+            ></circle>
+        </svg>
+      </div>
+    );
+  }
+  return <OriginalProgress ref={ref} className={className} value={value} {...props} />;
+});
+PatchedProgress.displayName = 'Progress';
+(Progress as any) = PatchedProgress;
