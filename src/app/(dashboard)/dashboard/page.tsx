@@ -178,6 +178,8 @@ function formatCurrency(value: number) {
 export default function DashboardPage() {
     const [stats, setStats] = useState(initialStats);
     const [memberCount, setMemberCount] = useState(18000);
+    const [today, setToday] = useState<Date>(new Date());
+    const [days, setDays] = useState<Date[]>([]);
 
     const calculatedIncome = useMemo(() => {
       const grossIncome = memberCount;
@@ -205,16 +207,17 @@ export default function DashboardPage() {
             awardRecipients: prevStats.awardRecipients + Math.floor(Math.random() * 4),
         }));
         }, 3000);
+        
+        const todayDate = new Date();
+        setToday(todayDate);
+        setDays(Array.from({ length: 13 }, (_, i) => {
+            const d = new Date();
+            d.setDate(todayDate.getDate() - (10 - i));
+            return d;
+        }));
 
         return () => clearInterval(interval);
     }, []);
-
-    const today = new Date();
-    const days = Array.from({ length: 13 }, (_, i) => {
-        const d = new Date();
-        d.setDate(today.getDate() - (10 - i));
-        return d;
-    });
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
