@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -43,6 +43,7 @@ export default function MemberSystemPage() {
           {[...Array(5)].map((_, i) => (
             <TableRow key={i}>
               <TableCell><Skeleton className="h-4 w-6" /></TableCell>
+              <TableCell><Skeleton className="h-4 w-20" /></TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Skeleton className="h-8 w-8 rounded-full" />
@@ -64,7 +65,7 @@ export default function MemberSystemPage() {
        return (
         <TableBody>
           <TableRow>
-            <TableCell colSpan={7} className="text-center">
+            <TableCell colSpan={8} className="text-center">
               <div className="flex flex-col items-center gap-2 py-8 text-red-500">
                 <AlertCircle className="h-8 w-8" />
                 <p>Error loading downline members.</p>
@@ -80,7 +81,7 @@ export default function MemberSystemPage() {
       return (
         <TableBody>
           <TableRow>
-            <TableCell colSpan={7} className="text-center py-10 text-muted-foreground">
+            <TableCell colSpan={8} className="text-center py-10 text-muted-foreground">
               You do not have any downline members yet.
             </TableCell>
           </TableRow>
@@ -92,8 +93,6 @@ export default function MemberSystemPage() {
       <TableBody>
         {downlineData.map((member, index) => {
           const avatar = PlaceHolderImages.find((p) => p.id === 'default-avatar');
-          // Assuming each downline document *is* one member, so downlines count is 1
-          // This might need adjustment based on your data structure.
           const downlinesCount = member.downlines || 0; 
           const income = calculateIncome(downlinesCount);
           const fee = calculateFee(income);
@@ -101,6 +100,7 @@ export default function MemberSystemPage() {
           return (
             <TableRow key={member.id}>
               <TableCell>{index + 1}</TableCell>
+              <TableCell>{member.id}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
@@ -114,7 +114,7 @@ export default function MemberSystemPage() {
               </TableCell>
               <TableCell>Level.{member.level}</TableCell>
               <TableCell>{new Date(member.joinDate).toLocaleDateString()}</TableCell>
-              <TableCell>{downlinesCount > 0 ? downlinesCount : "ยังไม่มีผู้ติดตาม"}</TableCell>
+              <TableCell>{downlinesCount > 0 ? downlinesCount.toLocaleString() : "ยังไม่มีผู้ติดตาม"}</TableCell>
               <TableCell>
                 {downlinesCount > 0 ? `$${income.toFixed(2)}` : "ยังไม่มีรายได้"}
               </TableCell>
@@ -142,6 +142,7 @@ export default function MemberSystemPage() {
             <TableHeader>
               <TableRow>
                 <TableHead>#</TableHead>
+                <TableHead>MemberID</TableHead>
                 <TableHead>Username</TableHead>
                 <TableHead>Level</TableHead>
                 <TableHead>Join Date</TableHead>
