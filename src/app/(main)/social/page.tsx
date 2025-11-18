@@ -1,10 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import {
@@ -31,6 +31,9 @@ import {
   History,
   Clapperboard,
   Tv,
+  Radio,
+  UserPlus,
+  Users2,
 } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
@@ -91,7 +94,58 @@ const subscriptions = [
     { name: 'MNEU', avatarId: 'explorer-1'},
 ]
 
+const initialStats = {
+  online: 137861,
+  friends: 139798,
+  followed: 127901,
+  follower: 127976,
+  group: 127897,
+};
+
+const statsCardsConfig = [
+  {
+    title: 'Friends',
+    key: 'friends' as keyof typeof initialStats,
+    change: '+12.5% from last month',
+    icon: <Users className="h-6 w-6 text-muted-foreground" />,
+  },
+  {
+    title: 'Followed',
+    key: 'followed' as keyof typeof initialStats,
+    change: '+3 since last hour',
+    icon: <UserPlus className="h-6 w-6 text-muted-foreground" />,
+  },
+  {
+    title: 'Follower',
+    key: 'follower' as keyof typeof initialStats,
+    change: '+3 since last hour',
+    icon: <UserPlus className="h-6 w-6 text-muted-foreground" />,
+  },
+  {
+    title: 'Group',
+    key: 'group' as keyof typeof initialStats,
+    change: '+3 since last hour',
+    icon: <Users2 className="h-6 w-6 text-muted-foreground" />,
+  },
+];
+
 export default function SocialPage() {
+  const [stats, setStats] = useState(initialStats);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStats(prevStats => ({
+        online: prevStats.online + Math.floor(Math.random() * 50 - 10),
+        friends: prevStats.friends + Math.floor(Math.random() * 5),
+        followed: prevStats.followed + Math.floor(Math.random() * 3),
+        follower: prevStats.follower + Math.floor(Math.random() * 3),
+        group: prevStats.group + Math.floor(Math.random() * 2),
+      }));
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const currentUser = {
     name: 'Josephine Williams',
     avatarId: 'female-warrior-1',
@@ -105,6 +159,48 @@ export default function SocialPage() {
 
 
   return (
+     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+      {/* Top Header Stats */}
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
+        <Card className="lg:col-span-1 bg-card/50 border-primary/20 flex flex-col items-center justify-center text-center p-4">
+            <div className="flex items-center gap-2 text-muted-foreground">
+                <Radio className="w-5 h-5"/>
+                <span className="font-semibold">Online</span>
+            </div>
+            <p className="text-5xl font-bold tracking-tighter text-red-500" style={{textShadow: '0 0 10px #ef4444'}}>
+                {(stats.online || 0).toLocaleString()}
+            </p>
+        </Card>
+        {statsCardsConfig.map((stat, index) => (
+          <Card key={index} className="bg-card/50 border-primary/20">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+              {stat.icon}
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{(stats[stat.key] || 0).toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground">{stat.change}</p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+       {/* Ticker */}
+      <div className="relative flex overflow-hidden whitespace-nowrap py-2">
+        <div className="animate-marquee flex gap-8 text-sm text-muted-foreground items-center">
+            <p>Aria has received a Legendary Item: Shadowfire Bow! 🏹</p>
+            <p>PixelPioneer reached Level 45! 💎</p>
+            <p>CyberNinja acquired the legendary 'Blade of Echoes'. ⚔️</p>
+            <p>Kael reached Level 15! ✨</p>
+        </div>
+        <div className="animate-marquee2 absolute top-2 left-0 flex gap-8 text-sm text-muted-foreground items-center">
+            <p>Aria has received a Legendary Item: Shadowfire Bow! 🏹</p>
+            <p>PixelPioneer reached Level 45! 💎</p>
+            <p>CyberNinja acquired the legendary 'Blade of Echoes'. ⚔️</p>
+            <p>Kael reached Level 15! ✨</p>
+        </div>
+      </div>
+
     <div className="grid grid-cols-12 h-full bg-background">
       {/* Left Sidebar */}
       <aside className="col-span-3 p-4 space-y-2 hidden lg:block overflow-y-auto">
@@ -346,6 +442,7 @@ export default function SocialPage() {
             })}
         </div>
       </aside>
+    </div>
     </div>
   );
 }
