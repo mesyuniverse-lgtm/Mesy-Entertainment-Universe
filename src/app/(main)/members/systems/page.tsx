@@ -27,8 +27,6 @@ const downlineData = [
     level: 'Level.0',
     joinDate: '2023-11-05',
     downlines: 5,
-    monthlyIncome: -5,
-    fee: 'pay3%',
   },
   {
     rank: 2,
@@ -37,8 +35,6 @@ const downlineData = [
     level: 'Level.0',
     joinDate: '2023-10-15',
     downlines: 4,
-    monthlyIncome: -4,
-    fee: 'pay3%',
   },
   {
     rank: 3,
@@ -47,8 +43,6 @@ const downlineData = [
     level: 'Level.0',
     joinDate: '2023-09-20',
     downlines: 3,
-    monthlyIncome: -3,
-    fee: 'pay3%',
   },
   {
     rank: 4,
@@ -57,8 +51,6 @@ const downlineData = [
     level: 'Level.0',
     joinDate: '2023-09-01',
     downlines: 2,
-    monthlyIncome: -2,
-    fee: 'pay3%',
   },
   {
     rank: 6,
@@ -67,8 +59,6 @@ const downlineData = [
     level: 'Level.0',
     joinDate: '2023-08-12',
     downlines: 1,
-    monthlyIncome: -1,
-    fee: 'pay3%',
   },
   {
     rank: 7,
@@ -76,13 +66,14 @@ const downlineData = [
     avatarId: 'female-warrior-1',
     level: 'Level.0',
     joinDate: '2023-08-11',
-    downlines: 'ยังไม่มีผู้ติดตาม',
-    monthlyIncome: 'ยังไม่มีรายได้',
-    fee: 'Free',
+    downlines: 0,
   },
 ];
 
 export default function MemberSystemPage() {
+  const calculateIncome = (downlines: number) => downlines * 1;
+  const calculateFee = (income: number) => income * 0.03;
+
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       <Card className="bg-card/50">
@@ -110,6 +101,9 @@ export default function MemberSystemPage() {
                 const avatar = PlaceHolderImages.find(
                   (p) => p.id === member.avatarId
                 );
+                const income = calculateIncome(member.downlines);
+                const fee = calculateFee(income);
+
                 return (
                   <TableRow key={member.rank}>
                     <TableCell>{member.rank}</TableCell>
@@ -126,13 +120,13 @@ export default function MemberSystemPage() {
                     </TableCell>
                     <TableCell>{member.level}</TableCell>
                     <TableCell>{member.joinDate}</TableCell>
-                    <TableCell>{member.downlines}</TableCell>
+                    <TableCell>{member.downlines > 0 ? member.downlines : "ยังไม่มีผู้ติดตาม"}</TableCell>
                     <TableCell>
-                      {typeof member.monthlyIncome === 'number'
-                        ? `...$${Math.abs(member.monthlyIncome)}`
-                        : member.monthlyIncome}
+                      {member.downlines > 0 ? `$${income.toFixed(2)}` : "ยังไม่มีรายได้"}
                     </TableCell>
-                    <TableCell>{member.fee}</TableCell>
+                    <TableCell>
+                      {member.downlines > 0 ? `$${fee.toFixed(2)}` : "Free"}
+                    </TableCell>
                   </TableRow>
                 );
               })}
