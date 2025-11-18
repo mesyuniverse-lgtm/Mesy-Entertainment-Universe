@@ -103,7 +103,7 @@ export default function MemberSystemPage() {
     level: 18,
     downline: 18000,
     income: 18000,
-    serviceFee: -450,
+    serviceFee: 450,
     totalIncome: 17460,
   };
 
@@ -165,9 +165,9 @@ export default function MemberSystemPage() {
             <div className="flex justify-between items-start">
               <div>
                 <CardTitle className="text-xl">
-                  <span className="text-primary font-bold">Level {levelInfo.level}</span>
+                  <span className="text-pink-400 font-bold">Level {levelInfo.level}</span>
                 </CardTitle>
-                <CardDescription>Downline {levelInfo.downline.toLocaleString()}</CardDescription>
+                <CardDescription className="text-yellow-400">Downline {levelInfo.downline.toLocaleString()}</CardDescription>
               </div>
               <div className="text-right">
                 <p className="font-bold text-accent">Service Fee (3%)</p>
@@ -210,7 +210,7 @@ export default function MemberSystemPage() {
                   <Percent className="text-pink-400" />
                   <span className="font-semibold">Service Fee</span>
                 </div>
-                <span className="font-bold text-lg text-pink-400">-${levelInfo.serviceFee.toLocaleString().replace('-', '')}</span>
+                <span className="font-bold text-lg text-pink-400">-${levelInfo.serviceFee.toLocaleString()}</span>
               </div>
               <div className="flex items-center justify-between p-3 bg-secondary/50 rounded-lg">
                 <div className="flex items-center gap-3">
