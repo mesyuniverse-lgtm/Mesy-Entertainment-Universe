@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -19,16 +19,16 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirebase, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, query } from 'firebase/firestore';
+import { collection, query, orderBy } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users } from 'lucide-react';
 
 export default function MemberSystemPage() {
   const { firestore, user } = useFirebase();
 
   const downlineQuery = useMemoFirebase(() => {
     if (!user) return null;
-    return query(collection(firestore, `users/${user.uid}/downline`));
+    return query(collection(firestore, `users/${user.uid}/downline`), orderBy('level', 'desc'));
   }, [firestore, user]);
 
   const { data: downlineData, isLoading, error } = useCollection(downlineQuery);
@@ -36,6 +36,22 @@ export default function MemberSystemPage() {
   const calculateIncome = (downlines: number) => downlines * 1;
   const calculateFee = (income: number) => income * 0.03;
 
+  const stats = useMemo(() => {
+    if (!downlineData) {
+      return {
+        totalMembers: 0,
+        totalIncome: 0,
+        totalFees: 0,
+        netIncome: 0,
+      };
+    }
+    const totalMembers = downlineData.reduce((acc, member) => acc + (member.downlines || 0), 0) + downlineData.length;
+    const totalIncome = calculateIncome(totalMembers);
+    const totalFees = calculateFee(totalIncome);
+    const netIncome = totalIncome - totalFees;
+    return { totalMembers, totalIncome, totalFees, netIncome };
+  }, [downlineData]);
+  
   const renderContent = () => {
     if (isLoading) {
       return (
@@ -129,12 +145,63 @@ export default function MemberSystemPage() {
   };
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        <Card className='bg-card/50'>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Total Downline</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">{stats.totalMembers.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground">
+              Total members in your network
+            </p>
+          </CardContent>
+        </Card>
+        <Card className='bg-card/50'>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Gross Income</CardTitle>
+            <DollarSign className="h-4 w-4 text-muted-foreground" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">${stats.totalIncome.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+            <p className="text-xs text-muted-foreground">
+              Total potential monthly income
+            </p>
+          </CardContent>
+        </Card>
+        <Card className='bg-card/50'>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Service Fees (3%)</CardTitle>
+            <ArrowDown className="h-4 w-4 text-red-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold">-${stats.totalFees.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+            <p className="text-xs text-muted-foreground">
+              Total platform service fees
+            </p>
+          </CardContent>
+        </Card>
+        <Card className='bg-card/50'>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Net Income</CardTitle>
+            <ArrowUp className="h-4 w-4 text-green-500" />
+          </CardHeader>
+          <CardContent>
+            <div className="text-2xl font-bold text-green-400">${stats.netIncome.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>
+            <p className="text-xs text-muted-foreground">
+              Your final estimated monthly income
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+
       <Card className="bg-card/50">
         <CardHeader>
-          <CardTitle>Downline Members</CardTitle>
+          <CardTitle>Mesy Members System's</CardTitle>
           <CardDescription>
-            Here are the members in your direct downline.
+            Here are the members in your direct downline, sorted by level.
           </CardDescription>
         </CardHeader>
         <CardContent>
