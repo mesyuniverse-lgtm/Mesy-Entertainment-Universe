@@ -215,17 +215,17 @@ export default function MemberSystemPage() {
                     </CardHeader>
                     <CardContent className='space-y-3'>
                         <div className='p-3 rounded-lg bg-indigo-900/40 border border-indigo-500/50 flex items-center gap-4'>
-                            <Progress value={60} className='w-12 h-12 rounded-full bg-indigo-500/30 [&>div]:bg-indigo-400' type="radial" />
+                            <Progress value={0} className='w-12 h-12 rounded-full bg-indigo-500/30 [&>div]:bg-indigo-400' type="radial" />
                             <div>
                                 <p className='text-sm text-muted-foreground'>Average Income</p>
-                                <p className='text-xl font-bold'>$5,230</p>
+                                <p className='text-xl font-bold'>$0</p>
                             </div>
                         </div>
                         <div className='p-3 rounded-lg bg-green-900/40 border border-green-500/50 flex items-center gap-4'>
-                            <Progress value={40} className='w-12 h-12 rounded-full bg-green-500/30 [&>div]:bg-green-400' type="radial" />
+                            <Progress value={0} className='w-12 h-12 rounded-full bg-green-500/30 [&>div]:bg-green-400' type="radial" />
                             <div>
                                 <p className='text-sm text-muted-foreground'>Average Spend</p>
-                                <p className='text-xl font-bold'>$2,110</p>
+                                <p className='text-xl font-bold'>$0</p>
                             </div>
                         </div>
                     </CardContent>
