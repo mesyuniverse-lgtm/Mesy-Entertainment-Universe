@@ -133,12 +133,12 @@ const statsCardsConfig = [
 ];
 
 const centerNavItems = [
-    { label: "Trading", icon: <HandCoins /> },
-    { label: "Live", icon: <Radio /> },
-    { label: "Friends", icon: <Users /> },
-    { label: "Follow", icon: <UserPlus /> },
-    { label: "Groups", icon: <Shield /> },
-    { label: "Profile", icon: <User /> }
+    { label: "Trading", icon: <HandCoins />, color: "text-amber-400", hover: "hover:text-amber-300" },
+    { label: "Live", icon: <Radio />, color: "text-red-500", hover: "hover:text-red-400" },
+    { label: "Friends", icon: <Users />, color: "text-green-400", hover: "hover:text-green-300" },
+    { label: "Follow", icon: <UserPlus />, color: "text-blue-400", hover: "hover:text-blue-300" },
+    { label: "Groups", icon: <Shield />, color: "text-indigo-400", hover: "hover:text-indigo-300" },
+    { label: "Profile", icon: <User />, color: "text-pink-400", hover: "hover:text-pink-300" }
 ];
 
 
@@ -216,13 +216,13 @@ export default function SocialPage() {
       
       {/* Center Nav */}
       <nav className="my-4">
-        <div className="bg-card/50 rounded-lg p-1 max-w-2xl mx-auto">
+        <div className="bg-card/50 rounded-lg p-1 max-w-3xl mx-auto">
             <ul className="flex justify-around items-center">
                 {centerNavItems.map(item => (
                     <li key={item.label}>
-                        <Button variant="ghost" className="text-foreground/80 font-bold hover:text-primary hover:bg-primary/10 transition-colors text-base p-3">
-                           {React.cloneElement(item.icon, { className: "w-5 h-5 mr-2" })}
-                            {item.label}
+                        <Button variant="ghost" className={`font-bold hover:bg-primary/10 transition-colors text-lg p-3 group ${item.hover}`}>
+                           {React.cloneElement(item.icon, { className: `w-6 h-6 mr-2 ${item.color} transition-colors group-hover:text-inherit` })}
+                            <span className={`${item.color} transition-colors group-hover:text-primary`}>{item.label}</span>
                         </Button>
                     </li>
                 ))}
