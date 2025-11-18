@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -99,13 +99,18 @@ const chartData = Array.from({ length: 24 }, (_, i) => ({
 
 
 export default function MemberSystemPage() {
-  const levelInfo = {
-    level: 18,
-    downline: 18000,
-    income: 18000,
-    serviceFee: 450,
-    totalIncome: 17460,
-  };
+    const levelInfo = useMemo(() => {
+        const income = 18000;
+        const serviceFee = income * 0.03;
+        const totalIncome = income - serviceFee;
+        return {
+            level: 18,
+            downline: 18000,
+            income: income,
+            serviceFee: serviceFee,
+            totalIncome: totalIncome,
+        };
+    }, []);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-5 gap-6">
