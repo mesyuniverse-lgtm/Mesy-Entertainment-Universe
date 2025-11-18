@@ -149,7 +149,7 @@ function formatCurrency(value: number) {
 }
 
 export default function MembershipsPage() {
-  const [memberCount, setMemberCount] = useState(18530);
+  const [memberCount, setMemberCount] = useState(18000);
   const [stats, setStats] = useState(initialStats);
   const promoVideoImage = PlaceHolderImages.find(i => i.id === 'rose-background');
 
@@ -173,6 +173,11 @@ export default function MembershipsPage() {
     const serviceFee = grossIncome * 0.03;
     const netIncome = grossIncome - serviceFee;
     return { grossIncome, serviceFee, netIncome };
+  }, [memberCount]);
+
+  const currentLevel = useMemo(() => {
+    const levelData = membershipData.find(l => memberCount < l.members);
+    return levelData ? levelData.level -1 : 50;
   }, [memberCount]);
 
   return (
@@ -297,50 +302,56 @@ export default function MembershipsPage() {
                     <CardHeader>
                       <CardTitle>Income Calculator</CardTitle>
                       <CardDescription>
-                        Estimate your potential monthly earnings based on network size.
+                        Estimate your potential monthly earnings.
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
-                      <div>
+                      <div className="space-y-2">
                         <label
                           htmlFor="member-count-input"
-                          className="text-sm font-medium mb-2 block"
+                          className="text-sm font-medium"
                         >
-                          Number of Members in Your Downline
+                          Number of Members
                         </label>
                         <Input
                           id="member-count-input"
                           type="number"
-                          placeholder="e.g., 5000"
+                          placeholder="e.g., 18000"
                           value={memberCount}
                           onChange={(e) =>
                             setMemberCount(
                               Math.min(50000, Math.max(0, parseInt(e.target.value) || 0))
                             )
                           }
-                          className="w-full h-12 text-lg"
                         />
                       </div>
 
-                      <div className="space-y-4 rounded-lg p-4">
-                        <div className="flex justify-between items-center text-lg">
-                          <span className="text-muted-foreground">Gross Income</span>
-                          <span>${formatCurrency(calculatedIncome.grossIncome)}</span>
+                      <div className="space-y-4 rounded-lg bg-background/50 p-4">
+                        <div className="flex justify-between items-baseline">
+                           <div>
+                            <span className="text-muted-foreground">Gross Income</span>
+                            <p className="text-xs text-muted-foreground">(USD)</p>
+                           </div>
+                          <span className='font-mono'>${formatCurrency(calculatedIncome.grossIncome)}</span>
                         </div>
-                        <div className="flex justify-between items-center text-lg">
+                        <div className="flex justify-between items-baseline">
                           <span className="text-muted-foreground">Service Fee (3%)</span>
-                          <span className="text-red-400">
-                            -${formatCurrency(calculatedIncome.serviceFee)}
-                          </span>
+                          <span className="text-red-400 font-mono">-${formatCurrency(calculatedIncome.serviceFee)}</span>
                         </div>
-                        <div className="flex justify-between items-center text-xl font-bold pt-2 border-t border-border">
-                          <span className="text-primary">Net Income (USD)</span>
-                          <span className="text-primary">
-                            ${formatCurrency(calculatedIncome.netIncome)}
-                          </span>
+                        <div className="flex justify-between items-baseline text-lg font-bold">
+                          <div>
+                            <span className="text-primary">Net Income</span>
+                            <p className="text-xs text-primary/80 font-normal">(USD)</p>
+                          </div>
+                          <span className="text-primary font-mono">${formatCurrency(calculatedIncome.netIncome)}</span>
                         </div>
                       </div>
-                      <Button className="w-full h-12 text-lg">Invite Members</Button>
+
+                      <div className="text-center">
+                        <p className="text-sm text-muted-foreground">Your estimated level</p>
+                        <p className="text-4xl font-bold text-primary">{currentLevel}</p>
+                      </div>
+
                     </CardContent>
                   </Card>
                   
