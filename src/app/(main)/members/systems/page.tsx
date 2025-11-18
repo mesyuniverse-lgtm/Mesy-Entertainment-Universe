@@ -106,7 +106,20 @@ export default function MemberSystemPage() {
       );
     }
 
-    if (!downlineData || downlineData.length === 0) {
+    const allMembers = [
+        ...(user?.email === 'mesy.universe@gmail.com' ? [{
+            id: '001',
+            username: 'mesy.universe',
+            level: 50,
+            joinDate: '2023-01-01',
+            downlines: 50000,
+            isSuperAdmin: true,
+        }] : []),
+        ...(downlineData || [])
+    ];
+
+
+    if (allMembers.length === 0) {
       return (
         <TableBody>
           <TableRow>
@@ -120,7 +133,7 @@ export default function MemberSystemPage() {
 
     return (
       <TableBody>
-        {downlineData.map((member, index) => {
+        {allMembers.map((member, index) => {
           const avatar = PlaceHolderImages.find((p) => p.id === 'default-avatar');
           const downlinesCount = member.downlines || 0; 
           const income = calculateIncome(downlinesCount);
@@ -129,11 +142,11 @@ export default function MemberSystemPage() {
           return (
             <TableRow key={member.id}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{member.id}</TableCell>
+              <TableCell>{member.id.substring(0, 6)}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={member.avatar || avatar?.imageUrl} />
+                    <AvatarImage src={(member as any).avatar || avatar?.imageUrl} />
                     <AvatarFallback>
                       {member.username ? member.username.charAt(0) : '?'}
                     </AvatarFallback>
@@ -299,45 +312,3 @@ export default function MemberSystemPage() {
     </div>
   );
 }
-
-// Add a custom radial progress component for the payments card
-declare module "@/components/ui/progress" {
-    interface ProgressProps {
-        type?: 'linear' | 'radial';
-    }
-}
-
-// Monkey-patching Progress component to support radial type
-const OriginalProgress = Progress;
-const PatchedProgress = React.forwardRef<
-  React.ElementRef<typeof OriginalProgress>,
-  React.ComponentPropsWithoutRef<typeof OriginalProgress>
->(({ className, value, type = 'linear', ...props }, ref) => {
-  if (type === 'radial') {
-    const r = 40;
-    const circ = 2 * Math.PI * r;
-    const strokePct = ((value || 0) * circ) / 100;
-    return (
-      <div ref={ref} className={className}>
-        <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-            <circle
-                className="stroke-current text-secondary"
-                strokeWidth="10"
-                cx="50" cy="50" r={r} fill="transparent"
-            ></circle>
-            <circle
-                className="stroke-current"
-                strokeWidth="10"
-                strokeLinecap="round"
-                cx="50" cy="50" r={r} fill="transparent"
-                strokeDasharray={circ}
-                strokeDashoffset={circ - strokePct}
-            ></circle>
-        </svg>
-      </div>
-    );
-  }
-  return <OriginalProgress ref={ref} className={className} value={value} {...props} />;
-});
-PatchedProgress.displayName = 'Progress';
-(Progress as any) = PatchedProgress;
