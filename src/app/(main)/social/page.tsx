@@ -129,6 +129,8 @@ const statsCardsConfig = [
   },
 ];
 
+const centerNavItems = ["Trading", "Live", "friends", "Follow", "Groups", "Profile"];
+
 export default function SocialPage() {
   const [stats, setStats] = useState(initialStats);
 
@@ -200,6 +202,21 @@ export default function SocialPage() {
             <p>Kael reached Level 15! ✨</p>
         </div>
       </div>
+      
+      {/* Center Nav */}
+      <nav className="my-4">
+        <div className="bg-card/50 rounded-lg p-2 max-w-lg mx-auto">
+            <ul className="flex justify-around items-center">
+                {centerNavItems.map(item => (
+                    <li key={item}>
+                        <Button variant="ghost" className="text-foreground/80 font-bold hover:text-primary hover:bg-primary/10 transition-colors">
+                            {item}
+                        </Button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+      </nav>
 
     <div className="grid grid-cols-12 h-full bg-background">
       {/* Left Sidebar */}
