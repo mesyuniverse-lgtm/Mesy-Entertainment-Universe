@@ -142,7 +142,7 @@ export default function HomePage() {
                 <span className="font-semibold">จำนวนผู้สมัคร</span>
             </div>
             <p className="text-5xl font-bold tracking-tighter text-red-500" style={{textShadow: '0 0 10px #ef4444'}}>
-                {stats.totalApplicants.toLocaleString()}
+                {(stats.totalApplicants || 0).toLocaleString()}
             </p>
         </Card>
         {statsCardsConfig.map((stat, index) => (
@@ -152,7 +152,7 @@ export default function HomePage() {
               {stat.icon}
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{stats[stat.key].toLocaleString()}</div>
+              <div className="text-2xl font-bold">{(stats[stat.key] || 0).toLocaleString()}</div>
               <p className="text-xs text-muted-foreground">{stat.change}</p>
             </CardContent>
           </Card>
@@ -201,7 +201,7 @@ export default function HomePage() {
 
              <Card className="bg-card/50 border-primary/20">
                 <CardHeader>
-                    <CardTitle className="text-md">LIVE NOW <span className="text-red-500 animate-pulse">{stats.totalLive.toLocaleString()}</span></CardTitle>
+                    <CardTitle className="text-md">LIVE NOW <span className="text-red-500 animate-pulse">{(stats.totalLive || 0).toLocaleString()}</span></CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="space-y-3">
