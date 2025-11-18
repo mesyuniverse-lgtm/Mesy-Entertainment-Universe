@@ -21,7 +21,7 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirebase, useCollection, useMemoFirebase, useDoc } from '@/firebase';
 import { collection, query, orderBy, doc, where } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users, CheckCircle, Settings, BarChart } from 'lucide-react';
+import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users, CheckCircle, Settings, BarChart, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 
@@ -205,7 +205,7 @@ export default function MemberSystemPage() {
                     />
                 )}
             </div>
-            <div className="lg:col-span-5 flex flex-col justify-center space-y-2">
+            <div className="lg:col-span-3 flex flex-col justify-center space-y-2">
                 <h2 className="text-xl font-semibold text-primary/80">My Financial Overview</h2>
                 {isLoading ? (
                     <>
@@ -225,7 +225,40 @@ export default function MemberSystemPage() {
                     </>
                 )}
             </div>
-            <div className="lg:col-span-4 space-y-4">
+            <div className="lg:col-span-3 flex items-center justify-center">
+                <Card className='bg-card/50 w-full max-w-sm'>
+                    <CardContent className='p-6 text-center'>
+                         <div className="relative w-48 h-48 mx-auto">
+                            <svg viewBox="0 0 100 100" className='-rotate-90'>
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="hsl(var(--border))" strokeWidth="10"></circle>
+                                <circle cx="50" cy="50" r="45" fill="none" stroke="url(#balanceGradient)" strokeWidth="10" strokeDasharray="283" strokeDashoffset="70" strokeLinecap='round'></circle>
+                                <defs>
+                                    <linearGradient id="balanceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                                        <stop offset="0%" stopColor="hsl(var(--primary))" />
+                                        <stop offset="100%" stopColor="hsl(var(--accent))" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div className='absolute inset-0 flex flex-col items-center justify-center'>
+                                <p className='text-muted-foreground text-sm'>Total Balance</p>
+                                <p className='text-3xl font-bold'>$0.00</p>
+                            </div>
+                            <div className='absolute top-2 left-10 w-10 h-10 bg-yellow-500/80 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md'>$</div>
+                            <div className='absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-green-500/80 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md'>€</div>
+                             <div className='absolute bottom-2 left-10 w-10 h-10 bg-red-500/80 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-md'>£</div>
+                        </div>
+
+                        <Button className='mt-6 w-full h-12 text-lg bg-gradient-to-r from-orange-500 to-yellow-400 text-black font-bold hover:opacity-90'>
+                            CHARGE WALLET
+                        </Button>
+                        <div className='mt-4 flex justify-between text-sm text-muted-foreground'>
+                            <span>Last Top-Up: N/A</span>
+                            <span className='flex items-center gap-2'>Wallet Status: <div className='w-2 h-2 rounded-full bg-green-500 animate-pulse'></div> Active</span>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+            <div className="lg:col-span-3 space-y-4">
                 <Card className='bg-card/50'>
                     <CardHeader className='pb-2'>
                         <div className='flex justify-between items-center'>
