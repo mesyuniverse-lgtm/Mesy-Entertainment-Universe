@@ -42,25 +42,29 @@ const statsCardsConfig = [
     title: 'Total Members',
     key: 'totalMembers' as keyof typeof initialStats,
     change: '+12.5% from last month',
-    icon: <Users className="h-6 w-6 text-muted-foreground" />,
+    icon: <Users className="h-8 w-8" />,
+    gradient: 'from-blue-500/80 to-blue-800/80',
   },
   {
     title: 'New Members (Today)',
     key: 'newMembers' as keyof typeof initialStats,
     change: '+3 since last hour',
-    icon: <UserPlus className="h-6 w-6 text-muted-foreground" />,
+    icon: <UserPlus className="h-8 w-8" />,
+    gradient: 'from-green-500/80 to-green-800/80',
   },
   {
     title: 'Total Live',
     key: 'totalLive' as keyof typeof initialStats,
     change: '+3 since last hour',
-    icon: <Radio className="h-6 w-6 text-muted-foreground" />,
+    icon: <Radio className="h-8 w-8" />,
+    gradient: 'from-purple-500/80 to-purple-800/80',
   },
   {
     title: 'Quest Complete',
     key: 'questComplete' as keyof typeof initialStats,
     change: '+3 since last hour',
-    icon: <Trophy className="h-6 w-6 text-muted-foreground" />,
+    icon: <Trophy className="h-8 w-8" />,
+    gradient: 'from-yellow-500/80 to-yellow-800/80',
   },
 ];
 
@@ -146,16 +150,17 @@ export default function HomePage() {
             </p>
         </Card>
         {statsCardsConfig.map((stat, index) => (
-          <Card key={index} className="bg-card/50 border-primary/20">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-              {stat.icon}
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{(stats[stat.key] || 0).toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">{stat.change}</p>
-            </CardContent>
-          </Card>
+            <Card key={index} className={`relative overflow-hidden text-white border-none bg-gradient-to-br ${stat.gradient}`}>
+                <div className="p-6 flex flex-row items-center justify-between space-y-0">
+                    <div className="flex flex-col space-y-1">
+                        <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
+                        <div className="text-4xl font-bold">{(stats[stat.key] || 0).toLocaleString()}</div>
+                    </div>
+                    <div className="p-3 bg-white/20 rounded-full">
+                        {stat.icon}
+                    </div>
+                </div>
+            </Card>
         ))}
       </div>
 
