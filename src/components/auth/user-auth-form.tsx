@@ -95,12 +95,14 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       await updateProfile(user, { displayName });
 
       const userDocRef = doc(firestore, "users", user.uid);
+      const isSuperAdmin = data.email === 'mesy.universe@gmail.com';
+
       await setDoc(userDocRef, {
         id: user.uid,
         email: user.email,
-        role: 'Member', // Default role is now 'Member'
-        level: 0,
-        verificationStatus: 'unverified'
+        role: isSuperAdmin ? 'Super-admin' : 'Member',
+        level: isSuperAdmin ? 50 : 0,
+        verificationStatus: isSuperAdmin ? 'verified' : 'unverified'
       }, { merge: true });
 
       const userProfileDocRef = doc(firestore, `users/${user.uid}/profile`, user.uid);
@@ -118,11 +120,18 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         }
       });
 
-      await sendEmailVerification(user);
-       toast({
-        title: "Welcome, New Member!",
-        description: "Please check your email to verify your account.",
-      });
+      if (!isSuperAdmin) {
+        await sendEmailVerification(user);
+        toast({
+          title: "Welcome, New Member!",
+          description: "Please check your email to verify your account.",
+        });
+      } else {
+         toast({
+          title: "Welcome, Super Admin!",
+          description: "Your account has been created with administrative privileges.",
+        });
+      }
     }
     router.push(redirectPath || '/dashboard');
   };
@@ -217,19 +226,6 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       await signInWithRedirect(auth, provider);
     } catch (error: any) {
       handleAuthError(error);
-      setIsLoading(false);
-    }
-  }
-  
-  async function onAnonymousSignIn() {
-    if (!auth) return;
-    setIsLoading(true);
-    try {
-      await signInAnonymously(auth);
-      router.push("/home");
-    } catch (error: any) {
-      handleAuthError(error);
-    } finally {
       setIsLoading(false);
     }
   }
@@ -372,7 +368,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
           </div>
       </div>
       
-      <Button variant="outline" type="button" disabled={isLoading} onClick={onGoogleSignIn}>
+      <Button variant="outline" type="button" disabled={isLoading} onClick={onGoogleSignIn} className="w-full">
           {isLoading ? (
           <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
