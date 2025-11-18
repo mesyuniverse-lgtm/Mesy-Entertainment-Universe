@@ -76,7 +76,7 @@ export default function MemberSystemPage() {
   }, [downlineData]);
   
   const averageSpend = useMemo(() => {
-    if (!transactionsData) {
+    if (!transactionsData || transactionsData.length === 0) {
       return 0;
     }
     return transactionsData.reduce((acc, transaction) => acc + Math.abs(transaction.amount), 0);
@@ -238,14 +238,14 @@ export default function MemberSystemPage() {
                             <Progress value={isLoading ? 0 : 100} className='w-12 h-12 rounded-full bg-indigo-500/30 [&>div]:bg-indigo-400' type="radial" />
                             <div>
                                 <p className='text-sm text-muted-foreground'>Average Income</p>
-                                <p className='text-xl font-bold'>${isLoading ? '...' : stats.totalIncome.toFixed(2)}</p>
+                                <p className='text-xl font-bold'>${isLoading ? '0.00' : stats.totalIncome.toFixed(2)}</p>
                             </div>
                         </div>
                         <div className='p-3 rounded-lg bg-green-900/40 border border-green-500/50 flex items-center gap-4'>
                             <Progress value={isLoading ? 0 : averageSpend > 0 ? (averageSpend / (stats.totalIncome || 1)) * 100 : 0} className='w-12 h-12 rounded-full bg-green-500/30 [&>div]:bg-green-400' type="radial" />
                             <div>
                                 <p className='text-sm text-muted-foreground'>Average Spend</p>
-                                <p className='text-xl font-bold'>${isLoading ? '...' : averageSpend.toFixed(2)}</p>
+                                <p className='text-xl font-bold'>${isLoading ? '0.00' : averageSpend.toFixed(2)}</p>
                             </div>
                         </div>
                     </CardContent>
