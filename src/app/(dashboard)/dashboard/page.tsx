@@ -87,7 +87,18 @@ const incomeSourcesData = Array.from({ length: 30 }, (_, i) => ({
 const downlineData = [
   {
     rank: 1,
+    username: 'mesy.universe',
+    memberId: '001',
+    level: 'Level.50',
+    joinDate: '2023-01-01',
+    downlines: 50000,
+    monthlyIncome: 48500,
+    fee: 'pay3%',
+  },
+  {
+    rank: 2,
     username: 'casey_jones',
+    memberId: '002',
     level: 'Level.0',
     joinDate: '2023-11-05',
     downlines: 5,
@@ -95,8 +106,9 @@ const downlineData = [
     fee: 'pay3%',
   },
   {
-    rank: 2,
+    rank: 3,
     username: 'april_oneil',
+    memberId: '003',
     level: 'Level.0',
     joinDate: '2023-10-15',
     downlines: 4,
@@ -104,8 +116,9 @@ const downlineData = [
     fee: 'pay3%',
   },
     {
-    rank: 3,
+    rank: 4,
     username: 'donatello',
+    memberId: '004',
     level: 'Level.0',
     joinDate: '2023-09-20',
     downlines: 3,
@@ -113,8 +126,9 @@ const downlineData = [
     fee: 'pay3%',
   },
   {
-    rank: 4,
+    rank: 5,
     username: 'michelangelo',
+    memberId: '005',
     level: 'Level.0',
     joinDate: '2023-09-01',
     downlines: 2,
@@ -124,6 +138,7 @@ const downlineData = [
   {
     rank: 6,
     username: 'leonardo',
+    memberId: '006',
     level: 'Level.0',
     joinDate: '2023-08-12',
     downlines: 1,
@@ -133,6 +148,7 @@ const downlineData = [
     {
     rank: 7,
     username: 'raphael',
+    memberId: '007',
     level: 'Level.0',
     joinDate: '2023-08-11',
     downlines: 0,
@@ -495,6 +511,7 @@ export default function DashboardPage() {
                             <TableRow>
                                 <TableHead>#</TableHead>
                                 <TableHead>Username</TableHead>
+                                <TableHead>MemberID</TableHead>
                                 <TableHead>Level</TableHead>
                                 <TableHead>Join Date</TableHead>
                                 <TableHead>จำนวนดาวน์ไลน์</TableHead>
@@ -515,6 +532,7 @@ export default function DashboardPage() {
                                             <span>{member.username}</span>
                                         </div>
                                     </TableCell>
+                                    <TableCell>{member.memberId}</TableCell>
                                     <TableCell>{member.level}</TableCell>
                                     <TableCell>{member.joinDate}</TableCell>
                                     <TableCell>{member.downlines}</TableCell>
@@ -531,5 +549,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    
