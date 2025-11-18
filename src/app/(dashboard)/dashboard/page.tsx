@@ -1,8 +1,6 @@
 'use client';
 
-import React, 'use client';
-
-import { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -366,10 +364,7 @@ export default function DashboardPage() {
                             <Area type="monotone" dataKey="value" stroke="hsl(var(--primary))" fill="url(#colorIncome)" strokeWidth={2} />
                         </AreaChart>
                     </ResponsiveContainer>
-                    <div className="text-xs text-muted-foreground flex justify-between">
-                        <span>June, $30,732</span>
-                        <span>July, $30,032</span>
-                    </div>
+                    
                  </div>
              </CardContent>
           </Card>
@@ -510,5 +505,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    
