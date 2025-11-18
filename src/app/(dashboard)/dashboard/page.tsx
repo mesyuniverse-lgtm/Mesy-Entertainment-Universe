@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, 'use client';
+
+import { useState, useEffect, useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -353,7 +355,6 @@ export default function DashboardPage() {
                             </div>
                         </div>
                     </div>
-                    <p className="text-4xl font-bold">$60,764</p>
                     <ResponsiveContainer width="100%" height={150}>
                         <AreaChart data={incomeSourcesData} margin={{ top: 20 }}>
                             <defs>
