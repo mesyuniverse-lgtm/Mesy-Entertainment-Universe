@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import {
   Table,
   TableBody,
@@ -56,6 +56,8 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
 import { Progress } from '@/components/ui/progress';
+import { Input } from '@/components/ui/input';
+import { membershipData } from '@/lib/data';
 
 
 const biddingChartData = [
@@ -167,9 +169,32 @@ const statsCardsConfig = [
   },
 ];
 
+function formatCurrency(value: number) {
+  return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 
 export default function DashboardPage() {
     const [stats, setStats] = useState(initialStats);
+    const [memberCount, setMemberCount] = useState(18000);
+
+    const calculatedIncome = useMemo(() => {
+      const grossIncome = memberCount;
+      const serviceFee = grossIncome * 0.03;
+      const netIncome = grossIncome - serviceFee;
+      return { grossIncome, serviceFee, netIncome };
+    }, [memberCount]);
+
+    const currentLevel = useMemo(() => {
+      for (let i = membershipData.length - 1; i >= 0; i--) {
+        if (memberCount < membershipData[i].members) {
+           if(i > 0 && memberCount >= (membershipData[i-1].members - (i > 1 ? 1: 0) ) ) return membershipData[i-1].level;
+           if(i === 0) return 0;
+        }
+      }
+      return membershipData[membershipData.length - 1].level;
+    }, [memberCount]);
+
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -376,6 +401,45 @@ export default function DashboardPage() {
 
         {/* Right Column */}
         <div className="col-span-12 lg:col-span-3 space-y-6">
+          <Card className="bg-card/50">
+            <CardHeader>
+              <CardTitle>Income Calculator</CardTitle>
+              <CardDescription>Estimate your potential monthly earnings.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+                <div>
+                    <label htmlFor="member-count-input" className="text-sm font-medium mb-2 block">Number of Members</label>
+                    <Input 
+                        id="member-count-input"
+                        type="number"
+                        placeholder="e.g., 18000"
+                        value={memberCount}
+                        onChange={(e) => setMemberCount(Math.min(50000, Math.max(0, parseInt(e.target.value) || 0)))}
+                        className="w-full"
+                    />
+                </div>
+                
+                <div className="space-y-2 rounded-lg bg-secondary/50 p-4">
+                    <div className="flex justify-between items-center text-sm">
+                        <span className="text-muted-foreground">Gross Income (USD)</span>
+                        <span>${formatCurrency(calculatedIncome.grossIncome)}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                        <span className="text-muted-foreground">Service Fee (3%)</span>
+                        <span className="text-red-400">-${formatCurrency(calculatedIncome.serviceFee)}</span>
+                    </div>
+                     <div className="flex justify-between items-center text-md font-bold pt-2 border-t border-border">
+                        <span className="text-primary">Net Income (USD)</span>
+                        <span className="text-primary">${formatCurrency(calculatedIncome.netIncome)}</span>
+                    </div>
+                </div>
+
+                <div className="text-center">
+                    <p className="text-sm text-muted-foreground">Your estimated level</p>
+                    <p className="text-4xl font-bold text-primary">{currentLevel}</p>
+                </div>
+            </CardContent>
+          </Card>
           <Card className="bg-card/50">
             <CardHeader>
                 <div className="flex justify-between items-center">
