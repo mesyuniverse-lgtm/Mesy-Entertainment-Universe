@@ -241,6 +241,22 @@ export default function DashboardPage() {
         </Card>
       </header>
 
+      {/* Ticker */}
+      <div className="relative flex overflow-hidden whitespace-nowrap py-2 mx-4 md:mx-6 border-y border-border">
+        <div className="animate-marquee flex gap-8 text-sm text-muted-foreground items-center">
+            <p>Aria has received a Legendary Item: Shadowfire Bow! 🏹</p>
+            <p>PixelPioneer reached Level 45! 💎</p>
+            <p>CyberNinja acquired the legendary 'Blade of Echoes'. ⚔️</p>
+            <p>Kael reached Level 15! ✨</p>
+        </div>
+        <div className="animate-marquee2 absolute top-2 left-0 flex gap-8 text-sm text-muted-foreground items-center">
+            <p>Aria has received a Legendary Item: Shadowfire Bow! 🏹</p>
+            <p>PixelPioneer reached Level 45! 💎</p>
+            <p>CyberNinja acquired the legendary 'Blade of Echoes'. ⚔️</p>
+            <p>Kael reached Level 15! ✨</p>
+        </div>
+      </div>
+
       {/* Main Content Grid */}
       <main className="flex-1 grid grid-cols-12 gap-6 p-4 md:p-6">
         {/* Left Column */}
@@ -505,3 +521,5 @@ export default function DashboardPage() {
     </div>
   );
 }
+
+    
