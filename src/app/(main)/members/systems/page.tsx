@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useMemo } from 'react';
@@ -253,7 +254,7 @@ export default function MemberSystemPage() {
                         </Button>
                         <div className='mt-4 flex justify-between text-sm text-muted-foreground'>
                             <span>Last Top-Up: N/A</span>
-                            <span className='flex items-center gap-2'>Wallet Status: <div className='w-2 h-2 rounded-full bg-green-500 animate-pulse'></div> Active</span>
+                            <span className='flex items-center gap-2'>Wallet Status: <span className='text-green-500 animate-pulse font-bold'>Active</span></span>
                         </div>
                     </CardContent>
                 </Card>
