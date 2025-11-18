@@ -104,7 +104,7 @@ export default function TheGatePage() {
                         className="w-full text-lg h-14 bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white font-bold border-2 border-transparent hover:border-white transition-all duration-300 shadow-lg hover:shadow-primary/50"
                         asChild
                     >
-                       <Link href="/signup">Create Member ID</Link>
+                       <Link href="/signup">Create Member Accounts</Link>
                     </Button>
                      <Button variant="outline" size="lg" className="w-full text-lg h-14 bg-black/30 border-white/30 hover:bg-white/10 hover:border-white" asChild>
                          <Link href="/login">
