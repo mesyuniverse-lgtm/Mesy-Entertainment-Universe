@@ -84,21 +84,21 @@ const liveNow = [
 ];
 
 const memberProfiles = [
-    { name: 'CyberNinja', level: 88, avatarId: 'fighter-character'},
-    { name: 'PixelPioneer', level: 75, avatarId: 'default-avatar'},
-    { name: 'GalacticGamer', level: 92, avatarId: 'explorer-1'},
-    { name: 'ArcadeAvenger', level: 64, avatarId: 'knight-1'},
-    { name: 'QuantumQueen', level: 99, avatarId: 'female-warrior-1'},
-    { name: 'VoidWalker', level: 58, avatarId: 'default-avatar'},
-    { name: 'Seraphina', level: 81, avatarId: 'female-archer-1'},
-    { name: 'ShadowStalker', level: 77, avatarId: 'fighter-character'},
+    { name: 'CyberNinja', level: 48, avatarId: 'fighter-character'},
+    { name: 'PixelPioneer', level: 45, avatarId: 'default-avatar'},
+    { name: 'GalacticGamer', level: 49, avatarId: 'explorer-1'},
+    { name: 'ArcadeAvenger', level: 34, avatarId: 'knight-1'},
+    { name: 'QuantumQueen', level: 50, avatarId: 'female-warrior-1'},
+    { name: 'VoidWalker', level: 28, avatarId: 'default-avatar'},
+    { name: 'Seraphina', level: 41, avatarId: 'female-archer-1'},
+    { name: 'ShadowStalker', level: 47, avatarId: 'fighter-character'},
 ];
 
 const newsFeed = [
-    { icon: <Gem/>, text: "PixelPioneer reached Level 75!", time: "2h ago" },
+    { icon: <Gem/>, text: "PixelPioneer reached Level 45!", time: "2h ago" },
     { icon: <Gem/>, text: "CyberNinja acquired the legendary 'Blade of Echoes'.", time: "5h ago" },
     { icon: <Gem/>, text: "QuantumQueen unlocked 'Master of Dimensions' achievement.", time: "1d ago" },
-    { icon: <Gem/>, text: "GalacticGamer reached Level 92!", time: "2d ago" },
+    { icon: <Gem/>, text: "GalacticGamer reached Level 49!", time: "2d ago" },
 ];
 
 const promotions = [
@@ -164,13 +164,13 @@ export default function HomePage() {
         <div className="animate-marquee flex gap-8 text-sm text-muted-foreground items-center">
             <p>Kael reached Level 15! ✨</p>
             <p>Aria has received a Legendary Item: Shadowfire Bow! 🏹</p>
-            <p>PixelPioneer reached Level 75! 💎</p>
+            <p>PixelPioneer reached Level 45! 💎</p>
             <p>CyberNinja acquired the legendary 'Blade of Echoes'. ⚔️</p>
         </div>
         <div className="animate-marquee2 absolute top-2 left-0 flex gap-8 text-sm text-muted-foreground items-center">
              <p>Kael reached Level 15! ✨</p>
             <p>Aria has received a Legendary Item: Shadowfire Bow! 🏹</p>
-            <p>PixelPioneer reached Level 75! 💎</p>
+            <p>PixelPioneer reached Level 45! 💎</p>
             <p>CyberNinja acquired the legendary 'Blade of Echoes'. ⚔️</p>
         </div>
       </div>
