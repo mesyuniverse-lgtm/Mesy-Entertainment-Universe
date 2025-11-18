@@ -19,7 +19,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirebase, useCollection, useMemoFirebase, useDoc } from '@/firebase';
-import { collection, query, orderBy, doc } from 'firebase/firestore';
+import { collection, query, orderBy, doc, where } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users, CheckCircle, Settings, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -41,8 +41,20 @@ export default function MemberSystemPage() {
   }, [firestore, user]);
 
   const { data: downlineData, isLoading: isDownlineLoading, error } = useCollection(downlineQuery);
-  
-  const isLoading = isProfileLoading || isDownlineLoading;
+
+  const transactionsQuery = useMemoFirebase(() => {
+    if (!user) return null;
+    // This assumes a user has one wallet and its ID is the same as the user's UID for simplicity.
+    // And that transactions are in a subcollection of that wallet.
+    return query(
+        collection(firestore, `users/${user.uid}/wallet/${user.uid}/transactions`),
+        where('type', 'in', ['market_purchase', 'withdrawal', 'fee'])
+    );
+  }, [firestore, user]);
+
+  const { data: transactionsData, isLoading: isTransactionsLoading } = useCollection(transactionsQuery);
+
+  const isLoading = isProfileLoading || isDownlineLoading || isTransactionsLoading;
 
   const calculateIncome = (downlines: number) => downlines * 1;
   const calculateFee = (income: number) => income * 0.03;
@@ -63,6 +75,14 @@ export default function MemberSystemPage() {
     return { totalMembers, totalIncome, totalFees, netIncome };
   }, [downlineData]);
   
+  const averageSpend = useMemo(() => {
+    if (!transactionsData) {
+      return 0;
+    }
+    return transactionsData.reduce((acc, transaction) => acc + Math.abs(transaction.amount), 0);
+  }, [transactionsData]);
+
+
   const avatarImage = PlaceHolderImages.find((i) => i.id === 'female-warrior-1');
 
   const renderTableContent = () => {
@@ -108,7 +128,7 @@ export default function MemberSystemPage() {
 
     const allMembers = [
         ...(user?.email === 'mesy.universe@gmail.com' ? [{
-            id: '001',
+            id: user.uid,
             username: 'mesy.universe',
             level: 50,
             joinDate: '2023-01-01',
@@ -142,7 +162,7 @@ export default function MemberSystemPage() {
           return (
             <TableRow key={member.id}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{member.id.substring(0, 6)}</TableCell>
+              <TableCell>{(member as any).memberId || member.id.substring(0, 6)}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
@@ -155,7 +175,7 @@ export default function MemberSystemPage() {
                 </div>
               </TableCell>
               <TableCell>Level.{member.level}</TableCell>
-              <TableCell>{new Date(member.joinDate).toLocaleDateString()}</TableCell>
+              <TableCell>{new Date((member as any).joinDate.seconds ? (member as any).joinDate.toDate() : member.joinDate).toLocaleDateString()}</TableCell>
               <TableCell>{downlinesCount > 0 ? downlinesCount.toLocaleString() : "ยังไม่มีผู้ติดตาม"}</TableCell>
               <TableCell>
                 {downlinesCount > 0 ? `$${income.toFixed(2)}` : "ยังไม่มีรายได้"}
@@ -199,7 +219,7 @@ export default function MemberSystemPage() {
                     <>
                         <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Username:</span> {userProfile?.username || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
                         <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Member ID:</span> {user?.uid.substring(0, 6) || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
-                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Levels:</span> {userProfile?.level || 0}</div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Levels:</span> {(userProfile as any)?.level || 0}</div>
                         <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Tel:</span> ***-***-**{userProfile?.phoneNumber?.number?.slice(-2) || 'XX'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
                         <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Email:</span> {user?.email} <CheckCircle className='w-5 h-5 text-green-500' /></div>
                     </>
@@ -215,17 +235,17 @@ export default function MemberSystemPage() {
                     </CardHeader>
                     <CardContent className='space-y-3'>
                         <div className='p-3 rounded-lg bg-indigo-900/40 border border-indigo-500/50 flex items-center gap-4'>
-                            <Progress value={0} className='w-12 h-12 rounded-full bg-indigo-500/30 [&>div]:bg-indigo-400' type="radial" />
+                            <Progress value={isLoading ? 0 : 100} className='w-12 h-12 rounded-full bg-indigo-500/30 [&>div]:bg-indigo-400' type="radial" />
                             <div>
                                 <p className='text-sm text-muted-foreground'>Average Income</p>
-                                <p className='text-xl font-bold'>$0</p>
+                                <p className='text-xl font-bold'>${isLoading ? '...' : stats.totalIncome.toFixed(2)}</p>
                             </div>
                         </div>
                         <div className='p-3 rounded-lg bg-green-900/40 border border-green-500/50 flex items-center gap-4'>
-                            <Progress value={0} className='w-12 h-12 rounded-full bg-green-500/30 [&>div]:bg-green-400' type="radial" />
+                            <Progress value={isLoading ? 0 : averageSpend > 0 ? (averageSpend / (stats.totalIncome || 1)) * 100 : 0} className='w-12 h-12 rounded-full bg-green-500/30 [&>div]:bg-green-400' type="radial" />
                             <div>
                                 <p className='text-sm text-muted-foreground'>Average Spend</p>
-                                <p className='text-xl font-bold'>$0</p>
+                                <p className='text-xl font-bold'>${isLoading ? '...' : averageSpend.toFixed(2)}</p>
                             </div>
                         </div>
                     </CardContent>
