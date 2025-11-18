@@ -226,7 +226,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     setIsLoading(true);
     try {
       await signInAnonymously(auth);
-      router.push(redirectPath || "/dashboard");
+      router.push("/home");
     } catch (error: any) {
       handleAuthError(error);
     } finally {
