@@ -100,7 +100,7 @@ export default function MembershipsPage() {
 
   const currentLevel = useMemo(() => {
     for (let i = membershipData.length - 1; i >= 0; i--) {
-        if (memberCount >= membershipData[i-1]?.members) {
+        if (memberCount >= (membershipData[i-1]?.members ?? 0)) {
             return membershipData[i-1]?.level ?? 0;
         }
     }
@@ -141,13 +141,13 @@ export default function MembershipsPage() {
             </CardHeader>
             <CardContent>
                 <p className="text-4xl font-bold">{currentLevel}</p>
-                 <p className="text-sm text-muted-foreground">Next level at {membershipData.find(l => l.level === currentLevel + 1)?.members.toLocaleString()} members</p>
+                 <p className="text-sm text-muted-foreground">Next level at {(membershipData.find(l => l.level === currentLevel + 1)?.members ?? 0).toLocaleString()} members</p>
             </CardContent>
         </Card>
       </div>
 
-      <div className="grid lg:grid-cols-5 gap-8">
-        <div className="lg:col-span-3">
+      <div className="grid lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
           <Card>
             <CardHeader>
               <CardTitle>Downline Members</CardTitle>
@@ -213,7 +213,7 @@ export default function MembershipsPage() {
           </Card>
         </div>
 
-        <div className="lg:col-span-2 space-y-8">
+        <div className="lg:col-span-1 space-y-8">
           <Card>
             <CardHeader>
               <CardTitle>Income Calculator</CardTitle>
