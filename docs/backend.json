@@ -100,7 +100,7 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "UserProfile",
       "type": "object",
-      "description": "Represents the profile information of a user.",
+      "description": "Stores the publicly visible and private profile information for a user. Sensitive information should be protected by security rules.",
       "properties": {
         "id": {
           "type": "string",
@@ -144,7 +144,7 @@
         },
         "phoneNumber": {
             "type": "object",
-            "description": "User's phone number, split into country code and number.",
+            "description": "User's phone number, split into country code and number. Should be verified.",
             "properties": {
                 "countryCode": { "type": "string", "description": "The international country calling code, e.g., '+66'." },
                 "number": { "type": "string", "description": "The local phone number." }
@@ -152,11 +152,11 @@
         },
         "nationalId": {
             "type": "string",
-            "description": "User's national identification number. Should be encrypted at rest."
+            "description": "User's national identification number. Should be encrypted at rest and only accessible by authorized admins."
         },
         "address": {
             "type": "object",
-            "description": "User's physical address.",
+            "description": "User's physical address, for billing and verification.",
             "properties": {
                 "street": { "type": "string" },
                 "city": { "type": "string" },
