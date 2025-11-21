@@ -5,13 +5,13 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { Progress } from '@/components/ui/progress';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Gem } from '@/components/icons';
 
 export default function LoadingPage() {
   const [progress, setProgress] = useState(0);
   const router = useRouter();
 
   const bgImage = PlaceHolderImages.find((i) => i.id === 'enchanted-forest-1');
-  const logoImage = PlaceHolderImages.find((i) => i.id === 'mir4-logo');
   const unrealLogo = 'https://www.unrealengine.com/content/dam/unreal-engine/common/images/unreal-engine-logo-rev-b-191x24-4f81c81525f69c6767664e1c8b36879c.svg';
 
   useEffect(() => {
@@ -47,15 +47,10 @@ export default function LoadingPage() {
         />
       )}
       <div className="relative z-10 flex flex-col items-center">
-        {logoImage && (
-            <Image
-                src={logoImage.imageUrl}
-                alt="Game Logo"
-                width={400}
-                height={200}
-                className="object-contain drop-shadow-[0_5px_15px_rgba(255,255,255,0.2)]"
-            />
-        )}
+        <div className="flex flex-col items-center drop-shadow-[0_5px_15px_rgba(255,255,255,0.2)]">
+            <Gem className="h-24 w-24 text-primary" />
+            <h1 className="text-4xl font-bold font-headline mt-4">MESY UNIVERSE</h1>
+        </div>
         <div className="mt-8 w-40 h-40">
            <div className="relative w-full h-full">
                 <Progress value={progress} type="radial" className='text-primary'/>

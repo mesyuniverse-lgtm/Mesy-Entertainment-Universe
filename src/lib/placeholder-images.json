@@ -167,12 +167,6 @@
       "description": "People celebrating new year 2026 with champagne and fireworks.",
       "imageUrl": "https://images.unsplash.com/photo-1667835949495-78a1ea9ecd77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZWxlYnJhdGlvbiUyMGZpcmV3b3Jrc3xlbnwwfHx8fDE3NjEwNDQ0MjR8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "celebration fireworks"
-    },
-    {
-      "id": "mir4-logo",
-      "description": "MIR4 game logo.",
-      "imageUrl": "https://i.imgur.com/3f0i8rP.png",
-      "imageHint": "game logo"
     }
   ]
 }
