@@ -15,13 +15,13 @@
     {
       "id": "dragon-1",
       "description": "A dragon flying over a valley.",
-      "imageUrl": "https://images.unsplash.com/photo-1664787357457-4eda9cbe1245?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxkcmFnb24lMjB2YWxsZXl8ZW58MHx8fHwxNzYxMDc3NDQ1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1664787357457-4eda9cbe1245?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxkcmFnb24lMjB2YWxsZXl8ZW58MHx8fHwxNzYxMDc3NDQ1fDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "dragon valley"
     },
     {
       "id": "glowing-gem-1",
       "description": "A glowing gem in a dark cave.",
-      "imageUrl": "https://images.unsplash.com/photo-1746420800119-90a148efeb7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnbG93aW5nJTIwZ2VtfGVufDB8fHx8MTc2MDk4MDE0NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1746420800119-90a148efeb7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxnbG93aW5nJTIwZ2VtfGVufDB8fHx8MTc2MDk4MDE0NXww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "glowing gem"
     },
     {
@@ -33,7 +33,7 @@
     {
       "id": "fantasy-landscape-2",
       "description": "A wedding couple celebrating their marriage.",
-      "imageUrl": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3ZWRkaW5nJTIwY291cGxlfGVufDB8fHx8MTc2MTA4ODAwOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3ZWRkaW5nJTIwY291cGxlfGVufDB8fHx8MTc2MTA4ODAwOXww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "wedding couple"
     },
     {
@@ -159,7 +159,7 @@
     {
       "id": "rose-background",
       "description": "A soft background of pink roses with wedding rings.",
-      "imageUrl": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3ZWRkaW5nJTIwY291cGxlfGVufDB8fHx8MTc2MTA4ODAwOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3ZWRkaW5nJTIwY291cGxlfGVufDB8fHx8MTc2MTA4ODAwOXww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "roses background"
     },
     {
@@ -167,6 +167,12 @@
       "description": "People celebrating new year 2026 with champagne and fireworks.",
       "imageUrl": "https://images.unsplash.com/photo-1667835949495-78a1ea9ecd77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZWxlYnJhdGlvbiUyMGZpcmV3b3Jrc3xlbnwwfHx8fDE3NjEwNDQ0MjR8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "celebration fireworks"
+    },
+    {
+      "id": "mir4-logo",
+      "description": "MIR4 game logo.",
+      "imageUrl": "https://i.imgur.com/3f0i8rP.png",
+      "imageHint": "game logo"
     }
   ]
 }
