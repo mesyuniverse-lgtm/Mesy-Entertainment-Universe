@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -25,23 +26,24 @@ function formatCurrency(value: number) {
 }
 
 export default function CreateMemberIdPage() {
-  const { user, isUserLoading } = useFirebase();
+  const { user, isUserLoading, firestore } = useFirebase();
   const [selectedSlotIndex, setSelectedSlotIndex] = useState(0);
   
   const userDocRef = useMemoFirebase(() => {
-    if (!user) return null;
+    if (!user || !firestore) return null;
     // Assuming user's main document is in "users" collection with their UID
     return doc(firestore, "users", user.uid);
-  }, [user]);
+  }, [user, firestore]);
 
   const { data: userData, isLoading: isUserDataLoading } = useDoc(userDocRef);
   
   // Use a different memo for the profile data
   const userProfileRef = useMemoFirebase(() => {
-    if(!user) return null;
+    if(!user || !firestore) return null;
     // Assuming profile is a subcollection
     return doc(firestore, `users/${user.uid}/profile`, user.uid);
-  }, [user]);
+  }, [user, firestore]);
+
 
   const { data: userProfileData, isLoading: isUserProfileLoading } = useDoc(userProfileRef);
 
@@ -61,14 +63,14 @@ export default function CreateMemberIdPage() {
       };
     }
 
-    const level = userData.level || 0;
+    const level = (userData as any).level || 0;
     const downline = level > 0 ? (level * 1000) + Math.floor(Math.random() * 999) : Math.floor(Math.random() * 999);
     const grossIncome = downline * 1;
     const serviceFee = grossIncome * 0.03;
     const netIncome = grossIncome - serviceFee;
 
     return {
-      memberName: userProfileData.username || user?.email?.split('@')[0],
+      memberName: (userProfileData as any).username || user?.email?.split('@')[0],
       memberId: user.uid.substring(0, 8),
       level,
       downline,
@@ -102,14 +104,14 @@ export default function CreateMemberIdPage() {
 
     return (
         <CardContent className="space-y-1 p-2">
-            <p><span className="text-muted-foreground">MemberName:</span> {currentMember?.memberName || 'N/A'}</p>
-            <p><span className="text-muted-foreground">MemberID:</span> {currentMember?.memberId || 'N/A'}</p>
-            <p><span className="text-muted-foreground">Level:</span> {currentMember?.level ?? 'N/A'}</p>
-            <p><span className="text-muted-foreground">Downline:</span> {currentMember?.downline.toLocaleString() || 'N/A'}</p>
+            <div><span className="text-muted-foreground">MemberName:</span> {currentMember?.memberName || 'N/A'}</div>
+            <div><span className="text-muted-foreground">MemberID:</span> {currentMember?.memberId || 'N/A'}</div>
+            <div><span className="text-muted-foreground">Level:</span> {currentMember?.level ?? 'N/A'}</div>
+            <div><span className="text-muted-foreground">Downline:</span> {currentMember?.downline.toLocaleString() || 'N/A'}</div>
             <div className="pt-4 space-y-1">
-                <p><span className="text-muted-foreground">Gross Income (USD):</span> ${currentMember ? formatCurrency(currentMember.grossIncome) : '0.00'}</p>
-                <p><span className="text-muted-foreground">Service Fee (3%):</span> -${currentMember ? formatCurrency(currentMember.serviceFee) : '0.00'}</p>
-                <p className="font-bold"><span className="text-muted-foreground">Net Income (USD):</span> ${currentMember ? formatCurrency(currentMember.netIncome) : '0.00'}</p>
+                <div><span className="text-muted-foreground">Gross Income (USD):</span> ${currentMember ? formatCurrency(currentMember.grossIncome) : '0.00'}</div>
+                <div><span className="text-muted-foreground">Service Fee (3%):</span> -${currentMember ? formatCurrency(currentMember.serviceFee) : '0.00'}</div>
+                <div className="font-bold"><span className="text-muted-foreground">Net Income (USD):</span> ${currentMember ? formatCurrency(currentMember.netIncome) : '0.00'}</div>
             </div>
         </CardContent>
     );
@@ -194,7 +196,7 @@ export default function CreateMemberIdPage() {
                                             </>
                                         ) : (
                                             <>
-                                                <p className={`font-bold ${isActive ? 'text-primary' : ''}`}>Lv.{memberData.level}</p>
+                                                <p className={`font-bold ${isActive ? 'text-primary' : ''}`}>Lv.{(memberData as any).level}</p>
                                                 <p className="text-xs text-muted-foreground">MemberID: {memberData.memberId}</p>
                                             </>
                                         )}
