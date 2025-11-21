@@ -13,13 +13,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Skeleton } from '@/components/ui/skeleton';
 
-const memberSlots = [
-  { level: null, memberId: null, inUse: true },
-  { level: null, memberId: null, inUse: false },
-  { level: null, memberId: null, inUse: false },
-  { level: null, memberId: null, inUse: false },
-  { level: null, memberId: null, inUse: false },
-];
 
 function formatCurrency(value: number) {
     return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -31,16 +24,13 @@ export default function CreateMemberIdPage() {
   
   const userDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
-    // Assuming user's main document is in "users" collection with their UID
     return doc(firestore, "users", user.uid);
   }, [user, firestore]);
 
   const { data: userData, isLoading: isUserDataLoading } = useDoc(userDocRef);
   
-  // Use a different memo for the profile data
   const userProfileRef = useMemoFirebase(() => {
     if(!user || !firestore) return null;
-    // Assuming profile is a subcollection
     return doc(firestore, `users/${user.uid}/profile`, user.uid);
   }, [user, firestore]);
 
@@ -49,6 +39,25 @@ export default function CreateMemberIdPage() {
 
 
   const isLoading = isUserLoading || isUserDataLoading || isUserProfileLoading;
+
+  const hasCreatedMemberId = useMemo(() => {
+    if (isLoading || !userData) return false;
+    // We determine if a user has created an ID by checking if their level is > 0
+    // This is a business logic assumption for now.
+    return (userData as any).level > 0;
+  }, [isLoading, userData]);
+
+  const memberSlots = useMemo(() => {
+    if (!hasCreatedMemberId) {
+        return Array(5).fill({ inUse: false });
+    }
+    // If the user has an ID, create one slot for it and 4 empty ones.
+    return [
+        { inUse: true },
+        ...Array(4).fill({ inUse: false })
+    ];
+  }, [hasCreatedMemberId]);
+
 
   const memberData = useMemo(() => {
     if (isLoading || !userData || !userProfileData) {
@@ -64,7 +73,8 @@ export default function CreateMemberIdPage() {
     }
 
     const level = (userData as any).level || 0;
-    const downline = level > 0 ? (level * 1000) + Math.floor(Math.random() * 999) : Math.floor(Math.random() * 999);
+    // Only calculate downline if level > 0
+    const downline = level > 0 ? (level * 1000) + Math.floor(Math.random() * 999) : 0;
     const grossIncome = downline * 1;
     const serviceFee = grossIncome * 0.03;
     const netIncome = grossIncome - serviceFee;
@@ -100,14 +110,14 @@ export default function CreateMemberIdPage() {
       );
     }
 
-    const currentMember = memberSlots[selectedSlotIndex].inUse ? memberData : null;
+    const currentMember = memberSlots[selectedSlotIndex]?.inUse ? memberData : null;
 
     return (
         <CardContent className="space-y-1 p-2">
             <div><span className="text-muted-foreground">MemberName:</span> {currentMember?.memberName || 'N/A'}</div>
             <div><span className="text-muted-foreground">MemberID:</span> {currentMember?.memberId || 'N/A'}</div>
             <div><span className="text-muted-foreground">Level:</span> {currentMember?.level ?? 'N/A'}</div>
-            <div><span className="text-muted-foreground">Downline:</span> {currentMember?.downline.toLocaleString() || 'N/A'}</div>
+            <div><span className="text-muted-foreground">Downline:</span> {currentMember ? currentMember.downline.toLocaleString() : 'N/A'}</div>
             <div className="pt-4 space-y-1">
                 <div><span className="text-muted-foreground">Gross Income (USD):</span> ${currentMember ? formatCurrency(currentMember.grossIncome) : '0.00'}</div>
                 <div><span className="text-muted-foreground">Service Fee (3%):</span> -${currentMember ? formatCurrency(currentMember.serviceFee) : '0.00'}</div>
@@ -212,8 +222,8 @@ export default function CreateMemberIdPage() {
                     )
                 })}
             </div>
-            <Button className="mt-8 w-full max-w-xs h-12 text-lg font-bold bg-gradient-to-r from-amber-400 to-yellow-600 text-black shadow-lg hover:shadow-yellow-400/50">
-                Start
+            <Button className="mt-8 w-full max-w-xs h-12 text-lg font-bold bg-gradient-to-r from-amber-400 to-yellow-600 text-black shadow-lg hover:shadow-yellow-400/50" asChild>
+                <Link href="/dashboard">Start</Link>
             </Button>
         </div>
       </main>
