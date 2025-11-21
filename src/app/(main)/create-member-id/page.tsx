@@ -30,15 +30,26 @@ export default function CreateMemberIdPage() {
   
   const userDocRef = useMemoFirebase(() => {
     if (!user) return null;
-    return doc(user.firestore, "users", user.uid);
+    // Assuming user's main document is in "users" collection with their UID
+    return doc(firestore, "users", user.uid);
   }, [user]);
 
   const { data: userData, isLoading: isUserDataLoading } = useDoc(userDocRef);
+  
+  // Use a different memo for the profile data
+  const userProfileRef = useMemoFirebase(() => {
+    if(!user) return null;
+    // Assuming profile is a subcollection
+    return doc(firestore, `users/${user.uid}/profile`, user.uid);
+  }, [user]);
 
-  const isLoading = isUserLoading || isUserDataLoading;
+  const { data: userProfileData, isLoading: isUserProfileLoading } = useDoc(userProfileRef);
+
+
+  const isLoading = isUserLoading || isUserDataLoading || isUserProfileLoading;
 
   const memberData = useMemo(() => {
-    if (isLoading || !userData) {
+    if (isLoading || !userData || !userProfileData) {
       return {
         memberName: 'Loading...',
         memberId: '...',
@@ -57,15 +68,15 @@ export default function CreateMemberIdPage() {
     const netIncome = grossIncome - serviceFee;
 
     return {
-      memberName: userData.displayName || userData.email.split('@')[0],
-      memberId: userData.id.substring(0, 8),
+      memberName: userProfileData.username || user?.email?.split('@')[0],
+      memberId: user.uid.substring(0, 8),
       level,
       downline,
       grossIncome,
       serviceFee,
       netIncome,
     };
-  }, [isLoading, userData]);
+  }, [isLoading, userData, userProfileData, user]);
 
   const bgImage = PlaceHolderImages.find((i) => i.id === 'fantasy-landscape-5');
   const avatarImage = PlaceHolderImages.find((i) => i.id === 'female-warrior-1');
@@ -74,14 +85,14 @@ export default function CreateMemberIdPage() {
     if (isLoading) {
       return (
         <CardContent className="space-y-1 p-2">
-            <p><span className="text-muted-foreground">MemberName:</span> <Skeleton className="h-4 w-24 inline-block" /></p>
-            <p><span className="text-muted-foreground">MemberID:</span> <Skeleton className="h-4 w-16 inline-block" /></p>
-            <p><span className="text-muted-foreground">Level:</span> <Skeleton className="h-4 w-8 inline-block" /></p>
-            <p><span className="text-muted-foreground">Downline:</span> <Skeleton className="h-4 w-12 inline-block" /></p>
+            <div className="flex items-center gap-2"><span className="text-muted-foreground">MemberName:</span> <Skeleton className="h-4 w-24" /></div>
+            <div className="flex items-center gap-2"><span className="text-muted-foreground">MemberID:</span> <Skeleton className="h-4 w-16" /></div>
+            <div className="flex items-center gap-2"><span className="text-muted-foreground">Level:</span> <Skeleton className="h-4 w-8" /></div>
+            <div className="flex items-center gap-2"><span className="text-muted-foreground">Downline:</span> <Skeleton className="h-4 w-12" /></div>
             <div className="pt-4 space-y-1">
-                <p><span className="text-muted-foreground">Gross Income (USD):</span> <Skeleton className="h-4 w-20 inline-block" /></p>
-                <p><span className="text-muted-foreground">Service Fee (3%):</span> <Skeleton className="h-4 w-16 inline-block" /></p>
-                <p className="font-bold"><span className="text-muted-foreground">Net Income (USD):</span> <Skeleton className="h-4 w-24 inline-block" /></p>
+                <div className="flex items-center gap-2"><span className="text-muted-foreground">Gross Income (USD):</span> <Skeleton className="h-4 w-20" /></div>
+                <div className="flex items-center gap-2"><span className="text-muted-foreground">Service Fee (3%):</span> <Skeleton className="h-4 w-16" /></div>
+                <div className="font-bold flex items-center gap-2"><span className="text-muted-foreground">Net Income (USD):</span> <Skeleton className="h-4 w-24" /></div>
             </div>
         </CardContent>
       );
