@@ -1,5 +1,8 @@
 'use client';
 
+import { useState, useMemo } from 'react';
+import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,19 +10,99 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Gem, PlusCircle, Settings, Signal } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const memberSlots = [
-  { level: 16, memberId: '001', inUse: true },
-  { level: 1, memberId: '0011', inUse: false },
+  { level: null, memberId: null, inUse: true },
+  { level: null, memberId: null, inUse: false },
   { level: null, memberId: null, inUse: false },
   { level: null, memberId: null, inUse: false },
   { level: null, memberId: null, inUse: false },
 ];
 
+function formatCurrency(value: number) {
+    return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
 
 export default function CreateMemberIdPage() {
+  const { user, isUserLoading } = useFirebase();
+  const [selectedSlotIndex, setSelectedSlotIndex] = useState(0);
+  
+  const userDocRef = useMemoFirebase(() => {
+    if (!user) return null;
+    return doc(user.firestore, "users", user.uid);
+  }, [user]);
+
+  const { data: userData, isLoading: isUserDataLoading } = useDoc(userDocRef);
+
+  const isLoading = isUserLoading || isUserDataLoading;
+
+  const memberData = useMemo(() => {
+    if (isLoading || !userData) {
+      return {
+        memberName: 'Loading...',
+        memberId: '...',
+        level: 0,
+        downline: 0,
+        grossIncome: 0,
+        serviceFee: 0,
+        netIncome: 0,
+      };
+    }
+
+    const level = userData.level || 0;
+    const downline = level > 0 ? (level * 1000) + Math.floor(Math.random() * 999) : Math.floor(Math.random() * 999);
+    const grossIncome = downline * 1;
+    const serviceFee = grossIncome * 0.03;
+    const netIncome = grossIncome - serviceFee;
+
+    return {
+      memberName: userData.displayName || userData.email.split('@')[0],
+      memberId: userData.id.substring(0, 8),
+      level,
+      downline,
+      grossIncome,
+      serviceFee,
+      netIncome,
+    };
+  }, [isLoading, userData]);
+
   const bgImage = PlaceHolderImages.find((i) => i.id === 'fantasy-landscape-5');
   const avatarImage = PlaceHolderImages.find((i) => i.id === 'female-warrior-1');
+
+  const renderMemberInfo = () => {
+    if (isLoading) {
+      return (
+        <CardContent className="space-y-1 p-2">
+            <p><span className="text-muted-foreground">MemberName:</span> <Skeleton className="h-4 w-24 inline-block" /></p>
+            <p><span className="text-muted-foreground">MemberID:</span> <Skeleton className="h-4 w-16 inline-block" /></p>
+            <p><span className="text-muted-foreground">Level:</span> <Skeleton className="h-4 w-8 inline-block" /></p>
+            <p><span className="text-muted-foreground">Downline:</span> <Skeleton className="h-4 w-12 inline-block" /></p>
+            <div className="pt-4 space-y-1">
+                <p><span className="text-muted-foreground">Gross Income (USD):</span> <Skeleton className="h-4 w-20 inline-block" /></p>
+                <p><span className="text-muted-foreground">Service Fee (3%):</span> <Skeleton className="h-4 w-16 inline-block" /></p>
+                <p className="font-bold"><span className="text-muted-foreground">Net Income (USD):</span> <Skeleton className="h-4 w-24 inline-block" /></p>
+            </div>
+        </CardContent>
+      );
+    }
+
+    const currentMember = memberSlots[selectedSlotIndex].inUse ? memberData : null;
+
+    return (
+        <CardContent className="space-y-1 p-2">
+            <p><span className="text-muted-foreground">MemberName:</span> {currentMember?.memberName || 'N/A'}</p>
+            <p><span className="text-muted-foreground">MemberID:</span> {currentMember?.memberId || 'N/A'}</p>
+            <p><span className="text-muted-foreground">Level:</span> {currentMember?.level ?? 'N/A'}</p>
+            <p><span className="text-muted-foreground">Downline:</span> {currentMember?.downline.toLocaleString() || 'N/A'}</p>
+            <div className="pt-4 space-y-1">
+                <p><span className="text-muted-foreground">Gross Income (USD):</span> ${currentMember ? formatCurrency(currentMember.grossIncome) : '0.00'}</p>
+                <p><span className="text-muted-foreground">Service Fee (3%):</span> -${currentMember ? formatCurrency(currentMember.serviceFee) : '0.00'}</p>
+                <p className="font-bold"><span className="text-muted-foreground">Net Income (USD):</span> ${currentMember ? formatCurrency(currentMember.netIncome) : '0.00'}</p>
+            </div>
+        </CardContent>
+    );
+  }
 
   return (
     <div className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-black text-white p-4">
@@ -47,17 +130,7 @@ export default function CreateMemberIdPage() {
                           <span>Select MemberID</span>
                         </div>
                    </CardHeader>
-                   <CardContent className="space-y-1 p-2">
-                       <p><span className="text-muted-foreground">MemberName:</span> Happy</p>
-                       <p><span className="text-muted-foreground">MemberID:</span> 001</p>
-                       <p><span className="text-muted-foreground">Level:</span> 16</p>
-                       <p><span className="text-muted-foreground">Downline:</span> 16,000</p>
-                       <div className="pt-4 space-y-1">
-                           <p><span className="text-muted-foreground">Gross Income (USD):</span> $16,000.00</p>
-                           <p><span className="text-muted-foreground">Service Fee (3%):</span> -$480.00</p>
-                           <p className="font-bold"><span className="text-muted-foreground">Net Income (USD):</span> $15,520.00</p>
-                       </div>
-                   </CardContent>
+                   {renderMemberInfo()}
                 </Card>
             </div>
             <div className="space-y-4">
@@ -92,27 +165,39 @@ export default function CreateMemberIdPage() {
         {/* Right Panel */}
         <div className="col-span-3 flex flex-col justify-center items-end">
             <div className="space-y-3 w-full max-w-xs">
-                {memberSlots.map((slot, index) => (
-                    <button key={index} className={`w-full p-2 rounded-lg border-2 transition-all duration-300 flex items-center ${slot.inUse ? 'bg-primary/20 border-primary' : 'bg-black/40 border-transparent hover:border-primary/50'}`}>
-                        {slot.inUse || slot.level ? (
-                             <>
-                                <Avatar className="h-14 w-14 border-2 border-primary/50">
-                                    <AvatarImage src={avatarImage?.imageUrl} alt={`Member ${slot.memberId}`} />
-                                    <AvatarFallback>M</AvatarFallback>
-                                </Avatar>
-                                <div className="ml-4 text-left">
-                                    <p className={`font-bold ${slot.inUse ? 'text-primary' : ''}`}>Lv.{slot.level}</p>
-                                    <p className="text-xs text-muted-foreground">MemberID: {slot.memberId}</p>
-                                </div>
-                             </>
-                        ) : (
-                            <>
-                                <PlusCircle className="h-8 w-8 text-muted-foreground/50"/>
-                                <p className="ml-4 text-muted-foreground">Create Member ID</p>
-                            </>
-                        )}
-                    </button>
-                ))}
+                {memberSlots.map((slot, index) => {
+                    const isActive = index === selectedSlotIndex;
+                    return (
+                        <button key={index} onClick={() => setSelectedSlotIndex(index)} className={`w-full p-2 rounded-lg border-2 transition-all duration-300 flex items-center ${isActive ? 'bg-primary/20 border-primary' : 'bg-black/40 border-transparent hover:border-primary/50'}`}>
+                            {slot.inUse ? (
+                                <>
+                                    <Avatar className="h-14 w-14 border-2 border-primary/50">
+                                        <AvatarImage src={avatarImage?.imageUrl} alt={`Member ${memberData.memberId}`} />
+                                        <AvatarFallback>M</AvatarFallback>
+                                    </Avatar>
+                                    <div className="ml-4 text-left">
+                                        {isLoading ? (
+                                            <>
+                                                <Skeleton className="h-5 w-16 mb-1" />
+                                                <Skeleton className="h-3 w-24" />
+                                            </>
+                                        ) : (
+                                            <>
+                                                <p className={`font-bold ${isActive ? 'text-primary' : ''}`}>Lv.{memberData.level}</p>
+                                                <p className="text-xs text-muted-foreground">MemberID: {memberData.memberId}</p>
+                                            </>
+                                        )}
+                                    </div>
+                                </>
+                            ) : (
+                                <>
+                                    <PlusCircle className="h-8 w-8 text-muted-foreground/50"/>
+                                    <p className="ml-4 text-muted-foreground">Create Member ID</p>
+                                </>
+                            )}
+                        </button>
+                    )
+                })}
             </div>
             <Button className="mt-8 w-full max-w-xs h-12 text-lg font-bold bg-gradient-to-r from-amber-400 to-yellow-600 text-black shadow-lg hover:shadow-yellow-400/50">
                 Start
