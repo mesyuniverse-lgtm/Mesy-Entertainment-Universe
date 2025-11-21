@@ -54,7 +54,8 @@ import {
   CreditCard,
   Trophy,
   UserPlus,
-  User as UserIcon
+  User as UserIcon,
+  CheckCircle,
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -216,6 +217,7 @@ export default function DashboardPage() {
     const [memberCount, setMemberCount] = useState(18000);
     const [today, setToday] = useState<Date | null>(null);
     const [days, setDays] = useState<Date[]>([]);
+    const [claimedDays, setClaimedDays] = useState<string[]>([]);
 
     const calculatedIncome = useMemo(() => {
       const grossIncome = memberCount;
@@ -232,6 +234,11 @@ export default function DashboardPage() {
       return levelData ? levelData.level - 1 : 50;
     }, [memberCount]);
 
+    const handleClaim = (day: string) => {
+        if (!claimedDays.includes(day)) {
+            setClaimedDays([...claimedDays, day]);
+        }
+    };
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -356,23 +363,35 @@ export default function DashboardPage() {
               <div className="grid grid-cols-7 gap-2">
                 {loginRewards.map((reward, index) => {
                   const rewardImage = PlaceHolderImages.find(p => p.id === reward.imageId);
+                  const isClaimed = claimedDays.includes(reward.day);
+                  const isToday = reward.day === 'วันนี้';
+
                   return (
                     <div key={index} className={cn(
                       "border rounded-lg p-1 text-center relative aspect-square flex flex-col justify-between",
-                      reward.day === 'วันนี้' ? 'bg-primary/20 border-primary' : 'bg-secondary/50 border-border',
-                      reward.special && 'border-yellow-400'
+                      isToday && !isClaimed ? 'bg-primary/20 border-primary' : 'bg-secondary/50 border-border',
+                      reward.special && 'border-yellow-400',
+                      isClaimed && 'bg-black/30'
                     )}>
                       <p className="text-xs font-semibold">{reward.day}</p>
-                      <div className="flex-grow flex items-center justify-center">
+                      <div className="flex-grow flex items-center justify-center relative">
                         {rewardImage && (
-                          <Image src={rewardImage.imageUrl} alt={reward.rewardName} width={48} height={48} className="object-contain" />
+                          <Image src={rewardImage.imageUrl} alt={reward.rewardName} width={48} height={48} className={cn("object-contain", isClaimed && "opacity-30")} />
+                        )}
+                        {isClaimed && (
+                            <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                                <CheckCircle className="w-8 h-8 text-white" />
+                            </div>
                         )}
                       </div>
-                      {reward.day === 'วันนี้' ? (
-                         <Button size="sm" className="h-6 text-xs w-full mt-1">ล็อคอิน</Button>
-                      ) : (
-                        <div className="h-6 mt-1"></div>
-                      )}
+                      <div className="h-6 mt-1">
+                        {isToday && !isClaimed && (
+                           <Button size="sm" className="h-6 text-xs w-full" onClick={() => handleClaim(reward.day)}>ล็อคอิน</Button>
+                        )}
+                        {isClaimed && isToday && (
+                           <Button size="sm" className="h-6 text-xs w-full" disabled>สำเร็จ</Button>
+                        )}
+                      </div>
                     </div>
                   )
                 })}
