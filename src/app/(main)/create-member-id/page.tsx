@@ -117,7 +117,7 @@ export default function CreateMemberIdPage() {
             <div><span className="text-muted-foreground">MemberName:</span> {currentMember?.memberName || 'N/A'}</div>
             <div><span className="text-muted-foreground">MemberID:</span> {currentMember?.memberId || 'N/A'}</div>
             <div><span className="text-muted-foreground">Level:</span> {currentMember?.level ?? 'N/A'}</div>
-            <div><span className="text-muted-foreground">Downline:</span> {currentMember ? currentMember.downline.toLocaleString() : 'N/A'}</div>
+            <div><span className="text-muted-foreground">Downline:</span> {currentMember ? currentMember.downline.toLocaleString() : '0'}</div>
             <div className="pt-4 space-y-1">
                 <div><span className="text-muted-foreground">Gross Income (USD):</span> ${currentMember ? formatCurrency(currentMember.grossIncome) : '0.00'}</div>
                 <div><span className="text-muted-foreground">Service Fee (3%):</span> -${currentMember ? formatCurrency(currentMember.serviceFee) : '0.00'}</div>
