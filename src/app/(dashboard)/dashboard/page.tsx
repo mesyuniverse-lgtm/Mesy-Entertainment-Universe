@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   Table,
   TableBody,
@@ -187,6 +188,24 @@ const statsCardsConfig = [
   },
 ];
 
+const loginRewards = [
+  { day: 'วันนี้', rewardName: 'Treasure Chest', imageId: 'fantasy-castle-1', amount: 1 },
+  { day: '2 วัน', rewardName: 'Magic Potion', imageId: 'enchanted-forest-1', amount: 5 },
+  { day: '3 วัน', rewardName: 'Small Gold Chest', imageId: 'fantasy-castle-1', amount: 5 },
+  { day: '4 วัน', rewardName: 'Large Gold Chest', imageId: 'shopping-preview', amount: 100 },
+  { day: '5 วัน', rewardName: 'Blue Gem', imageId: 'glowing-gem-1', amount: 10 },
+  { day: '6 วัน', rewardName: 'Magic Herbs', imageId: 'enchanted-forest-1', amount: 3 },
+  { day: '7 วัน', rewardName: 'Epic Treasure Chest', imageId: 'fantasy-castle-1', amount: 1, special: true },
+  { day: '8 วัน', rewardName: 'Rare Item Box', imageId: 'shopping-preview', amount: 1 },
+  { day: '9 วัน', rewardName: 'Ancient Relic', imageId: 'enchanted-forest-1', amount: 5 },
+  { day: '10 วัน', rewardName: 'Golden Key', imageId: 'fantasy-castle-1', amount: 3 },
+  { day: '11 วัน', rewardName: 'Large Gold Chest', imageId: 'shopping-preview', amount: 100 },
+  { day: '12 วัน', rewardName: 'Large Blue Gem', imageId: 'glowing-gem-1', amount: 5 },
+  { day: '13 วัน', rewardName: 'Legendary Chest', imageId: 'fantasy-castle-1', amount: 1 },
+  { day: '14 วัน', rewardName: 'Serpent Statue', imageId: 'glowing-gem-1', amount: 1, special: true },
+];
+
+
 function formatCurrency(value: number) {
   return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
@@ -329,23 +348,35 @@ export default function DashboardPage() {
         {/* Center Column */}
         <div className="col-span-12 lg:col-span-7 space-y-6">
           <Card className="bg-card/50">
-            <CardHeader>
-                <div className="flex justify-between items-center">
-                    <CardTitle>Login Rewards</CardTitle>
-                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                        <Button variant="ghost" size="sm" className="bg-secondary">Days</Button>
-                        <Button variant="ghost" size="sm">Weeks</Button>
-                        <Button variant="ghost" size="sm">Months</Button>
-                    </div>
-                </div>
+             <CardHeader>
+              <CardTitle>กิจกรรม</CardTitle>
+              <CardDescription>Reaper's Eerie Night Festival 14-Day Check-in</CardDescription>
             </CardHeader>
-            <CardContent className="flex gap-1 overflow-x-auto pb-4">
-              {days.map((day, index) => (
-                <div key={index} className={cn("rounded-lg p-2 text-center shrink-0 w-16", day.getDate() === 10 ? "bg-primary text-primary-foreground" : "bg-secondary")}>
-                  <p className="text-lg font-bold">{String(day.getDate()).padStart(2, '0')}</p>
-                  <p className="text-xs">{day.toLocaleDateString('en-US', { weekday: 'short' })}</p>
-                </div>
-              ))}
+            <CardContent>
+              <div className="grid grid-cols-7 gap-2">
+                {loginRewards.map((reward, index) => {
+                  const rewardImage = PlaceHolderImages.find(p => p.id === reward.imageId);
+                  return (
+                    <div key={index} className={cn(
+                      "border rounded-lg p-1 text-center relative aspect-square flex flex-col justify-between",
+                      reward.day === 'วันนี้' ? 'bg-primary/20 border-primary' : 'bg-secondary/50 border-border',
+                      reward.special && 'border-yellow-400'
+                    )}>
+                      <p className="text-xs font-semibold">{reward.day}</p>
+                      <div className="flex-grow flex items-center justify-center">
+                        {rewardImage && (
+                          <Image src={rewardImage.imageUrl} alt={reward.rewardName} width={48} height={48} className="object-contain" />
+                        )}
+                      </div>
+                      {reward.day === 'วันนี้' ? (
+                         <Button size="sm" className="h-6 text-xs w-full mt-1">ล็อคอิน</Button>
+                      ) : (
+                        <div className="h-6 mt-1"></div>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
             </CardContent>
           </Card>
           <Card className="bg-card/50">
