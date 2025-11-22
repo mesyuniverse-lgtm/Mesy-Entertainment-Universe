@@ -2,155 +2,99 @@
  * @fileOverview Firestore Security Rules for the Mesy Entertainment Universe platform.
  *
  * Core Philosophy:
- * This ruleset enforces a strict user-ownership model for personal data stored under the `/members/{memberId}` path.
- * Public data, such as quests and rewards, is readable by all users but can only be created, updated, or deleted by authorized users (e.g., admins - not yet implemented here).
+ * This ruleset enforces a strict user-ownership model. The primary data is organized under an `accounts`
+ * collection, where each document key is the user's Firebase Auth UID. All user-specific data,
+ * including their multiple 'Member' identities, profiles, wallets, etc., are stored in subcollections.
+ * This ensures that a user can only ever access data nested under their own account ID.
  *
  * Data Structure:
- * - Member-specific data (profiles, wallets, AI sessions, downlines, notifications) is nested under `/members/{memberId}`.
- * - Global data (quests, rewards, stores) resides in top-level collections like `/quests`, `/rewards`, and `/stores`.
+ * - `accounts/{accountId}`: The root document for a user's account.
+ * - `accounts/{accountId}/members/{memberId}`: Data for each of the user's up to 5 digital identities.
+ * - `accounts/{accountId}/profile/{profileId}`: Private KYC information for the account.
+ * - Global data (quests, rewards, stores) resides in top-level collections.
  *
  * Key Security Decisions:
- * - Members can only access their own data under `/members/{memberId}`.
- * - Listing operations are secured based on path-based ownership (e.g., a member can list their own notifications).
- * - Data validation is limited to enforcing ownership and relational integrity.
- * - The exact schema is not enforced to allow for rapid prototyping.
- *
- * Denormalization for Authorization:
- *  - Member-specific data is stored under the `/members/{memberId}` path, enabling direct authorization checks without additional `get()` calls.
- *  - Stores have the `ownerId` denormalized, enabling quick checks.
- *
- * Structural Segregation:
- * - Private member data is stored under `/members/{memberId}`, while shared data like stores are in a separate top-level collection `/stores`.
+ * - A user can only access documents and subcollections under `/accounts/{request.auth.uid}`.
+ * - Listing operations are secured based on this path-based ownership.
+ * - Data validation is limited to enforcing ownership and relational integrity during creation.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Rules for the /members/{memberId} collection. Allows members to read and write their own member document.
-     * @path /members/{memberId}
-     * @allow (create) Member with ID 'user_abc' can create their own document if request.auth.uid == 'user_abc'.
-     * @allow (get) Member with ID 'user_abc' can read their own document.
-     * @allow (update) Member with ID 'user_abc' can update their own document.
-     * @allow (delete) Member with ID 'user_abc' can delete their own document.
-     * @deny (create) Member with ID 'user_xyz' cannot create a document with ID 'user_abc'.
-     * @principle Enforces document ownership for writes.
+     * @description Rules for the /accounts/{accountId} collection. This is the root for all user data.
+     * Access is strictly limited to the owner of the account.
      */
-    match /members/{memberId} {
+    match /accounts/{accountId} {
       function isSignedIn() {
         return request.auth != null;
       }
 
-      function isOwner(memberId) {
-        return isSignedIn() && request.auth.uid == memberId;
+      function isOwner(accountId) {
+        return isSignedIn() && request.auth.uid == accountId;
       }
 
-      function isExistingOwner(memberId) {
-        return isOwner(memberId) && resource != null;
+      function isExistingOwner(accountId) {
+        return isOwner(accountId) && resource != null;
       }
 
-      allow get: if isOwner(memberId);
-      allow list: if false; // Listing all members is not permitted.
-      allow create: if isOwner(memberId) && request.resource.data.id == memberId;
-      allow update: if isExistingOwner(memberId) && request.resource.data.id == resource.data.id;
-      allow delete: if isExistingOwner(memberId);
+      // Allow owner to read, create, update, and delete their own account document.
+      allow get: if isOwner(accountId);
+      allow list: if false; // Disallow listing all accounts.
+      allow create: if isOwner(accountId) && request.resource.data.id == accountId;
+      allow update: if isExistingOwner(accountId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(accountId);
 
-        /**
-       * @description Rules for the /members/{memberId}/profile/{profileId} subcollection. Allows members to manage their own profile, but allows public read access.
-       * @path /members/{memberId}/profile/{profileId}
-       * @allow (get) Anyone can read a member's profile.
-       * @allow (list) Anyone can list profiles.
-       * @allow (write) Only the owner can create, update, or delete their own profile.
-       * @principle Public read, owner-only write for profiles.
+      /**
+       * @description Rules for the /accounts/{accountId}/profile/{profileId} subcollection.
+       * Contains private KYC data, only accessible by the account owner.
        */
       match /profile/{profileId} {
-        allow get: if true;
-        allow list: if true;
-        allow create: if isOwner(memberId) && request.resource.data.memberId == memberId;
-        allow update: if isExistingOwner(memberId) && request.resource.data.memberId == resource.data.memberId;
-        allow delete: if isExistingOwner(memberId);
-      }
-
-       /**
-       * @description Rules for the /members/{memberId}/downline/{downlineMemberId} collection. Allows members to read and write their own downline members.
-       * @path /members/{memberId}/downline/{downlineMemberId}
-       * @allow (create) Member with ID 'user_abc' can create a downline member if request.auth.uid == 'user_abc'.
-       * @allow (get) Member with ID 'user_abc' can read a downline member.
-       * @allow (update) Member with ID 'user_abc' can update a downline member.
-       * @allow (delete) Member with ID 'user_abc' can delete a downline member.
-       * @deny (create) Member with ID 'user_xyz' cannot create a downline member with memberId 'user_abc'.
-       * @principle Enforces document ownership for writes.
-       */
-      match /downline/{downlineMemberId} {
-        allow get: if isOwner(memberId);
-        allow list: if isOwner(memberId);
-        allow create: if isOwner(memberId);
-        allow update: if isExistingOwner(memberId);
-        allow delete: if isExistingOwner(memberId);
+        allow read, write: if isOwner(accountId);
       }
 
       /**
-       * @description Rules for the /members/{memberId}/notifications/{notificationId} collection. Allows members to read and write their own notifications.
-       * @path /members/{memberId}/notifications/{notificationId}
-       * @allow (create) Member with ID 'user_abc' can create a notification if request.auth.uid == 'user_abc'.
-       * @allow (get) Member with ID 'user_abc' can read a notification.
-       * @allow (update) Member with ID 'user_abc' can update a notification.
-       * @allow (delete) Member with ID 'user_abc' can delete a notification.
-       * @deny (create) Member with ID 'user_xyz' cannot create a notification with memberId 'user_abc'.
-       * @principle Enforces document ownership for writes.
+       * @description Rules for the /accounts/{accountId}/members/{memberId} subcollection.
+       * Contains data for each of the user's digital identities (up to 5).
        */
-      match /notifications/{notificationId} {
-        allow get: if isOwner(memberId);
-        allow list: if isOwner(memberId);
-        allow create: if isOwner(memberId);
-        allow update: if isExistingOwner(memberId);
-        allow delete: if isExistingOwner(memberId);
-      }
-
-      /**
-       * @description Rules for the /members/{memberId}/ai_sessions/{sessionId} collection. Allows members to read and write their own AI sessions.
-       * @path /members/{memberId}/ai_sessions/{sessionId}
-       * @allow (create) Member with ID 'user_abc' can create an AI session if request.auth.uid == 'user_abc'.
-       * @allow (get) Member with ID 'user_abc' can read an AI session.
-       * @allow (update) Member with ID 'user_abc' can update an AI session.
-       * @allow (delete) Member with ID 'user_abc' can delete an AI session.
-       * @deny (create) Member with ID 'user_xyz' cannot create an AI session with memberId 'user_abc'.
-       * @principle Enforces document ownership for writes.
-       */
-      match /ai_sessions/{sessionId} {
-        allow get: if isOwner(memberId);
-        allow list: if isOwner(memberId);
-        allow create: if isOwner(memberId) && request.resource.data.memberId == memberId;
-        allow update: if isExistingOwner(memberId) && request.resource.data.memberId == resource.data.memberId;
-        allow delete: if isExistingOwner(memberId);
-      }
-
-      /**
-       * @description Rules for the /members/{memberId}/wallet/{walletId} collection. Allows members to read and write their own wallet.
-       * @path /members/{memberId}/wallet/{walletId}
-       * @allow (create) Member with ID 'user_abc' can create a wallet if request.auth.uid == 'user_abc'.
-       * @allow (get) Member with ID 'user_abc' can read their wallet.
-       * @allow (update) Member with ID 'user_abc' can update their wallet.
-       * @allow (delete) Member with ID 'user_abc' can delete their wallet.
-       * @deny (create) Member with ID 'user_xyz' cannot create a wallet with memberId 'user_abc'.
-       * @principle Enforces document ownership for writes.
-       */
-      match /wallet/{walletId} {
-        allow get: if isOwner(memberId);
-        allow list: if false; // Listing wallets is not permitted.
-        allow create: if isOwner(memberId) && request.resource.data.memberId == memberId;
-        allow update: if isExistingOwner(memberId) && request.resource.data.memberId == resource.data.memberId;
-        allow delete: if isExistingOwner(memberId);
+      match /members/{memberId} {
+        allow read, write: if isOwner(accountId);
+        
+        /**
+         * @description Rules for the downline of a specific member identity.
+         */
+        match /downline/{downlineMemberId} {
+          allow read, write: if isOwner(accountId);
+        }
 
         /**
-        * @description Rules for the /members/{memberId}/wallet/{walletId}/transactions/{transactionId} collection. Allows members to manage their own transactions.
-        * @path /members/{memberId}/wallet/{walletId}/transactions/{transactionId}
-        * @allow (read, write) Only the owner (based on the top-level {memberId}) can access their own transactions.
-        * @principle Enforces deep document ownership.
-        */
-        match /transactions/{transactionId} {
-            allow read, write: if isOwner(memberId);
+         * @description Rules for the wallet of a specific member identity.
+         */
+        match /wallet/{walletId} {
+          allow read, write: if isOwner(accountId);
+          
+           /**
+            * @description Rules for wallet transactions.
+            */
+          match /transactions/{transactionId} {
+              allow read, write: if isOwner(accountId);
+          }
         }
+        
+        /**
+         * @description Rules for AI sessions of a specific member identity.
+         */
+        match /ai_sessions/{sessionId} {
+            allow read, write: if isOwner(accountId);
+        }
+      }
+
+      /**
+       * @description Rules for account-wide notifications.
+       */
+      match /notifications/{notificationId} {
+        allow read, write: if isOwner(accountId);
       }
     }
     
@@ -238,5 +182,3 @@ service cloud.firestore {
     }
   }
 }
-
-    

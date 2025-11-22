@@ -15,12 +15,13 @@ import { cn } from '@/lib/utils';
 export default function ProfilePage() {
   const { user, isUserLoading, firestore } = useFirebase();
   
-  const userProfileRef = useMemoFirebase(() => {
+  // We fetch the first Member ID's profile, assuming its ID is the same as the account/user ID.
+  const memberDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
-    return doc(firestore, `members/${user.uid}/profile`, user.uid);
+    return doc(firestore, `accounts/${user.uid}/members`, user.uid);
   }, [user, firestore]);
 
-  const { data: userProfileData, isLoading: isProfileLoading } = useDoc(userProfileRef);
+  const { data: memberProfileData, isLoading: isProfileLoading } = useDoc(memberDocRef);
 
   const isLoading = isUserLoading || isProfileLoading;
 
@@ -61,7 +62,7 @@ export default function ProfilePage() {
       { label: 'เหตุการณ์ในชีวิต', active: true },
   ];
   
-  const profileData = userProfileData as any;
+  const profileData = memberProfileData as any;
 
   return (
     <div className="w-full">
@@ -92,7 +93,7 @@ export default function ProfilePage() {
             <div className="px-4 md:px-8">
               <div className="flex flex-col md:flex-row gap-4 -mt-12 md:-mt-20">
                 <Avatar className="h-32 w-32 md:h-44 md:w-44 rounded-full border-4 border-background bg-background">
-                  <AvatarImage src={user?.photoURL || ''} />
+                  <AvatarImage src={profileData?.avatar || user?.photoURL || ''} />
                   <AvatarFallback className="text-5xl">
                     {profileData?.nickname?.charAt(0) || 'U'}
                   </AvatarFallback>

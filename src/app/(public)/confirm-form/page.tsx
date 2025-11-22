@@ -44,11 +44,11 @@ export default function ConfirmFormPage() {
     setIsLoading(true);
 
     try {
-      const memberDocRef = doc(firestore, 'members', user.uid);
+      const accountDocRef = doc(firestore, 'accounts', user.uid);
       
       // Simulate successful verification by updating status
-      await updateDoc(memberDocRef, {
-        verificationStatus: 'verified', // Change to 'verified'
+      await updateDoc(accountDocRef, {
+        verificationStatus: 'verified',
       });
 
       toast({

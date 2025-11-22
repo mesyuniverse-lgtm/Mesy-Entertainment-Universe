@@ -1,65 +1,84 @@
 {
   "entities": {
-    "Member": {
+    "Account": {
       "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "Member",
+      "title": "Account",
       "type": "object",
-      "description": "Represents a member's account in the Mesy Entertainment Universe. All accounts are considered 'Members' upon registration, with varying levels of access based on their verification status. The system includes administrative roles like 'Admin' and 'Super-admin'.",
+      "description": "Represents a user's primary account, linked to a unique email. One account can manage up to 5 Member IDs.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the member entity, matching Firebase Auth UID."
+          "description": "Unique identifier for the account, matching Firebase Auth UID."
         },
         "email": {
           "type": "string",
-          "description": "Member's email address.",
+          "description": "The unique email address for the account.",
           "format": "email"
         },
         "role": {
           "type": "string",
-          "description": "Defines the member's account type and permissions. Defaults to 'Member'. Other roles include 'Developer', 'Admin', 'Super-admin'."
-        },
-        "level": {
-          "type": "number",
-          "description": "Member's membership level, which determines income potential."
+          "description": "Defines the account's role and permissions (e.g., Super-admin, Member).",
+          "enum": ["Super-admin", "Admin", "Developer", "Member"]
         },
         "verificationStatus": {
           "type": "string",
-          "description": "Indicates the member's verification state: 'unverified', 'pending', 'verified'. Controls access to financial transactions and full features.",
+          "description": "The KYC verification state of the account: 'unverified', 'pending', 'verified'.",
           "enum": ["unverified", "pending", "verified"]
         },
-        "profileId": {
+        "createdAt": {
           "type": "string",
-          "description": "Reference to UserProfile. (Relationship: Member 1:1 UserProfile)"
+          "format": "date-time",
+          "description": "Timestamp of when the account was created."
+        }
+      },
+      "required": ["id", "email", "role", "verificationStatus", "createdAt"]
+    },
+    "Member": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Member",
+      "type": "object",
+      "description": "Represents one of the up to five digital identities (Member IDs) within a single user Account.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for this specific Member ID."
+        },
+        "accountId": {
+          "type": "string",
+          "description": "Reference to the parent Account. (Relationship: Account 1:N Member)"
+        },
+        "username": {
+            "type": "string",
+            "description": "Member's unique, public-facing username for this identity."
+        },
+        "usernameLastChanged": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of when the username was last changed, to enforce the 30-day cooldown."
+        },
+        "nickname": {
+          "type": "string",
+          "description": "Display nickname for this identity."
+        },
+        "avatar": {
+          "type": "string",
+          "description": "URL of the member's avatar image for this identity.",
+          "format": "uri"
+        },
+        "level": {
+          "type": "number",
+          "description": "Membership level for this identity, which determines income potential."
+        },
+        "bio": {
+          "type": "string",
+          "description": "A short biography for this identity."
         },
         "walletId": {
           "type": "string",
-          "description": "Reference to Wallet. (Relationship: Member 1:1 Wallet)"
-        },
-        "hasPinEnabled": {
-            "type": "boolean",
-            "description": "Indicates if the member has set up a PIN code for transactions."
-        },
-        "hasBiometricEnabled": {
-            "type": "boolean",
-            "description": "Indicates if the member has enabled biometric authentication (fingerprint, iris scan)."
-        },
-        "twoFactorMethods": {
-            "type": "array",
-            "description": "List of enabled two-factor authentication methods (e.g., 'app_otp', 'qr_code').",
-            "items": {
-                "type": "string",
-                "enum": ["app_otp", "qr_code", "sms"]
-            }
+          "description": "Reference to the Wallet for this Member ID. (Relationship: Member 1:1 Wallet)"
         }
       },
-      "required": [
-        "id",
-        "email",
-        "role",
-        "level",
-        "verificationStatus"
-      ]
+      "required": ["id", "accountId", "username", "nickname", "level"]
     },
     "MesyMember": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -100,56 +119,27 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "UserProfile",
       "type": "object",
-      "description": "Stores the publicly visible and private profile information for a member. Sensitive information should be protected by security rules.",
+      "description": "Stores private user information linked to an Account, not a specific Member ID. Used for KYC and account management.",
       "properties": {
         "id": {
           "type": "string",
-          "description": "Unique identifier for the user profile entity."
+          "description": "Unique identifier for the user profile entity, should match Account ID."
         },
-        "memberId": {
+        "accountId": {
           "type": "string",
-          "description": "Reference to Member. (Relationship: UserProfile 1:1 Member)"
-        },
-        "username": {
-            "type": "string",
-            "description": "Member's unique, public-facing username."
-        },
-        "usernameLastChanged": {
-            "type": "string",
-            "format": "date-time",
-            "description": "Timestamp of when the username was last changed, to enforce the 30-day cooldown."
-        },
-        "nickname": {
-          "type": "string",
-          "description": "Member's displayed nickname."
+          "description": "Reference to Account. (Relationship: UserProfile 1:1 Account)"
         },
         "firstname": {
             "type": "string",
-            "description": "Member's first name."
+            "description": "Account holder's legal first name."
         },
         "lastname": {
             "type": "string",
-            "description": "Member's last name."
-        },
-        "bio": {
-          "type": "string",
-          "description": "Member's biography."
-        },
-        "avatar": {
-          "type": "string",
-          "description": "URL of the member's avatar image.",
-          "format": "uri"
-        },
-        "socialLinks": {
-          "type": "array",
-          "description": "Array of social media links associated with the member.",
-          "items": {
-            "type": "string"
-          }
+            "description": "Account holder's legal last name."
         },
         "phoneNumber": {
             "type": "object",
-            "description": "Member's phone number, split into country code and number. Should be verified.",
+            "description": "Account holder's phone number, should be verified.",
             "properties": {
                 "countryCode": { "type": "string", "description": "The international country calling code, e.g., '+66'." },
                 "number": { "type": "string", "description": "The local phone number." }
@@ -157,11 +147,11 @@
         },
         "nationalId": {
             "type": "string",
-            "description": "Member's national identification number. Should be encrypted at rest and only accessible by authorized admins."
+            "description": "Account holder's national identification number. Should be encrypted at rest and only accessible by authorized admins."
         },
         "address": {
             "type": "object",
-            "description": "Member's physical address, for billing and verification.",
+            "description": "Account holder's physical address, for billing and verification.",
             "properties": {
                 "street": { "type": "string" },
                 "city": { "type": "string" },
@@ -171,12 +161,7 @@
             }
         }
       },
-      "required": [
-        "id",
-        "memberId",
-        "username",
-        "nickname"
-      ]
+      "required": [ "id", "accountId", "firstname", "lastname", "phoneNumber"]
     },
     "Downline": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -411,7 +396,7 @@
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Wallet",
       "type": "object",
-      "description": "Represents the member's wallet for managing in-app currency.",
+      "description": "Represents a Member ID's wallet for managing in-app currency.",
       "properties": {
         "id": {
           "type": "string",
@@ -419,7 +404,7 @@
         },
         "memberId": {
           "type": "string",
-          "description": "Reference to Member. (Relationship: Member 1:1 Wallet)"
+          "description": "Reference to Member ID. (Relationship: Member 1:1 Wallet)"
         },
         "balance": {
           "type": "number",
@@ -468,19 +453,73 @@
   "firestore": {
     "structure": [
       {
-        "path": "members/{memberId}",
+        "path": "accounts/{accountId}",
+        "definition": {
+          "entityName": "Account",
+          "schema": { "$ref": "#/backend/entities/Account" },
+          "description": "Stores primary user account information, linked to Firebase Auth."
+        }
+      },
+      {
+        "path": "accounts/{accountId}/profile/{profileId}",
+        "definition": {
+          "entityName": "UserProfile",
+          "schema": { "$ref": "#/backend/entities/UserProfile" },
+          "description": "Stores private KYC data for an account."
+        }
+      },
+      {
+        "path": "accounts/{accountId}/members/{memberId}",
         "definition": {
           "entityName": "Member",
+          "schema": { "$ref": "#/backend/entities/Member" },
+          "description": "Stores data for one of the up to 5 Member IDs within an account."
+        }
+      },
+      {
+        "path": "accounts/{accountId}/members/{memberId}/downline/{downlineMemberId}",
+        "definition": {
+          "entityName": "Downline",
+          "schema": { "$ref": "#/backend/entities/Downline" },
+          "description": "Stores the downline for a specific Member ID."
+        }
+      },
+       {
+        "path": "accounts/{accountId}/notifications/{notificationId}",
+        "definition": {
+          "entityName": "Notification",
           "schema": {
-            "$ref": "#/backend/entities/Member"
+            "$ref": "#/backend/entities/Notification"
           },
-          "description": "Stores member account information. Path-based ownership enables secure access.",
-          "params": [
-            {
-              "name": "memberId",
-              "description": "The unique identifier for the member."
-            }
-          ]
+          "description": "Stores notifications for an entire account."
+        }
+      },
+      {
+        "path": "accounts/{accountId}/members/{memberId}/ai_sessions/{sessionId}",
+        "definition": {
+          "entityName": "AiSession",
+          "schema": {
+            "$ref": "#/backend/entities/AiSession"
+          },
+          "description": "Stores AI session history for a specific Member ID."
+        }
+      },
+      {
+        "path": "accounts/{accountId}/members/{memberId}/wallet/{walletId}",
+        "definition": {
+          "entityName": "Wallet",
+          "schema": {
+            "$ref": "#/backend/entities/Wallet"
+          },
+          "description": "Stores wallet information for a specific Member ID."
+        }
+      },
+      {
+        "path": "accounts/{accountId}/members/{memberId}/wallet/{walletId}/transactions/{transactionId}",
+        "definition": {
+          "entityName": "WalletTransaction",
+          "schema": { "$ref": "#/backend/entities/WalletTransaction" },
+          "description": "Stores individual financial transactions for a specific Member ID's wallet."
         }
       },
       {
@@ -490,73 +529,7 @@
           "schema": {
             "$ref": "#/backend/entities/MesyMember"
           },
-          "description": "Stores information about verified MESY members with special privileges.",
-          "params": [
-            {
-              "name": "memberId",
-              "description": "The unique identifier for the member, matching their Auth UID."
-            }
-          ]
-        }
-      },
-      {
-        "path": "members/{memberId}/profile/{profileId}",
-        "definition": {
-          "entityName": "UserProfile",
-          "schema": {
-            "$ref": "#/backend/entities/UserProfile"
-          },
-          "description": "Stores member profile information. Path-based ownership enables secure access.",
-          "params": [
-            {
-              "name": "memberId",
-              "description": "The unique identifier for the member."
-            },
-            {
-              "name": "profileId",
-              "description": "The unique identifier for the user profile."
-            }
-          ]
-        }
-      },
-      {
-        "path": "members/{memberId}/downline/{downlineMemberId}",
-        "definition": {
-          "entityName": "Downline",
-          "schema": {
-            "$ref": "#/backend/entities/Downline"
-          },
-          "description": "Stores downline member information for a member. Path-based ownership enables secure access. Enables QAPs for listing a member's downlines.",
-          "params": [
-            {
-              "name": "memberId",
-              "description": "The unique identifier for the upline member."
-            },
-            {
-              "name": "downlineMemberId",
-              "description": "The unique identifier for the downline member."
-            }
-          ]
-        }
-      },
-      {
-        "path": "members/{memberId}/notifications/{notificationId}",
-        "definition": {
-          "entityName": "Notification",
-          "schema": {
-            "$ref": "#/backend/entities/Notification"
-          },
-          "description": "Stores notifications for a member. Path-based ownership enables secure access and QAPs for listing a member's notifications.",
-          "params": [
-            {
-              "name": "memberId",
-              "description": "The unique identifier for the member."
-            },
-            {
-              "name": "notificationId",
-              "description": "The unique identifier for the notification."
-            }
-          ]
+          "description": "Stores information about verified MESY members with special privileges."
         }
       },
       {
@@ -566,13 +539,7 @@
           "schema": {
             "$ref": "#/backend/entities/Quest"
           },
-          "description": "Stores quest information.",
-          "params": [
-            {
-              "name": "questId",
-              "description": "The unique identifier for the quest."
-            }
-          ]
+          "description": "Stores quest information."
         }
       },
       {
@@ -582,13 +549,7 @@
           "schema": {
             "$ref": "#/backend/entities/Reward"
           },
-          "description": "Stores reward information.",
-          "params": [
-            {
-              "name": "rewardId",
-              "description": "The unique identifier for the reward."
-            }
-          ]
+          "description": "Stores reward information."
         }
       },
       {
@@ -598,71 +559,10 @@
           "schema": {
             "$ref": "#/backend/entities/Store"
           },
-          "description": "Stores store information.",
-          "params": [
-            {
-              "name": "storeId",
-              "description": "The unique identifier for the store."
-            }
-          ]
-        }
-      },
-      {
-        "path": "members/{memberId}/ai_sessions/{sessionId}",
-        "definition": {
-          "entityName": "AiSession",
-          "schema": {
-            "$ref": "#/backend/entities/AiSession"
-          },
-          "description": "Stores AI session information for a member. Path-based ownership enables secure access.",
-          "params": [
-            {
-              "name": "memberId",
-              "description": "The unique identifier for the member."
-            },
-            {
-              "name": "sessionId",
-              "description": "The unique identifier for the AI session."
-            }
-          ]
-        }
-      },
-      {
-        "path": "members/{memberId}/wallet/{walletId}",
-        "definition": {
-          "entityName": "Wallet",
-          "schema": {
-            "$ref": "#/backend/entities/Wallet"
-          },
-          "description": "Stores wallet information for a member. Path-based ownership enables secure access.",
-          "params": [
-            {
-              "name": "memberId",
-              "description": "The unique identifier for the member."
-            },
-            {
-              "name": "walletId",
-              "description": "The unique identifier for the wallet."
-            }
-          ]
-        }
-      },
-      {
-        "path": "members/{memberId}/wallet/{walletId}/transactions/{transactionId}",
-        "definition": {
-          "entityName": "WalletTransaction",
-          "schema": { "$ref": "#/backend/entities/WalletTransaction" },
-          "description": "Stores individual financial transactions for a member's wallet. Path-based ownership enables secure access and QAPs for listing transactions.",
-          "params": [
-            { "name": "memberId", "description": "The unique identifier for the member." },
-            { "name": "walletId", "description": "The unique identifier for the wallet." },
-            { "name": "transactionId", "description": "The unique identifier for the transaction." }
-          ]
+          "description": "Stores store information."
         }
       }
     ],
-    "reasoning": "The Firestore structure is designed to align with the application's features, focusing on member data, membership management, and AI integration. The structure prioritizes **Authorization Independence** by avoiding hierarchical `get()` calls in security rules. Member-owned data is organized under `/members/{memberId}` for clear ownership. Downline data and other member-related data follow this pattern.\n\n**Authorization Independence & QAPs:**\n*   **User Profiles, Wallets, and AI Sessions:** Stored directly under `/members/{memberId}` ensuring that access control is based solely on the authenticated member's ID, avoiding the need to fetch parent document data.\n*   **Downline:** Stored in `/members/{memberId}/downline/{downlineMemberId}` where `memberId` is the upline member. This segregation allows for secure listing (QAP) of a member's downlines based solely on their `memberId`.\n*   **Notifications:**  Stored in `/members/{memberId}/notifications/{notificationId}` where `memberId` is the member to whom the notification belongs.  This segregation allows for secure listing (QAP) of a member's notifications based solely on their `memberId`.\n*   **Wallet Transactions:** Stored in a subcollection under a member's wallet (`/members/{memberId}/wallet/{walletId}/transactions/{transactionId}`). This ensures that a member can only read their own transactions and allows for efficient querying of a member's transaction history (QAP).\n*   **Stores:** Stored in `/stores/{storeId}` with `ownerId` property. A separate index on `ownerId` is recommended. This is a collaborative data structure, and uses path-based ownership, facilitating listing stores owned by a specific member and securing access to store details.\n\n**Structural Segregation:**\n*   Private member data like profiles, wallets, and AI sessions are stored under `/members/{memberId}`, while shared data like stores are in a separate top-level collection `/stores`. This segregation allows clear separation of access control rules.\n\n**Access Modeling:**\n*   Path-based ownership (`/members/{memberId}/...`) is used for private member data.\n*   Membership maps are not required because the structure is organized by member ID; roles are in the member document.\n\n**Invariants & Data Clarity:**\n*  Timestamps (`createdAt`, `timestamp`) are included in entities like `Notification` and `AiSession`.\n\nThis structure facilitates simple and robust security rules. For instance, read/write access to `/members/{memberId}/profile` is easily restricted to the authenticated member with `request.auth.uid == memberId`. Listing of notifications or wallet transactions for a specific member is also straightforward and secure."
+    "reasoning": "The Firestore structure is redesigned around the 'Account' and 'Member' concepts. The top-level `accounts/{accountId}` collection holds primary user data linked to Firebase Auth. All data specific to a user's digital identities (Member IDs), such as their profiles (now part of the Member entity), wallets, and downlines, are stored in subcollections under `/accounts/{accountId}/members/{memberId}`. This aligns with the '1 Account, 5 Members' model and ensures clear data ownership. Private KYC-related information is in a separate `/accounts/{accountId}/profile` subcollection, tightly controlled by rules. This structure uses path-based ownership extensively for robust and efficient security rules."
   }
 }
-
-    

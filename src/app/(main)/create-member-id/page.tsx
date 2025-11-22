@@ -22,30 +22,28 @@ export default function CreateMemberIdPage() {
   const { user, isUserLoading, firestore } = useFirebase();
   const [selectedSlotIndex, setSelectedSlotIndex] = useState(0);
   
-  const userDocRef = useMemoFirebase(() => {
+  const accountDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
-    return doc(firestore, "members", user.uid);
+    return doc(firestore, "accounts", user.uid);
   }, [user, firestore]);
 
-  const { data: userData, isLoading: isUserDataLoading } = useDoc(userDocRef);
+  const { data: accountData, isLoading: isAccountDataLoading } = useDoc(accountDocRef);
   
-  const userProfileRef = useMemoFirebase(() => {
+  // Assuming the first member created has the same ID as the user for now
+  const memberDocRef = useMemoFirebase(() => {
     if(!user || !firestore) return null;
-    return doc(firestore, `members/${user.uid}/profile`, user.uid);
+    return doc(firestore, `accounts/${user.uid}/members`, user.uid);
   }, [user, firestore]);
 
+  const { data: memberProfileData, isLoading: isMemberProfileLoading } = useDoc(memberDocRef);
 
-  const { data: userProfileData, isLoading: isUserProfileLoading } = useDoc(userProfileRef);
-
-
-  const isLoading = isUserLoading || isUserDataLoading || isUserProfileLoading;
+  const isLoading = isUserLoading || isAccountDataLoading || isMemberProfileLoading;
 
   const hasCreatedMemberId = useMemo(() => {
-    if (isLoading || !userData) return false;
-    // We determine if a user has created an ID by checking if their level is > 0
-    // This is a business logic assumption for now.
-    return (userData as any).level > 0;
-  }, [isLoading, userData]);
+    if (isLoading || !memberProfileData) return false;
+    // Check if the member document exists.
+    return !!memberProfileData;
+  }, [isLoading, memberProfileData]);
 
   const memberSlots = useMemo(() => {
     if (!hasCreatedMemberId) {
@@ -60,7 +58,7 @@ export default function CreateMemberIdPage() {
 
 
   const memberData = useMemo(() => {
-    if (isLoading || !userData || !userProfileData) {
+    if (isLoading || !accountData || !memberProfileData) {
       return {
         memberName: 'Loading...',
         memberId: '...',
@@ -72,15 +70,14 @@ export default function CreateMemberIdPage() {
       };
     }
 
-    const level = (userData as any).level || 0;
-    // Only calculate downline if level > 0
+    const level = (memberProfileData as any).level || 0;
     const downline = level > 0 ? (level * 1000) + Math.floor(Math.random() * 999) : 0;
     const grossIncome = downline * 1;
     const serviceFee = grossIncome * 0.03;
     const netIncome = grossIncome - serviceFee;
 
     return {
-      memberName: (userProfileData as any).username || user?.email?.split('@')[0],
+      memberName: (memberProfileData as any).username || user?.email?.split('@')[0],
       memberId: user.uid.substring(0, 8),
       level,
       downline,
@@ -88,7 +85,7 @@ export default function CreateMemberIdPage() {
       serviceFee,
       netIncome,
     };
-  }, [isLoading, userData, userProfileData, user]);
+  }, [isLoading, accountData, memberProfileData, user]);
 
   const bgImage = PlaceHolderImages.find((i) => i.id === 'fantasy-landscape-5');
   const avatarImage = PlaceHolderImages.find((i) => i.id === 'female-warrior-1');
@@ -206,7 +203,7 @@ export default function CreateMemberIdPage() {
                                             </>
                                         ) : (
                                             <>
-                                                <p className={`font-bold ${isActive ? 'text-primary' : ''}`}>Lv.{(memberData as any).level}</p>
+                                                <p className={`font-bold ${isActive ? 'text-primary' : ''}`}>Lv.{memberData.level}</p>
                                                 <p className="text-xs text-muted-foreground">MemberID: {memberData.memberId}</p>
                                             </>
                                         )}
@@ -230,5 +227,3 @@ export default function CreateMemberIdPage() {
     </div>
   );
 }
-
-    

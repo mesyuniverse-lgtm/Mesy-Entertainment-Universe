@@ -21,7 +21,7 @@ import {
   User,
   updateProfile
 } from "firebase/auth";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -94,22 +94,21 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       const displayName = `${data.firstname} ${data.lastname}`.trim();
       await updateProfile(user, { displayName });
 
-      const memberDocRef = doc(firestore, "members", user.uid);
+      const accountDocRef = doc(firestore, "accounts", user.uid);
       const isSuperAdmin = data.email === 'mesy.universe@gmail.com';
 
-      await setDoc(memberDocRef, {
+      await setDoc(accountDocRef, {
         id: user.uid,
         email: user.email,
         role: isSuperAdmin ? 'Super-admin' : 'Member',
-        level: isSuperAdmin ? 50 : 0,
-        verificationStatus: isSuperAdmin ? 'verified' : 'unverified'
+        verificationStatus: isSuperAdmin ? 'verified' : 'unverified',
+        createdAt: serverTimestamp(),
       }, { merge: true });
 
-      const userProfileDocRef = doc(firestore, `members/${user.uid}/profile`, user.uid);
+      // This is for private KYC-style data
+      const userProfileDocRef = doc(firestore, `accounts/${user.uid}/profile`, user.uid);
       await setDoc(userProfileDocRef, {
-        memberId: user.uid,
-        username: data.username,
-        nickname: data.nickname,
+        accountId: user.uid,
         firstname: data.firstname,
         lastname: data.lastname,
         dob: `${data.birthYear}-${data.birthMonth}-${data.birthDay}`,
@@ -119,6 +118,17 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
             number: data.phoneNumber,
         }
       });
+      
+      // Create the first Member ID for this account automatically
+      const memberDocRef = doc(firestore, `accounts/${user.uid}/members`, user.uid);
+      await setDoc(memberDocRef, {
+        id: user.uid,
+        accountId: user.uid,
+        username: data.username,
+        nickname: data.nickname || data.username,
+        level: isSuperAdmin ? 50 : 0,
+      });
+
 
       if (!isSuperAdmin) {
         await sendEmailVerification(user);

@@ -29,52 +29,51 @@ import { Progress } from '@/components/ui/progress';
 export default function MemberSystemPage() {
   const { firestore, user } = useFirebase();
 
+  // Fetch the private KYC profile data
   const userProfileRef = useMemoFirebase(() => {
     if (!user) return null;
-    return doc(firestore, `members/${user.uid}/profile`, user.uid);
+    return doc(firestore, `accounts/${user.uid}/profile`, user.uid);
   }, [firestore, user]);
 
   const { data: userProfile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
-  const downlineQuery = useMemoFirebase(() => {
+  // Fetch the collection of Member IDs for the current account
+  const membersQuery = useMemoFirebase(() => {
     if (!user) return null;
-    return query(collection(firestore, `members/${user.uid}/downline`), orderBy('level', 'desc'));
+    return query(collection(firestore, `accounts/${user.uid}/members`), orderBy('username', 'asc'));
   }, [firestore, user]);
 
-  const { data: downlineData, isLoading: isDownlineLoading, error } = useCollection(downlineQuery);
-
+  const { data: membersData, isLoading: isMembersLoading, error } = useCollection(membersQuery);
+  
+  // Example of fetching transactions for the *first* member ID. 
+  // In a real app, you'd have a way to select which member's wallet to view.
   const transactionsQuery = useMemoFirebase(() => {
-    if (!user) return null;
-    // This assumes a user has one wallet and its ID is the same as the user's UID for simplicity.
-    // And that transactions are in a subcollection of that wallet.
+    if (!user || !membersData || membersData.length === 0) return null;
+    const firstMemberId = membersData[0].id;
     return query(
-        collection(firestore, `members/${user.uid}/wallet/${user.uid}/transactions`),
+        collection(firestore, `accounts/${user.uid}/members/${firstMemberId}/wallet/${firstMemberId}/transactions`),
         where('type', 'in', ['market_purchase', 'withdrawal', 'fee'])
     );
-  }, [firestore, user]);
+  }, [firestore, user, membersData]);
 
   const { data: transactionsData, isLoading: isTransactionsLoading } = useCollection(transactionsQuery);
 
-  const isLoading = isProfileLoading || isDownlineLoading || isTransactionsLoading;
+  const isLoading = isProfileLoading || isMembersLoading || isTransactionsLoading;
 
   const calculateIncome = (downlines: number) => downlines * 1;
   const calculateFee = (income: number) => income * 0.03;
 
   const stats = useMemo(() => {
-    if (!downlineData) {
-      return {
-        totalMembers: 0,
-        totalIncome: 0,
-        totalFees: 0,
-        netIncome: 0,
-      };
+    if (!membersData) {
+      return { totalMembers: 0, totalIncome: 0, totalFees: 0, netIncome: 0 };
     }
-    const totalMembers = downlineData.reduce((acc, member) => acc + (member.downlines || 0), downlineData.length);
+    // This is a simplified calculation. A real system would involve aggregating downlines from all member IDs.
+    const totalMembers = membersData.reduce((acc, member) => acc + (member.downlines || 0), 0);
     const totalIncome = calculateIncome(totalMembers);
     const totalFees = calculateFee(totalIncome);
     const netIncome = totalIncome - totalFees;
     return { totalMembers, totalIncome, totalFees, netIncome };
-  }, [downlineData]);
+  }, [membersData]);
   
   const averageSpend = useMemo(() => {
     if (!transactionsData || transactionsData.length === 0) {
@@ -118,7 +117,7 @@ export default function MemberSystemPage() {
             <TableCell colSpan={8} className="text-center">
               <div className="flex flex-col items-center gap-2 py-8 text-red-500">
                 <AlertCircle className="h-8 w-8" />
-                <p>Error loading downline members.</p>
+                <p>Error loading members data.</p>
                 <p className="text-xs text-muted-foreground">{error.message}</p>
               </div>
             </TableCell>
@@ -127,25 +126,12 @@ export default function MemberSystemPage() {
       );
     }
 
-    const allMembers = [
-        ...(user?.email === 'mesy.universe@gmail.com' ? [{
-            id: user.uid,
-            username: 'mesy.universe',
-            level: 50,
-            joinDate: '2023-01-01',
-            downlines: 50000,
-            isSuperAdmin: true,
-        }] : []),
-        ...(downlineData || [])
-    ];
-
-
-    if (allMembers.length === 0) {
+    if (!membersData || membersData.length === 0) {
       return (
         <TableBody>
           <TableRow>
             <TableCell colSpan={8} className="text-center py-10 text-muted-foreground">
-              You do not have any downline members yet.
+              You have not created any Member IDs yet.
             </TableCell>
           </TableRow>
         </TableBody>
@@ -154,7 +140,7 @@ export default function MemberSystemPage() {
 
     return (
       <TableBody>
-        {allMembers.map((member, index) => {
+        {membersData.map((member, index) => {
           const avatar = PlaceHolderImages.find((p) => p.id === 'default-avatar');
           const downlinesCount = member.downlines || 0; 
           const income = calculateIncome(downlinesCount);
@@ -163,11 +149,11 @@ export default function MemberSystemPage() {
           return (
             <TableRow key={member.id}>
               <TableCell>{index + 1}</TableCell>
-              <TableCell>{(member as any).memberId || member.id.substring(0, 6)}</TableCell>
+              <TableCell>{member.id.substring(0, 6)}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={(member as any).avatar || avatar?.imageUrl} />
+                    <AvatarImage src={member.avatar || avatar?.imageUrl} />
                     <AvatarFallback>
                       {member.username ? member.username.charAt(0) : '?'}
                     </AvatarFallback>
@@ -176,7 +162,7 @@ export default function MemberSystemPage() {
                 </div>
               </TableCell>
               <TableCell>Level.{member.level}</TableCell>
-              <TableCell>{new Date((member as any).joinDate.seconds ? (member as any).joinDate.toDate() : member.joinDate).toLocaleDateString()}</TableCell>
+              <TableCell>{'N/A'}</TableCell>
               <TableCell>{downlinesCount > 0 ? downlinesCount.toLocaleString() : "ยังไม่มีผู้ติดตาม"}</TableCell>
               <TableCell>
                 {downlinesCount > 0 ? `$${income.toFixed(2)}` : "ยังไม่มีรายได้"}
@@ -218,10 +204,10 @@ export default function MemberSystemPage() {
                     </>
                 ) : (
                     <>
-                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Username:</span> {userProfile?.username || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
-                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Member ID:</span> {user?.uid.substring(0, 6) || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
-                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Levels:</span> {(userProfile as any)?.level || 0}</div>
-                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Tel:</span> ***-***-**{userProfile?.phoneNumber?.number?.slice(-2) || 'XX'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Username:</span> {(membersData && membersData[0]?.username) || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Account ID:</span> {user?.uid.substring(0, 6) || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Levels:</span> {(membersData && membersData[0]?.level) || 0}</div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Tel:</span> ***-***-**{(userProfile as any)?.phoneNumber?.number?.slice(-2) || 'XX'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
                         <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Email:</span> {user?.email} <CheckCircle className='w-5 h-5 text-green-500' /></div>
                     </>
                 )}
@@ -342,7 +328,7 @@ export default function MemberSystemPage() {
         <CardHeader>
           <CardTitle className='text-primary'>MESY UNIVERSE Financial & Membership Overview</CardTitle>
           <p className="text-muted-foreground">
-            Here are the members in your direct downline, sorted by level.
+            Here are the Member IDs associated with your account.
           </p>
         </CardHeader>
         <CardContent>
@@ -366,5 +352,3 @@ export default function MemberSystemPage() {
     </div>
   );
 }
-
-    
