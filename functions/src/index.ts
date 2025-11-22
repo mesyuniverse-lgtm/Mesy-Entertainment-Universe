@@ -18,18 +18,18 @@ initializeApp();
 
 /**
  * Cloud Function that triggers when a user is deleted from Firebase Authentication.
- * It automatically deletes the corresponding user document from Cloud Firestore
+ * It automatically deletes the corresponding member document from Cloud Firestore
  * and recursively deletes all documents within its subcollections.
  */
 export const onUserDelete = auth.user().onDelete(async (user) => {
   const firestore = getFirestore();
-  const userDocRef = firestore.collection("users").doc(user.uid);
+  const memberDocRef = firestore.collection("members").doc(user.uid);
   
-  logger.log(`User account for ${user.email} (${user.uid}) deleted. Deleting all user data from Firestore.`);
+  logger.log(`Member account for ${user.email} (${user.uid}) deleted. Deleting all member data from Firestore.`);
 
   try {
-    // Get all subcollections of the user document
-    const collections = await userDocRef.listCollections();
+    // Get all subcollections of the member document
+    const collections = await memberDocRef.listCollections();
     for (const collection of collections) {
         const documents = await collection.listDocuments();
         for (const doc of documents) {
@@ -39,10 +39,12 @@ export const onUserDelete = auth.user().onDelete(async (user) => {
         logger.log(`All documents in subcollection ${collection.id} deleted.`);
     }
 
-    // After deleting all subcollections, delete the main user document
-    await userDocRef.delete();
-    logger.log(`Successfully deleted Firestore data and all subcollections for user: ${user.uid}`);
+    // After deleting all subcollections, delete the main member document
+    await memberDocRef.delete();
+    logger.log(`Successfully deleted Firestore data and all subcollections for member: ${user.uid}`);
   } catch (error) {
-    logger.error(`Error deleting Firestore data for user: ${user.uid}`, error);
+    logger.error(`Error deleting Firestore data for member: ${user.uid}`, error);
   }
 });
+
+    

@@ -2,63 +2,63 @@
  * @fileOverview Firestore Security Rules for the Mesy Entertainment Universe platform.
  *
  * Core Philosophy:
- * This ruleset enforces a strict user-ownership model for personal data stored under the `/users/{userId}` path.
+ * This ruleset enforces a strict user-ownership model for personal data stored under the `/members/{memberId}` path.
  * Public data, such as quests and rewards, is readable by all users but can only be created, updated, or deleted by authorized users (e.g., admins - not yet implemented here).
  *
  * Data Structure:
- * - User-specific data (profiles, wallets, AI sessions, downlines, notifications) is nested under `/users/{userId}`.
+ * - Member-specific data (profiles, wallets, AI sessions, downlines, notifications) is nested under `/members/{memberId}`.
  * - Global data (quests, rewards, stores) resides in top-level collections like `/quests`, `/rewards`, and `/stores`.
  *
  * Key Security Decisions:
- * - Users can only access their own data under `/users/{userId}`.
- * - Listing operations are secured based on path-based ownership (e.g., a user can list their own notifications).
+ * - Members can only access their own data under `/members/{memberId}`.
+ * - Listing operations are secured based on path-based ownership (e.g., a member can list their own notifications).
  * - Data validation is limited to enforcing ownership and relational integrity.
  * - The exact schema is not enforced to allow for rapid prototyping.
  *
  * Denormalization for Authorization:
- *  - User-specific data is stored under the `/users/{userId}` path, enabling direct authorization checks without additional `get()` calls.
+ *  - Member-specific data is stored under the `/members/{memberId}` path, enabling direct authorization checks without additional `get()` calls.
  *  - Stores have the `ownerId` denormalized, enabling quick checks.
  *
  * Structural Segregation:
- * - Private user data is stored under `/users/{userId}`, while shared data like stores are in a separate top-level collection `/stores`.
+ * - Private member data is stored under `/members/{memberId}`, while shared data like stores are in a separate top-level collection `/stores`.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Rules for the /users/{userId} collection. Allows users to read and write their own user document.
-     * @path /users/{userId}
-     * @allow (create) User with ID 'user_abc' can create their own document if request.auth.uid == 'user_abc'.
-     * @allow (get) User with ID 'user_abc' can read their own document.
-     * @allow (update) User with ID 'user_abc' can update their own document.
-     * @allow (delete) User with ID 'user_abc' can delete their own document.
-     * @deny (create) User with ID 'user_xyz' cannot create a document with ID 'user_abc'.
+     * @description Rules for the /members/{memberId} collection. Allows members to read and write their own member document.
+     * @path /members/{memberId}
+     * @allow (create) Member with ID 'user_abc' can create their own document if request.auth.uid == 'user_abc'.
+     * @allow (get) Member with ID 'user_abc' can read their own document.
+     * @allow (update) Member with ID 'user_abc' can update their own document.
+     * @allow (delete) Member with ID 'user_abc' can delete their own document.
+     * @deny (create) Member with ID 'user_xyz' cannot create a document with ID 'user_abc'.
      * @principle Enforces document ownership for writes.
      */
-    match /users/{userId} {
+    match /members/{memberId} {
       function isSignedIn() {
         return request.auth != null;
       }
 
-      function isOwner(userId) {
-        return isSignedIn() && request.auth.uid == userId;
+      function isOwner(memberId) {
+        return isSignedIn() && request.auth.uid == memberId;
       }
 
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
+      function isExistingOwner(memberId) {
+        return isOwner(memberId) && resource != null;
       }
 
-      allow get: if isOwner(userId);
-      allow list: if false; // Listing all users is not permitted.
-      allow create: if isOwner(userId) && request.resource.data.id == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
-      allow delete: if isExistingOwner(userId);
+      allow get: if isOwner(memberId);
+      allow list: if false; // Listing all members is not permitted.
+      allow create: if isOwner(memberId) && request.resource.data.id == memberId;
+      allow update: if isExistingOwner(memberId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(memberId);
 
         /**
-       * @description Rules for the /users/{userId}/profile/{profileId} subcollection. Allows users to manage their own profile, but allows public read access.
-       * @path /users/{userId}/profile/{profileId}
-       * @allow (get) Anyone can read a user's profile.
+       * @description Rules for the /members/{memberId}/profile/{profileId} subcollection. Allows members to manage their own profile, but allows public read access.
+       * @path /members/{memberId}/profile/{profileId}
+       * @allow (get) Anyone can read a member's profile.
        * @allow (list) Anyone can list profiles.
        * @allow (write) Only the owner can create, update, or delete their own profile.
        * @principle Public read, owner-only write for profiles.
@@ -66,102 +66,102 @@ service cloud.firestore {
       match /profile/{profileId} {
         allow get: if true;
         allow list: if true;
-        allow create: if isOwner(userId) && request.resource.data.userId == userId;
-        allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
-        allow delete: if isExistingOwner(userId);
+        allow create: if isOwner(memberId) && request.resource.data.memberId == memberId;
+        allow update: if isExistingOwner(memberId) && request.resource.data.memberId == resource.data.memberId;
+        allow delete: if isExistingOwner(memberId);
       }
 
        /**
-       * @description Rules for the /users/{userId}/downline/{memberId} collection. Allows users to read and write their own downline members.
-       * @path /users/{userId}/downline/{memberId}
-       * @allow (create) User with ID 'user_abc' can create a downline member if request.auth.uid == 'user_abc'.
-       * @allow (get) User with ID 'user_abc' can read a downline member.
-       * @allow (update) User with ID 'user_abc' can update a downline member.
-       * @allow (delete) User with ID 'user_abc' can delete a downline member.
-       * @deny (create) User with ID 'user_xyz' cannot create a downline member with userId 'user_abc'.
+       * @description Rules for the /members/{memberId}/downline/{downlineMemberId} collection. Allows members to read and write their own downline members.
+       * @path /members/{memberId}/downline/{downlineMemberId}
+       * @allow (create) Member with ID 'user_abc' can create a downline member if request.auth.uid == 'user_abc'.
+       * @allow (get) Member with ID 'user_abc' can read a downline member.
+       * @allow (update) Member with ID 'user_abc' can update a downline member.
+       * @allow (delete) Member with ID 'user_abc' can delete a downline member.
+       * @deny (create) Member with ID 'user_xyz' cannot create a downline member with memberId 'user_abc'.
        * @principle Enforces document ownership for writes.
        */
-      match /downline/{memberId} {
-        allow get: if isOwner(userId);
-        allow list: if isOwner(userId);
-        allow create: if isOwner(userId);
-        allow update: if isExistingOwner(userId);
-        allow delete: if isExistingOwner(userId);
+      match /downline/{downlineMemberId} {
+        allow get: if isOwner(memberId);
+        allow list: if isOwner(memberId);
+        allow create: if isOwner(memberId);
+        allow update: if isExistingOwner(memberId);
+        allow delete: if isExistingOwner(memberId);
       }
 
       /**
-       * @description Rules for the /users/{userId}/notifications/{notificationId} collection. Allows users to read and write their own notifications.
-       * @path /users/{userId}/notifications/{notificationId}
-       * @allow (create) User with ID 'user_abc' can create a notification if request.auth.uid == 'user_abc'.
-       * @allow (get) User with ID 'user_abc' can read a notification.
-       * @allow (update) User with ID 'user_abc' can update a notification.
-       * @allow (delete) User with ID 'user_abc' can delete a notification.
-       * @deny (create) User with ID 'user_xyz' cannot create a notification with userId 'user_abc'.
+       * @description Rules for the /members/{memberId}/notifications/{notificationId} collection. Allows members to read and write their own notifications.
+       * @path /members/{memberId}/notifications/{notificationId}
+       * @allow (create) Member with ID 'user_abc' can create a notification if request.auth.uid == 'user_abc'.
+       * @allow (get) Member with ID 'user_abc' can read a notification.
+       * @allow (update) Member with ID 'user_abc' can update a notification.
+       * @allow (delete) Member with ID 'user_abc' can delete a notification.
+       * @deny (create) Member with ID 'user_xyz' cannot create a notification with memberId 'user_abc'.
        * @principle Enforces document ownership for writes.
        */
       match /notifications/{notificationId} {
-        allow get: if isOwner(userId);
-        allow list: if isOwner(userId);
-        allow create: if isOwner(userId);
-        allow update: if isExistingOwner(userId);
-        allow delete: if isExistingOwner(userId);
+        allow get: if isOwner(memberId);
+        allow list: if isOwner(memberId);
+        allow create: if isOwner(memberId);
+        allow update: if isExistingOwner(memberId);
+        allow delete: if isExistingOwner(memberId);
       }
 
       /**
-       * @description Rules for the /users/{userId}/ai_sessions/{sessionId} collection. Allows users to read and write their own AI sessions.
-       * @path /users/{userId}/ai_sessions/{sessionId}
-       * @allow (create) User with ID 'user_abc' can create an AI session if request.auth.uid == 'user_abc'.
-       * @allow (get) User with ID 'user_abc' can read an AI session.
-       * @allow (update) User with ID 'user_abc' can update an AI session.
-       * @allow (delete) User with ID 'user_abc' can delete an AI session.
-       * @deny (create) User with ID 'user_xyz' cannot create an AI session with userId 'user_abc'.
+       * @description Rules for the /members/{memberId}/ai_sessions/{sessionId} collection. Allows members to read and write their own AI sessions.
+       * @path /members/{memberId}/ai_sessions/{sessionId}
+       * @allow (create) Member with ID 'user_abc' can create an AI session if request.auth.uid == 'user_abc'.
+       * @allow (get) Member with ID 'user_abc' can read an AI session.
+       * @allow (update) Member with ID 'user_abc' can update an AI session.
+       * @allow (delete) Member with ID 'user_abc' can delete an AI session.
+       * @deny (create) Member with ID 'user_xyz' cannot create an AI session with memberId 'user_abc'.
        * @principle Enforces document ownership for writes.
        */
       match /ai_sessions/{sessionId} {
-        allow get: if isOwner(userId);
-        allow list: if isOwner(userId);
-        allow create: if isOwner(userId) && request.resource.data.userId == userId;
-        allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
-        allow delete: if isExistingOwner(userId);
+        allow get: if isOwner(memberId);
+        allow list: if isOwner(memberId);
+        allow create: if isOwner(memberId) && request.resource.data.memberId == memberId;
+        allow update: if isExistingOwner(memberId) && request.resource.data.memberId == resource.data.memberId;
+        allow delete: if isExistingOwner(memberId);
       }
 
       /**
-       * @description Rules for the /users/{userId}/wallet/{walletId} collection. Allows users to read and write their own wallet.
-       * @path /users/{userId}/wallet/{walletId}
-       * @allow (create) User with ID 'user_abc' can create a wallet if request.auth.uid == 'user_abc'.
-       * @allow (get) User with ID 'user_abc' can read their wallet.
-       * @allow (update) User with ID 'user_abc' can update their wallet.
-       * @allow (delete) User with ID 'user_abc' can delete their wallet.
-       * @deny (create) User with ID 'user_xyz' cannot create a wallet with userId 'user_abc'.
+       * @description Rules for the /members/{memberId}/wallet/{walletId} collection. Allows members to read and write their own wallet.
+       * @path /members/{memberId}/wallet/{walletId}
+       * @allow (create) Member with ID 'user_abc' can create a wallet if request.auth.uid == 'user_abc'.
+       * @allow (get) Member with ID 'user_abc' can read their wallet.
+       * @allow (update) Member with ID 'user_abc' can update their wallet.
+       * @allow (delete) Member with ID 'user_abc' can delete their wallet.
+       * @deny (create) Member with ID 'user_xyz' cannot create a wallet with memberId 'user_abc'.
        * @principle Enforces document ownership for writes.
        */
       match /wallet/{walletId} {
-        allow get: if isOwner(userId);
+        allow get: if isOwner(memberId);
         allow list: if false; // Listing wallets is not permitted.
-        allow create: if isOwner(userId) && request.resource.data.userId == userId;
-        allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
-        allow delete: if isExistingOwner(userId);
+        allow create: if isOwner(memberId) && request.resource.data.memberId == memberId;
+        allow update: if isExistingOwner(memberId) && request.resource.data.memberId == resource.data.memberId;
+        allow delete: if isExistingOwner(memberId);
 
         /**
-        * @description Rules for the /users/{userId}/wallet/{walletId}/transactions/{transactionId} collection. Allows users to manage their own transactions.
-        * @path /users/{userId}/wallet/{walletId}/transactions/{transactionId}
-        * @allow (read, write) Only the owner (based on the top-level {userId}) can access their own transactions.
+        * @description Rules for the /members/{memberId}/wallet/{walletId}/transactions/{transactionId} collection. Allows members to manage their own transactions.
+        * @path /members/{memberId}/wallet/{walletId}/transactions/{transactionId}
+        * @allow (read, write) Only the owner (based on the top-level {memberId}) can access their own transactions.
         * @principle Enforces deep document ownership.
         */
         match /transactions/{transactionId} {
-            allow read, write: if isOwner(userId);
+            allow read, write: if isOwner(memberId);
         }
       }
     }
     
     /**
-     * @description Rules for the /mesy-members/{userId} collection. Allows any authenticated user to read, but write is restricted.
-     * @path /mesy-members/{userId}
-     * @allow (read) Any signed-in user can read the list of MESY members.
+     * @description Rules for the /mesy-members/{memberId} collection. Allows any authenticated member to read, but write is restricted.
+     * @path /mesy-members/{memberId}
+     * @allow (read) Any signed-in member can read the list of MESY members.
      * @deny (write) Writes are currently disabled from the client for security. Should be handled by backend/admin processes.
      * @principle Public read, restricted write for special member data.
      */
-    match /mesy-members/{userId} {
+    match /mesy-members/{memberId} {
         function isSignedIn() {
           return request.auth != null;
         }
@@ -238,3 +238,5 @@ service cloud.firestore {
     }
   }
 }
+
+    

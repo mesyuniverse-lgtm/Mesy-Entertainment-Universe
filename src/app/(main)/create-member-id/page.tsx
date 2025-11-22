@@ -24,14 +24,14 @@ export default function CreateMemberIdPage() {
   
   const userDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
-    return doc(firestore, "users", user.uid);
+    return doc(firestore, "members", user.uid);
   }, [user, firestore]);
 
   const { data: userData, isLoading: isUserDataLoading } = useDoc(userDocRef);
   
   const userProfileRef = useMemoFirebase(() => {
     if(!user || !firestore) return null;
-    return doc(firestore, `users/${user.uid}/profile`, user.uid);
+    return doc(firestore, `members/${user.uid}/profile`, user.uid);
   }, [user, firestore]);
 
 
@@ -230,3 +230,5 @@ export default function CreateMemberIdPage() {
     </div>
   );
 }
+
+    

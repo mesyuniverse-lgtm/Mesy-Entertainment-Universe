@@ -31,14 +31,14 @@ export default function MemberSystemPage() {
 
   const userProfileRef = useMemoFirebase(() => {
     if (!user) return null;
-    return doc(firestore, `users/${user.uid}/profile`, user.uid);
+    return doc(firestore, `members/${user.uid}/profile`, user.uid);
   }, [firestore, user]);
 
   const { data: userProfile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
   const downlineQuery = useMemoFirebase(() => {
     if (!user) return null;
-    return query(collection(firestore, `users/${user.uid}/downline`), orderBy('level', 'desc'));
+    return query(collection(firestore, `members/${user.uid}/downline`), orderBy('level', 'desc'));
   }, [firestore, user]);
 
   const { data: downlineData, isLoading: isDownlineLoading, error } = useCollection(downlineQuery);
@@ -48,7 +48,7 @@ export default function MemberSystemPage() {
     // This assumes a user has one wallet and its ID is the same as the user's UID for simplicity.
     // And that transactions are in a subcollection of that wallet.
     return query(
-        collection(firestore, `users/${user.uid}/wallet/${user.uid}/transactions`),
+        collection(firestore, `members/${user.uid}/wallet/${user.uid}/transactions`),
         where('type', 'in', ['market_purchase', 'withdrawal', 'fee'])
     );
   }, [firestore, user]);
@@ -366,3 +366,5 @@ export default function MemberSystemPage() {
     </div>
   );
 }
+
+    

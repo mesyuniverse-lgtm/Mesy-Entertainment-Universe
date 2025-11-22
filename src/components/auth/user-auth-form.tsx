@@ -94,10 +94,10 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       const displayName = `${data.firstname} ${data.lastname}`.trim();
       await updateProfile(user, { displayName });
 
-      const userDocRef = doc(firestore, "users", user.uid);
+      const memberDocRef = doc(firestore, "members", user.uid);
       const isSuperAdmin = data.email === 'mesy.universe@gmail.com';
 
-      await setDoc(userDocRef, {
+      await setDoc(memberDocRef, {
         id: user.uid,
         email: user.email,
         role: isSuperAdmin ? 'Super-admin' : 'Member',
@@ -105,9 +105,9 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         verificationStatus: isSuperAdmin ? 'verified' : 'unverified'
       }, { merge: true });
 
-      const userProfileDocRef = doc(firestore, `users/${user.uid}/profile`, user.uid);
+      const userProfileDocRef = doc(firestore, `members/${user.uid}/profile`, user.uid);
       await setDoc(userProfileDocRef, {
-        userId: user.uid,
+        memberId: user.uid,
         username: data.username,
         nickname: data.nickname,
         firstname: data.firstname,
@@ -382,3 +382,5 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     </div>
   )
 }
+
+    
