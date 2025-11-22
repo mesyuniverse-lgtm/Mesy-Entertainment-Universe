@@ -12,7 +12,7 @@ export default function SignupPage() {
           Enter your details below to create your member account.
         </p>
       </div>
-      <UserAuthForm action="signup" redirectPath="/dashboard" />
+      <UserAuthForm action="signup" redirectPath="/confirm-form" />
       <p className="px-8 text-center text-sm text-muted-foreground">
         By clicking continue, you agree to our{" "}
         <Link
