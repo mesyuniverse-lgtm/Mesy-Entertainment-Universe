@@ -141,6 +141,16 @@ service cloud.firestore {
         allow create: if isOwner(userId) && request.resource.data.userId == userId;
         allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
         allow delete: if isExistingOwner(userId);
+
+        /**
+        * @description Rules for the /users/{userId}/wallet/{walletId}/transactions/{transactionId} collection. Allows users to manage their own transactions.
+        * @path /users/{userId}/wallet/{walletId}/transactions/{transactionId}
+        * @allow (read, write) Only the owner (based on the top-level {userId}) can access their own transactions.
+        * @principle Enforces deep document ownership.
+        */
+        match /transactions/{transactionId} {
+            allow read, write: if isOwner(userId);
+        }
       }
     }
     
