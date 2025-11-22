@@ -54,6 +54,94 @@ service cloud.firestore {
       allow create: if isOwner(userId) && request.resource.data.id == userId;
       allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
       allow delete: if isExistingOwner(userId);
+
+        /**
+       * @description Rules for the /users/{userId}/profile/{profileId} subcollection. Allows users to manage their own profile, but allows public read access.
+       * @path /users/{userId}/profile/{profileId}
+       * @allow (get) Anyone can read a user's profile.
+       * @allow (list) Anyone can list profiles.
+       * @allow (write) Only the owner can create, update, or delete their own profile.
+       * @principle Public read, owner-only write for profiles.
+       */
+      match /profile/{profileId} {
+        allow get: if true;
+        allow list: if true;
+        allow create: if isOwner(userId) && request.resource.data.userId == userId;
+        allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+        allow delete: if isExistingOwner(userId);
+      }
+
+       /**
+       * @description Rules for the /users/{userId}/downline/{memberId} collection. Allows users to read and write their own downline members.
+       * @path /users/{userId}/downline/{memberId}
+       * @allow (create) User with ID 'user_abc' can create a downline member if request.auth.uid == 'user_abc'.
+       * @allow (get) User with ID 'user_abc' can read a downline member.
+       * @allow (update) User with ID 'user_abc' can update a downline member.
+       * @allow (delete) User with ID 'user_abc' can delete a downline member.
+       * @deny (create) User with ID 'user_xyz' cannot create a downline member with userId 'user_abc'.
+       * @principle Enforces document ownership for writes.
+       */
+      match /downline/{memberId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId);
+        allow update: if isExistingOwner(userId);
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description Rules for the /users/{userId}/notifications/{notificationId} collection. Allows users to read and write their own notifications.
+       * @path /users/{userId}/notifications/{notificationId}
+       * @allow (create) User with ID 'user_abc' can create a notification if request.auth.uid == 'user_abc'.
+       * @allow (get) User with ID 'user_abc' can read a notification.
+       * @allow (update) User with ID 'user_abc' can update a notification.
+       * @allow (delete) User with ID 'user_abc' can delete a notification.
+       * @deny (create) User with ID 'user_xyz' cannot create a notification with userId 'user_abc'.
+       * @principle Enforces document ownership for writes.
+       */
+      match /notifications/{notificationId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId);
+        allow update: if isExistingOwner(userId);
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description Rules for the /users/{userId}/ai_sessions/{sessionId} collection. Allows users to read and write their own AI sessions.
+       * @path /users/{userId}/ai_sessions/{sessionId}
+       * @allow (create) User with ID 'user_abc' can create an AI session if request.auth.uid == 'user_abc'.
+       * @allow (get) User with ID 'user_abc' can read an AI session.
+       * @allow (update) User with ID 'user_abc' can update an AI session.
+       * @allow (delete) User with ID 'user_abc' can delete an AI session.
+       * @deny (create) User with ID 'user_xyz' cannot create an AI session with userId 'user_abc'.
+       * @principle Enforces document ownership for writes.
+       */
+      match /ai_sessions/{sessionId} {
+        allow get: if isOwner(userId);
+        allow list: if isOwner(userId);
+        allow create: if isOwner(userId) && request.resource.data.userId == userId;
+        allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+        allow delete: if isExistingOwner(userId);
+      }
+
+      /**
+       * @description Rules for the /users/{userId}/wallet/{walletId} collection. Allows users to read and write their own wallet.
+       * @path /users/{userId}/wallet/{walletId}
+       * @allow (create) User with ID 'user_abc' can create a wallet if request.auth.uid == 'user_abc'.
+       * @allow (get) User with ID 'user_abc' can read their wallet.
+       * @allow (update) User with ID 'user_abc' can update their wallet.
+       * @allow (delete) User with ID 'user_abc' can delete their wallet.
+       * @deny (create) User with ID 'user_xyz' cannot create a wallet with userId 'user_abc'.
+       * @principle Enforces document ownership for writes.
+       */
+      match /wallet/{walletId} {
+        allow get: if isOwner(userId);
+        allow list: if false; // Listing wallets is not permitted.
+        allow create: if isOwner(userId) && request.resource.data.userId == userId;
+        allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
+        allow delete: if isExistingOwner(userId);
+      }
     }
     
     /**
@@ -70,96 +158,6 @@ service cloud.firestore {
         
         allow read: if isSignedIn();
         allow write: if false; // Restricted to admin/server-side operations
-    }
-
-    /**
-     * @description Rules for the /users/{userId}/profile/{profileId} collection. Allows users to read and write their own profile.
-     * @path /users/{userId}/profile/{profileId}
-     * @allow (create) User with ID 'user_abc' can create their profile if request.auth.uid == 'user_abc'.
-     * @allow (get) User with ID 'user_abc' can read their profile.
-     * @allow (update) User with ID 'user_abc' can update their profile.
-     * @allow (delete) User with ID 'user_abc' can delete their profile.
-     * @deny (create) User with ID 'user_xyz' cannot create a profile with userId 'user_abc'.
-     * @principle Enforces document ownership for writes.
-     */
-    match /users/{userId}/profile/{profileId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return isSignedIn() && request.auth.uid == userId;
-      }
-
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
-      allow get: if isOwner(userId);
-      allow list: if false; // Listing profiles is not permitted.
-      allow create: if isOwner(userId) && request.resource.data.userId == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
-      allow delete: if isExistingOwner(userId);
-    }
-
-    /**
-     * @description Rules for the /users/{userId}/downline/{memberId} collection. Allows users to read and write their own downline members.
-     * @path /users/{userId}/downline/{memberId}
-     * @allow (create) User with ID 'user_abc' can create a downline member if request.auth.uid == 'user_abc'.
-     * @allow (get) User with ID 'user_abc' can read a downline member.
-     * @allow (update) User with ID 'user_abc' can update a downline member.
-     * @allow (delete) User with ID 'user_abc' can delete a downline member.
-     * @deny (create) User with ID 'user_xyz' cannot create a downline member with userId 'user_abc'.
-     * @principle Enforces document ownership for writes.
-     */
-    match /users/{userId}/downline/{memberId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return isSignedIn() && request.auth.uid == userId;
-      }
-
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
-      allow get: if isOwner(userId);
-      allow list: if isOwner(userId);
-      allow create: if isOwner(userId);
-      allow update: if isExistingOwner(userId);
-      allow delete: if isExistingOwner(userId);
-    }
-
-    /**
-     * @description Rules for the /users/{userId}/notifications/{notificationId} collection. Allows users to read and write their own notifications.
-     * @path /users/{userId}/notifications/{notificationId}
-     * @allow (create) User with ID 'user_abc' can create a notification if request.auth.uid == 'user_abc'.
-     * @allow (get) User with ID 'user_abc' can read a notification.
-     * @allow (update) User with ID 'user_abc' can update a notification.
-     * @allow (delete) User with ID 'user_abc' can delete a notification.
-     * @deny (create) User with ID 'user_xyz' cannot create a notification with userId 'user_abc'.
-     * @principle Enforces document ownership for writes.
-     */
-    match /users/{userId}/notifications/{notificationId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return isSignedIn() && request.auth.uid == userId;
-      }
-
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
-      allow get: if isOwner(userId);
-      allow list: if isOwner(userId);
-      allow create: if isOwner(userId);
-      allow update: if isExistingOwner(userId);
-      allow delete: if isExistingOwner(userId);
     }
 
     /**
@@ -227,66 +225,6 @@ service cloud.firestore {
       allow create: if isSignedIn() && request.resource.data.ownerId == request.auth.uid;
       allow update: if isExistingOwner(resource.data.ownerId);
       allow delete: if isExistingOwner(resource.data.ownerId);
-    }
-
-    /**
-     * @description Rules for the /users/{userId}/ai_sessions/{sessionId} collection. Allows users to read and write their own AI sessions.
-     * @path /users/{userId}/ai_sessions/{sessionId}
-     * @allow (create) User with ID 'user_abc' can create an AI session if request.auth.uid == 'user_abc'.
-     * @allow (get) User with ID 'user_abc' can read an AI session.
-     * @allow (update) User with ID 'user_abc' can update an AI session.
-     * @allow (delete) User with ID 'user_abc' can delete an AI session.
-     * @deny (create) User with ID 'user_xyz' cannot create an AI session with userId 'user_abc'.
-     * @principle Enforces document ownership for writes.
-     */
-    match /users/{userId}/ai_sessions/{sessionId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return isSignedIn() && request.auth.uid == userId;
-      }
-
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
-      allow get: if isOwner(userId);
-      allow list: if isOwner(userId);
-      allow create: if isOwner(userId) && request.resource.data.userId == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
-      allow delete: if isExistingOwner(userId);
-    }
-
-    /**
-     * @description Rules for the /users/{userId}/wallet/{walletId} collection. Allows users to read and write their own wallet.
-     * @path /users/{userId}/wallet/{walletId}
-     * @allow (create) User with ID 'user_abc' can create a wallet if request.auth.uid == 'user_abc'.
-     * @allow (get) User with ID 'user_abc' can read their wallet.
-     * @allow (update) User with ID 'user_abc' can update their wallet.
-     * @allow (delete) User with ID 'user_abc' can delete their wallet.
-     * @deny (create) User with ID 'user_xyz' cannot create a wallet with userId 'user_abc'.
-     * @principle Enforces document ownership for writes.
-     */
-    match /users/{userId}/wallet/{walletId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return isSignedIn() && request.auth.uid == userId;
-      }
-
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
-      allow get: if isOwner(userId);
-      allow list: if false; // Listing wallets is not permitted.
-      allow create: if isOwner(userId) && request.resource.data.userId == userId;
-      allow update: if isExistingOwner(userId) && request.resource.data.userId == resource.data.userId;
-      allow delete: if isExistingOwner(userId);
     }
   }
 }
