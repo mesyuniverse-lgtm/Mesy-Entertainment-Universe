@@ -150,6 +150,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         handleAuthError(error);
         setIsLoading(false);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
 
@@ -193,9 +194,9 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   async function onSubmit(data: z.infer<typeof formSchema>) {
     setIsLoading(true);
 
-    if (!auth) {
-        console.error("Auth service is not available.");
-        toast({ title: "Authentication Error", description: "Auth service not initialized.", variant: "destructive" });
+    if (!auth || !firestore) {
+        console.error("Auth or Firestore service is not available.");
+        toast({ title: "Service Error", description: "Auth or Firestore service not initialized.", variant: "destructive" });
         setIsLoading(false);
         return;
     }
@@ -223,11 +224,14 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     setIsLoading(true);
     try {
       const provider = new GoogleAuthProvider();
+      // Use signInWithRedirect for a better experience on all devices.
       await signInWithRedirect(auth, provider);
     } catch (error: any) {
       handleAuthError(error);
-      setIsLoading(false);
+      setIsLoading(false); // Only set loading to false if redirect fails immediately.
     }
+    // Note: setIsLoading(false) is not called here because the page will redirect.
+    // It is handled in the `getRedirectResult` useEffect.
   }
   
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
@@ -382,5 +386,3 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     </div>
   )
 }
-
-    
