@@ -2,7 +2,8 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { useFirebase } from '@/firebase';
+import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
+import { doc } from 'firebase/firestore';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -12,7 +13,16 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
 export default function ProfilePage() {
-  const { user, isUserLoading } = useFirebase();
+  const { user, isUserLoading, firestore } = useFirebase();
+  
+  const userProfileRef = useMemoFirebase(() => {
+    if (!user || !firestore) return null;
+    return doc(firestore, `members/${user.uid}/profile`, user.uid);
+  }, [user, firestore]);
+
+  const { data: userProfileData, isLoading: isProfileLoading } = useDoc(userProfileRef);
+
+  const isLoading = isUserLoading || isProfileLoading;
 
   const coverImage = PlaceHolderImages.find(p => p.id === 'fantasy-landscape-1');
 
@@ -30,7 +40,7 @@ export default function ProfilePage() {
     </div>
   );
 
-  if (isUserLoading) {
+  if (isLoading) {
     return <div className="p-4">{renderSkeleton()}</div>;
   }
   
@@ -50,6 +60,8 @@ export default function ProfilePage() {
       { label: 'รายละเอียดเกี่ยวกับตัวคุณ', active: false },
       { label: 'เหตุการณ์ในชีวิต', active: true },
   ];
+  
+  const profileData = userProfileData as any;
 
   return (
     <div className="w-full">
@@ -82,11 +94,11 @@ export default function ProfilePage() {
                 <Avatar className="h-32 w-32 md:h-44 md:w-44 rounded-full border-4 border-background bg-background">
                   <AvatarImage src={user?.photoURL || ''} />
                   <AvatarFallback className="text-5xl">
-                    {user?.displayName?.charAt(0) || 'U'}
+                    {profileData?.nickname?.charAt(0) || 'U'}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 pt-4 md:pt-24">
-                  <h1 className="text-3xl font-bold">{user?.displayName || 'Tipyatida (Grace)'}</h1>
+                  <h1 className="text-3xl font-bold">{profileData?.nickname || 'Tipyatida (Grace)'}</h1>
                   <p className="text-muted-foreground">
                     ผู้ติดตาม 5.1 พัน คน • กำลังติดตาม 2.1 พัน คน
                   </p>
