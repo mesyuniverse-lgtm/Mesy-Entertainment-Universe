@@ -5,5 +5,5 @@ export default function ProfileLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <div className="bg-background">{children}</div>;
 }

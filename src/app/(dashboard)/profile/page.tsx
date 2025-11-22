@@ -1,120 +1,174 @@
 'use client';
 
 import React from 'react';
-import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Image from 'next/image';
+import { useFirebase } from '@/firebase';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Mail, Smartphone, User, Shield, Bell, KeyRound } from 'lucide-react';
+import { Card, CardContent } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Camera, Edit, PlusCircle, Globe, Briefcase, GraduationCap, Home, Heart, MoreHorizontal } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { cn } from '@/lib/utils';
 
 export default function ProfilePage() {
-  const { firestore, user } = useFirebase();
+  const { user, isUserLoading } = useFirebase();
 
-  const userProfileRef = useMemoFirebase(() => {
-    if (!user) return null;
-    return doc(firestore, `users/${user.uid}/profile`, user.uid);
-  }, [firestore, user]);
+  const coverImage = PlaceHolderImages.find(p => p.id === 'fantasy-landscape-1');
 
-  const { data: userProfile, isLoading } = useDoc(userProfileRef);
-
-  const avatarUrl = userProfile?.avatar || PlaceHolderImages.find(p => p.id === 'default-avatar')?.imageUrl;
-
-  const renderLoadingSkeleton = () => (
-    <div className="grid gap-6 md:grid-cols-3">
-        <Card className="md:col-span-1">
-            <CardHeader className="items-center text-center">
-                <Skeleton className="h-24 w-24 rounded-full" />
-                <Skeleton className="h-6 w-32 mt-4" />
-                <Skeleton className="h-4 w-24 mt-2" />
-            </CardHeader>
-            <CardContent className="space-y-2">
-                <Skeleton className="h-10 w-full" />
-                <Skeleton className="h-10 w-full" />
-            </CardContent>
-        </Card>
-        <Card className="md:col-span-2">
-            <CardHeader>
-                <Skeleton className="h-6 w-48" />
-                <Skeleton className="h-4 w-64" />
-            </CardHeader>
-            <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2"><Skeleton className="h-4 w-16" /><Skeleton className="h-10 w-full" /></div>
-                    <div className="space-y-2"><Skeleton className="h-4 w-16" /><Skeleton className="h-10 w-full" /></div>
-                </div>
-                <div className="space-y-2"><Skeleton className="h-4 w-16" /><Skeleton className="h-10 w-full" /></div>
-                <div className="space-y-2"><Skeleton className="h-4 w-16" /><Skeleton className="h-10 w-full" /></div>
-            </CardContent>
-        </Card>
+  const renderSkeleton = () => (
+    <div className="w-full max-w-7xl mx-auto">
+      <Skeleton className="h-[250px] md:h-[400px] w-full rounded-b-lg" />
+      <div className="px-4 md:px-8">
+        <div className="flex -mt-12 md:-mt-20">
+          <Skeleton className="h-32 w-32 md:h-44 md:w-44 rounded-full border-4 border-background" />
+        </div>
+        <Skeleton className="h-8 w-64 mt-4" />
+        <Skeleton className="h-4 w-48 mt-2" />
+        <div className="h-px bg-border my-4" />
+      </div>
     </div>
   );
 
+  if (isUserLoading) {
+    return <div className="p-4">{renderSkeleton()}</div>;
+  }
+  
+  const lifeEvents = [
+      { year: '2022', text: 'ได้เริ่มงานใหม่ที่ Past times' },
+      { year: '2020', text: 'ได้เริ่มงานใหม่ที่ Sonya\'z Divaparadises' },
+      { year: '2020', text: 'ได้เริ่มงานใหม่ที่ ทำงานอิสระ' },
+      { year: '2020', text: 'ออกจากงานที่ Siam Bayshore Resort & Spa, Pattaya' },
+  ];
+
+  const aboutSections = [
+      { label: 'ภาพรวม', active: false },
+      { label: 'ที่ทำงานและการศึกษา', active: false },
+      { label: 'สถานที่ที่เคยอาศัยอยู่', active: false },
+      { label: 'ข้อมูลติดต่อและข้อมูลพื้นฐาน', active: false },
+      { label: 'ครอบครัวและการคบหา', active: false },
+      { label: 'รายละเอียดเกี่ยวกับตัวคุณ', active: false },
+      { label: 'เหตุการณ์ในชีวิต', active: true },
+  ];
+
   return (
-    <div className="p-4 sm:p-6 lg:p-8">
-      <h1 className="text-3xl font-bold mb-6">Account Profile</h1>
-      
-      {isLoading || !userProfile ? renderLoadingSkeleton() : (
-        <div className="grid gap-6 md:grid-cols-3">
-          <Card className="md:col-span-1 bg-card/50">
-            <CardHeader className="items-center text-center">
-              <Avatar className="h-24 w-24 border-4 border-primary/50">
-                <AvatarImage src={avatarUrl} alt={userProfile.username} />
-                <AvatarFallback>{userProfile.username?.charAt(0) || 'U'}</AvatarFallback>
-              </Avatar>
-              <CardTitle className="!mt-4">{userProfile.nickname || userProfile.username}</CardTitle>
-              <CardDescription>@{userProfile.username}</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <Button variant="outline" className="w-full justify-start"><KeyRound className="mr-2 h-4 w-4" /> Change Password</Button>
-              <Button variant="outline" className="w-full justify-start"><Bell className="mr-2 h-4 w-4" /> Notification Settings</Button>
-            </CardContent>
-          </Card>
+    <div className="w-full">
+      <div className="max-w-7xl mx-auto">
+        <Card className="bg-card/80 border-0 rounded-none md:rounded-b-lg shadow-none">
+          <CardContent className="p-0">
+            {/* Cover photo */}
+            <div className="relative h-[250px] md:h-[400px]">
+              {coverImage && (
+                <Image
+                  src={coverImage.imageUrl}
+                  alt="Cover photo"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-b-lg"
+                />
+              )}
+              <div className="absolute inset-0 bg-black/10 rounded-b-lg" />
+              <div className="absolute bottom-4 right-4">
+                <Button variant="secondary">
+                  <Camera className="mr-2 h-4 w-4" />
+                  แก้ไขรูปภาพหน้าปก
+                </Button>
+              </div>
+            </div>
 
-          <Card className="md:col-span-2 bg-card/50">
-            <CardHeader>
-              <CardTitle>Personal Information</CardTitle>
-              <CardDescription>Update your personal details here.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                        <Label htmlFor="firstname">First Name</Label>
-                        <Input id="firstname" value={userProfile.firstname || ''} readOnly />
-                    </div>
-                    <div className="space-y-2">
-                        <Label htmlFor="lastname">Last Name</Label>
-                        <Input id="lastname" value={userProfile.lastname || ''} readOnly />
-                    </div>
+            {/* Profile Info */}
+            <div className="px-4 md:px-8">
+              <div className="flex flex-col md:flex-row gap-4 -mt-12 md:-mt-20">
+                <Avatar className="h-32 w-32 md:h-44 md:w-44 rounded-full border-4 border-background bg-background">
+                  <AvatarImage src={user?.photoURL || ''} />
+                  <AvatarFallback className="text-5xl">
+                    {user?.displayName?.charAt(0) || 'U'}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1 pt-4 md:pt-24">
+                  <h1 className="text-3xl font-bold">{user?.displayName || 'Tipyatida (Grace)'}</h1>
+                  <p className="text-muted-foreground">
+                    ผู้ติดตาม 5.1 พัน คน • กำลังติดตาม 2.1 พัน คน
+                  </p>
+                  {/* Follower avatars would go here */}
                 </div>
-
-                <div className="space-y-2">
-                    <Label htmlFor="email">Email Address</Label>
-                    <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input id="email" type="email" value={user.email || ''} readOnly className="pl-9"/>
-                    </div>
+                <div className="flex items-end gap-2 pb-4">
+                  <Button className="bg-blue-600 hover:bg-blue-700">แดชบอร์ดมืออาชีพ</Button>
+                  <Button variant="secondary"><Edit className="mr-2 h-4 w-4"/>แก้ไข</Button>
+                  <Button variant="secondary">ลงโฆษณา</Button>
                 </div>
-
-                <div className="space-y-2">
-                    <Label htmlFor="phone">Phone Number</Label>
-                     <div className="relative">
-                        <Smartphone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input id="phone" value={userProfile.phoneNumber?.number ? `${userProfile.phoneNumber.countryCode} ${userProfile.phoneNumber.number}` : ''} readOnly className="pl-9"/>
-                    </div>
-                </div>
-
-                <div className="text-right">
-                    <Button>Save Changes</Button>
-                </div>
-            </CardContent>
-          </Card>
+              </div>
+              
+              <hr className="my-4 border-border" />
+              
+              {/* Profile Navigation */}
+              <div className="flex justify-between items-center">
+                 <div className="flex gap-1">
+                    <Button variant="ghost" className="text-foreground font-semibold">โพสต์</Button>
+                    <Button variant="ghost" className="bg-primary/10 text-primary font-semibold">เกี่ยวกับ</Button>
+                    <Button variant="ghost" className="text-muted-foreground font-semibold">Reels</Button>
+                    <Button variant="ghost" className="text-muted-foreground font-semibold">รูปภาพ</Button>
+                    <Button variant="ghost" className="text-muted-foreground font-semibold">กลุ่ม</Button>
+                    <Button variant="ghost" className="text-muted-foreground font-semibold">เพิ่มเติม</Button>
+                 </div>
+                 <Button variant="secondary" size="icon"><MoreHorizontal /></Button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        
+        {/* About Section Content */}
+        <div className="p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-1">
+                <Card className="bg-card/80">
+                    <CardContent className="p-4">
+                        <h2 className="text-xl font-bold mb-4">เกี่ยวกับ</h2>
+                        <nav>
+                            <ul>
+                                {aboutSections.map(section => (
+                                    <li key={section.label}>
+                                        <a href="#" className={cn(
+                                            "block p-2 rounded-md font-semibold",
+                                            section.active ? 'bg-primary/10 text-primary' : 'hover:bg-secondary'
+                                        )}>
+                                            {section.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </nav>
+                    </CardContent>
+                </Card>
+            </div>
+            <div className="lg:col-span-2">
+                <Card className="bg-card/80">
+                    <CardContent className="p-4">
+                        <h2 className="text-xl font-bold mb-4">เหตุการณ์ในชีวิต</h2>
+                         <Button variant="secondary" className="w-full mb-6">
+                            <PlusCircle className="mr-2 h-4 w-4" />
+                            เพิ่มเหตุการณ์ในชีวิต
+                         </Button>
+                         <div className="space-y-6">
+                            {lifeEvents.map((event, index) => (
+                                <div key={index} className="flex items-start gap-4">
+                                    <div className="text-sm font-semibold text-muted-foreground">{event.year}</div>
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-3">
+                                            <div className="p-2 bg-secondary rounded-full">
+                                                <Briefcase className="h-5 w-5 text-muted-foreground" />
+                                            </div>
+                                            <p>{event.text}</p>
+                                        </div>
+                                    </div>
+                                    <Button variant="ghost" size="icon"><MoreHorizontal /></Button>
+                                </div>
+                            ))}
+                         </div>
+                    </CardContent>
+                </Card>
+            </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }
