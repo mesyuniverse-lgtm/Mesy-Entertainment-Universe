@@ -114,6 +114,11 @@
             "type": "string",
             "description": "User's unique, public-facing username."
         },
+        "usernameLastChanged": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of when the username was last changed, to enforce the 30-day cooldown."
+        },
         "nickname": {
           "type": "string",
           "description": "User's displayed nickname."
@@ -658,3 +663,5 @@
     "reasoning": "The Firestore structure is designed to align with the application's features, focusing on user data, membership management, and AI integration. The structure prioritizes **Authorization Independence** by avoiding hierarchical `get()` calls in security rules. User-owned data is organized under `/users/{userId}` for clear ownership. Downline data and other user-related data follow this pattern.\n\n**Authorization Independence & QAPs:**\n*   **User Profiles, Wallets, and AI Sessions:** Stored directly under `/users/{userId}` ensuring that access control is based solely on the authenticated user's ID, avoiding the need to fetch parent document data.\n*   **Downline:** Stored in `/users/{userId}/downline/{memberId}` where `userId` is the upline user. This segregation allows for secure listing (QAP) of a user's downlines based solely on their `userId`.\n*   **Notifications:**  Stored in `/users/{userId}/notifications/{notificationId}` where `userId` is the user to whom the notification belongs.  This segregation allows for secure listing (QAP) of a user's notifications based solely on their `userId`.\n*   **Wallet Transactions:** Stored in a subcollection under a user's wallet (`/users/{userId}/wallet/{walletId}/transactions/{transactionId}`). This ensures that a user can only read their own transactions and allows for efficient querying of a user's transaction history (QAP).\n*   **Stores:** Stored in `/stores/{storeId}` with `ownerId` property. A separate index on `ownerId` is recommended. This is a collaborative data structure, and uses path-based ownership, facilitating listing stores owned by a specific user and securing access to store details.\n\n**Structural Segregation:**\n*   Private user data like profiles, wallets, and AI sessions are stored under `/users/{userId}`, while shared data like stores are in a separate top-level collection `/stores`. This segregation allows clear separation of access control rules.\n\n**Access Modeling:**\n*   Path-based ownership (`/users/{userId}/...`) is used for private user data.\n*   Membership maps are not required because the structure is organized by user ID; roles are in the user document.\n\n**Invariants & Data Clarity:**\n*  Timestamps (`createdAt`, `timestamp`) are included in entities like `Notification` and `AiSession`.\n\nThis structure facilitates simple and robust security rules. For instance, read/write access to `/users/{userId}/profile` is easily restricted to the authenticated user with `request.auth.uid == userId`. Listing of notifications or wallet transactions for a specific user is also straightforward and secure."
   }
 }
+
+    
