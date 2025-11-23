@@ -9,8 +9,9 @@ import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
 import { doc, setDoc, serverTimestamp, collection } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Save, Edit, User, LayoutDashboard, Cog, ArrowLeft } from 'lucide-react';
+import { Loader2, Save, Edit, User, LayoutDashboard, Cog, ArrowLeft, CreditCard, Wallet, QrCode } from 'lucide-react';
 import Link from 'next/link';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function GetMemberIdPage() {
   const { user, firestore, isUserLoading } = useFirebase();
@@ -21,6 +22,7 @@ export default function GetMemberIdPage() {
   const [isSaving, setIsSaving] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(true);
   const [createdMemberId, setCreatedMemberId] = React.useState<string | null>(null);
+  const [idCardFile, setIdCardFile] = React.useState<File | null>(null);
 
   const accountProfileRef = useMemoFirebase(() => {
     if (!user) return null;
@@ -61,6 +63,10 @@ export default function GetMemberIdPage() {
       const newMemberRef = doc(collection(firestore, `accounts/${user.uid}/members`));
       const memberId = newMemberRef.id;
 
+      // TODO: Integrate with actual payment gateway
+      // This is a simulation of a successful payment.
+      console.log('Simulating payment of $9.99...');
+
       await setDoc(newMemberRef, {
         id: memberId,
         accountId: user.uid,
@@ -93,80 +99,126 @@ export default function GetMemberIdPage() {
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-primary">Create Your Member ID</CardTitle>
           <CardDescription>
-            {isEditing ? "Confirm your details and give your new digital identity a name." : "Your Member ID has been created. You can edit if needed."}
+            {isEditing ? "Confirm your details, name your identity, and complete payment to join." : "Your Member ID has been created. You can edit if needed."}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSave}>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Column 1 */}
-              <div className="space-y-4">
-                <div className="grid w-full items-center gap-1.5">
-                  <Label>อันดับ (Rank)</Label>
-                  <p className="p-2 text-muted-foreground text-sm">{displayData.rank}</p>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-8 gap-y-6">
+                {/* Details Section */}
+                <div className="space-y-4">
+                    <CardTitle className="text-xl border-b pb-2">Member Details</CardTitle>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid w-full items-center gap-1.5">
+                            <Label>Rank</Label>
+                            <p className="p-2 text-muted-foreground text-sm">{displayData.rank}</p>
+                        </div>
+                        <div className="grid w-full items-center gap-1.5">
+                            <Label>Account Name</Label>
+                            <p className="p-2 text-muted-foreground text-sm">{displayData.accountName}</p>
+                        </div>
+                        <div className="grid w-full items-center gap-1.5">
+                            <Label>Account ID</Label>
+                            <p className="p-2 text-muted-foreground text-sm truncate">{displayData.accountId}</p>
+                        </div>
+                        <div className="grid w-full items-center gap-1.5">
+                            <Label>Email (Verified)</Label>
+                            <p className="p-2 text-muted-foreground text-sm">{displayData.email}</p>
+                        </div>
+                        <div className="grid w-full items-center gap-1.5">
+                            <Label>Phone-number (Verified)</Label>
+                            <p className="p-2 text-muted-foreground text-sm">{displayData.phoneNumber}</p>
+                        </div>
+                         <div className="grid w-full items-center gap-1.5">
+                          <Label>Member ID</Label>
+                           <p className="p-2 text-muted-foreground text-sm font-mono h-10">
+                            {createdMemberId ? createdMemberId : '[System Generated]'}
+                          </p>
+                        </div>
+                        <div className="grid w-full items-center gap-1.5">
+                          <Label htmlFor="avatar-name">Avatar Name</Label>
+                          <Input 
+                            id="avatar-name" 
+                            placeholder="Enter a name for this identity" 
+                            value={avatarName}
+                            onChange={(e) => setAvatarName(e.target.value)}
+                            disabled={!isEditing || isSaving || isLoading}
+                            required 
+                          />
+                        </div>
+                        <div className="grid w-full items-center gap-1.5">
+                          <Label>Initial Level</Label>
+                          <p className="p-2 text-muted-foreground text-sm">{displayData.level}</p>
+                        </div>
+                    </div>
                 </div>
-                <div className="grid w-full items-center gap-1.5">
-                  <Label>Account Name</Label>
-                  <p className="p-2 text-muted-foreground text-sm">{displayData.accountName}</p>
-                </div>
-                 <div className="grid w-full items-center gap-1.5">
-                  <Label>Account ID</Label>
-                  <p className="p-2 text-muted-foreground text-sm truncate">{displayData.accountId}</p>
-                </div>
-                <div className="grid w-full items-center gap-1.5">
-                  <Label>Email (Verified)</Label>
-                  <p className="p-2 text-muted-foreground text-sm">{displayData.email}</p>
-                </div>
-              </div>
-              
-              {/* Column 2 */}
-              <div className="space-y-4">
-                 <div className="grid w-full items-center gap-1.5">
-                  <Label>Phone-number (Verified)</Label>
-                  <p className="p-2 text-muted-foreground text-sm">{displayData.phoneNumber}</p>
-                </div>
-                <div className="grid w-full items-center gap-1.5">
-                  <Label>Member ID</Label>
-                   <p className="p-2 text-muted-foreground text-sm font-mono h-10">
-                    {createdMemberId ? createdMemberId : '[System Generated]'}
-                  </p>
-                </div>
-                <div className="grid w-full items-center gap-1.5">
-                  <Label htmlFor="avatar-name">Avatar Name</Label>
-                  <Input 
-                    id="avatar-name" 
-                    placeholder="Enter a name for this identity" 
-                    value={avatarName}
-                    onChange={(e) => setAvatarName(e.target.value)}
-                    disabled={!isEditing || isSaving || isLoading}
-                    required 
-                  />
-                </div>
-                 <div className="grid w-full items-center gap-1.5">
-                  <Label>Level</Label>
-                  <p className="p-2 text-muted-foreground text-sm">{displayData.level}</p>
-                </div>
-              </div>
 
-              {/* Column 3 */}
-              <div className="space-y-4 md:col-span-2 lg:col-span-1">
-                 <div className="grid w-full items-center gap-1.5">
-                  <Label>Downline</Label>
-                  <p className="p-2 text-muted-foreground text-sm">{displayData.downline.toLocaleString()}</p>
+                {/* Payment Section */}
+                <div className="space-y-4">
+                    <CardTitle className="text-xl border-b pb-2">Creation Fee</CardTitle>
+                     <Card className="bg-card/50">
+                        <CardHeader>
+                            <CardTitle className="text-lg">Payment (9.99 USD)</CardTitle>
+                            <CardDescription>A one-time fee to create your Member ID and activate your earning potential.</CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                            <Tabs defaultValue="card">
+                                <TabsList className="grid w-full grid-cols-3">
+                                    <TabsTrigger value="card"><CreditCard className='w-4 h-4 mr-2'/>Card</TabsTrigger>
+                                    <TabsTrigger value="paypal">PayPal</TabsTrigger>
+                                    <TabsTrigger value="wallet"><Wallet className='w-4 h-4 mr-2'/>Wallet</TabsTrigger>
+                                </TabsList>
+                                <TabsContent value="card" className='pt-4 space-y-4'>
+                                    <div className="grid gap-2">
+                                    <Label htmlFor="card-number">Card Number</Label>
+                                    <Input id="card-number" placeholder="•••• •••• •••• ••••" disabled={!isEditing || isLoading} />
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="expiry-date">Expiry Date</Label>
+                                        <Input id="expiry-date" placeholder="MM / YY" disabled={!isEditing || isLoading} />
+                                    </div>
+                                        <div className="grid gap-2">
+                                        <Label htmlFor="cvc">CVC</Label>
+                                        <Input id="cvc" placeholder="•••" disabled={!isEditing || isLoading} />
+                                    </div>
+                                    </div>
+                                </TabsContent>
+                                <TabsContent value="paypal" className='text-center py-8 text-muted-foreground'>
+                                    PayPal integration coming soon.
+                                </TabsContent>
+                                <TabsContent value="wallet" className='text-center py-8 text-muted-foreground'>
+                                    Wallet connect coming soon.
+                                </TabsContent>
+                            </Tabs>
+
+                            <div className="relative my-4 flex items-center justify-center">
+                                <div className="absolute inset-0 flex items-center">
+                                    <span className="w-full border-t" />
+                                </div>
+                                <div className="relative bg-card px-2 text-xs uppercase text-muted-foreground">Or</div>
+                            </div>
+
+                            <div className="grid gap-2">
+                            <Label htmlFor="id-card-photo">Upload Payment QR Code</Label>
+                            <div className="relative flex items-center justify-center w-full h-32 border-2 border-dashed rounded-md border-muted-foreground/50">
+                                <QrCode className="w-8 h-8 text-muted-foreground" />
+                                <Input
+                                id="id-card-photo"
+                                type="file"
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                                onChange={(e) => setIdCardFile(e.target.files ? e.target.files[0] : null)}
+                                accept="image/*"
+                                disabled={!isEditing || isLoading}
+                                />
+                                {idCardFile && (
+                                    <p className="absolute bottom-2 text-xs text-muted-foreground">{idCardFile.name}</p>
+                                )}
+                            </div>
+                            </div>
+                        </CardContent>
+                    </Card>
                 </div>
-                <div className="grid w-full items-center gap-1.5">
-                  <Label>Income</Label>
-                  <p className="p-2 text-muted-foreground text-sm">${displayData.income.toFixed(2)}</p>
-                </div>
-                 <div className="grid w-full items-center gap-1.5">
-                  <Label>Service Fee (3%)</Label>
-                  <p className="p-2 text-muted-foreground text-sm text-red-400">-${displayData.serviceFee.toFixed(2)}</p>
-                </div>
-                 <div className="grid w-full items-center gap-1.5">
-                  <Label>Net Income</Label>
-                  <p className="p-2 font-bold text-primary text-sm">${displayData.netIncome.toFixed(2)}</p>
-                </div>
-              </div>
             </div>
 
             <div className="mt-8 flex justify-between items-center">
@@ -187,18 +239,18 @@ export default function GetMemberIdPage() {
               </div>
               <div className="flex gap-4">
                 {isEditing ? (
-                  <Button type="submit" disabled={isSaving || isLoading}>
+                  <Button type="submit" disabled={isSaving || isLoading} className="h-11 px-6">
                     {isSaving ? (
                       <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                     ) : (
                       <Save className="mr-2 h-4 w-4" />
                     )}
-                    บันทึกข้อมูล
+                    Create & Pay $9.99
                   </Button>
                 ) : (
                    <Button type="button" variant="secondary" onClick={() => setIsEditing(true)}>
                       <Edit className="mr-2 h-4 w-4" />
-                      แก้ไข
+                      Edit Information
                   </Button>
                 )}
                 <Button type="button" variant="ghost" onClick={() => router.back()}>
