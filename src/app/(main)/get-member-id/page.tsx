@@ -9,7 +9,7 @@ import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
 import { doc, setDoc, serverTimestamp, collection } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Save, Edit, User, LayoutDashboard, Cog, ArrowLeft, CreditCard, Wallet, QrCode } from 'lucide-react';
+import { Loader2, Save, Edit, User, LayoutDashboard, Cog, ArrowLeft, CreditCard, Wallet, QrCode, CheckCircle } from 'lucide-react';
 import Link from 'next/link';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -22,7 +22,6 @@ export default function GetMemberIdPage() {
   const [isSaving, setIsSaving] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(true);
   const [createdMemberId, setCreatedMemberId] = React.useState<string | null>(null);
-  const [idCardFile, setIdCardFile] = React.useState<File | null>(null);
 
   const accountProfileRef = useMemoFirebase(() => {
     if (!user) return null;
@@ -162,60 +161,11 @@ export default function GetMemberIdPage() {
                             <CardDescription>A one-time fee to create your Member ID and activate your earning potential.</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <Tabs defaultValue="card">
-                                <TabsList className="grid w-full grid-cols-3">
-                                    <TabsTrigger value="card"><CreditCard className='w-4 h-4 mr-2'/>Card</TabsTrigger>
-                                    <TabsTrigger value="paypal">PayPal</TabsTrigger>
-                                    <TabsTrigger value="wallet"><Wallet className='w-4 h-4 mr-2'/>Wallet</TabsTrigger>
-                                </TabsList>
-                                <TabsContent value="card" className='pt-4 space-y-4'>
-                                    <div className="grid gap-2">
-                                    <Label htmlFor="card-number">Card Number</Label>
-                                    <Input id="card-number" placeholder="•••• •••• •••• ••••" disabled={!isEditing || isLoading} />
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-4">
-                                    <div className="grid gap-2">
-                                        <Label htmlFor="expiry-date">Expiry Date</Label>
-                                        <Input id="expiry-date" placeholder="MM / YY" disabled={!isEditing || isLoading} />
-                                    </div>
-                                        <div className="grid gap-2">
-                                        <Label htmlFor="cvc">CVC</Label>
-                                        <Input id="cvc" placeholder="•••" disabled={!isEditing || isLoading} />
-                                    </div>
-                                    </div>
-                                </TabsContent>
-                                <TabsContent value="paypal" className='text-center py-8 text-muted-foreground'>
-                                    PayPal integration coming soon.
-                                </TabsContent>
-                                <TabsContent value="wallet" className='text-center py-8 text-muted-foreground'>
-                                    Wallet connect coming soon.
-                                </TabsContent>
-                            </Tabs>
-
-                            <div className="relative my-4 flex items-center justify-center">
-                                <div className="absolute inset-0 flex items-center">
-                                    <span className="w-full border-t" />
-                                </div>
-                                <div className="relative bg-card px-2 text-xs uppercase text-muted-foreground">Or</div>
-                            </div>
-
-                            <div className="grid gap-2">
-                            <Label htmlFor="id-card-photo">Upload Payment QR Code</Label>
-                            <div className="relative flex items-center justify-center w-full h-32 border-2 border-dashed rounded-md border-muted-foreground/50">
-                                <QrCode className="w-8 h-8 text-muted-foreground" />
-                                <Input
-                                id="id-card-photo"
-                                type="file"
-                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                                onChange={(e) => setIdCardFile(e.target.files ? e.target.files[0] : null)}
-                                accept="image/*"
-                                disabled={!isEditing || isLoading}
-                                />
-                                {idCardFile && (
-                                    <p className="absolute bottom-2 text-xs text-muted-foreground">{idCardFile.name}</p>
-                                )}
-                            </div>
-                            </div>
+                           <div className='flex flex-col items-center justify-center p-8 bg-secondary/50 rounded-lg text-center'>
+                                <CheckCircle className='w-12 h-12 text-green-500 mb-4' />
+                                <h3 className='text-lg font-semibold'>Payment Method Verified</h3>
+                                <p className='text-muted-foreground text-sm'>Your payment method is connected and ready. The fee will be charged upon creation.</p>
+                           </div>
                         </CardContent>
                     </Card>
                 </div>
