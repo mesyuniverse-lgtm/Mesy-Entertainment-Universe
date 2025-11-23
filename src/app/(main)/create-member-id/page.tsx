@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -24,37 +24,15 @@ export default function CreateMemberIdPage() {
   }, [user, firestore]);
 
   const { data: accountData, isLoading: isAccountDataLoading } = useDoc(accountDocRef);
-  
-  // Assuming the first member created has the same ID as the user for now
-  const memberDocRef = useMemoFirebase(() => {
-    if(!user || !firestore) return null;
-    return doc(firestore, `accounts/${user.uid}/members`, user.uid);
-  }, [user, firestore]);
 
-  const { data: memberProfileData, isLoading: isMemberProfileLoading } = useDoc(memberDocRef);
+  const isLoading = isUserLoading || isAccountDataLoading;
 
-  const isLoading = isUserLoading || isAccountDataLoading || isMemberProfileLoading;
-
-  const hasCreatedMemberId = useMemo(() => {
-    if (isLoading || !memberProfileData) return false;
-    // Check if the member document exists.
-    return !!memberProfileData;
-  }, [isLoading, memberProfileData]);
-
-  const memberSlots = useMemo(() => {
-    if (!hasCreatedMemberId) {
-        return Array(5).fill({ inUse: false });
-    }
-    // If the user has an ID, create one slot for it and 4 empty ones.
-    return [
-        { inUse: true },
-        ...Array(4).fill({ inUse: false })
-    ];
-  }, [hasCreatedMemberId]);
+  // This page should always show the "Create" state initially.
+  // The logic to show existing members will be handled differently after creation.
+  const memberSlots = Array(5).fill({ inUse: false });
 
 
   const bgImage = PlaceHolderImages.find((i) => i.id === 'fantasy-door-1');
-  const avatarImage = PlaceHolderImages.find((i) => i.id === 'female-warrior-1');
   const yogaImage = PlaceHolderImages.find((i) => i.id === 'yoga-pose-1');
 
   
@@ -110,7 +88,7 @@ export default function CreateMemberIdPage() {
                     Settings
                  </Button>
                   <Button variant="outline" className="w-full bg-black/30 border-primary/50" asChild>
-                    <Link href="/get-member-id">CREATE MEMBER ID</Link>
+                    <Link href="/get-member-id">Create Member ID</Link>
                  </Button>
             </div>
         </div>
@@ -138,32 +116,10 @@ export default function CreateMemberIdPage() {
                     const isActive = index === selectedSlotIndex;
                     return (
                         <button key={index} onClick={() => setSelectedSlotIndex(index)} className={`w-full p-2 rounded-lg border-2 transition-all duration-300 flex items-center ${isActive ? 'bg-primary/20 border-primary' : 'bg-black/40 border-transparent hover:border-primary/50'}`}>
-                            {slot.inUse && hasCreatedMemberId ? (
-                                <>
-                                    <Avatar className="h-14 w-14 border-2 border-primary/50">
-                                        <AvatarImage src={memberProfileData?.avatar || avatarImage?.imageUrl} alt={`Member`} />
-                                        <AvatarFallback>M</AvatarFallback>
-                                    </Avatar>
-                                    <div className="ml-4 text-left">
-                                        {isLoading ? (
-                                            <>
-                                                <Skeleton className="h-5 w-16 mb-1" />
-                                                <Skeleton className="h-3 w-24" />
-                                            </>
-                                        ) : (
-                                            <>
-                                                <p className={`font-bold ${isActive ? 'text-primary' : ''}`}>Lv.{memberProfileData?.level}</p>
-                                                <p className="text-xs text-muted-foreground">MemberID: {memberProfileData?.id.substring(0,8)}</p>
-                                            </>
-                                        )}
-                                    </div>
-                                </>
-                            ) : (
-                                <>
-                                    <PlusCircle className="h-8 w-8 text-muted-foreground/50"/>
-                                    <p className="ml-4 text-muted-foreground">Create Member ID</p>
-                                </>
-                            )}
+                           <>
+                                <PlusCircle className="h-8 w-8 text-muted-foreground/50"/>
+                                <p className="ml-4 text-muted-foreground">Create Member ID</p>
+                           </>
                         </button>
                     )
                 })}
