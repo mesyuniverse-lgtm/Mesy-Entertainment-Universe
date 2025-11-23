@@ -1,28 +1,27 @@
-
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
-import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, serverTimestamp, collection } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Save, Edit } from 'lucide-react';
-import { v4 as uuidv4 } from 'uuid'; // Assuming uuid is installed for unique IDs
+import { Loader2, Save, Edit, User, LayoutDashboard, Cog, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 export default function GetMemberIdPage() {
   const { user, firestore, isUserLoading } = useFirebase();
   const router = useRouter();
   const { toast } = useToast();
 
-  const [avatarName, setAvatarName] = useState('');
-  const [isSaving, setIsSaving] = useState(false);
-  const [isEditing, setIsEditing] = useState(true);
+  const [avatarName, setAvatarName] = React.useState('');
+  const [isSaving, setIsSaving] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(true);
+  const [createdMemberId, setCreatedMemberId] = React.useState<string | null>(null);
 
-  // Fetch the main account profile data
   const accountProfileRef = useMemoFirebase(() => {
     if (!user) return null;
     return doc(firestore, `accounts/${user.uid}/profile`, user.uid);
@@ -32,7 +31,6 @@ export default function GetMemberIdPage() {
   
   const isLoading = isUserLoading || isProfileLoading;
 
-  // Placeholder data for display
   const displayData = {
     rank: 1,
     accountName: user?.displayName || 'Loading...',
@@ -59,10 +57,11 @@ export default function GetMemberIdPage() {
 
     setIsSaving(true);
     try {
-      const memberId = uuidv4(); // Generate a unique ID for the new member
-      const memberDocRef = doc(firestore, `accounts/${user.uid}/members`, memberId);
+      // Use collection().doc() to generate a new unique ID
+      const newMemberRef = doc(collection(firestore, `accounts/${user.uid}/members`));
+      const memberId = newMemberRef.id;
 
-      await setDoc(memberDocRef, {
+      await setDoc(newMemberRef, {
         id: memberId,
         accountId: user.uid,
         username: avatarName.trim(),
@@ -72,13 +71,12 @@ export default function GetMemberIdPage() {
         // Add other default member properties here
       });
 
+      setCreatedMemberId(memberId);
       toast({
         title: "Member ID Created!",
         description: `Your new Member ID for ${avatarName} has been saved.`,
       });
-      setIsEditing(false);
-      // Optionally redirect after a delay
-      setTimeout(() => router.push('/create-member-id'), 2000);
+      setIsEditing(false); // Switch to view mode
 
     } catch (error) {
       console.error("Failed to create member ID:", error);
@@ -95,7 +93,7 @@ export default function GetMemberIdPage() {
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-primary">Create Your Member ID</CardTitle>
           <CardDescription>
-            Confirm your details and give your new digital identity a name.
+            {isEditing ? "Confirm your details and give your new digital identity a name." : "Your Member ID has been created. You can edit if needed."}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -129,7 +127,9 @@ export default function GetMemberIdPage() {
                 </div>
                 <div className="grid w-full items-center gap-1.5">
                   <Label>Member ID</Label>
-                  <p className="p-2 text-muted-foreground text-sm font-mono">[System Generated]</p>
+                   <p className="p-2 text-muted-foreground text-sm font-mono h-10">
+                    {createdMemberId ? createdMemberId : '[System Generated]'}
+                  </p>
                 </div>
                 <div className="grid w-full items-center gap-1.5">
                   <Label htmlFor="avatar-name">Avatar Name</Label>
@@ -138,7 +138,7 @@ export default function GetMemberIdPage() {
                     placeholder="Enter a name for this identity" 
                     value={avatarName}
                     onChange={(e) => setAvatarName(e.target.value)}
-                    disabled={!isEditing || isSaving}
+                    disabled={!isEditing || isSaving || isLoading}
                     required 
                   />
                 </div>
@@ -169,19 +169,43 @@ export default function GetMemberIdPage() {
               </div>
             </div>
 
-            <div className="mt-8 flex justify-end gap-4">
-              <Button type="button" variant="outline" onClick={() => setIsEditing(true)} disabled={isEditing || isSaving}>
-                <Edit className="mr-2 h-4 w-4" />
-                แก้ไข
-              </Button>
-              <Button type="submit" disabled={!isEditing || isSaving}>
-                {isSaving ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <Save className="mr-2 h-4 w-4" />
+            <div className="mt-8 flex justify-between items-center">
+              <div>
+                {!isEditing && (
+                   <div className="flex gap-2">
+                        <Button type="button" variant="outline" asChild>
+                            <Link href="/dashboard"><LayoutDashboard className="mr-2 h-4 w-4"/>Dashboard</Link>
+                        </Button>
+                        <Button type="button" variant="outline" asChild>
+                            <Link href="/dashboard/profile"><User className="mr-2 h-4 w-4"/>Profile</Link>
+                        </Button>
+                        <Button type="button" variant="outline" asChild>
+                             <Link href="/account-memberid"><Cog className="mr-2 h-4 w-4"/>Account / MemberID</Link>
+                        </Button>
+                    </div>
                 )}
-                บันทึกข้อมูล
-              </Button>
+              </div>
+              <div className="flex gap-4">
+                {isEditing ? (
+                  <Button type="submit" disabled={isSaving || isLoading}>
+                    {isSaving ? (
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    ) : (
+                      <Save className="mr-2 h-4 w-4" />
+                    )}
+                    บันทึกข้อมูล
+                  </Button>
+                ) : (
+                   <Button type="button" variant="secondary" onClick={() => setIsEditing(true)}>
+                      <Edit className="mr-2 h-4 w-4" />
+                      แก้ไข
+                  </Button>
+                )}
+                <Button type="button" variant="ghost" onClick={() => router.back()}>
+                    <ArrowLeft className="mr-2 h-4 w-4"/>
+                    Back
+                </Button>
+              </div>
             </div>
           </form>
         </CardContent>
@@ -189,5 +213,3 @@ export default function GetMemberIdPage() {
     </div>
   );
 }
-
-// Note: For a real implementation, you would need to install a UUID library, e.g., `npm install uuid` and `@types/uuid`.
