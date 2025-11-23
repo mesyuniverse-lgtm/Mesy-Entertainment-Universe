@@ -167,6 +167,18 @@
       "description": "People celebrating new year 2026 with champagne and fireworks.",
       "imageUrl": "https://images.unsplash.com/photo-1667835949495-78a1ea9ecd77?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjZWxlYnJhdGlvbiUyMGZpcmV3b3Jrc3xlbnwwfHx8fDE3NjEwNDQ0MjR8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "celebration fireworks"
+    },
+    {
+      "id": "fantasy-door-1",
+      "description": "A large, ancient wooden door covered in ivy.",
+      "imageUrl": "https://images.unsplash.com/photo-1533106418989-8840134944d5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmYW50YXN5JTIwZG9vcnxlbnwwfHx8fDE3NjEwNzU4OTR8MA&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageHint": "fantasy door"
+    },
+    {
+      "id": "yoga-pose-1",
+      "description": "A woman in a yoga pose in a park.",
+      "imageUrl": "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx5b2dhfGVufDB8fHx8MTc2MTA3NTg5NHww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageHint": "yoga park"
     }
   ]
 }
