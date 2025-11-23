@@ -112,17 +112,14 @@ export default function CreateMemberIdPage() {
         {/* Right Panel */}
         <div className="col-span-3 flex flex-col justify-center items-end">
             <div className="space-y-3 w-full max-w-xs">
-                {memberSlots.map((slot, index) => {
-                    const isActive = index === selectedSlotIndex;
-                    return (
-                        <button key={index} onClick={() => setSelectedSlotIndex(index)} className={`w-full p-2 rounded-lg border-2 transition-all duration-300 flex items-center ${isActive ? 'bg-primary/20 border-primary' : 'bg-black/40 border-transparent hover:border-primary/50'}`}>
-                           <>
-                                <PlusCircle className="h-8 w-8 text-muted-foreground/50"/>
-                                <p className="ml-4 text-muted-foreground">Create Member ID</p>
-                           </>
+                {memberSlots.map((_, index) => (
+                    <Link key={index} href="/get-member-id" passHref>
+                        <button className='w-full p-3 rounded-lg border-2 bg-black/40 border-transparent hover:border-primary/50 transition-all duration-300 flex items-center'>
+                           <PlusCircle className="h-8 w-8 text-muted-foreground/50"/>
+                           <p className="ml-4 text-muted-foreground">Create Member ID</p>
                         </button>
-                    )
-                })}
+                    </Link>
+                ))}
             </div>
             <Button className="mt-8 w-full max-w-xs h-12 text-lg font-bold bg-gradient-to-r from-amber-400 to-yellow-600 text-black shadow-lg hover:shadow-yellow-400/50" asChild>
                 <Link href="/dashboard">Start</Link>
