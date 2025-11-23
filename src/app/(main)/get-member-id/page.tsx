@@ -191,6 +191,3 @@ export default function GetMemberIdPage() {
 }
 
 // Note: For a real implementation, you would need to install a UUID library, e.g., `npm install uuid` and `@types/uuid`.
-// A simplified unique ID generation is used here for demonstration.
-declare const require: any;
-const { v4: uuidv4 } = require('uuid') || { v4: () => new Date().toISOString() + Math.random() };
