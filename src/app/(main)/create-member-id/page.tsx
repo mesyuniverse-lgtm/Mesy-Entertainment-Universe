@@ -110,7 +110,7 @@ export default function CreateMemberIdPage() {
                     Settings
                  </Button>
                   <Button variant="outline" className="w-full bg-black/30 border-primary/50" asChild>
-                    <Link href="/create-avatar">CREATE AVATAR</Link>
+                    <Link href="/get-member-id">CREATE MEMBER ID</Link>
                  </Button>
             </div>
         </div>
