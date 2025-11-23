@@ -80,6 +80,7 @@ export default function CreateMemberIdPage() {
                 <div className="bg-black/40 backdrop-blur-sm p-4 rounded-lg border border-white/10 space-y-3">
                     <h3 className="text-xl font-bold text-green-400">Activated</h3>
                     <div className="text-sm space-y-2">
+                        <p className='flex items-center gap-2'>Account Name: <span className='text-muted-foreground'>{user?.displayName || '...'}</span></p>
                         <p className='flex items-center gap-2'>Account ID: <span className='text-muted-foreground truncate'>{user?.uid}</span> <CheckCircle className='w-4 h-4 text-green-400'/></p>
                         <p className='flex items-center gap-2'>Email: <span className='text-muted-foreground'>{user?.email}</span> <CheckCircle className='w-4 h-4 text-green-400'/></p>
                         <p className='flex items-center gap-2'>Tel: <span className='text-muted-foreground'>0915622991</span> <CheckCircle className='w-4 h-4 text-green-400'/></p>
