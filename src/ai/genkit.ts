@@ -5,16 +5,13 @@
  * and defines a default model for the application.
  */
 
-import { genkit, configureGenkit } from 'genkit';
+import { genkit } from 'genkit';
 import { googleAI, vertexAI } from '@genkit-ai/google-genai';
 
-configureGenkit({
+// Initialize Genkit with plugins
+export const ai = genkit({
   plugins: [
     googleAI(), // For connecting to Google AI Studio models
     vertexAI(), // For connecting to Google Cloud Vertex AI models
   ],
-  logLevel: 'debug',
-  enableTracingAndMetrics: true,
 });
-
-export { genkit as ai };
