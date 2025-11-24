@@ -1,4 +1,3 @@
-
 /**
  * Import function triggers from their respective submodules:
  *
@@ -12,6 +11,9 @@ import {initializeApp} from "firebase-admin/app";
 import {getFirestore} from "firebase-admin/firestore";
 import * as logger from "firebase-functions/logger";
 import {auth} from "firebase-functions";
+
+// Export Genkit flows
+export * from './ai';
 
 // Initialize Firebase Admin SDK
 initializeApp();
