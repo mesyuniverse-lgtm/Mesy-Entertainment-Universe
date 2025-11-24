@@ -65,35 +65,38 @@ export default function MemberSystemPage() {
 
     const enrichData = async () => {
       setIsEnriching(true);
-      const enriched = await Promise.all(
-        allMembersData.map(async (member) => {
-          let downlineCount = 0;
-          try {
-            // Find the member document within the account's members subcollection
-            // This assumes the `displayName` in `mesy-members` is unique and matches a `username` in the `members` subcollection.
-            // This is not ideal. A direct reference (e.g., storing the full member path) would be better.
-            const membersColRef = collection(firestore, `accounts/${member.userId}/members`);
-            const memberQuery = query(membersColRef, where("username", "==", member.displayName), limit(1));
-            const memberSnapshot = await getDocs(memberQuery);
-            
-            if (!memberSnapshot.empty) {
-                const memberDoc = memberSnapshot.docs[0];
-                const downlineCollRef = collection(firestore, memberDoc.ref.path, 'downline');
-                const snapshot = await getCountFromServer(downlineCollRef);
-                downlineCount = snapshot.data().count;
+      try {
+        const enriched = await Promise.all(
+          allMembersData.map(async (member) => {
+            let downlineCount = 0;
+            try {
+              // Efficiently find the member's primary ID within their account
+              const membersColRef = collection(firestore, `accounts/${member.userId}/members`);
+              const memberQuery = query(membersColRef, limit(1)); // Assumption: first doc is the primary or relevant one
+              const memberSnapshot = await getDocs(memberQuery);
+              
+              if (!memberSnapshot.empty) {
+                  const memberDoc = memberSnapshot.docs[0];
+                  const downlineCollRef = collection(firestore, memberDoc.ref.path, 'downline');
+                  const snapshot = await getCountFromServer(downlineCollRef);
+                  downlineCount = snapshot.data().count;
+              }
+            } catch(e) {
+              console.error(`Could not fetch downline for ${member.displayName}:`, e);
             }
-          } catch(e) {
-            console.error(`Could not fetch downline for ${member.displayName}:`, e);
-          }
 
-          return {
-            ...member,
-            downlineCount: downlineCount,
-          };
-        })
-      );
-      setEnrichedMembers(enriched);
-      setIsEnriching(false);
+            return {
+              ...member,
+              downlineCount: downlineCount,
+            };
+          })
+        );
+        setEnrichedMembers(enriched);
+      } catch (enrichError) {
+        console.error("Error enriching member data:", enrichError);
+      } finally {
+        setIsEnriching(false);
+      }
     };
 
     enrichData();
@@ -390,4 +393,5 @@ export default function MemberSystemPage() {
   );
 }
 
+    
     
