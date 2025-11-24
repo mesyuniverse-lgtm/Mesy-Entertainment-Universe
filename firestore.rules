@@ -15,7 +15,7 @@
  *
  * Key Security Decisions:
  * - A user can only access documents and subcollections under `/accounts/{request.auth.uid}`.
- * - Listing operations are secured based on this path-based ownership.
+ * - Listing operations on the 'accounts' collection are allowed for any signed-in user to enable the global member overview page.
  * - Data validation is limited to enforcing ownership and relational integrity during creation.
  */
 rules_version = '2';
@@ -24,7 +24,8 @@ service cloud.firestore {
 
     /**
      * @description Rules for the /accounts/{accountId} collection. This is the root for all user data.
-     * Access is strictly limited to the owner of the account.
+     * Access is strictly limited to the owner of the account for single document reads/writes,
+     * but listing is allowed for any authenticated user.
      */
     match /accounts/{accountId} {
       function isSignedIn() {
@@ -39,11 +40,15 @@ service cloud.firestore {
         return isOwner(accountId) && resource != null;
       }
 
-      // Allow owner to read, create, update, and delete their own account document.
+      // Allow owner to read their own account document.
       allow get: if isOwner(accountId);
-      allow list: if false; // Disallow listing all accounts.
+      // Allow any signed-in user to list accounts for the member overview page.
+      allow list: if isSignedIn();
+      // Allow owner to create their own account document.
       allow create: if isOwner(accountId) && request.resource.data.id == accountId;
+      // Allow owner to update their own account document.
       allow update: if isExistingOwner(accountId) && request.resource.data.id == resource.data.id;
+      // Allow owner to delete their own account document.
       allow delete: if isExistingOwner(accountId);
 
       /**
