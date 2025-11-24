@@ -9,17 +9,33 @@ import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
 import { doc, setDoc, serverTimestamp, collection } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Save, Edit, User, LayoutDashboard, Cog, ArrowLeft, CreditCard, Wallet, QrCode, CheckCircle, Pencil } from 'lucide-react';
+import { Loader2, Save, Edit, User, LayoutDashboard, Cog, ArrowLeft, CreditCard, Wallet, QrCode, CheckCircle, Pencil, X, Hand, Heart, UserRound, Flower2, HandPlatter, Bot, Laugh, Annoyed, PartyPopper } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+
+const emoteList = [
+    { name: 'ทักทาย', icon: <Hand size={32} /> },
+    { name: 'โค้งคำนับ', icon: <UserRound size={32} /> },
+    { name: 'เศร้า', icon: <Bot size={32} /> },
+    { name: 'นั่ง', icon: <UserRound size={32} /> },
+    { name: 'นอนลง', icon: <UserRound size={32} /> },
+    { name: 'เต้น', icon: <PartyPopper size={32} /> },
+    { name: 'ช่อดอกไม้', icon: <Flower2 size={32} /> },
+    { name: 'ปรบมือ', icon: <HandPlatter size={32} /> },
+    { name: 'หัวเราะ', icon: <Laugh size={32} /> },
+    { name: 'โกรธ', icon: <Annoyed size={32} /> },
+    { name: 'ยั่วเย้า', icon: <Bot size={32} /> },
+    { name: 'ชัยชนะ', icon: <PartyPopper size={32} /> },
+];
+
 
 export default function GetMemberIdPage() {
   const { user, firestore, isUserLoading } = useFirebase();
   const router = useRouter();
   const { toast } = useToast();
 
-  const [avatarName, setAvatarName] = React.useState('');
+  const [avatarName, setAvatarName] = React.useState('Grace');
   const [isSaving, setIsSaving] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(true);
   const [createdMemberId, setCreatedMemberId] = React.useState<string | null>(null);
@@ -32,7 +48,8 @@ export default function GetMemberIdPage() {
   const { data: accountProfile, isLoading: isProfileLoading } = useDoc(accountProfileRef);
   
   const isLoading = isUserLoading || isProfileLoading;
-  const avatarImage = PlaceHolderImages.find(p => p.id === 'female-archer-1');
+  const avatarImage = PlaceHolderImages.find(p => p.id === 'female-warrior-1');
+  const bgImage = PlaceHolderImages.find(p => p.id === 'fantasy-castle-1');
 
 
   const displayData = {
@@ -111,12 +128,38 @@ export default function GetMemberIdPage() {
                             <CardTitle className="text-lg">Your Avatar</CardTitle>
                         </CardHeader>
                         <CardContent className="flex flex-col items-center justify-center gap-4">
-                           {avatarImage && (
-                                <div className="relative w-48 h-48 rounded-full overflow-hidden border-4 border-primary/50 shadow-lg">
-                                    <Image src={avatarImage.imageUrl} alt="Your Avatar" layout="fill" objectFit="cover" />
+                           {/* New Avatar Preview UI */}
+                           <div className="relative w-full aspect-square rounded-lg overflow-hidden border border-primary/20">
+                                {bgImage && (
+                                    <Image src={bgImage.imageUrl} alt="Avatar Background" layout="fill" objectFit="cover" className="opacity-40" />
+                                )}
+                                {avatarImage && (
+                                    <div className="absolute inset-0 flex items-center justify-center">
+                                        <Image src={avatarImage.imageUrl} alt="Your Avatar" width={300} height={300} className="object-contain" />
+                                    </div>
+                                )}
+                                <div className='absolute top-4 inset-x-0 flex flex-col items-center'>
+                                    <p className='font-bold text-xl text-white' style={{textShadow: '1px 1px 4px #000'}}>{avatarName}</p>
+                                    <div className='w-32 h-2 bg-black/50 rounded-full overflow-hidden mt-1'>
+                                        <div className='h-full bg-orange-500 w-[80%]'></div>
+                                    </div>
                                 </div>
-                            )}
-                            <p className="font-bold text-xl">{avatarName || "Your Avatar"}</p>
+
+                                <div className="absolute top-2 right-2 bg-black/50 p-4 rounded-lg shadow-lg">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <p className="font-bold text-white">อีโมต</p>
+                                        <Button variant="ghost" size="icon" className="text-white h-6 w-6"><X size={16}/></Button>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-2">
+                                        {emoteList.map(emote => (
+                                            <div key={emote.name} className="flex flex-col items-center justify-center p-2 rounded-md bg-black/40 text-white w-20 h-20 hover:bg-white/10 cursor-pointer">
+                                                {emote.icon}
+                                                <p className="text-xs mt-1">{emote.name}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
                             <Button variant="outline" size="sm" asChild>
                                 <Link href="/create-avatar">
                                     <Pencil className="mr-2 h-4 w-4" />
