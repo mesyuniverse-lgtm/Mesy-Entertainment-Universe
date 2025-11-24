@@ -29,7 +29,7 @@ const entertainmentZones = [
   },
   {
     icon: <MicVocal className="w-8 h-8 text-primary" />,
-    title: 'Karaoke Rooms',
+    title: 'Karaoke hub',
     description: 'Sing your heart out with friends in public or private karaoke rooms.',
     href: '#',
     tags: ['Social', 'Music', 'Fun']
