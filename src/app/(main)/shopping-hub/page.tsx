@@ -18,7 +18,7 @@ const shoppingZones = [
     icon: <ShoppingBag className="w-12 h-12 text-green-400" />,
     title: 'MESY Official Shop',
     description: 'Purchase MESY Coins, special items, and exclusive partner services directly from us.',
-    href: '#',
+    href: '/shopping-hub/official-shop',
     cta: 'Visit Shop',
   },
   {
