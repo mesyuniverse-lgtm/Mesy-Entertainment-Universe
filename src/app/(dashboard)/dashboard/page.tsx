@@ -96,7 +96,7 @@ const downlineData = [
     joinDate: '2023-01-01',
     downlines: 50000,
     monthlyIncome: 48500,
-    fee: 1500,
+    fee: 1500.00,
   },
   {
     rank: 2,
@@ -118,7 +118,7 @@ const downlineData = [
     monthlyIncome: 4,
     fee: 0.12,
   },
-    {
+  {
     rank: 4,
     username: 'donatello',
     memberId: '004',
@@ -148,7 +148,7 @@ const downlineData = [
     monthlyIncome: 1,
     fee: 0.03,
   },
-    {
+  {
     rank: 7,
     username: 'raphael',
     memberId: '007',
