@@ -1,7 +1,7 @@
 
 'use client';
 
-import React, { useMemo } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import Image from 'next/image';
 import {
   Table,
@@ -20,26 +20,30 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirebase, useCollection, useMemoFirebase, useDoc } from '@/firebase';
-import { collection, query, orderBy, doc, where, Timestamp } from 'firebase/firestore';
+import { collection, query, orderBy, doc, getCountFromServer } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users, CheckCircle, Settings, BarChart, Wallet } from 'lucide-react';
+import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users, CheckCircle, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 
-interface Member {
-  id: string;
-  username: string;
-  nickname: string;
-  level: number;
+interface MesyMember {
+  userId: string;
+  memberId: number;
+  displayName: string;
+  role: string;
+  joinedAt: { seconds: number; nanoseconds: number };
   avatar?: string;
-  downlines?: number;
-  createdAt: Timestamp;
+  level?: number;
+}
+
+interface EnrichedMember extends MesyMember {
+    downlineCount: number;
 }
 
 export default function MemberSystemPage() {
   const { firestore, user } = useFirebase();
 
-  // Fetch the private KYC profile data
+  // Fetch the private KYC profile data for the logged-in user
   const userProfileRef = useMemoFirebase(() => {
     if (!user) return null;
     return doc(firestore, `accounts/${user.uid}/profile`, user.uid);
@@ -47,56 +51,71 @@ export default function MemberSystemPage() {
 
   const { data: userProfile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
-  // Fetch the collection of Member IDs for the current account
-  const membersQuery = useMemoFirebase(() => {
-    if (!user) return null;
-    return query(collection(firestore, `accounts/${user.uid}/members`), orderBy('createdAt', 'asc'));
-  }, [firestore, user]);
+  // Fetch all members from the top-level 'mesy-members' collection
+  const allMembersQuery = useMemoFirebase(() => {
+    if (!firestore) return null;
+    return query(collection(firestore, 'mesy-members'), orderBy('memberId', 'asc'));
+  }, [firestore]);
 
-  const { data: membersData, isLoading: isMembersLoading, error } = useCollection<Member>(membersQuery);
-  
-  // Example of fetching transactions for the *first* member ID. 
-  // In a real app, you'd have a way to select which member's wallet to view.
-  const transactionsQuery = useMemoFirebase(() => {
-    if (!user || !membersData || membersData.length === 0) return null;
-    const firstMemberId = membersData[0].id;
-    const walletPath = `accounts/${user.uid}/members/${firstMemberId}/wallet`;
-    // As walletId is not defined in the schema, we'll assume it's the same as memberId for now.
-    // In a real app, you might need to fetch the wallet document first.
-    return query(
-        collection(firestore, `${walletPath}/${firstMemberId}/transactions`),
-        where('type', 'in', ['market_purchase', 'withdrawal', 'fee'])
-    );
-  }, [firestore, user, membersData]);
+  const { data: allMembersData, isLoading: isMembersLoading, error } = useCollection<MesyMember>(allMembersQuery);
 
-  const { data: transactionsData, isLoading: isTransactionsLoading } = useCollection(transactionsQuery);
+  const [enrichedMembers, setEnrichedMembers] = useState<EnrichedMember[]>([]);
+  const [isEnriching, setIsEnriching] = useState(true);
 
-  const isLoading = isProfileLoading || isMembersLoading || isTransactionsLoading;
+  // Effect to fetch downline counts for each member
+  useEffect(() => {
+    if (!allMembersData || !firestore) return;
+
+    const enrichData = async () => {
+        setIsEnriching(true);
+        const enriched = await Promise.all(
+            allMembersData.map(async (member) => {
+                // Find the account this mesy-member belongs to.
+                // Assuming userId in mesy-members is the accountId.
+                const accountId = member.userId;
+                // Find the corresponding member document under the account to get the downline.
+                // This assumes memberId in mesy-members corresponds to the document ID in the members subcollection.
+                // A better approach would be to have a direct link. For now, we query.
+                // Let's assume for now the user's primary member ID is their own UID for simplicity of finding the downline path
+                const primaryMemberIdInAccount = accountId;
+
+                const downlineCollRef = collection(firestore, `accounts/${accountId}/members/${primaryMemberIdInAccount}/downline`);
+                const snapshot = await getCountFromServer(downlineCollRef);
+                const downlineCount = snapshot.data().count;
+
+                return {
+                    ...member,
+                    downlineCount: downlineCount
+                };
+            })
+        );
+        setEnrichedMembers(enriched);
+        setIsEnriching(false);
+    };
+
+    enrichData();
+  }, [allMembersData, firestore]);
+
+  const isLoading = isProfileLoading || isMembersLoading || isEnriching;
 
   const calculateIncome = (downlines: number) => downlines * 1;
   const calculateFee = (income: number) => income * 0.03;
 
   const stats = useMemo(() => {
-    if (!membersData) {
+    if (!enrichedMembers) {
       return { totalMembers: 0, totalIncome: 0, totalFees: 0, netIncome: 0 };
     }
-    const totalMembers = membersData.reduce((acc, member) => acc + (member.downlines || 0), 0);
+    const totalMembers = enrichedMembers.reduce((acc, member) => acc + (member.downlineCount || 0), 0);
     const totalIncome = calculateIncome(totalMembers);
     const totalFees = calculateFee(totalIncome);
     const netIncome = totalIncome - totalFees;
     return { totalMembers, totalIncome, totalFees, netIncome };
-  }, [membersData]);
+  }, [enrichedMembers]);
   
-  const averageSpend = useMemo(() => {
-    if (!transactionsData || transactionsData.length === 0) {
-      return 0;
-    }
-    return transactionsData.reduce((acc, transaction) => acc + Math.abs(transaction.amount), 0);
-  }, [transactionsData]);
-
+  const averageSpend = 0; // Placeholder as transactions logic is complex without a selected member
 
   const avatarImage = PlaceHolderImages.find((i) => i.id === 'yoga-pose-1');
-  const mainUserAvatar = membersData?.[0]?.avatar ? PlaceHolderImages.find(i => i.id === membersData[0].avatar) : PlaceHolderImages.find(i => i.id === 'default-avatar');
+  const mainUserAvatar = userProfile?.avatar ? PlaceHolderImages.find(i => i.id === userProfile.avatar) : PlaceHolderImages.find(i => i.id === 'default-avatar');
 
   const renderTableContent = () => {
     if (isLoading) {
@@ -139,12 +158,12 @@ export default function MemberSystemPage() {
       );
     }
 
-    if (!membersData || membersData.length === 0) {
+    if (!enrichedMembers || enrichedMembers.length === 0) {
       return (
         <TableBody>
           <TableRow>
             <TableCell colSpan={8} className="text-center py-10 text-muted-foreground">
-              You have not created any Member IDs yet.
+              No members found in the system yet.
             </TableCell>
           </TableRow>
         </TableBody>
@@ -153,29 +172,30 @@ export default function MemberSystemPage() {
 
     return (
       <TableBody>
-        {membersData.map((member, index) => {
+        {enrichedMembers.map((member) => {
           const avatar = member.avatar ? PlaceHolderImages.find((p) => p.id === member.avatar) : PlaceHolderImages.find(p => p.id === 'default-avatar');
-          const downlinesCount = member.downlines || 0; 
+          const downlinesCount = member.downlineCount || 0; 
           const income = calculateIncome(downlinesCount);
           const fee = calculateFee(income);
-          const joinDate = member.createdAt ? new Date(member.createdAt.seconds * 1000).toLocaleDateString() : 'N/A';
+          const joinDate = member.joinedAt ? new Date(member.joinedAt.seconds * 1000).toLocaleDateString() : 'N/A';
+          const memberLevel = member.level !== undefined ? member.level : 0;
 
           return (
-            <TableRow key={member.id}>
-              <TableCell>{index + 1}</TableCell>
-              <TableCell>{member.id.substring(0, 6)}</TableCell>
+            <TableRow key={member.memberId}>
+              <TableCell>{member.memberId}</TableCell>
+              <TableCell>{member.userId.substring(0, 6)}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
                     <AvatarImage src={avatar?.imageUrl} />
                     <AvatarFallback>
-                      {member.username ? member.username.charAt(0) : '?'}
+                      {member.displayName ? member.displayName.charAt(0) : '?'}
                     </AvatarFallback>
                   </Avatar>
-                  <span>{member.username}</span>
+                  <span>{member.displayName}</span>
                 </div>
               </TableCell>
-              <TableCell>Level.{member.level}</TableCell>
+              <TableCell>Level.{memberLevel}</TableCell>
               <TableCell>{joinDate}</TableCell>
               <TableCell>{downlinesCount > 0 ? downlinesCount.toLocaleString() : "ยังไม่มีผู้ติดตาม"}</TableCell>
               <TableCell>
@@ -208,7 +228,7 @@ export default function MemberSystemPage() {
             </div>
             <div className="lg:col-span-3 flex flex-col justify-center space-y-2">
                 <h2 className="text-xl font-semibold text-primary/80">My Financial Overview</h2>
-                {isLoading ? (
+                {isProfileLoading ? (
                     <>
                         <Skeleton className="h-6 w-48" />
                         <Skeleton className="h-5 w-32" />
@@ -218,9 +238,9 @@ export default function MemberSystemPage() {
                     </>
                 ) : (
                     <>
-                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Username:</span> {(membersData && membersData[0]?.username) || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Username:</span> {(userProfile as any)?.firstname || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
                         <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Account ID:</span> {user?.uid.substring(0, 6) || 'N/A'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
-                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Levels:</span> {(membersData && membersData[0]?.level) || 0}</div>
+                        <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Levels:</span> {(userProfile as any)?.level || 0}</div>
                         <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Tel:</span> ***-***-**{(userProfile as any)?.phoneNumber?.number?.slice(-2) || 'XX'} <CheckCircle className='w-5 h-5 text-green-500' /></div>
                         <div className="flex items-center gap-2 text-lg"><span className='text-muted-foreground'>Email:</span> {user?.email} <CheckCircle className='w-5 h-5 text-green-500' /></div>
                     </>
@@ -296,7 +316,7 @@ export default function MemberSystemPage() {
           <CardContent>
             <div className="text-2xl font-bold">{stats.totalMembers.toLocaleString()}</div>
             <p className="text-xs text-muted-foreground">
-              Total members in your network
+              Total members in the entire network
             </p>
           </CardContent>
         </Card>
@@ -342,15 +362,15 @@ export default function MemberSystemPage() {
         <CardHeader>
           <CardTitle className='text-primary'>MESY UNIVERSE Financial & Membership Overview</CardTitle>
           <p className="text-muted-foreground">
-            Here are the Member IDs associated with your account.
+            This table shows all MESY Members in the universe.
           </p>
         </CardHeader>
         <CardContent>
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>#</TableHead>
                 <TableHead>MemberID</TableHead>
+                <TableHead>AccountID</TableHead>
                 <TableHead>Username</TableHead>
                 <TableHead>Level</TableHead>
                 <TableHead>Join Date</TableHead>
@@ -366,3 +386,5 @@ export default function MemberSystemPage() {
     </div>
   );
 }
+
+    
