@@ -66,22 +66,36 @@ export default function KaraokeHubPage() {
   const [hasCameraPermission, setHasCameraPermission] = useState(true);
   const [isMicOn, setIsMicOn] = useState(true);
   const [isVideoOn, setIsVideoOn] = useState(true);
+  const [stream, setStream] = useState<MediaStream | null>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
    useEffect(() => {
     const getCameraPermission = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        const mediaStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        setStream(mediaStream);
         setHasCameraPermission(true);
         if (videoRef.current) {
-          videoRef.current.srcObject = stream;
+          videoRef.current.srcObject = mediaStream;
         }
       } catch (error) {
         console.error('Error accessing camera:', error);
         setHasCameraPermission(false);
+        toast({
+            variant: "destructive",
+            title: "Camera Access Denied",
+            description: "Please enable camera and microphone permissions to use this feature.",
+        });
       }
     };
     getCameraPermission();
+
+    return () => {
+      // Clean up stream when component unmounts
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+      }
+    }
   }, []);
 
   const handleCreateRoom = () => {
@@ -89,6 +103,24 @@ export default function KaraokeHubPage() {
         title: "Room Created!",
         description: "Your new karaoke room is live.",
       });
+  }
+
+  const toggleMic = () => {
+    if (stream) {
+        stream.getAudioTracks().forEach(track => {
+            track.enabled = !isMicOn;
+        });
+        setIsMicOn(!isMicOn);
+    }
+  }
+
+  const toggleVideo = () => {
+    if (stream) {
+        stream.getVideoTracks().forEach(track => {
+            track.enabled = !isVideoOn;
+        });
+        setIsVideoOn(!isVideoOn);
+    }
   }
 
   return (
@@ -183,7 +215,13 @@ export default function KaraokeHubPage() {
         </CardHeader>
         <CardContent className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 relative aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
-                 <video ref={videoRef} className="w-full h-full object-cover" autoPlay muted playsInline />
+                 <video ref={videoRef} className={cn("w-full h-full object-cover transition-opacity", isVideoOn ? "opacity-100" : "opacity-0")} autoPlay muted playsInline />
+                 {!isVideoOn && (
+                    <div className="absolute flex flex-col items-center text-muted-foreground">
+                        <VideoOff className="w-16 h-16"/>
+                        <p>Camera is off</p>
+                    </div>
+                 )}
                 {!hasCameraPermission && (
                     <Alert variant="destructive" className="absolute w-auto m-4">
                         <AlertTitle>Camera Access Required</AlertTitle>
@@ -203,10 +241,10 @@ export default function KaraokeHubPage() {
                     </Avatar>
                 </div>
                 <div className="absolute bottom-4 inset-x-4 flex justify-center items-center gap-3">
-                    <Button variant="secondary" size="icon" className="rounded-full h-12 w-12" onClick={() => setIsMicOn(!isMicOn)}>
+                    <Button variant="secondary" size="icon" className="rounded-full h-12 w-12" onClick={toggleMic}>
                         {isMicOn ? <Mic /> : <MicOff className="text-red-500" />}
                     </Button>
-                     <Button variant="secondary" size="icon" className="rounded-full h-12 w-12" onClick={() => setIsVideoOn(!isVideoOn)}>
+                     <Button variant="secondary" size="icon" className="rounded-full h-12 w-12" onClick={toggleVideo}>
                         {isVideoOn ? <Video /> : <VideoOff className="text-red-500" />}
                     </Button>
                      <Button variant="destructive" size="lg" className="rounded-full h-12 px-6">End Live</Button>
