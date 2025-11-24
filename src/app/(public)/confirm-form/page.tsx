@@ -150,32 +150,6 @@ export default function ConfirmFormPage() {
                         Wallet connect coming soon.
                     </TabsContent>
                 </Tabs>
-
-                <div className="relative my-4 flex items-center justify-center">
-                    <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t" />
-                    </div>
-                    <div className="relative bg-card px-2 text-xs uppercase text-muted-foreground">Or</div>
-                </div>
-
-                <div className="grid gap-2">
-                  <Label htmlFor="id-card-photo">Upload Payment QR Code</Label>
-                  <div className="relative flex items-center justify-center w-full h-32 border-2 border-dashed rounded-md border-muted-foreground/50">
-                    <QrCode className="w-8 h-8 text-muted-foreground" />
-                    <Input
-                      id="id-card-photo"
-                      type="file"
-                      className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
-                      onChange={(e) => setIdCardFile(e.target.files ? e.target.files[0] : null)}
-                      accept="image/*"
-                      disabled={isLoading}
-                    />
-                     {idCardFile && (
-                        <p className="absolute bottom-2 text-xs text-muted-foreground">{idCardFile.name}</p>
-                     )}
-                  </div>
-                </div>
-
             </CardContent>
         </Card>
         
