@@ -9,24 +9,24 @@ import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
 import { doc, setDoc, serverTimestamp, collection } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, Save, Edit, User, LayoutDashboard, Cog, ArrowLeft, CreditCard, Wallet, QrCode, CheckCircle, Pencil, X, Hand, Heart, UserRound, Flower2, HandPlatter, Bot, Laugh, Annoyed, PartyPopper } from 'lucide-react';
+import { Loader2, Save, Edit, User, LayoutDashboard, Cog, ArrowLeft, CheckCircle, Pencil, Hand, UserRound, Bot, PartyPopper, Flower2, HandPlatter, Laugh, Annoyed } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const emoteList = [
-    { name: 'ทักทาย', icon: <Hand size={32} /> },
-    { name: 'โค้งคำนับ', icon: <UserRound size={32} /> },
-    { name: 'เศร้า', icon: <Bot size={32} /> },
-    { name: 'นั่ง', icon: <UserRound size={32} /> },
-    { name: 'นอนลง', icon: <UserRound size={32} /> },
-    { name: 'เต้น', icon: <PartyPopper size={32} /> },
-    { name: 'ช่อดอกไม้', icon: <Flower2 size={32} /> },
-    { name: 'ปรบมือ', icon: <HandPlatter size={32} /> },
-    { name: 'หัวเราะ', icon: <Laugh size={32} /> },
-    { name: 'โกรธ', icon: <Annoyed size={32} /> },
-    { name: 'ยั่วเย้า', icon: <Bot size={32} /> },
-    { name: 'ชัยชนะ', icon: <PartyPopper size={32} /> },
+    { name: 'ทักทาย', icon: <Hand size={24} /> },
+    { name: 'โค้งคำนับ', icon: <UserRound size={24} /> },
+    { name: 'เศร้า', icon: <Bot size={24} /> },
+    { name: 'นั่ง', icon: <UserRound size={24} /> },
+    { name: 'นอนลง', icon: <UserRound size={24} /> },
+    { name: 'เต้น', icon: <PartyPopper size={24} /> },
+    { name: 'ช่อดอกไม้', icon: <Flower2 size={24} /> },
+    { name: 'ปรบมือ', icon: <HandPlatter size={24} /> },
+    { name: 'หัวเราะ', icon: <Laugh size={24} /> },
+    { name: 'โกรธ', icon: <Annoyed size={24} /> },
+    { name: 'ยั่วเย้า', icon: <Bot size={24} /> },
+    { name: 'ชัยชนะ', icon: <PartyPopper size={24} /> },
 ];
 
 
@@ -81,8 +81,6 @@ export default function GetMemberIdPage() {
       const newMemberRef = doc(collection(firestore, `accounts/${user.uid}/members`));
       const memberId = newMemberRef.id;
 
-      console.log('Simulating payment of $9.99...');
-
       await setDoc(newMemberRef, {
         id: memberId,
         accountId: user.uid,
@@ -111,7 +109,7 @@ export default function GetMemberIdPage() {
 
   return (
     <div className="container mx-auto p-4 sm:p-6 lg:p-8 flex items-center justify-center min-h-screen">
-      <Card className="w-full max-w-6xl bg-card/80 backdrop-blur-sm">
+      <Card className="w-full max-w-7xl bg-card/80 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-3xl font-bold text-primary">Create Your Member ID</CardTitle>
           <CardDescription>
@@ -128,38 +126,35 @@ export default function GetMemberIdPage() {
                             <CardTitle className="text-lg">Your Avatar</CardTitle>
                         </CardHeader>
                         <CardContent className="flex flex-col items-center justify-center gap-4">
-                           {/* New Avatar Preview UI */}
-                           <div className="relative w-full aspect-square rounded-lg overflow-hidden border border-primary/20">
-                                {bgImage && (
-                                    <Image src={bgImage.imageUrl} alt="Avatar Background" layout="fill" objectFit="cover" className="opacity-40" />
-                                )}
-                                {avatarImage && (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <Image src={avatarImage.imageUrl} alt="Your Avatar" width={300} height={300} className="object-contain" />
-                                    </div>
-                                )}
-                                <div className='absolute top-4 inset-x-0 flex flex-col items-center'>
-                                    <p className='font-bold text-xl text-white' style={{textShadow: '1px 1px 4px #000'}}>{avatarName}</p>
-                                    <div className='w-32 h-2 bg-black/50 rounded-full overflow-hidden mt-1'>
-                                        <div className='h-full bg-orange-500 w-[80%]'></div>
-                                    </div>
-                                </div>
+                           <div className="flex gap-2">
+                               <div className="relative w-[250px] aspect-[3/4] rounded-lg overflow-hidden border border-primary/20">
+                                   {bgImage && (
+                                       <Image src={bgImage.imageUrl} alt="Avatar Background" layout="fill" objectFit="cover" className="opacity-40" />
+                                   )}
+                                   {avatarImage && (
+                                       <div className="absolute inset-0 flex items-end justify-center">
+                                           <Image src={avatarImage.imageUrl} alt="Your Avatar" width={200} height={300} className="object-contain" />
+                                       </div>
+                                   )}
+                                   <div className='absolute top-2 inset-x-0 flex flex-col items-center'>
+                                       <p className='font-bold text-lg text-white' style={{textShadow: '1px 1px 4px #000'}}>{avatarName}</p>
+                                       <div className='w-24 h-1.5 bg-black/50 rounded-full overflow-hidden mt-1'>
+                                           <div className='h-full bg-orange-500 w-[80%]'></div>
+                                       </div>
+                                   </div>
+                               </div>
 
-                                <div className="absolute top-2 right-2 bg-black/50 p-4 rounded-lg shadow-lg">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <p className="font-bold text-white">อีโมต</p>
-                                        <Button variant="ghost" size="icon" className="text-white h-6 w-6"><X size={16}/></Button>
-                                    </div>
-                                    <div className="grid grid-cols-2 gap-2">
-                                        {emoteList.map(emote => (
-                                            <div key={emote.name} className="flex flex-col items-center justify-center p-2 rounded-md bg-black/40 text-white w-20 h-20 hover:bg-white/10 cursor-pointer">
-                                                {emote.icon}
-                                                <p className="text-xs mt-1">{emote.name}</p>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
+                               <div className="p-2 rounded-lg bg-black/30 shadow-lg w-32 space-y-1">
+                                   <p className="font-bold text-white text-sm text-center mb-1">อีโมต</p>
+                                   <div className="grid grid-cols-2 gap-1">
+                                       {emoteList.slice(0, 12).map(emote => (
+                                           <div key={emote.name} title={emote.name} className="flex flex-col items-center justify-center p-1 rounded-md bg-black/40 text-white w-full aspect-square hover:bg-white/10 cursor-pointer">
+                                               {React.cloneElement(emote.icon, {size: 18})}
+                                           </div>
+                                       ))}
+                                   </div>
+                               </div>
+                           </div>
                             <Button variant="outline" size="sm" asChild>
                                 <Link href="/create-avatar">
                                     <Pencil className="mr-2 h-4 w-4" />
