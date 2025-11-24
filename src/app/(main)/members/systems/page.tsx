@@ -20,11 +20,21 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirebase, useCollection, useMemoFirebase, useDoc } from '@/firebase';
-import { collection, query, orderBy, doc, where } from 'firebase/firestore';
+import { collection, query, orderBy, doc, where, Timestamp } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users, CheckCircle, Settings, BarChart, Wallet } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+
+interface Member {
+  id: string;
+  username: string;
+  nickname: string;
+  level: number;
+  avatar?: string;
+  downlines?: number;
+  createdAt: Timestamp;
+}
 
 export default function MemberSystemPage() {
   const { firestore, user } = useFirebase();
@@ -40,18 +50,21 @@ export default function MemberSystemPage() {
   // Fetch the collection of Member IDs for the current account
   const membersQuery = useMemoFirebase(() => {
     if (!user) return null;
-    return query(collection(firestore, `accounts/${user.uid}/members`), orderBy('username', 'asc'));
+    return query(collection(firestore, `accounts/${user.uid}/members`), orderBy('createdAt', 'asc'));
   }, [firestore, user]);
 
-  const { data: membersData, isLoading: isMembersLoading, error } = useCollection(membersQuery);
+  const { data: membersData, isLoading: isMembersLoading, error } = useCollection<Member>(membersQuery);
   
   // Example of fetching transactions for the *first* member ID. 
   // In a real app, you'd have a way to select which member's wallet to view.
   const transactionsQuery = useMemoFirebase(() => {
     if (!user || !membersData || membersData.length === 0) return null;
     const firstMemberId = membersData[0].id;
+    const walletPath = `accounts/${user.uid}/members/${firstMemberId}/wallet`;
+    // As walletId is not defined in the schema, we'll assume it's the same as memberId for now.
+    // In a real app, you might need to fetch the wallet document first.
     return query(
-        collection(firestore, `accounts/${user.uid}/members/${firstMemberId}/wallet/${firstMemberId}/transactions`),
+        collection(firestore, `${walletPath}/${firstMemberId}/transactions`),
         where('type', 'in', ['market_purchase', 'withdrawal', 'fee'])
     );
   }, [firestore, user, membersData]);
@@ -67,7 +80,6 @@ export default function MemberSystemPage() {
     if (!membersData) {
       return { totalMembers: 0, totalIncome: 0, totalFees: 0, netIncome: 0 };
     }
-    // This is a simplified calculation. A real system would involve aggregating downlines from all member IDs.
     const totalMembers = membersData.reduce((acc, member) => acc + (member.downlines || 0), 0);
     const totalIncome = calculateIncome(totalMembers);
     const totalFees = calculateFee(totalIncome);
@@ -83,7 +95,8 @@ export default function MemberSystemPage() {
   }, [transactionsData]);
 
 
-  const avatarImage = PlaceHolderImages.find((i) => i.id === 'female-warrior-1');
+  const avatarImage = PlaceHolderImages.find((i) => i.id === 'yoga-pose-1');
+  const mainUserAvatar = membersData?.[0]?.avatar ? PlaceHolderImages.find(i => i.id === membersData[0].avatar) : PlaceHolderImages.find(i => i.id === 'default-avatar');
 
   const renderTableContent = () => {
     if (isLoading) {
@@ -141,10 +154,11 @@ export default function MemberSystemPage() {
     return (
       <TableBody>
         {membersData.map((member, index) => {
-          const avatar = PlaceHolderImages.find((p) => p.id === 'default-avatar');
+          const avatar = member.avatar ? PlaceHolderImages.find((p) => p.id === member.avatar) : PlaceHolderImages.find(p => p.id === 'default-avatar');
           const downlinesCount = member.downlines || 0; 
           const income = calculateIncome(downlinesCount);
           const fee = calculateFee(income);
+          const joinDate = member.createdAt ? new Date(member.createdAt.seconds * 1000).toLocaleDateString() : 'N/A';
 
           return (
             <TableRow key={member.id}>
@@ -153,7 +167,7 @@ export default function MemberSystemPage() {
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={member.avatar || avatar?.imageUrl} />
+                    <AvatarImage src={avatar?.imageUrl} />
                     <AvatarFallback>
                       {member.username ? member.username.charAt(0) : '?'}
                     </AvatarFallback>
@@ -162,7 +176,7 @@ export default function MemberSystemPage() {
                 </div>
               </TableCell>
               <TableCell>Level.{member.level}</TableCell>
-              <TableCell>{'N/A'}</TableCell>
+              <TableCell>{joinDate}</TableCell>
               <TableCell>{downlinesCount > 0 ? downlinesCount.toLocaleString() : "ยังไม่มีผู้ติดตาม"}</TableCell>
               <TableCell>
                 {downlinesCount > 0 ? `$${income.toFixed(2)}` : "ยังไม่มีรายได้"}
