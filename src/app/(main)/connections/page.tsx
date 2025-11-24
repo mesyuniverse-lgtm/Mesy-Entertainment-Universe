@@ -11,7 +11,7 @@ const connectionZones = [
     icon: <Heart className="w-12 h-12 text-red-400" />,
     title: 'Dating Zone',
     description: 'Find meaningful relationships. Connect with singles or those ready for a new beginning.',
-    href: '#',
+    href: '/connections/dating-zone',
     cta: 'Find Your Match',
   },
   {
