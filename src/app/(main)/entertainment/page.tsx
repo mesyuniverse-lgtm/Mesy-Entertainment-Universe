@@ -10,7 +10,7 @@ const entertainmentZones = [
     icon: <Users className="w-8 h-8 text-primary" />,
     title: 'Artist Community',
     description: 'Showcase your work, perform live, and find opportunities in the Talent Hub.',
-    href: '#',
+    href: '/entertainment/artist-community',
     tags: ['Showcase', 'Live', 'Talent Hub']
   },
   {
