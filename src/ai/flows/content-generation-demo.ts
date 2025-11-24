@@ -8,9 +8,14 @@
  * - ContentGenerationOutput - The return type for the generateContent function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { genkit } from 'genkit';
+import { googleAI } from '@genkit-ai/google-genai';
+import { z } from 'genkit';
 import wav from 'wav';
+
+const ai = genkit({
+  plugins: [googleAI()],
+});
 
 const ContentGenerationInputSchema = z.object({
   type: z.enum([
