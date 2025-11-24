@@ -20,7 +20,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirebase, useCollection, useMemoFirebase, useDoc } from '@/firebase';
-import { collection, query, orderBy, doc, getCountFromServer } from 'firebase/firestore';
+import { collection, query, orderBy, doc, getCountFromServer, where, getDocs, limit } from 'firebase/firestore';
 import { Skeleton } from '@/components/ui/skeleton';
 import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users, CheckCircle, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -43,7 +43,6 @@ interface EnrichedMember extends MesyMember {
 export default function MemberSystemPage() {
   const { firestore, user } = useFirebase();
 
-  // Fetch the private KYC profile data for the logged-in user
   const userProfileRef = useMemoFirebase(() => {
     if (!user) return null;
     return doc(firestore, `accounts/${user.uid}/profile`, user.uid);
@@ -51,7 +50,6 @@ export default function MemberSystemPage() {
 
   const { data: userProfile, isLoading: isProfileLoading } = useDoc(userProfileRef);
 
-  // Fetch all members from the top-level 'mesy-members' collection
   const allMembersQuery = useMemoFirebase(() => {
     if (!firestore) return null;
     return query(collection(firestore, 'mesy-members'), orderBy('memberId', 'asc'));
@@ -62,35 +60,40 @@ export default function MemberSystemPage() {
   const [enrichedMembers, setEnrichedMembers] = useState<EnrichedMember[]>([]);
   const [isEnriching, setIsEnriching] = useState(true);
 
-  // Effect to fetch downline counts for each member
   useEffect(() => {
     if (!allMembersData || !firestore) return;
 
     const enrichData = async () => {
-        setIsEnriching(true);
-        const enriched = await Promise.all(
-            allMembersData.map(async (member) => {
-                // Find the account this mesy-member belongs to.
-                // Assuming userId in mesy-members is the accountId.
-                const accountId = member.userId;
-                // Find the corresponding member document under the account to get the downline.
-                // This assumes memberId in mesy-members corresponds to the document ID in the members subcollection.
-                // A better approach would be to have a direct link. For now, we query.
-                // Let's assume for now the user's primary member ID is their own UID for simplicity of finding the downline path
-                const primaryMemberIdInAccount = accountId;
-
-                const downlineCollRef = collection(firestore, `accounts/${accountId}/members/${primaryMemberIdInAccount}/downline`);
+      setIsEnriching(true);
+      const enriched = await Promise.all(
+        allMembersData.map(async (member) => {
+          let downlineCount = 0;
+          try {
+            // Find the member document within the account's members subcollection
+            // This assumes the `displayName` in `mesy-members` is unique and matches a `username` in the `members` subcollection.
+            // This is not ideal. A direct reference (e.g., storing the full member path) would be better.
+            const membersColRef = collection(firestore, `accounts/${member.userId}/members`);
+            const memberQuery = query(membersColRef, where("username", "==", member.displayName), limit(1));
+            const memberSnapshot = await getDocs(memberQuery);
+            
+            if (!memberSnapshot.empty) {
+                const memberDoc = memberSnapshot.docs[0];
+                const downlineCollRef = collection(firestore, memberDoc.ref.path, 'downline');
                 const snapshot = await getCountFromServer(downlineCollRef);
-                const downlineCount = snapshot.data().count;
+                downlineCount = snapshot.data().count;
+            }
+          } catch(e) {
+            console.error(`Could not fetch downline for ${member.displayName}:`, e);
+          }
 
-                return {
-                    ...member,
-                    downlineCount: downlineCount
-                };
-            })
-        );
-        setEnrichedMembers(enriched);
-        setIsEnriching(false);
+          return {
+            ...member,
+            downlineCount: downlineCount,
+          };
+        })
+      );
+      setEnrichedMembers(enriched);
+      setIsEnriching(false);
     };
 
     enrichData();
@@ -112,10 +115,10 @@ export default function MemberSystemPage() {
     return { totalMembers, totalIncome, totalFees, netIncome };
   }, [enrichedMembers]);
   
-  const averageSpend = 0; // Placeholder as transactions logic is complex without a selected member
+  const averageSpend = 0;
 
   const avatarImage = PlaceHolderImages.find((i) => i.id === 'yoga-pose-1');
-  const mainUserAvatar = userProfile?.avatar ? PlaceHolderImages.find(i => i.id === userProfile.avatar) : PlaceHolderImages.find(i => i.id === 'default-avatar');
+  const mainUserAvatar = (userProfile as any)?.avatar ? PlaceHolderImages.find(i => i.id === (userProfile as any).avatar) : PlaceHolderImages.find(i => i.id === 'default-avatar');
 
   const renderTableContent = () => {
     if (isLoading) {
