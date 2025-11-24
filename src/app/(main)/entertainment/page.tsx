@@ -24,7 +24,7 @@ const entertainmentZones = [
     icon: <Gamepad2 className="w-8 h-8 text-primary" />,
     title: 'Games & eSports',
     description: 'Explore our game library, watch live tournaments, and get behind-the-scenes access.',
-    href: '#',
+    href: '/entertainment/games-esports',
     tags: ['Gaming', 'eSports', 'Tournaments']
   },
   {
