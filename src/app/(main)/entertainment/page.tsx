@@ -15,7 +15,7 @@ const entertainmentZones = [
   },
   {
     icon: <Clapperboard className="w-8 h-8 text-primary" />,
-    title: 'Movies & Streaming',
+    title: 'Streaming & Video',
     description: 'Enjoy a curated selection of films, series, and MESY Originals.',
     href: '#',
     tags: ['Movies', 'Series', 'Originals']
