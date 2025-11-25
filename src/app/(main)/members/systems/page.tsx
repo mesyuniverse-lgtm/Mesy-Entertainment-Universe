@@ -16,15 +16,18 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { useFirebase, useCollection, useMemoFirebase, useDoc } from '@/firebase';
 import { collection, query, orderBy, doc, getCountFromServer, where, getDocs, limit } from 'firebase/firestore';
+import { getFunctions, httpsCallable } from 'firebase-functions';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users, CheckCircle, Settings } from 'lucide-react';
+import { AlertCircle, ArrowDown, ArrowUp, DollarSign, Users, CheckCircle, Settings, Cpu, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { useToast } from '@/hooks/use-toast';
 
 interface Account {
   id: string;
@@ -46,7 +49,11 @@ interface EnrichedMember extends Account {
 }
 
 export default function MemberSystemPage() {
-  const { firestore, user } = useFirebase();
+  const { firestore, user, firebaseApp } = useFirebase();
+  const { toast } = useToast();
+
+  const [jobStatus, setJobStatus] = useState<string | null>(null);
+  const [isJobRunning, setIsJobRunning] = useState(false);
 
   const userProfileRef = useMemoFirebase(() => {
     if (!user) return null;
@@ -110,6 +117,50 @@ export default function MemberSystemPage() {
 
     enrichData();
   }, [allAccountsData, firestore]);
+
+  const handleStartComputeJob = async () => {
+    if (!firebaseApp) {
+        toast({ title: "Error", description: "Firebase is not initialized.", variant: "destructive" });
+        return;
+    }
+    
+    setIsJobRunning(true);
+    setJobStatus("Calling Cloud Function...");
+
+    try {
+        const functions = getFunctions(firebaseApp);
+        const computeEngineProxy = httpsCallable(functions, 'computeEngineProxy');
+        
+        toast({
+            title: "Sending Request",
+            description: "Request sent to computeEngineProxy Cloud Function.",
+        });
+
+        const result = await computeEngineProxy({ jobType: "video-processing-demo" });
+        
+        const data = result.data as { success: boolean; message: string };
+        
+        setJobStatus(`Function Response: ${data.message}`);
+
+        toast({
+            title: data.success ? "Success!" : "Function Error",
+            description: data.message,
+            variant: data.success ? "default" : "destructive",
+        });
+
+    } catch (error: any) {
+        console.error("Error calling cloud function:", error);
+        setJobStatus(`Error: ${error.message}`);
+        toast({
+            title: "Cloud Function Error",
+            description: "Failed to call the computeEngineProxy function.",
+            variant: "destructive",
+        });
+    } finally {
+        setIsJobRunning(false);
+    }
+  };
+
 
   const isLoading = isProfileLoading || isAccountsLoading || isEnriching;
 
@@ -373,6 +424,31 @@ export default function MemberSystemPage() {
           </CardContent>
         </Card>
       </div>
+
+       <Card className="bg-card/50">
+        <CardHeader>
+          <CardTitle>Backend System Jobs</CardTitle>
+          <CardDescription>
+            This is a demonstration for triggering backend processes like Compute Engine jobs.
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+            <Button onClick={handleStartComputeJob} disabled={isJobRunning}>
+                {isJobRunning ? (
+                    <Loader2 className='mr-2 h-4 w-4 animate-spin'/>
+                ) : (
+                    <Cpu className='mr-2 h-4 w-4'/>
+                )}
+                Start Compute Job
+            </Button>
+            {jobStatus && (
+                <div className="mt-4 p-4 rounded-md bg-secondary/50 border">
+                    <p className="text-sm font-semibold">Job Status:</p>
+                    <p className="text-xs font-mono mt-1 text-muted-foreground">{jobStatus}</p>
+                </div>
+            )}
+        </CardContent>
+      </Card>
 
       <Card className="bg-card/50">
         <CardHeader>
