@@ -1,7 +1,7 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Heart, Sparkles, User, Users, Plus, Radio, MessageCircle, Bookmark, Share2, Music, Home, Play, MoreHorizontal } from 'lucide-react';
@@ -45,6 +45,24 @@ const featuredProfilesList = [
 
 
 export default function DatingZonePage() {
+  const [stats, setStats] = useState({
+    online: 137922,
+    singles: 139802,
+    newBeginnings: 139802,
+  });
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setStats(prevStats => ({
+        online: prevStats.online + Math.floor(Math.random() * 21) - 10, // random change between -10 and +10
+        singles: prevStats.singles + Math.floor(Math.random() * 5),
+        newBeginnings: prevStats.newBeginnings + Math.floor(Math.random() * 3)
+      }));
+    }, 3000); // update every 3 seconds
+
+    return () => clearInterval(interval); // cleanup on unmount
+  }, []);
+
   const mainVideoBg = PlaceHolderImages.find(p => p.id === 'rose-background');
   const promotionImage = PlaceHolderImages.find(p => p.id === 'rose-background');
   const currentUserAvatar = PlaceHolderImages.find(p=> p.id === 'female-warrior-1');
@@ -70,7 +88,7 @@ export default function DatingZonePage() {
                           <span className="font-semibold">Online</span>
                       </div>
                       <p className="text-4xl font-bold tracking-tighter text-red-400">
-                          137,922
+                        {stats.online.toLocaleString()}
                       </p>
                   </Card>
               </div>
@@ -102,12 +120,12 @@ export default function DatingZonePage() {
                   <div className='h-full grid grid-cols-2 gap-4'>
                       <Card className="bg-card/50 border-primary/20 p-2 text-center">
                           <p className="font-semibold">Singles</p>
-                          <p className="text-2xl font-bold">139,802</p>
+                          <p className="text-2xl font-bold">{stats.singles.toLocaleString()}</p>
                           <p className="text-xs text-green-400">+12.5%</p>
                       </Card>
                       <Card className="bg-card/50 border-primary/20 p-2 text-center">
                           <p className="font-semibold">New Beginnings</p>
-                          <p className="text-2xl font-bold">139,802</p>
+                          <p className="text-2xl font-bold">{stats.newBeginnings.toLocaleString()}</p>
                           <p className="text-xs text-green-400">+12.3%</p>
                       </Card>
                   </div>
@@ -268,5 +286,3 @@ export default function DatingZonePage() {
     </div>
   );
 }
-
-    
