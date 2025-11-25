@@ -18,7 +18,7 @@ const connectionZones = [
     icon: <UserSearch className="w-12 h-12 text-blue-400" />,
     title: 'Post Quest (Find Employees)',
     description: 'Looking for help? Post a quest to hire personal assistants, bodyguards, chefs, and more.',
-    href: '#',
+    href: '/connections/post-quest',
     cta: 'Post a Quest',
   },
   {
