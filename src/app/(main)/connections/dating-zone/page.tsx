@@ -22,11 +22,11 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 
 const featuredProfilesData = [
-    { name: 'Seraphina, 25', imageId: 'female-archer-1', location: 'Crystal Gardens', tags: ['Art', 'Music'] },
-    { name: 'Kael, 28', imageId: 'knight-1', location: 'Obsidian Keep', tags: ['Adventure', 'Gaming'] },
-    { name: 'Lyra, 26', imageId: 'explorer-1', location: 'Whispering Woods', tags: ['Nature', 'Books'] },
-    { name: 'Zephyr, 29', imageId: 'fighter-character', location: 'Sky-High Citadel', tags: ['Tech', 'Movies'] },
-    { name: 'Aetheria, 27', imageId: 'female-warrior-1', location: 'Sunstone City', tags: ['Fitness', 'Cooking'] },
+    { name: 'Seraphina, 25', imageId: 'female-archer-1', location: 'Crystal Gardens', tags: ['Art', 'Music'], status: 'Single' },
+    { name: 'Kael, 28', imageId: 'knight-1', location: 'Obsidian Keep', tags: ['Adventure', 'Gaming'], status: 'Single' },
+    { name: 'Lyra, 26', imageId: 'explorer-1', location: 'Whispering Woods', tags: ['Nature', 'Books'], status: 'New Beginning' },
+    { name: 'Zephyr, 29', imageId: 'fighter-character', location: 'Sky-High Citadel', tags: ['Tech', 'Movies'], status: 'Single' },
+    { name: 'Aetheria, 27', imageId: 'female-warrior-1', location: 'Sunstone City', tags: ['Fitness', 'Cooking'], status: 'New Beginning' },
 ];
 
 const stories = [
@@ -280,8 +280,13 @@ export default function DatingZonePage() {
                             <div className={`w-full aspect-[3/4] ${styles['profile-card']}`}>
                                 {image && <Image src={image.imageUrl} alt={profile.name} layout="fill" objectFit="cover" />}
                                 <div className={styles.info}>
-                                    <h3 className="text-xl font-bold">{profile.name}</h3>
-                                    <p className="text-sm text-white/80">{profile.location}</p>
+                                    <div className="flex justify-between items-start">
+                                      <div>
+                                        <h3 className="text-xl font-bold">{profile.name}</h3>
+                                        <p className="text-sm text-white/80">{profile.location}</p>
+                                      </div>
+                                      <Badge variant={profile.status === 'Single' ? 'default' : 'secondary'} className={profile.status === 'Single' ? 'bg-pink-500/80 border-pink-400' : 'bg-purple-500/80 border-purple-400'}>{profile.status}</Badge>
+                                    </div>
                                     <div className="flex gap-2 mt-2">
                                         {profile.tags.map(tag => <Badge key={tag} variant="secondary" className="bg-white/20 text-white border-none">{tag}</Badge>)}
                                     </div>
@@ -298,3 +303,5 @@ export default function DatingZonePage() {
     </div>
   );
 }
+
+    
