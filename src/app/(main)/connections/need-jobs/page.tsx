@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -35,6 +36,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { cn } from '@/lib/utils';
 
 const sampleTalents = [
     {
@@ -43,6 +45,7 @@ const sampleTalents = [
         rate: '$75/hr',
         skills: ['Singing', 'Songwriting', 'Piano'],
         avatarId: 'female-warrior-1',
+        rating: 5,
     },
     {
         name: 'Zephyr',
@@ -50,6 +53,7 @@ const sampleTalents = [
         rate: '$90/hr',
         skills: ['Blender', 'After Effects', 'Unreal Engine'],
         avatarId: 'fighter-character',
+        rating: 5,
     },
     {
         name: 'Lyra',
@@ -57,6 +61,7 @@ const sampleTalents = [
         rate: '$50/hr',
         skills: ['Moderation', 'Event Planning', 'Social Media'],
         avatarId: 'female-archer-1',
+        rating: 4,
     },
     {
         name: 'Kael',
@@ -64,6 +69,7 @@ const sampleTalents = [
         rate: '$120/hr',
         skills: ['Close Protection', 'Risk Assessment'],
         avatarId: 'knight-1',
+        rating: 5,
     }
 ]
 
@@ -151,6 +157,11 @@ export default function NeedJobsPage() {
                             <CardDescription className="text-primary font-semibold">{talent.title}</CardDescription>
                         </CardHeader>
                         <CardContent>
+                            <div className="flex justify-center items-center gap-1 mb-4 text-yellow-400">
+                                {Array.from({ length: 5 }).map((_, i) => (
+                                    <Star key={i} className={cn("w-5 h-5", i < talent.rating ? 'fill-current' : 'fill-muted stroke-muted-foreground')} />
+                                ))}
+                            </div>
                             <div className="flex justify-center gap-2 flex-wrap mb-4">
                                 {talent.skills.map(skill => <Badge key={skill} variant="secondary">{skill}</Badge>)}
                             </div>
