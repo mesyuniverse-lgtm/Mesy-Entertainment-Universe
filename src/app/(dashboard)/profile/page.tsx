@@ -12,33 +12,43 @@ import { Camera, Edit, PlusCircle, Briefcase, MoreHorizontal } from 'lucide-reac
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
+// Define clear types for our data
+type MemberData = {
+  nickname?: string;
+  avatar?: string;
+  // other member fields
+};
+
+type ProfileData = {
+  firstname?: string;
+  lastname?: string;
+  // other private profile fields
+};
+
 export default function ProfilePage() {
   const { user, isUserLoading, firestore } = useFirebase();
   
-  // Fetch the primary Member document, assuming its ID is the same as the user's UID
+  // Memoize the document reference for the primary Member document.
+  // We assume the main Member ID is the same as the user's UID for simplicity.
   const memberDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
     return doc(firestore, `accounts/${user.uid}/members`, user.uid);
   }, [user, firestore]);
 
-  // Fetch the private user profile document
+  // Memoize the document reference for the private user profile document.
   const profileDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
     return doc(firestore, `accounts/${user.uid}/profile`, user.uid);
   }, [user, firestore]);
 
-  const { data: memberData, isLoading: isMemberLoading } = useDoc(memberDocRef);
-  const { data: profileData, isLoading: isProfileLoading } = useDoc(profileDocRef);
+  const { data: memberData, isLoading: isMemberLoading } = useDoc<MemberData>(memberDocRef);
+  const { data: profileData, isLoading: isProfileLoading } = useDoc<ProfileData>(profileDocRef);
 
   const isLoading = isUserLoading || isMemberLoading || isProfileLoading;
   
   const coverImage = PlaceHolderImages.find(p => p.id === 'fantasy-landscape-1');
 
-  const profile = {
-    ...profileData,
-    ...memberData,
-  } as any;
-
+  // Unified loading skeleton
   const renderSkeleton = () => (
     <div className="p-4">
         <div className="w-full max-w-7xl mx-auto">
@@ -76,8 +86,10 @@ export default function ProfilePage() {
       { label: 'เหตุการณ์ในชีวิต', active: true },
   ];
   
-  const displayName = profile?.nickname || `${profile?.firstname || ''} ${profile?.lastname || ''}`.trim() || 'User';
-  const fallbackChar = displayName.charAt(0) || 'U';
+  // Combine data safely, providing fallbacks
+  const displayName = memberData?.nickname || `${profileData?.firstname || ''} ${profileData?.lastname || ''}`.trim() || user?.displayName || 'User';
+  const avatarUrl = memberData?.avatar || user?.photoURL || PlaceHolderImages.find(p => p.id === 'default-avatar')?.imageUrl || '';
+  const fallbackChar = displayName?.charAt(0)?.toUpperCase() || 'U';
 
   return (
     <div className="w-full">
@@ -108,7 +120,7 @@ export default function ProfilePage() {
             <div className="px-4 md:px-8">
               <div className="flex flex-col md:flex-row gap-4 -mt-12 md:-mt-20">
                 <Avatar className="h-32 w-32 md:h-44 md:w-44 rounded-full border-4 border-background bg-background">
-                  <AvatarImage src={profile?.avatar || user?.photoURL || ''} />
+                  <AvatarImage src={avatarUrl} />
                   <AvatarFallback className="text-5xl">
                     {fallbackChar}
                   </AvatarFallback>
