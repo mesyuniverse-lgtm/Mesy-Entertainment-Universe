@@ -5,11 +5,15 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Bot, Image as ImageIcon, Music, Type, Loader2, Save, Workflow, Video, UploadCloud, SquarePen, MoreHorizontal, Sparkles } from 'lucide-react';
+import { Bot, Image as ImageIcon, Music, Type, Loader2, Save, Workflow, Video, UploadCloud, SquarePen, MoreHorizontal, Sparkles, Star, ExternalLink, ShoppingCart, Cpu, BrainCircuit } from 'lucide-react';
 import { generateContent, ContentGenerationInput } from '@/ai/flows/content-generation-demo';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Badge } from '@/components/ui/badge';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+
 
 type GeneratorType = 'content' | 'avatar' | 'playlist';
 
@@ -34,6 +38,21 @@ const communityCreations = [
     { id: 'creation-2', imageId: 'female-warrior-1', hint: 'fantasy warrior' },
     { id: 'creation-3', imageId: 'enchanted-forest-1', hint: 'enchanted forest' },
     { id: 'creation-4', imageId: 'fantasy-landscape-1', hint: 'fantasy landscape' },
+]
+
+const aiProviders = [
+    { name: 'Gemini AI', company: 'Google', rating: 5, price: 'Free Tier', website: 'https://gemini.google.com/', store: '#', logo: '/gemini-logo.svg' },
+    { name: 'OpenAI (ChatGPT)', company: 'OpenAI', rating: 4, price: 'Freemium', website: 'https://openai.com/', store: '#', logo: '/openai-logo.svg' },
+    { name: 'Ollama', company: 'Self-hosted', rating: 4, price: 'Free', website: 'https://ollama.com/', store: '#', logo: '/ollama-logo.svg' },
+    { name: 'OpenRouter AI', company: 'OpenRouter', rating: 4, price: 'Pay-as-you-go', website: 'https://openrouter.ai/', store: '#', logo: '/openrouter-logo.svg' },
+    { name: 'DeepSeek AI', company: 'DeepSeek', rating: 3, price: 'Freemium', website: 'https://www.deepseek.com/', store: '#', logo: '/deepseek-logo.svg' },
+];
+
+const marketplaceItems = [
+    { title: 'Cyberpunk Sentinel', type: 'AI Avatar', price: '500 MC', imageId: 'fighter-character' },
+    { title: 'Mystic Merchant', type: 'AI NPC', price: '1200 MC', imageId: 'explorer-1' },
+    { title: 'Procedural Forest', type: 'Blueprint', price: '2500 MC', imageId: 'enchanted-forest-1' },
+    { title: 'Dialogue System', type: 'AI System', price: '3000 MC', imageId: 'glowing-gem-1' },
 ]
 
 export default function AiHubPage() {
@@ -96,9 +115,23 @@ export default function AiHubPage() {
         return 'Enter your prompt...';
     }
   };
+  
+  const StarRating = ({ rating }: { rating: number }) => (
+    <div className="flex items-center">
+      {[...Array(5)].map((_, i) => (
+        <Star
+          key={i}
+          className={cn(
+            'w-4 h-4',
+            i < rating ? 'text-yellow-400 fill-yellow-400' : 'text-gray-500'
+          )}
+        />
+      ))}
+    </div>
+  );
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-12">
       {/* Hero Banner */}
       {heroImage && (
         <div className="relative h-48 rounded-lg overflow-hidden flex flex-col justify-center items-center text-center p-4 text-white">
@@ -132,6 +165,76 @@ export default function AiHubPage() {
             Unleash your creativity. Experiment with our powerful AI tools to generate content, avatars, and more.
           </p>
        </div>
+
+        {/* AI Provider Directory */}
+        <section>
+            <h3 className="text-2xl font-bold mb-4 text-primary">AI Provider Directory</h3>
+            <div className="space-y-4">
+                {aiProviders.map((provider) => (
+                    <Card key={provider.name} className="bg-card/50">
+                        <CardContent className="p-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+                            <div className="flex items-center gap-4">
+                                <div className="w-10 h-10 flex items-center justify-center">
+                                    {provider.logo ? (
+                                        <Image src={provider.logo} alt={`${provider.name} logo`} width={32} height={32} />
+                                    ) : (
+                                        <Cpu className="w-8 h-8" />
+                                    )}
+                                </div>
+                                <div>
+                                    <p className="font-bold">{provider.name}</p>
+                                    <p className="text-sm text-muted-foreground">{provider.company}</p>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-6">
+                                <StarRating rating={provider.rating} />
+                                <Badge variant={provider.price === 'Free' || provider.price === 'Free Tier' ? 'default' : 'secondary'}>{provider.price}</Badge>
+                            </div>
+                            <div className="flex gap-2">
+                                <Button variant="outline" size="sm" asChild>
+                                    <a href={provider.website} target="_blank" rel="noopener noreferrer">
+                                        <ExternalLink className="w-4 h-4 mr-2"/> Website
+                                    </a>
+                                </Button>
+                                 <Button variant="secondary" size="sm" asChild>
+                                    <Link href={provider.store}>
+                                        <ShoppingCart className="w-4 h-4 mr-2"/> Store
+                                    </Link>
+                                </Button>
+                            </div>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+        </section>
+        
+        {/* AI Marketplace */}
+        <section>
+            <h3 className="text-2xl font-bold mb-4 text-primary">AI Marketplace</h3>
+             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {marketplaceItems.map((item) => {
+                    const image = PlaceHolderImages.find(p => p.id === item.imageId);
+                    return (
+                        <Card key={item.title} className="group bg-card/50 border-border/50 overflow-hidden">
+                             <div className="relative aspect-square">
+                                {image && <Image src={image.imageUrl} alt={item.title} fill className="object-cover transition-transform group-hover:scale-105" />}
+                                <div className="absolute inset-0 bg-black/50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <Button>View Item</Button>
+                                </div>
+                             </div>
+                             <CardContent className="p-3">
+                                <p className="font-bold truncate">{item.title}</p>
+                                <div className="flex justify-between items-center mt-1">
+                                    <Badge variant="outline">{item.type}</Badge>
+                                    <p className="text-sm font-semibold text-primary">{item.price}</p>
+                                </div>
+                             </CardContent>
+                        </Card>
+                    )
+                })}
+             </div>
+        </section>
+
 
       {/* Community Creations */}
       <div>
