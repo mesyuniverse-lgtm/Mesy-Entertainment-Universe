@@ -3,13 +3,13 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Bot, Image as ImageIcon, Music, Type, Loader2, Save } from 'lucide-react';
+import { Textarea } from '@/components/ui/textarea';
+import { Bot, Image as ImageIcon, Music, Type, Loader2, Save, Workflow, Video, UploadCloud, SquarePen, MoreHorizontal } from 'lucide-react';
 import { generateContent, ContentGenerationInput } from '@/ai/flows/content-generation-demo';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 type GeneratorType = 'content' | 'avatar' | 'playlist';
 
@@ -19,12 +19,30 @@ const generators = [
   { value: 'playlist' as GeneratorType, label: 'Playlist Builder', icon: <Music className="w-5 h-5 mr-2" /> },
 ];
 
+const toolShortcuts = [
+    { label: 'Realtime Canvas', icon: <Sparkles /> },
+    { label: 'Flow State', icon: <Workflow /> },
+    { label: 'Video', icon: <Video /> },
+    { label: 'Image', icon: <ImageIcon /> },
+    { label: 'Upscaler', icon: <UploadCloud /> },
+    { label: 'Canvas Editor', icon: <SquarePen /> },
+    { label: 'More', icon: <MoreHorizontal /> },
+]
+
+const communityCreations = [
+    { id: 'creation-1', imageId: 'auth-background', hint: 'cyberpunk city' },
+    { id: 'creation-2', imageId: 'female-warrior-1', hint: 'fantasy warrior' },
+    { id: 'creation-3', imageId: 'enchanted-forest-1', hint: 'enchanted forest' },
+    { id: 'creation-4', imageId: 'fantasy-landscape-1', hint: 'fantasy landscape' },
+]
+
 export default function AiHubPage() {
   const { toast } = useToast();
   const [generatorType, setGeneratorType] = useState<GeneratorType>('content');
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState('A short story about a dragon who loves to cook...');
   const [result, setResult] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  const heroImage = PlaceHolderImages.find(p => p.id === 'glowing-gem-1');
 
   const handleGenerate = async () => {
     if (!prompt) {
@@ -80,19 +98,62 @@ export default function AiHubPage() {
   };
 
   return (
-    <div className="container mx-auto p-4 sm:p-6 lg:p-8">
-      <header className="text-center mb-12">
-        <h1 className="text-5xl md:text-7xl font-bold font-headline tracking-widest text-primary uppercase" style={{ textShadow: '0 0 10px hsl(var(--primary) / 0.5)' }}>
-          AI Hub
-        </h1>
-        <p className="mt-4 text-lg text-muted-foreground max-w-3xl mx-auto">
-          Unleash your creativity. Experiment with our powerful AI tools to generate content, avatars, and more.
-        </p>
-      </header>
+    <div className="p-6 space-y-6">
+      {/* Hero Banner */}
+      {heroImage && (
+        <div className="relative h-48 rounded-lg overflow-hidden flex flex-col justify-center items-center text-center p-4 text-white">
+            <Image src={heroImage.imageUrl} alt="AI Hub Banner" fill className="object-cover" />
+            <div className="absolute inset-0 bg-black/60" />
+            <div className="relative z-10">
+                <h2 className="text-2xl font-bold">Discover 50+ ready-made workflows for effortless AI creation.</h2>
+                <p className="text-sm text-white/80">All Blueprints 75% off for a limited time!</p>
+                <Button variant="secondary" className="mt-4">Explore Blueprints</Button>
+            </div>
+        </div>
+      )}
+
+      {/* Tool Shortcuts */}
+      <div className="flex justify-center items-center gap-4 flex-wrap">
+        {toolShortcuts.map((tool) => (
+          <Button key={tool.label} variant="ghost" className="flex flex-col h-auto p-3 gap-1 text-muted-foreground">
+            <div className="w-12 h-12 bg-card/50 rounded-lg flex items-center justify-center border border-border">
+                {tool.icon}
+            </div>
+            <span className="text-xs">{tool.label}</span>
+          </Button>
+        ))}
+      </div>
+      
+       <div className="text-center">
+         <h1 className="text-5xl font-bold font-headline tracking-widest text-primary uppercase" style={{ textShadow: '0 0 10px hsl(var(--primary) / 0.5)' }}>
+            AI HUB
+          </h1>
+          <p className="mt-2 text-lg text-muted-foreground max-w-2xl mx-auto">
+            Unleash your creativity. Experiment with our powerful AI tools to generate content, avatars, and more.
+          </p>
+       </div>
+
+      {/* Community Creations */}
+      <div>
+        <h3 className="text-2xl font-bold mb-4 text-primary">Community Creations</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 h-64">
+          {communityCreations.map((creation) => {
+            const image = PlaceHolderImages.find(p => p.id === creation.imageId);
+            return (
+              <div key={creation.id} className="relative rounded-lg overflow-hidden group">
+                {image && <Image src={image.imageUrl} alt={creation.hint} fill className="object-cover" />}
+                 <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
+                    <p className="text-white text-center text-sm">{creation.hint}</p>
+                 </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Generator Controls */}
-        <Card className="bg-card/50 border-primary/20">
+        <Card className="bg-card/50">
           <CardHeader>
             <CardTitle>AI Content Generation Demo</CardTitle>
             <CardDescription>Select a tool, provide a prompt, and see the magic happen.</CardDescription>
@@ -101,7 +162,7 @@ export default function AiHubPage() {
             <div className="space-y-2">
               <label className="text-sm font-medium">Select Generator</label>
               <Select value={generatorType} onValueChange={(value) => setGeneratorType(value as GeneratorType)}>
-                <SelectTrigger className="w-full h-12 text-base">
+                <SelectTrigger className="w-full h-11 text-base">
                   <SelectValue placeholder="Select a generator" />
                 </SelectTrigger>
                 <SelectContent>
@@ -121,13 +182,13 @@ export default function AiHubPage() {
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 placeholder={getPromptPlaceholder()}
-                className="min-h-[150px] text-base"
+                className="min-h-[120px] text-base"
                 disabled={isLoading}
               />
             </div>
           </CardContent>
           <CardFooter>
-            <Button onClick={handleGenerate} disabled={isLoading} className="w-full h-12 text-lg">
+            <Button onClick={handleGenerate} disabled={isLoading} className="w-full h-11 text-lg">
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -144,7 +205,7 @@ export default function AiHubPage() {
         </Card>
 
         {/* Result Display */}
-        <Card className="bg-card/50 border-primary/20 flex flex-col">
+        <Card className="bg-card/50 flex flex-col">
           <CardHeader>
             <CardTitle>Generated Result</CardTitle>
             <CardDescription>The output from the AI will appear here. Saving is for members only.</CardDescription>
@@ -173,7 +234,7 @@ export default function AiHubPage() {
                     className="rounded-lg object-cover w-full aspect-square"
                   />
                 ) : (
-                  <div className="p-4 bg-secondary/50 rounded-lg max-h-[400px] overflow-y-auto">
+                  <div className="p-4 bg-secondary/50 rounded-lg max-h-[300px] overflow-y-auto">
                     <p className="whitespace-pre-wrap">{result}</p>
                   </div>
                 )}
@@ -181,7 +242,7 @@ export default function AiHubPage() {
             )}
           </CardContent>
           <CardFooter>
-            <Button onClick={handleSave} disabled={!result || isLoading} variant="outline" className="w-full h-12 text-lg">
+            <Button onClick={handleSave} disabled={!result || isLoading} variant="outline" className="w-full h-11 text-lg">
               <Save className="mr-2 h-5 w-5" />
               Save Result
             </Button>
