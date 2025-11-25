@@ -56,13 +56,13 @@ export default function DatingZonePage() {
   useEffect(() => {
     const interval = setInterval(() => {
       setStats(prevStats => ({
-        online: prevStats.online + Math.floor(Math.random() * 21) - 10, // random change between -10 and +10
+        online: prevStats.online + Math.floor(Math.random() * 21) - 10,
         singles: prevStats.singles + Math.floor(Math.random() * 5),
         newBeginnings: prevStats.newBeginnings + Math.floor(Math.random() * 3)
       }));
-    }, 3000); // update every 3 seconds
+    }, 3000);
 
-    return () => clearInterval(interval); // cleanup on unmount
+    return () => clearInterval(interval);
   }, []);
 
   const mainVideoBg = PlaceHolderImages.find(p => p.id === 'rose-background');
@@ -231,9 +231,10 @@ export default function DatingZonePage() {
             <Users className="w-12 h-12 text-pink-300" />
           </div>
           <h2 className="text-3xl font-bold mb-2">For Singles</h2>
-          <p className="text-white/80 mb-6 flex-grow">
+          <p className="text-white/80 mb-2 flex-grow">
             For all members seeking a partner. Create your profile, browse others, and find your perfect match.
           </p>
+          <p className="text-2xl font-bold text-pink-300 mb-4">{stats.singles.toLocaleString()}</p>
           <Button variant="secondary" size="lg" className="bg-pink-500/50 border border-pink-400 hover:bg-pink-500/70 text-white">
             Explore Singles
           </Button>
@@ -243,9 +244,10 @@ export default function DatingZonePage() {
             <Heart className="w-12 h-12 text-purple-300" />
           </div>
           <h2 className="text-3xl font-bold mb-2">New Beginnings</h2>
-          <p className="text-white/80 mb-6 flex-grow">
+          <p className="text-white/80 mb-2 flex-grow">
             A dedicated space for those who are widowed or divorced, ready to write their next chapter.
           </p>
+          <p className="text-2xl font-bold text-purple-300 mb-4">{stats.newBeginnings.toLocaleString()}</p>
           <Button variant="secondary" size="lg" className="bg-purple-500/50 border border-purple-400 hover:bg-purple-500/70 text-white">
             Find a New Start
           </Button>
