@@ -11,6 +11,7 @@ import {initializeApp} from "firebase-admin/app";
 import {getFirestore} from "firebase-admin/firestore";
 import * as logger from "firebase-functions/logger";
 import {auth} from "firebase-functions";
+import { onCall } from "firebase-functions/v2/https";
 
 // Export Genkit flows
 export * from './ai';
@@ -47,4 +48,41 @@ export const onUserDelete = auth.user().onDelete(async (user) => {
   } catch (error) {
     logger.error(`Error deleting Firestore data for account: ${user.uid}`, error);
   }
+});
+
+
+/**
+ * A callable Cloud Function that acts as a proxy for Google Compute Engine API calls.
+ * This function can be securely called from the client-side application.
+ *
+ * In a real-world scenario, you would add logic here to:
+ * 1. Authenticate and authorize the user (e.g., check if they are an admin).
+ * 2. Use the Google Cloud Client Library for Node.js to interact with the Compute Engine API.
+ * 3. Start, stop, or manage VM instances based on the data received from the client.
+ * 4. Return the result of the operation to the client.
+ */
+export const computeEngineProxy = onCall((request) => {
+  // Log the data received from the client
+  logger.info("computeEngineProxy was called with data:", request.data);
+
+  // Example: Check if user is authenticated (recommended for most functions)
+  if (!request.auth) {
+    logger.warn("Unauthenticated user tried to call computeEngineProxy.");
+    return { success: false, message: "Authentication required." };
+  }
+
+  // TODO: Add logic here to call the Compute Engine API using Google Cloud client libraries.
+  // For example:
+  // const {InstancesClient} = require('@google-cloud/compute');
+  // const instancesClient = new InstancesClient();
+  // await instancesClient.start({project: 'your-project-id', zone: 'your-zone', instance: 'your-instance-name'});
+
+  // For now, we'll just return a success message.
+  const jobType = request.data.jobType || "unknown job";
+  logger.info(`Simulating Compute Engine job of type: ${jobType}`);
+
+  return {
+    success: true,
+    message: `Successfully received request to start a Compute Engine job of type '${jobType}'.`,
+  };
 });
