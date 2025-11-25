@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { useFirebase, useUser } from '@/firebase';
+import { useFirebase, useUser, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { addDoc, collection, onSnapshot } from 'firebase/firestore';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -59,34 +59,39 @@ export default function OfficialShopPage() {
 
     setLoadingPriceId(priceId);
 
-    try {
-      // Create a new checkout session document in Firestore.
-      const checkoutSessionRef = await addDoc(collection(firestore, 'customers', user.uid, 'checkout_sessions'), {
-        price: priceId,
-        success_url: window.location.origin,
-        cancel_url: window.location.origin,
-      });
+    const checkoutSessionData = {
+      price: priceId,
+      success_url: window.location.origin,
+      cancel_url: window.location.origin,
+    };
+    const collectionRef = collection(firestore, 'customers', user.uid, 'checkout_sessions');
 
-      // Listen for changes on the document. The Stripe extension will update it with a URL.
-      const unsubscribe = onSnapshot(checkoutSessionRef, (snap) => {
-        const { error, url } = snap.data() || {};
-        if (error) {
-          console.error(`An error occurred: ${error.message}`);
-          toast({ title: 'Payment Error', description: error.message, variant: 'destructive' });
-          setLoadingPriceId(null);
-          unsubscribe();
-        }
-        if (url) {
-          // We have a Stripe Checkout URL, let's redirect.
-          window.location.assign(url);
-        }
+    addDoc(collectionRef, checkoutSessionData)
+      .then(docRef => {
+        // Listen for changes on the document. The Stripe extension will update it with a URL.
+        const unsubscribe = onSnapshot(docRef, (snap) => {
+          const { error, url } = snap.data() || {};
+          if (error) {
+            console.error(`An error occurred: ${error.message}`);
+            toast({ title: 'Payment Error', description: error.message, variant: 'destructive' });
+            setLoadingPriceId(null);
+            unsubscribe();
+          }
+          if (url) {
+            // We have a Stripe Checkout URL, let's redirect.
+            window.location.assign(url);
+          }
+        });
+      })
+      .catch(error => {
+        const permissionError = new FirestorePermissionError({
+          path: collectionRef.path,
+          operation: 'create',
+          requestResourceData: checkoutSessionData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        setLoadingPriceId(null);
       });
-
-    } catch (error) {
-      console.error("Error creating checkout session:", error);
-      toast({ title: 'Error', description: 'Could not initiate checkout. Please try again.', variant: 'destructive' });
-      setLoadingPriceId(null);
-    }
   };
 
   return (

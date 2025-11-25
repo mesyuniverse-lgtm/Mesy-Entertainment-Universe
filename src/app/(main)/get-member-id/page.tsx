@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
+import { useFirebase, useDoc, useMemoFirebase, errorEmitter, FirestorePermissionError } from '@/firebase';
 import { doc, setDoc, serverTimestamp, collection } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
@@ -77,33 +77,38 @@ export default function GetMemberIdPage() {
     }
 
     setIsSaving(true);
-    try {
-      const newMemberRef = doc(collection(firestore, `accounts/${user.uid}/members`));
-      const memberId = newMemberRef.id;
+    
+    const newMemberRef = doc(collection(firestore, `accounts/${user.uid}/members`));
+    const memberId = newMemberRef.id;
+    const newMemberData = {
+      id: memberId,
+      accountId: user.uid,
+      username: avatarName.trim(),
+      nickname: avatarName.trim(),
+      level: 0,
+      createdAt: serverTimestamp(),
+      avatar: avatarImage?.imageUrl,
+    };
 
-      await setDoc(newMemberRef, {
-        id: memberId,
-        accountId: user.uid,
-        username: avatarName.trim(),
-        nickname: avatarName.trim(),
-        level: 0,
-        createdAt: serverTimestamp(),
-        avatar: avatarImage?.imageUrl,
+    setDoc(newMemberRef, newMemberData)
+      .then(() => {
+        setCreatedMemberId(memberId);
+        toast({
+          title: "Member ID Created!",
+          description: `Your new Member ID for ${avatarName} has been saved.`,
+        });
+        setIsEditing(false);
+        setIsSaving(false);
+      })
+      .catch((error) => {
+        const permissionError = new FirestorePermissionError({
+          path: newMemberRef.path,
+          operation: 'create',
+          requestResourceData: newMemberData,
+        });
+        errorEmitter.emit('permission-error', permissionError);
+        setIsSaving(false);
       });
-
-      setCreatedMemberId(memberId);
-      toast({
-        title: "Member ID Created!",
-        description: `Your new Member ID for ${avatarName} has been saved.`,
-      });
-      setIsEditing(false);
-
-    } catch (error) {
-      console.error("Failed to create member ID:", error);
-      toast({ title: "Save Failed", description: "Could not create the new Member ID. Please try again.", variant: "destructive" });
-    } finally {
-      setIsSaving(false);
-    }
   };
 
 
