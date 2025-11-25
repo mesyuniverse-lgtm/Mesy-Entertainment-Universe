@@ -4,7 +4,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Heart, Sparkles, User, Users, Plus, Radio, MessageCircle, Bookmark, Share2, Music, Home, Play, MoreHorizontal } from 'lucide-react';
+import { Heart, Sparkles, User, Users, Plus, Radio, MessageCircle, Bookmark, Share2, Music, Home, Play, MoreHorizontal, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './dating-zone.module.css';
@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/carousel";
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent } from '@/components/ui/card';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+
 
 const featuredProfilesData = [
     { name: 'Seraphina, 25', imageId: 'female-archer-1', location: 'Crystal Gardens', tags: ['Art', 'Music'] },
@@ -77,6 +79,14 @@ export default function DatingZonePage() {
           Where fantasy meets romance. Discover your destined partner in the MESY Universe.
         </p>
       </header>
+
+      <Alert className="mb-8 border-yellow-500/50 text-yellow-200 bg-yellow-900/20">
+        <ShieldCheck className="h-4 w-4 !text-yellow-400" />
+        <AlertTitle>Safety First!</AlertTitle>
+        <AlertDescription>
+          To ensure the safety of all members, interacting and connecting is limited to members who have completed identity verification.
+        </AlertDescription>
+      </Alert>
 
       {/* Stats and Stories */}
       <section className="mb-8">
