@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Bot, Image as ImageIcon, Music, Type, Loader2, Save, Workflow, Video, UploadCloud, SquarePen, MoreHorizontal } from 'lucide-react';
+import { Bot, Image as ImageIcon, Music, Type, Loader2, Save, Workflow, Video, UploadCloud, SquarePen, MoreHorizontal, Sparkles } from 'lucide-react';
 import { generateContent, ContentGenerationInput } from '@/ai/flows/content-generation-demo';
 import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
