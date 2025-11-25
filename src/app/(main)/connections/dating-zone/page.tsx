@@ -159,9 +159,9 @@ export default function DatingZonePage() {
                     {/* Bottom Info & Nav */}
                     <div className="absolute bottom-0 inset-x-0 p-4 text-white" style={{textShadow: '1px 1px 2px rgba(0,0,0,0.7)'}}>
                     <div className="mb-2">
-                        <h3 className="font-bold">Name and Last name <span className="font-normal text-sm">#fyp</span></h3>
-                        <p className="text-sm">Caption of the post</p>
-                        <p className="text-sm flex items-center gap-2"><Music className="w-4 h-4"/> Song name - song artist</p>
+                        <h3 className="font-bold">Seraphina, 25 <span className="font-normal text-sm">#LookingForLove #Gamer</span></h3>
+                        <p className="text-sm">Hi there! I'm a digital artist who loves exploring new worlds, both in-game and out. Looking for a partner for my next adventure! 💖</p>
+                        <p className="text-sm flex items-center gap-2"><Music className="w-4 h-4"/> My Anthem - Favorite Artist</p>
                     </div>
                     <div className="flex justify-between items-center text-center text-xs font-semibold bg-black/30 backdrop-blur-sm rounded-lg p-2">
                         <div className="flex flex-col items-center w-full"><Home className="w-5 h-5"/><span>Home</span></div>
