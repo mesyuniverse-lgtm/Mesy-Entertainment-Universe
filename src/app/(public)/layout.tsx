@@ -52,7 +52,7 @@ export default function PublicLayout({
             </nav>
           </div>
           <div className="flex flex-1 items-center justify-end space-x-2">
-             {!isUserLoading && user && (
+             {isMounted && !isUserLoading && user && (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" size="icon">
@@ -74,7 +74,7 @@ export default function PublicLayout({
                 </Button>
              )}
              
-             {!isUserLoading && user && (
+             {isMounted && !isUserLoading && user && (
                 <Button asChild>
                     <Link href="/dashboard">Enter App</Link>
                 </Button>
