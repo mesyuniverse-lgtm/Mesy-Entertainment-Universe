@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import {
-  collection,
+  collectionGroup,
   query,
   where,
   getDocs,
@@ -39,10 +39,12 @@ export default function UserProfilePage({
   useEffect(() => {
     const fetchProfile = async () => {
       if (!firestore || !params.username) {
+        setIsLoading(false);
         return;
       }
       try {
         setIsLoading(true);
+        setError(null);
         // We query the 'members' collection group to find the username across all accounts
         const membersRef = collectionGroup(firestore, 'members');
         const q = query(
@@ -80,13 +82,19 @@ export default function UserProfilePage({
     return <ProfileSkeleton />;
   }
 
-  if (error) {
+  if (error && error !== 'User not found') {
     return (
       <div className="container mx-auto p-8 text-center text-destructive">
         {error}
       </div>
     );
   }
+  
+  if (!profile) {
+    // This will be caught by the notFound() in the useEffect
+    return null;
+  }
+
 
   const avatarUrl = profile?.avatar || PlaceHolderImages.find(p => p.id === 'default-avatar')?.imageUrl;
 

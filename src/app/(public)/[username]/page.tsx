@@ -17,14 +17,13 @@ import { Mail, CheckCircle, UserPlus, MessageSquare } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
-type UserProfile = {
+type MemberProfile = {
   id: string;
   username: string;
   nickname: string;
-  firstname: string;
-  lastname: string;
   bio?: string;
   avatar?: string;
+  accountId: string;
 };
 
 export default function UserProfilePage({
@@ -33,20 +32,23 @@ export default function UserProfilePage({
   params: { username: string };
 }) {
   const firestore = useFirestore();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [profile, setProfile] = useState<MemberProfile | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
       if (!firestore || !params.username) {
+        setIsLoading(false);
         return;
       }
       try {
         setIsLoading(true);
-        const profilesRef = collectionGroup(firestore, 'profile');
+        setError(null);
+        // We query the 'members' collection group to find the username across all accounts
+        const membersRef = collectionGroup(firestore, 'members');
         const q = query(
-          profilesRef,
+          membersRef,
           where('username', '==', params.username),
           limit(1)
         );
@@ -57,7 +59,7 @@ export default function UserProfilePage({
           setError('User not found');
         } else {
           const profileDoc = querySnapshot.docs[0];
-          setProfile({ id: profileDoc.id, ...profileDoc.data() } as UserProfile);
+          setProfile({ id: profileDoc.id, ...profileDoc.data() } as MemberProfile);
         }
       } catch (err) {
         console.error('Error fetching profile:', err);
@@ -80,12 +82,17 @@ export default function UserProfilePage({
     return <ProfileSkeleton />;
   }
 
-  if (error) {
+  if (error && error !== 'User not found') {
     return (
       <div className="container mx-auto p-8 text-center text-destructive">
         {error}
       </div>
     );
+  }
+  
+  if (!profile) {
+    // This will be caught by the notFound() in the useEffect
+    return null;
   }
 
   const avatarUrl = profile?.avatar || PlaceHolderImages.find(p => p.id === 'default-avatar')?.imageUrl;
