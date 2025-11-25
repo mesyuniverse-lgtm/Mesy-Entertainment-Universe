@@ -7,7 +7,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { ArrowRight, Bookmark, Calendar, ChevronDown, Clapperboard, Clock, Gamepad2, HandCoins, Heart, History, Home, Inbox, MessageCircle, MicVocal, MoreHorizontal, Music, Play, Plus, Radio, Search, Share2, Shield, Star, Store, ThumbsUp, Tv, User, UserPlus, Users, Users2, Video } from 'lucide-react';
+import { ArrowRight, Bookmark, Calendar, ChevronDown, Clapperboard, Clock, Gamepad2, HandCoins, Heart, History, Home, Inbox, MessageCircle, MicVocal, MoreHorizontal, Music, Play, Plus, Radio, Search, Share2, Shield, Star, Store, ThumbsUp, Tv, User, UserPlus, Users, Users2, Video, RectangleHorizontal, RectangleVertical } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const entertainmentZones = [
   {
@@ -55,6 +56,7 @@ const initialStats = {
 
 export default function EntertainmentPage() {
   const [stats, setStats] = useState(initialStats);
+  const [aspectRatio, setAspectRatio] = useState<'vertical' | 'horizontal'>('vertical');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -142,8 +144,21 @@ export default function EntertainmentPage() {
         </aside>
 
         {/* Center Video */}
-        <main className="col-span-12 lg:col-span-6">
-            <div className="relative aspect-[9/16] max-w-sm mx-auto rounded-xl overflow-hidden bg-card/50 flex items-center justify-center">
+        <main className="col-span-12 lg:col-span-6 space-y-4">
+             <div className="flex justify-center gap-2 mb-2">
+                <Button variant={aspectRatio === 'vertical' ? 'secondary' : 'ghost'} size="sm" onClick={() => setAspectRatio('vertical')}>
+                    <RectangleVertical className="mr-2 h-4 w-4"/>
+                    Vertical
+                </Button>
+                <Button variant={aspectRatio === 'horizontal' ? 'secondary' : 'ghost'} size="sm" onClick={() => setAspectRatio('horizontal')}>
+                    <RectangleHorizontal className="mr-2 h-4 w-4"/>
+                    Horizontal
+                </Button>
+            </div>
+            <div className={cn(
+                "relative mx-auto rounded-xl overflow-hidden bg-card/50 flex items-center justify-center transition-all duration-300",
+                aspectRatio === 'vertical' ? 'aspect-[9/16] max-w-sm' : 'aspect-video w-full'
+            )}>
                 {mainVideoBg && (
                     <Image src={mainVideoBg.imageUrl} alt="Main Video" layout="fill" objectFit="cover" className="opacity-80"/>
                 )}
