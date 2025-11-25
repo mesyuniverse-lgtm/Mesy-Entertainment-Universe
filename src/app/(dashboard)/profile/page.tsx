@@ -8,41 +8,55 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Camera, Edit, PlusCircle, Globe, Briefcase, GraduationCap, Home, Heart, MoreHorizontal } from 'lucide-react';
+import { Camera, Edit, PlusCircle, Briefcase, MoreHorizontal } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 
 export default function ProfilePage() {
   const { user, isUserLoading, firestore } = useFirebase();
   
-  // We fetch the first Member ID's profile, assuming its ID is the same as the account/user ID.
+  // Fetch the primary Member document, assuming its ID is the same as the user's UID
   const memberDocRef = useMemoFirebase(() => {
     if (!user || !firestore) return null;
     return doc(firestore, `accounts/${user.uid}/members`, user.uid);
   }, [user, firestore]);
 
-  const { data: memberProfileData, isLoading: isProfileLoading } = useDoc(memberDocRef);
+  // Fetch the private user profile document
+  const profileDocRef = useMemoFirebase(() => {
+    if (!user || !firestore) return null;
+    return doc(firestore, `accounts/${user.uid}/profile`, user.uid);
+  }, [user, firestore]);
 
-  const isLoading = isUserLoading || isProfileLoading;
+  const { data: memberData, isLoading: isMemberLoading } = useDoc(memberDocRef);
+  const { data: profileData, isLoading: isProfileLoading } = useDoc(profileDocRef);
 
+  const isLoading = isUserLoading || isMemberLoading || isProfileLoading;
+  
   const coverImage = PlaceHolderImages.find(p => p.id === 'fantasy-landscape-1');
 
+  const profile = {
+    ...profileData,
+    ...memberData,
+  } as any;
+
   const renderSkeleton = () => (
-    <div className="w-full max-w-7xl mx-auto">
-      <Skeleton className="h-[250px] md:h-[400px] w-full rounded-b-lg" />
-      <div className="px-4 md:px-8">
-        <div className="flex -mt-12 md:-mt-20">
-          <Skeleton className="h-32 w-32 md:h-44 md:w-44 rounded-full border-4 border-background" />
+    <div className="p-4">
+        <div className="w-full max-w-7xl mx-auto">
+        <Skeleton className="h-[250px] md:h-[400px] w-full rounded-b-lg" />
+        <div className="px-4 md:px-8">
+            <div className="flex -mt-12 md:-mt-20">
+            <Skeleton className="h-32 w-32 md:h-44 md:w-44 rounded-full border-4 border-background" />
+            </div>
+            <Skeleton className="h-8 w-64 mt-4" />
+            <Skeleton className="h-4 w-48 mt-2" />
+            <div className="h-px bg-border my-4" />
         </div>
-        <Skeleton className="h-8 w-64 mt-4" />
-        <Skeleton className="h-4 w-48 mt-2" />
-        <div className="h-px bg-border my-4" />
-      </div>
+        </div>
     </div>
   );
 
   if (isLoading) {
-    return <div className="p-4">{renderSkeleton()}</div>;
+    return renderSkeleton();
   }
   
   const lifeEvents = [
@@ -62,7 +76,8 @@ export default function ProfilePage() {
       { label: 'เหตุการณ์ในชีวิต', active: true },
   ];
   
-  const profileData = memberProfileData as any;
+  const displayName = profile?.nickname || `${profile?.firstname || ''} ${profile?.lastname || ''}`.trim() || 'User';
+  const fallbackChar = displayName.charAt(0) || 'U';
 
   return (
     <div className="w-full">
@@ -93,13 +108,13 @@ export default function ProfilePage() {
             <div className="px-4 md:px-8">
               <div className="flex flex-col md:flex-row gap-4 -mt-12 md:-mt-20">
                 <Avatar className="h-32 w-32 md:h-44 md:w-44 rounded-full border-4 border-background bg-background">
-                  <AvatarImage src={profileData?.avatar || user?.photoURL || ''} />
+                  <AvatarImage src={profile?.avatar || user?.photoURL || ''} />
                   <AvatarFallback className="text-5xl">
-                    {profileData?.nickname?.charAt(0) || 'U'}
+                    {fallbackChar}
                   </AvatarFallback>
                 </Avatar>
                 <div className="flex-1 pt-4 md:pt-24">
-                  <h1 className="text-3xl font-bold">{profileData?.nickname || 'Tipyatida (Grace)'}</h1>
+                  <h1 className="text-3xl font-bold">{displayName}</h1>
                   <p className="text-muted-foreground">
                     ผู้ติดตาม 5.1 พัน คน • กำลังติดตาม 2.1 พัน คน
                   </p>
