@@ -25,7 +25,7 @@ const connectionZones = [
     icon: <Briefcase className="w-12 h-12 text-green-400" />,
     title: 'Need Jobs (Part-time)',
     description: 'Offer your skills and find part-time opportunities. Showcase your talent to find your next gig.',
-    href: '#',
+    href: '/connections/need-jobs',
     cta: 'Find Gigs',
   },
 ];
