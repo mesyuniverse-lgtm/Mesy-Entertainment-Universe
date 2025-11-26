@@ -78,16 +78,20 @@ export default function GetMemberIdPage() {
 
     setIsSaving(true);
     
+    // In a real scenario, payment would be processed here.
+    // For now, we simulate success and create the Member ID document.
+    
     const newMemberRef = doc(collection(firestore, `accounts/${user.uid}/members`));
     const memberId = newMemberRef.id;
     const newMemberData = {
       id: memberId,
       accountId: user.uid,
-      username: avatarName.trim(),
+      username: avatarName.trim().toLowerCase().replace(/\s+/g, '.'), // Create a username
       nickname: avatarName.trim(),
       level: 0,
       createdAt: serverTimestamp(),
-      avatar: avatarImage?.imageUrl,
+      avatar: avatarImage?.imageUrl || '', // Store avatar image url
+      downlines: 0
     };
 
     setDoc(newMemberRef, newMemberData)
@@ -98,7 +102,6 @@ export default function GetMemberIdPage() {
           description: `Your new Member ID for ${avatarName} has been saved.`,
         });
         setIsEditing(false);
-        setIsSaving(false);
       })
       .catch((error) => {
         const permissionError = new FirestorePermissionError({
@@ -107,6 +110,8 @@ export default function GetMemberIdPage() {
           requestResourceData: newMemberData,
         });
         errorEmitter.emit('permission-error', permissionError);
+      })
+      .finally(() => {
         setIsSaving(false);
       });
   };
@@ -256,7 +261,7 @@ export default function GetMemberIdPage() {
                     ) : (
                       <Save className="mr-2 h-4 w-4" />
                     )}
-                    Create & Pay $9.99
+                    Create &amp; Pay $9.99
                   </Button>
                 ) : (
                    <Button type="button" variant="secondary" onClick={() => setIsEditing(true)}>
