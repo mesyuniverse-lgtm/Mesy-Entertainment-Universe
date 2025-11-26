@@ -29,7 +29,7 @@ import { Input } from '@/components/ui/input';
 const generatePredefinedMembers = () => {
   const members = [];
   for (let i = 1; i <= 999; i++) {
-    const downlines = i; // Downline count is the same as the ID number for this model
+    const downlines = 1000 - i; // <-- Logic reversed as requested
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
