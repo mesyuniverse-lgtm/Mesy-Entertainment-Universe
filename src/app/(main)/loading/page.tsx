@@ -15,12 +15,14 @@ export default function LoadingPage() {
   const unrealLogo = 'https://www.unrealengine.com/content/dam/unreal-engine/common/images/unreal-engine-logo-rev-b-191x24-4f81c81525f69c6767664e1c8b36879c.svg';
 
   useEffect(() => {
+    // Start the progress interval only on the client side
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           return 100;
         }
+        // Use a consistent increment instead of random
         return prev + 1;
       });
     }, 40);
