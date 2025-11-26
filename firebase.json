@@ -16,7 +16,16 @@
     ],
     "frameworksBackend": {
       "region": "us-central1"
-    }
+    },
+    "rewrites": [
+      {
+        "source": "**",
+        "function": {
+          "functionId": "ssrstudio389059959953972",
+          "region": "us-central1"
+        }
+      }
+    ]
   },
   "firestore": {
     "rules": "firestore.rules"
