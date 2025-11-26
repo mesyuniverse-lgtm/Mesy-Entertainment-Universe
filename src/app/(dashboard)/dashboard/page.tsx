@@ -216,7 +216,6 @@ export default function DashboardPage() {
     const [stats, setStats] = useState(initialStats);
     const [memberCount, setMemberCount] = useState(18000);
     const [today, setToday] = useState<Date | null>(null);
-    const [days, setDays] = useState<Date[]>([]);
     const [claimedDays, setClaimedDays] = useState<string[]>([]);
 
     const calculatedIncome = useMemo(() => {
@@ -251,13 +250,7 @@ export default function DashboardPage() {
         }));
         }, 3000);
         
-        const todayDate = new Date();
-        setToday(todayDate);
-        setDays(Array.from({ length: 13 }, (_, i) => {
-            const d = new Date();
-            d.setDate(todayDate.getDate() - (10 - i));
-            return d;
-        }));
+        setToday(new Date());
 
         return () => clearInterval(interval);
     }, []);
@@ -326,7 +319,7 @@ export default function DashboardPage() {
                     </div>
                     <div className="grid grid-cols-7 gap-1 mt-1 text-xs">
                         {Array.from({ length: 31 }, (_, i) => (
-                            <div key={i} className={cn("p-1 rounded", i+1 === 21 && "bg-primary text-primary-foreground")}>{i + 1}</div>
+                            <div key={i} className={cn("p-1 rounded", today && (i + 1 === today.getDate()) && "bg-primary text-primary-foreground")}>{i + 1}</div>
                         ))}
                     </div>
                 </div>
@@ -600,5 +593,3 @@ export default function DashboardPage() {
     </div>
   );
 }
-
-    
