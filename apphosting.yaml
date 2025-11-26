@@ -5,4 +5,10 @@
 runConfig:
   # Increase this value if you'd like to automatically spin up
   # more instances in response to increased traffic.
-  maxInstances: 1
+  maxInstances: 10
+
+# Settings for App Hosting's server-side rendering support.
+# https://firebase.google.com/docs/app-hosting/configure#server-side-rendering
+servingBackend:
+  # The region to run the App Hosting backend in.
+  region: us-central1
