@@ -18,21 +18,24 @@ import {
   ChevronLeft,
   Wand2,
   Volume2,
-  Loader2
+  Loader2,
+  Palette,
+  Mic
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, Environment } from '@react-three/drei';
+import { Label } from '@/components/ui/label';
 
 const customizationCategories = [
-  { icon: ScanFace, label: 'Presets' },
-  { icon: PersonStanding, label: 'Body' },
-  { icon: Shirt, label: 'Clothing' },
-  { icon: Eye, label: 'Eyes' },
-  { icon: Smile, label: 'Mouth' },
-  { icon: Hand, label: 'Hands' },
+  { icon: ScanFace, label: 'Presets', tab: 'presets' },
+  { icon: PersonStanding, label: 'Body', tab: 'body' },
+  { icon: Shirt, label: 'Clothing', tab: 'clothing' },
+  { icon: Eye, label: 'Eyes', tab: 'eyes' },
+  { icon: Smile, label: 'Mouth', tab: 'mouth' },
+  { icon: Hand, label: 'Hands', tab: 'hands' },
 ];
 
 const freeAvatars = [
@@ -58,6 +61,7 @@ function Model() {
 
 export default function CreateAvatarPage() {
   const [selectedFreeAvatar, setSelectedFreeAvatar] = useState<string | null>(freeAvatars[3].id);
+  const [activeTab, setActiveTab] = useState('presets');
 
   return (
     <div className="flex h-screen w-full flex-col bg-[#383838] text-white">
@@ -78,10 +82,11 @@ export default function CreateAvatarPage() {
             {customizationCategories.map((cat, index) => (
               <Button
                 key={cat.label}
-                variant={index === 0 ? 'secondary' : 'ghost'}
+                variant={activeTab === cat.tab ? 'secondary' : 'ghost'}
                 size="icon"
                 className="h-12 w-12 bg-gray-700/50 hover:bg-gray-600 data-[state=active]:bg-blue-500"
                 title={cat.label}
+                onClick={() => setActiveTab(cat.tab)}
               >
                 <cat.icon className="h-6 w-6" />
               </Button>
@@ -91,14 +96,15 @@ export default function CreateAvatarPage() {
 
         {/* Customization Panel */}
         <aside className="w-[350px] border-r border-gray-600 bg-[#424242]">
-           <Tabs defaultValue="presets" className="h-full flex flex-col">
-                <TabsList className="grid w-full grid-cols-1 bg-[#212121] rounded-none h-12">
+           <Tabs value={activeTab} onValueChange={setActiveTab} className="h-full flex flex-col">
+                <TabsList className="grid w-full grid-cols-2 bg-[#212121] rounded-none h-12">
                     <TabsTrigger value="presets" className="h-full rounded-none text-base"><Wand2 className='mr-2'/> Presets</TabsTrigger>
+                    <TabsTrigger value="manual" className="h-full rounded-none text-base"><Palette className='mr-2'/> Manual</TabsTrigger>
                 </TabsList>
                 <TabsContent value="presets" className="p-4 space-y-4 flex-grow overflow-y-auto">
                     <Card className="bg-black/20 border-primary/30">
                         <CardHeader>
-                            <CardTitle className='text-lg'>Avatar Voice</CardTitle>
+                            <CardTitle className='text-lg flex items-center gap-2'><Mic/> Avatar Voice</CardTitle>
                         </CardHeader>
                         <CardContent className="space-y-3">
                              <Button variant="outline" className="w-full justify-between bg-gray-800/50 border-gray-600">
@@ -108,7 +114,9 @@ export default function CreateAvatarPage() {
                             <p className='text-xs text-muted-foreground text-center'>Full voice library available for members.</p>
                         </CardContent>
                     </Card>
-
+                </TabsContent>
+                 <TabsContent value="manual" className="p-4 space-y-4 flex-grow overflow-y-auto">
+                     <p className='text-sm text-muted-foreground'>Manually adjust avatar features. This will generate a new prompt for the AI.</p>
                     {[...Array(8)].map((_, i) => (
                         <div key={i} className="flex flex-col space-y-2">
                             <Label className='text-sm text-muted-foreground'>Feature {i+1}</Label>
@@ -142,7 +150,7 @@ export default function CreateAvatarPage() {
                     const presetImage = PlaceHolderImages.find(p => p.id === preset.imageId);
                     const isSelected = selectedFreeAvatar === preset.id;
                     return (
-                        <button key={preset.id} onClick={() => setSelectedFreeAvatar(preset.id)}>
+                        <button key={preset.id} onClick={() => setSelectedFreeAvatar(preset.id)} className="w-full">
                              <Card className={cn(
                                 'bg-gray-700/50 border-2 transition-all',
                                 isSelected ? 'border-primary shadow-lg shadow-primary/30' : 'border-transparent hover:border-primary/50'
