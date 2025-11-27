@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  transpilePackages: ['three', '@react-three/drei'],
+  transpilePackages: ['three', '@react-three/drei', '@react-three/fiber'],
   images: {
     remotePatterns: [
       {
