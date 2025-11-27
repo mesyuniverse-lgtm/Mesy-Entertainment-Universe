@@ -1,14 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   /* config options here */
-  output: 'standalone',
   typescript: {
     ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
-  transpilePackages: ['three', '@react-three/drei'],
+  transpilePackages: ['three', '@react-three/drei', '@react-three/fiber'],
   images: {
     remotePatterns: [
       {
@@ -24,7 +23,7 @@ const nextConfig = {
         pathname: '/**',
       },
       {
-        protocol: 'https',
+        protocol: 'https://picsum.photos',
         hostname: 'picsum.photos',
         port: '',
         pathname: '/**',
