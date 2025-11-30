@@ -28,6 +28,13 @@ const levelSections = [
         href: "/members/systems/level2",
         status: "Active"
     },
+    {
+        level: 3,
+        title: "Level 3 Database",
+        description: "View and manage member slots from 3,000 to 3,999.",
+        href: "/members/systems/level3",
+        status: "Active"
+    },
     // Future levels will be added here
 ];
 
@@ -70,7 +77,7 @@ export default function MemberSystemPage() {
                     </Card>
                 ))}
                  <Card className="group bg-secondary/30 border-border/50 border-dashed flex flex-col items-center justify-center text-center p-6">
-                    <CardTitle className="text-muted-foreground">Level 3 Database</CardTitle>
+                    <CardTitle className="text-muted-foreground">Level 4 Database</CardTitle>
                     <CardDescription className="mt-2">Coming Soon</CardDescription>
                 </Card>
             </div>
