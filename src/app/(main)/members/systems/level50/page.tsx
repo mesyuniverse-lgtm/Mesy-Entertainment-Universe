@@ -23,7 +23,20 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Crown, CheckCircle, ArrowLeft, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-// --- Data Simulation for Level 50 Hall of Fame ---
+// --- Data Simulation ---
+
+const level50Data = {
+    memberId: 50000,
+    displayName: 'Level 50 Member',
+    email: 'fixed.income@mesy.io',
+    level: 50,
+    downlineCount: 50000,
+    income: 50000,
+    fee: 1500.00,
+    netIncome: 48500.00,
+    isActived: true
+};
+
 const hallOfFame = [
   {
     rank: 1,
@@ -35,8 +48,13 @@ const hallOfFame = [
   // Add more members as they reach Level 50
 ];
 
+const formatCurrency = (value: number) => value.toFixed(2);
+
+
 // --- Component ---
 export default function MemberSystemLevel50Page() {
+  const defaultAvatar = PlaceHolderImages.find(p => p.id === 'default-avatar');
+    
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <Card className="bg-card/50 border-amber-400/30">
@@ -59,7 +77,7 @@ export default function MemberSystemLevel50Page() {
             </Button>
           </div>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-8">
           {/* Congratulations Section */}
           <Card className="bg-gradient-to-r from-amber-500/10 to-primary/10 border-amber-500/50">
             <CardHeader className="text-center items-center">
@@ -87,10 +105,65 @@ export default function MemberSystemLevel50Page() {
             </CardContent>
           </Card>
 
+          {/* Level 50 Database Table */}
+          <Card>
+            <CardHeader>
+                <CardTitle>Level 50 Database</CardTitle>
+                <CardDescription>Fixed income structure for all members who achieve Level 50.</CardDescription>
+            </CardHeader>
+            <CardContent>
+                 <Table>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHead>#</TableHead>
+                            <TableHead>Name</TableHead>
+                            <TableHead>Member ID</TableHead>
+                            <TableHead>Level</TableHead>
+                            <TableHead className='text-center'>Downline</TableHead>
+                            <TableHead>Income</TableHead>
+                            <TableHead>Fee (3%)</TableHead>
+                            <TableHead>Net-Income</TableHead>
+                            <TableHead className='text-center'>Status</TableHead>
+                        </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                        <TableRow className='bg-green-900/20'>
+                            <TableCell className="font-mono">{level50Data.memberId}</TableCell>
+                            <TableCell>
+                                <div className="flex items-center gap-3">
+                                <Avatar className="h-10 w-10">
+                                    <AvatarImage src={defaultAvatar?.imageUrl} />
+                                    <AvatarFallback>
+                                    L50
+                                    </AvatarFallback>
+                                </Avatar>
+                                <div>
+                                    <p className='font-semibold'>{level50Data.displayName}</p>
+                                    <p className='text-xs text-muted-foreground'>{level50Data.email}</p>
+                                </div>
+                                </div>
+                            </TableCell>
+                            <TableCell className='font-mono'>{level50Data.memberId}</TableCell>
+                            <TableCell>Level.{level50Data.level}</TableCell>
+                            <TableCell className='text-center'>{level50Data.downlineCount.toLocaleString()}</TableCell>
+                            <TableCell className='font-mono'>${formatCurrency(level50Data.income)}</TableCell>
+                            <TableCell className='font-mono text-red-400'>-${formatCurrency(level50Data.fee)}</TableCell>
+                            <TableCell className='font-mono text-green-400'>${formatCurrency(level50Data.netIncome)}</TableCell>
+                            <TableCell>
+                                <div className="flex justify-center">
+                                    <div className="w-5 h-5 rounded-full bg-green-500" title="Active"></div>
+                                </div>
+                            </TableCell>
+                        </TableRow>
+                    </TableBody>
+                </Table>
+            </CardContent>
+          </Card>
+
           {/* Hall of Fame Table */}
           <Card>
             <CardHeader>
-              <CardTitle>Level 50 Achievers</CardTitle>
+              <CardTitle>Level 50 Achievers (Hall of Fame)</CardTitle>
               <CardDescription>Members who have successfully reached the final level.</CardDescription>
             </CardHeader>
             <CardContent>
