@@ -2,274 +2,68 @@
 'use client';
 
 import React from 'react';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-} from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { KeyRound, CheckCircle } from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { ArrowRight, Database } from 'lucide-react';
+import Link from 'next/link';
 
-// --- Data Simulation based on the new model ---
-
-const generateLevel0Members = () => {
-  const members = [];
-  for (let i = 1; i <= 999; i++) {
-    const downlines = 1000 - i;
-    const income = downlines * 1;
-    const fee = income * 0.03;
-    const netIncome = income - fee;
-
-    members.push({
-      id: i.toString(),
-      isClaimed: false, // All are initially unclaimed
-      displayName: `Avatar No.${i}`,
-      email: 'waiting for member...',
-      memberId: i,
-      level: 0,
-      downlineCount: downlines,
-      income,
-      fee,
-      netIncome,
-    });
-  }
-  return members;
-};
-
-const generateLevel1Members = () => {
-  const members = [];
-  for (let i = 1000; i <= 1999; i++) {
-    const downlines = 2000 - (i - 999);
-    const income = downlines * 1;
-    const fee = income * 0.03;
-    const netIncome = income - fee;
-
-    members.push({
-      id: i.toString(),
-      isClaimed: false, // All are initially unclaimed
-      displayName: `Avatar No.${i}`,
-      email: 'waiting for member...',
-      memberId: i,
-      level: 1,
-      downlineCount: downlines,
-      income,
-      fee,
-      netIncome,
-    });
-  }
-  return members;
-}
-
-const generateLevel2Members = () => {
-  const members = [];
-  for (let i = 2000; i <= 2999; i++) {
-    const downlines = 3000 - (i - 1999);
-    const income = downlines * 1;
-    const fee = income * 0.03;
-    const netIncome = income - fee;
-
-    members.push({
-      id: i.toString(),
-      isClaimed: false,
-      displayName: `Avatar No.${i}`,
-      email: 'waiting for member...',
-      memberId: i,
-      level: 2,
-      downlineCount: downlines,
-      income,
-      fee,
-      netIncome,
-    });
-  }
-  return members;
-}
-
-// --- Helper Functions ---
-const formatCurrency = (value: number) => value.toFixed(2);
-
-// --- Component ---
+const levelSections = [
+    {
+        level: 0,
+        title: "Level 0 Database",
+        description: "View and manage member slots from 1 to 999.",
+        href: "/members/systems/level0",
+        status: "Active"
+    },
+    // Future levels will be added here
+];
 
 export default function MemberSystemPage() {
-  // In a real application, you would fetch which IDs are claimed from Firestore.
-  // For this UI-focused implementation, we'll simulate it.
-  const level0Members = React.useMemo(() => generateLevel0Members(), []);
-  const level1Members = React.useMemo(() => generateLevel1Members(), []);
-  const level2Members = React.useMemo(() => generateLevel2Members(), []);
-
-
-  const defaultAvatar = PlaceHolderImages.find(p => p.id === 'default-avatar');
-
-  const renderTable = (members: any[], level: number) => {
-    if (!members.length) {
-      return (
-        <TableBody>
-          <TableRow>
-            <TableCell colSpan={9} className="text-center py-10 text-muted-foreground">
-              Generating member slots...
-            </TableCell>
-          </TableRow>
-        </TableBody>
-      );
-    }
-
-    return (
-      <TableBody>
-        {members.map((member) => {
-          // This part would be dynamic in a real app, checking against claimed IDs
-          const isActived = member.isClaimed; 
-
-          return (
-            <TableRow key={member.id} className={isActived ? 'bg-green-900/10' : 'bg-red-900/10'}>
-              <TableCell className="font-mono">{member.memberId}</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <Avatar className="h-10 w-10">
-                    <AvatarImage src={defaultAvatar?.imageUrl} />
-                    <AvatarFallback>
-                      {member.displayName.substring(0, 1)}
-                    </AvatarFallback>
-                  </Avatar>
-                  <div>
-                    <p className='font-semibold'>{member.displayName}</p>
-                    <p className='text-xs text-muted-foreground'>{member.email}</p>
-                  </div>
-                </div>
-              </TableCell>
-              <TableCell className='font-mono'>{member.memberId}</TableCell>
-              <TableCell>Level.{member.level}</TableCell>
-              <TableCell className='text-center'>{member.downlineCount.toLocaleString()}</TableCell>
-              <TableCell className='font-mono'>${formatCurrency(member.income)}</TableCell>
-              <TableCell className='font-mono text-red-400'>-${formatCurrency(member.fee)}</TableCell>
-              <TableCell className='font-mono text-green-400'>${formatCurrency(member.netIncome)}</TableCell>
-              <TableCell>
-                <div className="flex justify-center">
-                    <div className={`w-5 h-5 rounded-full ${isActived ? 'bg-green-500' : 'bg-red-500'}`} title={isActived ? 'Actived' : 'Not Active'}></div>
-                </div>
-              </TableCell>
-            </TableRow>
-          );
-        })}
-      </TableBody>
-    );
-  };
-
-  const tableHeaders = (
-    <TableRow>
-        <TableHead>#</TableHead>
-        <TableHead>Name</TableHead>
-        <TableHead>Member ID</TableHead>
-        <TableHead>Level</TableHead>
-        <TableHead className='text-center'>Downline</TableHead>
-        <TableHead>Income</TableHead>
-        <TableHead>Fee (3%)</TableHead>
-        <TableHead>Net-Income</TableHead>
-        <TableHead className='text-center'>Status</TableHead>
-    </TableRow>
-  );
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <Card className="bg-card/50 border-primary/20">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-            Members Database & Activation
+            Members Database
           </CardTitle>
           <CardDescription>
-            This system displays all pre-defined Member ID slots. Activate your purchased ID to claim your slot and start your journey.
+            Select a level to view the corresponding member database and activation status.
           </CardDescription>
         </CardHeader>
         <CardContent>
-            {/* Activation Section */}
-            <Card className="mb-6 bg-secondary/50">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <KeyRound className="w-6 h-6 text-amber-400"/>
-                        Activate Your Member ID
-                    </CardTitle>
-                    <CardDescription>
-                        After purchasing your Member ID, enter the code you received here to activate your account and claim your income slot.
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="flex flex-col sm:flex-row gap-4 max-w-lg">
-                        <Input 
-                            placeholder="Enter Your Purchased Member ID Code..."
-                            className="h-11 text-base"
-                        />
-                        <Button className="h-11 text-base w-full sm:w-auto">
-                            <CheckCircle className="mr-2 h-5 w-5"/>
-                            Activate ID
-                        </Button>
-                    </div>
-                </CardContent>
-            </Card>
-
-            {/* Level 0 Table */}
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle>Level 0 Members Database (1-999)</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-auto" style={{maxHeight: '80vh'}}>
-                    <Table>
-                        <TableHeader className="sticky top-0 bg-card z-10">
-                          {tableHeaders}
-                        </TableHeader>
-                        {renderTable(level0Members, 0)}
-                    </Table>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Level 1 Table */}
-            <Card className="mb-8">
-              <CardHeader>
-                <CardTitle>Level 1 Members Database (1,000-1,999)</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-auto" style={{maxHeight: '80vh'}}>
-                    <Table>
-                        <TableHeader className="sticky top-0 bg-card z-10">
-                          {tableHeaders}
-                        </TableHeader>
-                        {renderTable(level1Members, 1)}
-                    </Table>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Level 2 Table */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Level 2 Members Database (2,000-2,999)</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-auto" style={{maxHeight: '80vh'}}>
-                    <Table>
-                        <TableHeader className="sticky top-0 bg-card z-10">
-                          {tableHeaders}
-                        </TableHeader>
-                        {renderTable(level2Members, 2)}
-                    </Table>
-                </div>
-              </CardContent>
-            </Card>
-
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {levelSections.map((section) => (
+                    <Card key={section.level} className="group bg-secondary/50 border-border/50 hover:border-primary/40 transition-all">
+                        <CardHeader>
+                            <div className="flex justify-between items-start">
+                                <div>
+                                    <CardTitle className="flex items-center gap-2">
+                                        <Database className="w-6 h-6 text-primary" />
+                                        {section.title}
+                                    </CardTitle>
+                                    <CardDescription className="mt-2">{section.description}</CardDescription>
+                                </div>
+                                <div className="text-xs font-semibold text-green-400">{section.status}</div>
+                            </div>
+                        </CardHeader>
+                        <CardContent>
+                             <Button asChild className="w-full">
+                                <Link href={section.href}>
+                                    View Database <ArrowRight className="ml-2 h-4 w-4" />
+                                </Link>
+                            </Button>
+                        </CardContent>
+                    </Card>
+                ))}
+                 <Card className="group bg-secondary/30 border-border/50 border-dashed flex flex-col items-center justify-center text-center p-6">
+                    <CardTitle className="text-muted-foreground">Level 1 Database</CardTitle>
+                    <CardDescription className="mt-2">Coming Soon</CardDescription>
+                </Card>
+            </div>
         </CardContent>
       </Card>
     </div>
   );
 }
+
