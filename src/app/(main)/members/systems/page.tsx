@@ -1,4 +1,3 @@
-
 'use client';
 
 import React from 'react';
@@ -13,6 +12,13 @@ const levelSections = [
         title: "Level 0 Database",
         description: "View and manage member slots from 1 to 999.",
         href: "/members/systems/level0",
+        status: "Active"
+    },
+    {
+        level: 1,
+        title: "Level 1 Database",
+        description: "View and manage member slots from 1,000 to 1,999.",
+        href: "/members/systems/level1",
         status: "Active"
     },
     // Future levels will be added here
@@ -57,7 +63,7 @@ export default function MemberSystemPage() {
                     </Card>
                 ))}
                  <Card className="group bg-secondary/30 border-border/50 border-dashed flex flex-col items-center justify-center text-center p-6">
-                    <CardTitle className="text-muted-foreground">Level 1 Database</CardTitle>
+                    <CardTitle className="text-muted-foreground">Level 2 Database</CardTitle>
                     <CardDescription className="mt-2">Coming Soon</CardDescription>
                 </Card>
             </div>
@@ -66,4 +72,3 @@ export default function MemberSystemPage() {
     </div>
   );
 }
-
