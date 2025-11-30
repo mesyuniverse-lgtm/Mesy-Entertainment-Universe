@@ -1,3 +1,4 @@
+
 'use client';
 
 import React from 'react';
@@ -80,7 +81,7 @@ const levelSections = [
     {
         level: 10,
         title: "Level 10 Database",
-        description: "View and manage member slots from 10,000 to 19,999.",
+        description: "View and manage member slots from 10,000 to 10,999.",
         href: "/members/systems/level10",
         status: "Active"
     },

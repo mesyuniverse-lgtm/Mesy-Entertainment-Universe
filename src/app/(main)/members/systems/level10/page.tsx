@@ -28,7 +28,7 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel10Members = () => {
   const members = [];
-  for (let i = 10000; i <= 19999; i++) {
+  for (let i = 10000; i <= 10999; i++) {
     const downlines = i; // Downline count matches the ID for this level
     const income = downlines * 1;
     const fee = income * 0.03;
@@ -67,7 +67,7 @@ export default function MemberSystemLevel10Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 10 Members Database (10,000-19,999)
+                Level 10 Members Database (10,000-10,999)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 10. Activate your purchased ID to claim your slot.
