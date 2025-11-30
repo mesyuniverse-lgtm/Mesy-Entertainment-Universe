@@ -2,6 +2,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import {
   Table,
   TableBody,
@@ -19,7 +20,7 @@ import {
 } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { KeyRound, CheckCircle } from 'lucide-react';
+import { KeyRound, CheckCircle, ArrowLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -63,12 +64,22 @@ export default function MemberSystemLevel2Page() {
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <Card className="bg-card/50 border-primary/20">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-            Level 2 Members Database (2,000-2,999)
-          </CardTitle>
-          <CardDescription>
-            This system displays all pre-defined Member ID slots for Level 2. Activate your purchased ID to claim your slot.
-          </CardDescription>
+          <div className="flex items-start justify-between">
+            <div>
+              <CardTitle className="text-2xl font-bold text-primary tracking-wider">
+                Level 2 Members Database (2,000-2,999)
+              </CardTitle>
+              <CardDescription>
+                This system displays all pre-defined Member ID slots for Level 2. Activate your purchased ID to claim your slot.
+              </CardDescription>
+            </div>
+            <Button asChild variant="outline">
+              <Link href="/members/systems">
+                <ArrowLeft className="mr-2 h-4 w-4" />
+                Back to Levels
+              </Link>
+            </Button>
+          </div>
         </CardHeader>
         <CardContent>
             {/* Activation Section */}
