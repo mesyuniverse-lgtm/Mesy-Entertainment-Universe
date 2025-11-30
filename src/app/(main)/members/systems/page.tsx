@@ -52,7 +52,7 @@ const generateLevel0Members = () => {
 const generateLevel1Members = () => {
   const members = [];
   for (let i = 1000; i <= 1999; i++) {
-    const downlines = 2000 - (i - 999); // Logic for downlines from 1999 down to 1001
+    const downlines = 2000 - (i - 999);
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -73,6 +73,30 @@ const generateLevel1Members = () => {
   return members;
 }
 
+const generateLevel2Members = () => {
+  const members = [];
+  for (let i = 2000; i <= 2999; i++) {
+    const downlines = 3000 - (i - 1999);
+    const income = downlines * 1;
+    const fee = income * 0.03;
+    const netIncome = income - fee;
+
+    members.push({
+      id: i.toString(),
+      isClaimed: false,
+      displayName: `Avatar No.${i}`,
+      email: 'waiting for member...',
+      memberId: i,
+      level: 2,
+      downlineCount: downlines,
+      income,
+      fee,
+      netIncome,
+    });
+  }
+  return members;
+}
+
 // --- Helper Functions ---
 const formatCurrency = (value: number) => value.toFixed(2);
 
@@ -83,6 +107,7 @@ export default function MemberSystemPage() {
   // For this UI-focused implementation, we'll simulate it.
   const level0Members = React.useMemo(() => generateLevel0Members(), []);
   const level1Members = React.useMemo(() => generateLevel1Members(), []);
+  const level2Members = React.useMemo(() => generateLevel2Members(), []);
 
 
   const defaultAvatar = PlaceHolderImages.find(p => p.id === 'default-avatar');
@@ -210,7 +235,7 @@ export default function MemberSystemPage() {
             </Card>
 
             {/* Level 1 Table */}
-            <Card>
+            <Card className="mb-8">
               <CardHeader>
                 <CardTitle>Level 1 Members Database (1,000-1,999)</CardTitle>
               </CardHeader>
@@ -221,6 +246,23 @@ export default function MemberSystemPage() {
                           {tableHeaders}
                         </TableHeader>
                         {renderTable(level1Members, 1)}
+                    </Table>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Level 2 Table */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Level 2 Members Database (2,000-2,999)</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-auto" style={{maxHeight: '80vh'}}>
+                    <Table>
+                        <TableHeader className="sticky top-0 bg-card z-10">
+                          {tableHeaders}
+                        </TableHeader>
+                        {renderTable(level2Members, 2)}
                     </Table>
                 </div>
               </CardContent>
