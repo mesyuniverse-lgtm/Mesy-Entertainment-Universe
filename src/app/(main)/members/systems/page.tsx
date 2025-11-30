@@ -4,7 +4,7 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Database } from 'lucide-react';
+import { ArrowRight, Database, Trophy } from 'lucide-react';
 import Link from 'next/link';
 
 const levelSections = [
@@ -358,6 +358,13 @@ const levelSections = [
         href: "/members/systems/level49",
         status: "Active"
     },
+    {
+        level: 50,
+        title: "Level 50 Hall of Fame",
+        description: "View the list of members who have reached the pinnacle of success.",
+        href: "/members/systems/level50",
+        status: "Final"
+    },
 ];
 
 export default function MemberSystemPage() {
@@ -381,12 +388,12 @@ export default function MemberSystemPage() {
                             <div className="flex justify-between items-start">
                                 <div>
                                     <CardTitle className="flex items-center gap-2">
-                                        <Database className="w-6 h-6 text-primary" />
+                                        {section.level === 50 ? <Trophy className="w-6 h-6 text-amber-400" /> : <Database className="w-6 h-6 text-primary" />}
                                         {section.title}
                                     </CardTitle>
                                     <CardDescription className="mt-2">{section.description}</CardDescription>
                                 </div>
-                                <div className="text-xs font-semibold text-green-400">{section.status}</div>
+                                <div className={`text-xs font-semibold ${section.level === 50 ? 'text-amber-400' : 'text-green-400'}`}>{section.status}</div>
                             </div>
                         </CardHeader>
                         <CardContent>
@@ -398,10 +405,6 @@ export default function MemberSystemPage() {
                         </CardContent>
                     </Card>
                 ))}
-                 <Card className="group bg-secondary/30 border-border/50 border-dashed flex flex-col items-center justify-center text-center p-6">
-                    <CardTitle className="text-muted-foreground">Level 50 Database</CardTitle>
-                    <CardDescription className="mt-2">Coming Soon</CardDescription>
-                </Card>
             </div>
         </CardContent>
       </Card>
