@@ -25,11 +25,10 @@ import { Input } from '@/components/ui/input';
 
 // --- Data Simulation based on the new model ---
 
-// Function to pre-generate 999 member slots
-const generatePredefinedMembers = () => {
+const generateLevel0Members = () => {
   const members = [];
   for (let i = 1; i <= 999; i++) {
-    const downlines = 1000 - i; // <-- Logic reversed as requested
+    const downlines = 1000 - i;
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -50,6 +49,30 @@ const generatePredefinedMembers = () => {
   return members;
 };
 
+const generateLevel1Members = () => {
+  const members = [];
+  for (let i = 1000; i <= 1999; i++) {
+    const downlines = 2000 - (i - 999); // Logic for downlines from 1999 down to 1001
+    const income = downlines * 1;
+    const fee = income * 0.03;
+    const netIncome = income - fee;
+
+    members.push({
+      id: i.toString(),
+      isClaimed: false, // All are initially unclaimed
+      displayName: `Avatar No.${i}`,
+      email: 'waiting for member...',
+      memberId: i,
+      level: 1,
+      downlineCount: downlines,
+      income,
+      fee,
+      netIncome,
+    });
+  }
+  return members;
+}
+
 // --- Helper Functions ---
 const formatCurrency = (value: number) => value.toFixed(2);
 
@@ -58,15 +81,14 @@ const formatCurrency = (value: number) => value.toFixed(2);
 export default function MemberSystemPage() {
   // In a real application, you would fetch which IDs are claimed from Firestore.
   // For this UI-focused implementation, we'll simulate it.
-  const predefinedMembers = React.useMemo(() => generatePredefinedMembers(), []);
+  const level0Members = React.useMemo(() => generateLevel0Members(), []);
+  const level1Members = React.useMemo(() => generateLevel1Members(), []);
 
-  // In a real app, this would be fetched from Firestore based on the current user's profile
-  const isVerified = true; 
 
   const defaultAvatar = PlaceHolderImages.find(p => p.id === 'default-avatar');
 
-  const renderTableContent = () => {
-    if (!predefinedMembers.length) {
+  const renderTable = (members: any[], level: number) => {
+    if (!members.length) {
       return (
         <TableBody>
           <TableRow>
@@ -80,13 +102,13 @@ export default function MemberSystemPage() {
 
     return (
       <TableBody>
-        {predefinedMembers.map((member, index) => {
+        {members.map((member) => {
           // This part would be dynamic in a real app, checking against claimed IDs
           const isActived = member.isClaimed; 
 
           return (
             <TableRow key={member.id} className={isActived ? 'bg-green-900/10' : 'bg-red-900/10'}>
-              <TableCell className="font-mono">{index + 1}</TableCell>
+              <TableCell className="font-mono">{member.memberId}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10">
@@ -119,15 +141,29 @@ export default function MemberSystemPage() {
     );
   };
 
+  const tableHeaders = (
+    <TableRow>
+        <TableHead>#</TableHead>
+        <TableHead>Name</TableHead>
+        <TableHead>Member ID</TableHead>
+        <TableHead>Level</TableHead>
+        <TableHead className='text-center'>Downline</TableHead>
+        <TableHead>Income</TableHead>
+        <TableHead>Fee (3%)</TableHead>
+        <TableHead>Net-Income</TableHead>
+        <TableHead className='text-center'>Status</TableHead>
+    </TableRow>
+  );
+
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <Card className="bg-card/50 border-primary/20">
         <CardHeader>
           <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-            Level 0 Members Database & Activation
+            Members Database & Activation
           </CardTitle>
           <CardDescription>
-            This system displays all 999 pre-defined Member ID slots for Level 0. Activate your purchased ID to claim your slot and start your journey.
+            This system displays all pre-defined Member ID slots. Activate your purchased ID to claim your slot and start your journey.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -156,25 +192,40 @@ export default function MemberSystemPage() {
                 </CardContent>
             </Card>
 
-            {/* Table Section */}
-            <div className="overflow-auto" style={{maxHeight: '80vh'}}>
-                <Table>
-                    <TableHeader className="sticky top-0 bg-card z-10">
-                    <TableRow>
-                        <TableHead>#</TableHead>
-                        <TableHead>Name</TableHead>
-                        <TableHead>Member ID</TableHead>
-                        <TableHead>Level</TableHead>
-                        <TableHead className='text-center'>Downline</TableHead>
-                        <TableHead>Income</TableHead>
-                        <TableHead>Fee (3%)</TableHead>
-                        <TableHead>Net-Income</TableHead>
-                        <TableHead className='text-center'>Status</TableHead>
-                    </TableRow>
-                    </TableHeader>
-                    {renderTableContent()}
-                </Table>
-            </div>
+            {/* Level 0 Table */}
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Level 0 Members Database (1-999)</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-auto" style={{maxHeight: '80vh'}}>
+                    <Table>
+                        <TableHeader className="sticky top-0 bg-card z-10">
+                          {tableHeaders}
+                        </TableHeader>
+                        {renderTable(level0Members, 0)}
+                    </Table>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Level 1 Table */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Level 1 Members Database (1,000-1,999)</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="overflow-auto" style={{maxHeight: '80vh'}}>
+                    <Table>
+                        <TableHeader className="sticky top-0 bg-card z-10">
+                          {tableHeaders}
+                        </TableHeader>
+                        {renderTable(level1Members, 1)}
+                    </Table>
+                </div>
+              </CardContent>
+            </Card>
+
         </CardContent>
       </Card>
     </div>
