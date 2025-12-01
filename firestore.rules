@@ -62,9 +62,15 @@ service cloud.firestore {
       /**
        * @description Rules for the /accounts/{accountId}/members/{memberId} subcollection.
        * Contains data for each of the user's digital identities (up to 5).
+       * Public read is allowed for profile pages, but writing is restricted to the owner.
        */
       match /members/{memberId} {
-        allow read, write: if isOwner(accountId);
+        // Allow public read for profile pages.
+        allow get: if true;
+        // Collection group queries for usernames need list access. Allow for any authenticated user.
+        allow list: if isSignedIn();
+        // Only the owner can create, update, or delete their own member documents.
+        allow write: if isOwner(accountId);
         
         /**
          * @description Rules for the downline of a specific member identity.
