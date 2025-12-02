@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel23Members = () => {
   const members = [];
-  for (let i = 23000; i <= 23999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 26002 up to and including 27001
+  for (let i = 26002; i <= 27001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -67,7 +68,7 @@ export default function MemberSystemLevel23Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 23 Members Database (23,000-23,999)
+                Level 23 Members Database (26,002-27,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 23. Activate your purchased ID to claim your slot.
