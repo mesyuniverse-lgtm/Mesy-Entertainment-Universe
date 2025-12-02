@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel12Members = () => {
   const members = [];
-  for (let i = 12000; i <= 12999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 37002 up to and including 38001
+  for (let i = 37002; i <= 38001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -50,6 +51,7 @@ const generateLevel12Members = () => {
   return members;
 };
 
+
 // --- Helper Functions ---
 const formatCurrency = (value: number) => value.toFixed(2);
 
@@ -67,7 +69,7 @@ export default function MemberSystemLevel12Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 12 Members Database (12,000-12,999)
+                Level 12 Members Database (37,002-38,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 12. Activate your purchased ID to claim your slot.
