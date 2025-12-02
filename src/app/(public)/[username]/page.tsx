@@ -49,7 +49,7 @@ export default function UserProfilePage({
         const membersRef = collectionGroup(firestore, 'members');
         const q = query(
           membersRef,
-          where('username', '==', params.username),
+          where('username', '==', params.username.toLowerCase()),
           limit(1)
         );
 

@@ -46,7 +46,7 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
             return `account.${nextId}`;
         });
 
-        await userAccountRef.update({ sequentialAccountId: sequentialId });
+        await userAccountRef.set({ sequentialAccountId: sequentialId }, { merge: true });
         logger.log(`Successfully assigned sequential ID '${sequentialId}' to user ${user.uid}`);
         
     } catch (error) {
@@ -61,25 +61,12 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
  * and recursively deletes all documents within its subcollections.
  */
 export const onUserDelete = auth.user().onDelete(async (user) => {
-  const firestore = getFirestore();
-  const accountDocRef = firestore.collection("accounts").doc(user.uid);
+  const accountDocRef = db.collection("accounts").doc(user.uid);
   
   logger.log(`Account for ${user.email} (${user.uid}) deleted. Deleting all account data from Firestore.`);
 
   try {
-    // Get all subcollections of the account document
-    const collections = await accountDocRef.listCollections();
-    for (const collection of collections) {
-        const documents = await collection.listDocuments();
-        for (const doc of documents) {
-            await doc.delete();
-            logger.log(`Deleted document: ${doc.path}`);
-        }
-        logger.log(`All documents in subcollection ${collection.id} deleted.`);
-    }
-
-    // After deleting all subcollections, delete the main account document
-    await accountDocRef.delete();
+    await db.recursiveDelete(accountDocRef);
     logger.log(`Successfully deleted Firestore data and all subcollections for account: ${user.uid}`);
   } catch (error) {
     logger.error(`Error deleting Firestore data for account: ${user.uid}`, error);
