@@ -15,11 +15,10 @@ import {
   GoogleAuthProvider,
   signInWithRedirect,
   getRedirectResult,
-  UserCredential,
   User,
   updateProfile
 } from "firebase/auth";
-import { doc, setDoc, serverTimestamp, collection } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -87,18 +86,39 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     },
   });
 
-  const handleSuccessfulAuth = async (user: User, data?: z.infer<typeof signupSchema>) => {
-    // For sign-ups, we need to update the profile and create firestore documents.
-    if (action === 'signup' && data) {
-      const displayName = `${data.firstname} ${data.lastname}`.trim();
-      await updateProfile(user, { displayName });
-      // The rest of the document creation is now handled by the `onUserCreate` Cloud Function.
-      // The function will read the `user.displayName` to get the name.
-       toast({
+  const handleSuccessfulAuth = async (user: User) => {
+    if (!firestore) return;
+
+    // Check user role from Firestore
+    try {
+        const accountDocRef = doc(firestore, 'accounts', user.uid);
+        const accountDocSnap = await getDoc(accountDocRef);
+
+        if (accountDocSnap.exists()) {
+            const accountData = accountDocSnap.data();
+            const role = accountData.role;
+
+            if (role === 'Super-admin') {
+                router.push('/sup-dashboard');
+                return;
+            }
+            if (role === 'AI-admin') {
+                router.push('/ai-admin/dashboards');
+                return;
+            }
+        }
+    } catch (error) {
+        console.error("Error fetching user role, proceeding with default redirect.", error);
+    }
+    
+    // Default redirection for Members
+    if (action === 'signup') {
+         toast({
           title: "Welcome, New Member!",
           description: "Please check your email to verify your account.",
         });
     }
+
     router.push(redirectPath || '/dashboard');
   };
 
@@ -108,9 +128,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     getRedirectResult(auth)
       .then((result) => {
         if (result) {
-          // For Google Sign-in, we just need to handle the successful auth.
-          // The onUserCreate cloud function will handle document creation.
-          router.push(redirectPath || '/dashboard');
+          handleSuccessfulAuth(result.user);
         }
         setIsLoading(false);
       })
@@ -174,13 +192,15 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       if (action === 'signup') {
         const signupData = data as z.infer<typeof signupSchema>;
         userCredential = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
-        // Pass the form data to handleSuccessfulAuth
-        await handleSuccessfulAuth(userCredential.user, signupData);
+        const displayName = `${signupData.firstname} ${signupData.lastname}`.trim();
+        await updateProfile(userCredential.user, { displayName });
       } else {
         const loginData = data as z.infer<typeof loginSchema>;
         userCredential = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
-        await handleSuccessfulAuth(userCredential.user);
       }
+      // handleSuccessfulAuth will now handle redirection
+      await handleSuccessfulAuth(userCredential.user);
+
     } catch (error: any) {
       handleAuthError(error);
     } finally {
@@ -352,5 +372,3 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     </div>
   )
 }
-
-    
