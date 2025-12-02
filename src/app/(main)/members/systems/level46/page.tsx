@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel46Members = () => {
   const members = [];
-  for (let i = 46000; i <= 46999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 3002 up to and including 4001
+  for (let i = 3002; i <= 4001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -67,7 +68,7 @@ export default function MemberSystemLevel46Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 46 Members Database (46,000-46,999)
+                Level 46 Members Database (3,002-4,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 46. Activate your purchased ID to claim your slot.
