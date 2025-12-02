@@ -26,7 +26,7 @@ import { Button } from '@/components/ui/button';
 // --- Data Simulation ---
 
 const level50Data = {
-    memberId: 50000,
+    memberId: 1,
     displayName: 'Level 50 Member',
     email: 'fixed.income@mesy.io',
     level: 50,
@@ -41,7 +41,7 @@ const hallOfFame = [
   {
     rank: 1,
     displayName: 'mesy.universe',
-    memberId: '001',
+    memberId: '1',
     dateAchieved: '2025-01-01',
     avatarId: 'fighter-character',
   },
