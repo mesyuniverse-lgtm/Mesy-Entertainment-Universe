@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel4Members = () => {
   const members = [];
-  // Loop from Member ID 46002 up to and including 47001
-  for (let i = 46002; i <= 47001; i++) {
+  // Downline range: 4,000 - 4,999
+  // Member ID range: 45002 - 46001 (50001 - 46001 = 4000; 50001 - 45002 = 4999)
+  for (let i = 45002; i <= 46001; i++) {
     const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
@@ -68,7 +69,7 @@ export default function MemberSystemLevel4Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 4 Members Database (46,002-47,001)
+                Level 4 Members Database (4,000-4,999 Members)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 4. Activate your purchased ID to claim your slot.
