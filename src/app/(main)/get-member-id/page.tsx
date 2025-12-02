@@ -5,8 +5,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-import { useFirebase, useDoc, useMemoFirebase, errorEmitter, FirestorePermissionError } from '@/firebase';
-import { doc, setDoc, serverTimestamp, collection } from 'firebase/firestore';
+import { useFirebase } from '@/firebase';
+import { useDoc, useMemoFirebase } from '@/firebase';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import { doc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Loader2, Save, Edit, User, LayoutDashboard, Cog, ArrowLeft, CheckCircle, Pencil, Hand, UserRound, Bot, PartyPopper, Flower2, HandPlatter, Laugh, Annoyed } from 'lucide-react';
@@ -39,6 +41,7 @@ export default function GetMemberIdPage() {
   const [isSaving, setIsSaving] = React.useState(false);
   const [isEditing, setIsEditing] = React.useState(true);
   const [createdMemberId, setCreatedMemberId] = React.useState<string | null>(null);
+  const [createdSequentialId, setCreatedSequentialId] = React.useState<string | null>(null);
 
   const accountProfileRef = useMemoFirebase(() => {
     if (!user) return null;
@@ -67,7 +70,7 @@ export default function GetMemberIdPage() {
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user || !firestore) {
+    if (!user) {
       toast({ title: "Error", description: "Not authenticated.", variant: "destructive" });
       return;
     }
@@ -78,41 +81,34 @@ export default function GetMemberIdPage() {
 
     setIsSaving(true);
     
-    // In a real scenario, payment would be processed here.
-    // For now, we simulate success and create the Member ID document.
-    
-    const newMemberRef = doc(collection(firestore, 'members'));
-    const memberId = newMemberRef.id;
-    const newMemberData = {
-      id: memberId,
-      accountId: user.uid,
-      username: avatarName.trim().toLowerCase().replace(/\s+/g, '.'), // Create a username
-      nickname: avatarName.trim(),
-      level: 0,
-      createdAt: serverTimestamp(),
-      avatar: avatarImage?.imageUrl || '', // Store avatar image url
-    };
-
-    setDoc(newMemberRef, newMemberData)
-      .then(() => {
-        setCreatedMemberId(memberId);
-        toast({
-          title: "Member ID Created!",
-          description: `Your new Member ID for ${avatarName} has been saved.`,
-        });
-        setIsEditing(false);
-      })
-      .catch((error) => {
-        const permissionError = new FirestorePermissionError({
-          path: newMemberRef.path,
-          operation: 'create',
-          requestResourceData: newMemberData,
-        });
-        errorEmitter.emit('permission-error', permissionError);
-      })
-      .finally(() => {
-        setIsSaving(false);
+    try {
+      const functions = getFunctions();
+      const createMemberId = httpsCallable(functions, 'createMemberId');
+      const result = await createMemberId({
+        nickname: avatarName.trim(),
+        avatar: avatarImage?.imageUrl || '',
       });
+      
+      const newMember = result.data as { id: string, sequentialMemberId: string };
+      setCreatedMemberId(newMember.id);
+      setCreatedSequentialId(newMember.sequentialMemberId);
+
+      toast({
+        title: "Member ID Created!",
+        description: `Your new Member ID ${newMember.sequentialMemberId} for ${avatarName} has been saved.`,
+      });
+      setIsEditing(false);
+
+    } catch (error: any) {
+        console.error("Error creating member ID:", error);
+        toast({
+            title: "Creation Failed",
+            description: error.message || "An error occurred while creating the Member ID.",
+            variant: "destructive"
+        });
+    } finally {
+        setIsSaving(false);
+    }
   };
 
 
@@ -210,7 +206,7 @@ export default function GetMemberIdPage() {
                              <div className="grid w-full items-center gap-1.5 sm:col-span-2">
                               <Label>Member ID</Label>
                                <p className="p-2 text-muted-foreground text-sm font-mono h-10">
-                                {createdMemberId ? createdMemberId : '[System Generated]'}
+                                {createdSequentialId ? createdSequentialId : '[System Generated]'}
                               </p>
                             </div>
                         </div>
@@ -263,9 +259,9 @@ export default function GetMemberIdPage() {
                     Create &amp; Pay $9.99
                   </Button>
                 ) : (
-                   <Button type="button" variant="secondary" onClick={() => setIsEditing(true)}>
-                      <Edit className="mr-2 h-4 w-4" />
-                      Edit Information
+                   <Button type="button" variant="secondary" onClick={() => router.push('/account-memberid')}>
+                      <Cog className="mr-2 h-4 w-4" />
+                      Manage Member IDs
                   </Button>
                 )}
                 <Button type="button" variant="ghost" onClick={() => router.back()}>

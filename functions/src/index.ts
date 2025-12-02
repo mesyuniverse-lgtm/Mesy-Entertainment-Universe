@@ -12,7 +12,7 @@ import {initializeApp} from "firebase-admin/app";
 import {getFirestore} from "firebase-admin/firestore";
 import * as logger from "firebase-functions/logger";
 import {auth} from "firebase-functions";
-import { onCall } from "firebase-functions/v2/https";
+import { onCall, HttpsError } from "firebase-functions/v2/https";
 
 // Export Genkit flows
 export * from './ai';
@@ -29,50 +29,13 @@ const db = getFirestore();
 export const onUserCreate = auth.user().onCreate(async (user) => {
     const accountRef = db.collection("accounts").doc(user.uid);
     const profileRef = accountRef.collection("profile").doc(user.uid);
-    const counterRef = db.collection("counters").doc("members");
-    const newMemberDocRef = db.collection('members').doc(); // Create a new doc reference with a random ID
 
     try {
         const isSuperAdmin = user.email === 'mesy.universe@gmail.com';
         const isAiAdmin = user.email === 'ai.admin@mesy.universe';
 
-        let role = 'Member';
-        let level = 0;
-        let verificationStatus = 'unverified';
-        let uplineMemberId = null;
-
-        // Generate the sequential ID within a transaction to ensure atomicity
-        const sequentialId = await db.runTransaction(async (transaction) => {
-            const counterDoc = await transaction.get(counterRef);
-            let nextId = 1;
-            if (counterDoc.exists) {
-                const data = counterDoc.data();
-                if (data && typeof data.lastMemberId === 'number') {
-                    nextId = data.lastMemberId + 1;
-                }
-            }
-            transaction.set(counterRef, { lastMemberId: nextId }, { merge: true });
-            return `member.${nextId}`;
-        });
-        
-        if (isSuperAdmin) {
-            role = 'Super-admin';
-            level = 50;
-            verificationStatus = 'verified';
-        } else if (isAiAdmin) {
-            role = 'AI-admin';
-            level = 50;
-            verificationStatus = 'verified';
-            // Find Super-admin's member document to set as upline
-            const superAdminAccountQuery = await db.collection('accounts').where('email', '==', 'mesy.universe@gmail.com').limit(1).get();
-            if (!superAdminAccountQuery.empty) {
-                const superAdminAccountId = superAdminAccountQuery.docs[0].id;
-                const superAdminMemberQuery = await db.collection('members').where('accountId', '==', superAdminAccountId).limit(1).get();
-                if(!superAdminMemberQuery.empty) {
-                    uplineMemberId = superAdminMemberQuery.docs[0].id;
-                }
-            }
-        }
+        const role = isSuperAdmin ? 'Super-admin' : isAiAdmin ? 'AI-admin' : 'Member';
+        const verificationStatus = isSuperAdmin || isAiAdmin ? 'verified' : 'unverified';
 
         // Batch writes for efficiency
         const batch = db.batch();
@@ -87,7 +50,6 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
         });
 
         // 2. Create the user's private profile document
-        // The form data is not directly available here. We rely on the `user` object from Auth.
         batch.set(profileRef, {
             accountId: user.uid,
             id: user.uid,
@@ -98,27 +60,128 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
                 number: user.phoneNumber || ''
             }
         });
-        
-        // 3. Create the first Member ID document for this user with the new sequential ID
-        batch.set(newMemberDocRef, {
-            id: newMemberDocRef.id,
-            sequentialMemberId: sequentialId,
-            accountId: user.uid,
-            username: user.email?.split('@')[0] || `user_${user.uid.substring(0,5)}`,
-            nickname: user.displayName || user.email?.split('@')[0],
-            level: level,
-            uplineMemberId: uplineMemberId,
-            createdAt: new Date().toISOString(),
-        });
 
         await batch.commit();
+        logger.log(`Successfully created account and profile for user ${user.uid} with role ${role}.`);
 
-        logger.log(`Successfully created structures for user ${user.uid} with role ${role} and Member ID ${sequentialId}`);
+        // 3. Conditionally create the first Member ID
+        // This is separate because it involves a transaction and conditional logic
+        if (isSuperAdmin || isAiAdmin) {
+            await createInitialMemberForAdmin(user, role);
+        }
         
     } catch (error) {
         logger.error(`Failed to create account structure for user ${user.uid}:`, error);
     }
 });
+
+
+/**
+ * Helper function to create the initial Member ID for admin roles within a transaction.
+ */
+async function createInitialMemberForAdmin(user: auth.UserRecord, role: 'Super-admin' | 'AI-admin') {
+    const counterRef = db.collection("counters").doc("members");
+    const membersCollectionRef = db.collection('members');
+
+    try {
+        const sequentialId = await db.runTransaction(async (transaction) => {
+            const counterDoc = await transaction.get(counterRef);
+            const nextId = (counterDoc.data()?.lastMemberId || 0) + 1;
+            transaction.set(counterRef, { lastMemberId: nextId }, { merge: true });
+            return `member.${nextId}`;
+        });
+
+        let uplineMemberId = null;
+        if (role === 'AI-admin') {
+            const superAdminQuery = await membersCollectionRef.where('sequentialMemberId', '==', 'member.1').limit(1).get();
+            if (!superAdminQuery.empty) {
+                uplineMemberId = superAdminQuery.docs[0].id;
+            }
+        }
+
+        const newMemberDocRef = membersCollectionRef.doc();
+        await newMemberDocRef.set({
+            id: newMemberDocRef.id,
+            sequentialMemberId: sequentialId,
+            accountId: user.uid,
+            username: user.email?.split('@')[0] || `user_${user.uid.substring(0,5)}`,
+            nickname: user.displayName || user.email?.split('@')[0],
+            level: 50, // Admins start at level 50
+            uplineMemberId: uplineMemberId,
+            createdAt: new Date().toISOString(),
+        });
+        
+        logger.log(`Successfully created Member ID ${sequentialId} for ${role} ${user.uid}`);
+
+    } catch (error) {
+         logger.error(`Failed to create initial member ID for admin ${user.uid}:`, error);
+    }
+}
+
+/**
+ * Callable Cloud Function for a user to create a new Member ID.
+ */
+export const createMemberId = onCall(async (request) => {
+    if (!request.auth) {
+        throw new HttpsError('unauthenticated', 'You must be logged in to create a Member ID.');
+    }
+
+    const { nickname, avatar } = request.data;
+    if (!nickname || typeof nickname !== 'string' || nickname.trim().length === 0) {
+        throw new HttpsError('invalid-argument', 'A valid nickname is required.');
+    }
+
+    const accountId = request.auth.uid;
+    const counterRef = db.collection("counters").doc("members");
+    const membersCollectionRef = db.collection('members');
+
+    try {
+        // Run as a transaction to ensure atomic ID generation
+        const newMemberData = await db.runTransaction(async (transaction) => {
+            const counterDoc = await transaction.get(counterRef);
+            const nextId = (counterDoc.data()?.lastMemberId || 0) + 1;
+
+            // Check if user is creating their first member ID to link to upline if applicable
+            const existingMembersQuery = membersCollectionRef.where('accountId', '==', accountId).limit(1);
+            const existingMembersSnapshot = await transaction.get(existingMembersQuery);
+            
+            let uplineMemberId = null;
+            if (existingMembersSnapshot.empty) {
+                // This is the user's first Member ID.
+                // You could implement logic here to find an upline if necessary.
+                // For now, it defaults to null.
+            }
+
+            transaction.set(counterRef, { lastMemberId: nextId }, { merge: true });
+            
+            const sequentialId = `member.${nextId}`;
+            const newMemberDocRef = membersCollectionRef.doc();
+
+            const memberData = {
+                id: newMemberDocRef.id,
+                sequentialMemberId: sequentialId,
+                accountId: accountId,
+                username: nickname.trim().toLowerCase().replace(/\s+/g, '.') + `.${nextId}`,
+                nickname: nickname.trim(),
+                level: 0,
+                uplineMemberId: uplineMemberId,
+                avatar: avatar || '',
+                createdAt: new Date().toISOString(),
+            };
+
+            transaction.set(newMemberDocRef, memberData);
+            return memberData;
+        });
+
+        logger.log(`Successfully created Member ID ${newMemberData.sequentialMemberId} for user ${accountId}`);
+        return newMemberData;
+
+    } catch (error) {
+        logger.error(`Error creating Member ID for user ${accountId}:`, error);
+        throw new HttpsError('internal', 'An error occurred while creating the Member ID.');
+    }
+});
+
 
 
 /**
@@ -132,21 +195,22 @@ export const onUserDelete = auth.user().onDelete(async (user) => {
   logger.log(`Account for ${user.email} (${user.uid}) deleted. Deleting all account data from Firestore.`);
 
   try {
-    // Note: Deleting associated 'member' documents requires a more complex query.
-    // This will now be handled separately if needed, as members are in a top-level collection.
-    const membersQuery = await db.collection('members').where('accountId', '==', user.uid).get();
+    const membersQuery = db.collection('members').where('accountId', '==', user.uid);
+    const membersSnapshot = await membersQuery.get();
+    
     const batch = db.batch();
-    membersQuery.docs.forEach(doc => {
+    
+    membersSnapshot.docs.forEach(doc => {
         batch.delete(doc.ref);
         logger.log(`Queueing member document ${doc.id} for deletion.`);
     });
     
+    await batch.commit();
+    logger.log(`Successfully deleted member documents for user: ${user.uid}`);
+    
     // Also delete the account and its subcollections
     await db.recursiveDelete(accountDocRef);
-    logger.log(`Queueing recursive delete for account document: ${user.uid}`);
-    
-    await batch.commit();
-    logger.log(`Successfully deleted Firestore data for user: ${user.uid}`);
+    logger.log(`Successfully completed recursive delete for account document: ${user.uid}`);
 
   } catch (error) {
     logger.error(`Error deleting Firestore data for user: ${user.uid}`, error);
