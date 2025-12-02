@@ -8,7 +8,7 @@
  */
 
 import {initializeApp} from "firebase-admin/app";
-import {getFirestore} from "firebase-admin/firestore";
+import {getFirestore, FieldValue} from "firebase-admin/firestore";
 import * as logger from "firebase-functions/logger";
 import {auth} from "firebase-functions";
 import { onCall } from "firebase-functions/v2/https";
@@ -18,6 +18,42 @@ export * from './ai';
 
 // Initialize Firebase Admin SDK
 initializeApp();
+const db = getFirestore();
+
+/**
+ * Cloud Function that triggers when a new user is created in Firebase Authentication.
+ * It generates a sequential, human-readable account ID (e.g., account.1, account.2)
+ * and saves it to the user's account document in Firestore.
+ */
+export const onUserCreate = auth.user().onCreate(async (user) => {
+    const counterRef = db.collection("counters").doc("accounts");
+    const userAccountRef = db.collection("accounts").doc(user.uid);
+
+    try {
+        const sequentialId = await db.runTransaction(async (transaction) => {
+            const counterDoc = await transaction.get(counterRef);
+            
+            let nextId = 1;
+            if (counterDoc.exists) {
+                const data = counterDoc.data();
+                if (data && typeof data.lastAccountId === 'number') {
+                    nextId = data.lastAccountId + 1;
+                }
+            }
+            
+            transaction.set(counterRef, { lastAccountId: nextId }, { merge: true });
+            
+            return `account.${nextId}`;
+        });
+
+        await userAccountRef.update({ sequentialAccountId: sequentialId });
+        logger.log(`Successfully assigned sequential ID '${sequentialId}' to user ${user.uid}`);
+        
+    } catch (error) {
+        logger.error(`Failed to generate sequential ID for user ${user.uid}:`, error);
+    }
+});
+
 
 /**
  * Cloud Function that triggers when a user is deleted from Firebase Authentication.

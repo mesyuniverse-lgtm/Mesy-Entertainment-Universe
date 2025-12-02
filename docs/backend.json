@@ -10,6 +10,10 @@
           "type": "string",
           "description": "Unique identifier for the account, matching Firebase Auth UID."
         },
+        "sequentialAccountId": {
+          "type": "string",
+          "description": "A human-readable, sequential ID assigned on creation (e.g., 'account.1')."
+        },
         "email": {
           "type": "string",
           "description": "The unique email address for the account.",
@@ -565,5 +569,3 @@
     "reasoning": "The Firestore structure is redesigned around the 'Account' and 'Member' concepts. The top-level `accounts/{accountId}` collection holds primary user data linked to Firebase Auth. All data specific to a user's digital identities (Member IDs), such as their profiles (now part of the Member entity), wallets, and downlines, are stored in subcollections under `/accounts/{accountId}/members/{memberId}`. This aligns with the '1 Account, 5 Members' model and ensures clear data ownership. Private KYC-related information is in a separate `/accounts/{accountId}/profile` subcollection, tightly controlled by rules. This structure uses path-based ownership extensively for robust and efficient security rules."
   }
 }
-
-    
