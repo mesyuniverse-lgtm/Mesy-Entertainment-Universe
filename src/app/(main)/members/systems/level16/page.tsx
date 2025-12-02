@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel16Members = () => {
   const members = [];
-  for (let i = 16000; i <= 16999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 33002 up to and including 34001
+  for (let i = 33002; i <= 34001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -50,6 +51,7 @@ const generateLevel16Members = () => {
   return members;
 };
 
+
 // --- Helper Functions ---
 const formatCurrency = (value: number) => value.toFixed(2);
 
@@ -67,7 +69,7 @@ export default function MemberSystemLevel16Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 16 Members Database (16,000-16,999)
+                Level 16 Members Database (33,002-34,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 16. Activate your purchased ID to claim your slot.
