@@ -37,9 +37,9 @@ const generateLevel49Members = () => {
 
     members.push({
       id: i.toString(),
-      isClaimed: false, // All are initially unclaimed
-      displayName: `Avatar No.${i}`,
-      email: 'waiting for member...',
+      isClaimed: i === 2 ? true : false, // AI-Admin is claimed
+      displayName: i === 2 ? 'AI-Admin Avatar No.2' : `Avatar No.${i}`,
+      email: i === 2 ? 'ai.admin@mesy.universe' : 'waiting for member...',
       memberId: i,
       level: 49,
       downlineCount: downlines,
@@ -60,6 +60,8 @@ export default function MemberSystemLevel49Page() {
   const level49Members = React.useMemo(() => generateLevel49Members(), []);
   
   const defaultAvatar = PlaceHolderImages.find(p => p.id === 'default-avatar');
+  const aiAdminAvatar = PlaceHolderImages.find(p => p.id === 'enchanted-forest-1');
+
 
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
@@ -131,8 +133,8 @@ export default function MemberSystemLevel49Page() {
                         </TableHeader>
                         <TableBody>
                             {level49Members.map((member) => {
-                                // This part would be dynamic in a real app, checking against claimed IDs
                                 const isActived = member.isClaimed; 
+                                const avatar = member.memberId === 2 ? aiAdminAvatar : defaultAvatar;
 
                                 return (
                                     <TableRow key={member.id} className={isActived ? 'bg-green-900/10' : 'bg-red-900/10'}>
@@ -140,7 +142,7 @@ export default function MemberSystemLevel49Page() {
                                     <TableCell>
                                         <div className="flex items-center gap-3">
                                         <Avatar className="h-10 w-10">
-                                            <AvatarImage src={defaultAvatar?.imageUrl} />
+                                            <AvatarImage src={avatar?.imageUrl} />
                                             <AvatarFallback>
                                             {member.displayName.substring(0, 1)}
                                             </AvatarFallback>
