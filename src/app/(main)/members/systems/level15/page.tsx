@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel15Members = () => {
   const members = [];
-  for (let i = 15000; i <= 15999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 34002 up to and including 35001
+  for (let i = 34002; i <= 35001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -50,6 +51,7 @@ const generateLevel15Members = () => {
   return members;
 };
 
+
 // --- Helper Functions ---
 const formatCurrency = (value: number) => value.toFixed(2);
 
@@ -67,7 +69,7 @@ export default function MemberSystemLevel15Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 15 Members Database (15,000-15,999)
+                Level 15 Members Database (34,002-35,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 15. Activate your purchased ID to claim your slot.
