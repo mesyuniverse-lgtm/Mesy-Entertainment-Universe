@@ -28,18 +28,20 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel4Members = () => {
   const members = [];
-  for (let i = 46002; i <= 47001; i++) {
-    const downlines = 50001 - i;
+  // Downline from 4,000 to 4,999
+  for (let i = 0; i < 1000; i++) {
+    const downlines = 4000 + i;
+    const memberId = 4000 + i; // Assuming memberId can align for this level range
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
 
     members.push({
-      id: i.toString(),
+      id: memberId.toString(),
       isClaimed: false, // All are initially unclaimed
-      displayName: `Avatar No.${i}`,
+      displayName: `Avatar No.${memberId}`,
       email: 'waiting for member...',
-      memberId: i,
+      memberId: memberId,
       level: 4,
       downlineCount: downlines,
       income,
@@ -67,7 +69,7 @@ export default function MemberSystemLevel4Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 4 Members Database (46,002-47,001)
+                Level 4 Members Database (4,000-4,999)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 4. Activate your purchased ID to claim your slot.
