@@ -27,8 +27,8 @@ import { Button } from '@/components/ui/button';
 
 const level50Data = {
     memberId: 1,
-    displayName: 'Level 50 Member',
-    email: 'fixed.income@mesy.io',
+    displayName: 'Super-Admin',
+    email: 'Mesy.Universe.1',
     level: 50,
     downlineCount: 50000,
     income: 50000,
