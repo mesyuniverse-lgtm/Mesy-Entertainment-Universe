@@ -189,5 +189,3 @@ export const computeEngineProxy = onCall((request) => {
     message: `Successfully received request to start a Compute Engine job of type '${jobType}'.`,
   };
 });
-
-    
