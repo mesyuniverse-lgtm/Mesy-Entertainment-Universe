@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel8Members = () => {
   const members = [];
-  for (let i = 8000; i <= 8999; i++) {
-    const downlines = 8000 + (i - 8000); // Downline grows from 8000
+  // Loop from Member ID 42002 up to and including 43001
+  for (let i = 42002; i <= 43001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -67,7 +68,7 @@ export default function MemberSystemLevel8Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 8 Members Database (8,000-8,999)
+                Level 8 Members Database (42,002-43,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 8. Activate your purchased ID to claim your slot.
