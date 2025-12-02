@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel9Members = () => {
   const members = [];
-  for (let i = 9000; i <= 9999; i++) {
-    const downlines = 9000 + (i - 9000); // Downline grows from 9000
+  // Loop from Member ID 41002 up to and including 42001
+  for (let i = 41002; i <= 42001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -67,7 +68,7 @@ export default function MemberSystemLevel9Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 9 Members Database (9,000-9,999)
+                Level 9 Members Database (41,002-42,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 9. Activate your purchased ID to claim your slot.
