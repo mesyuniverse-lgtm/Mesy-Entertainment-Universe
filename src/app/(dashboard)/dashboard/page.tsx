@@ -217,6 +217,8 @@ export default function DashboardPage() {
     const [memberCount, setMemberCount] = useState(18000);
     const [today, setToday] = useState<Date | null>(null);
     const [claimedDays, setClaimedDays] = useState<string[]>([]);
+    const [isClient, setIsClient] = useState(false);
+
 
     const calculatedIncome = useMemo(() => {
       const grossIncome = memberCount;
@@ -240,20 +242,27 @@ export default function DashboardPage() {
     };
 
     useEffect(() => {
-        const interval = setInterval(() => {
-        setStats(prevStats => ({
-            totalApplicants: prevStats.totalApplicants + Math.floor(Math.random() * 5) + 1,
-            totalMembers: prevStats.totalMembers + Math.floor(Math.random() * 5) + 1,
-            newMembers: prevStats.newMembers + Math.floor(Math.random() * 3),
-            questComplete: prevStats.questComplete + Math.floor(Math.random() * 2),
-            awardRecipients: prevStats.awardRecipients + Math.floor(Math.random() * 4),
-        }));
-        }, 3000);
-        
+        // This effect runs only on the client side
+        setIsClient(true);
         setToday(new Date());
 
+        const interval = setInterval(() => {
+            setStats(prevStats => ({
+                totalApplicants: prevStats.totalApplicants + Math.floor(Math.random() * 5) + 1,
+                totalMembers: prevStats.totalMembers + Math.floor(Math.random() * 5) + 1,
+                newMembers: prevStats.newMembers + Math.floor(Math.random() * 3),
+                questComplete: prevStats.questComplete + Math.floor(Math.random() * 2),
+                awardRecipients: prevStats.awardRecipients + Math.floor(Math.random() * 4),
+            }));
+        }, 3000);
+        
         return () => clearInterval(interval);
     }, []);
+
+  if (!isClient) {
+    // Render nothing or a placeholder on the server
+    return null;
+  }
 
   return (
     <div className="flex min-h-screen w-full flex-col bg-background text-foreground">
