@@ -555,3 +555,5 @@
     "reasoning": "The Firestore structure is re-architected for a global member system. A top-level `members` collection ensures each Member ID is globally unique and can have its own sequential ID. Each member document contains an `accountId` to link back to its owner. The `accounts` collection remains for user-specific, non-identity data like KYC info and notifications. This new structure better supports the global, sequential, and unlimited Member ID model."
   }
 }
+
+    
