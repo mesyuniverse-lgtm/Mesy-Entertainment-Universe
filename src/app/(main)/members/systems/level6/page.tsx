@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel6Members = () => {
   const members = [];
-  for (let i = 6000; i <= 6999; i++) {
-    const downlines = 6000 + (i - 6000); // Downline grows from 6000
+  // Loop from Member ID 44002 up to and including 45001
+  for (let i = 44002; i <= 45001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -67,7 +68,7 @@ export default function MemberSystemLevel6Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 6 Members Database (6,000-6,999)
+                Level 6 Members Database (44,002-45,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 6. Activate your purchased ID to claim your slot.
