@@ -46,6 +46,19 @@ service cloud.firestore {
         allow read, write: if isAccountOwner(accountId);
       }
     }
+    
+    /**
+     * Rules for the Stripe payments integration.
+     * Users can create checkout sessions for themselves. The Stripe extension
+     * then manages the rest of the payment process with admin privileges.
+     */
+    match /customers/{userId} {
+      allow read, write: if request.auth.uid == userId;
+
+      match /checkout_sessions/{sessionId} {
+        allow create: if request.auth.uid == userId;
+      }
+    }
 
     /**
      * Rules for the global /members/{memberId} collection.
@@ -109,5 +122,3 @@ service cloud.firestore {
     }
   }
 }
-
-    
