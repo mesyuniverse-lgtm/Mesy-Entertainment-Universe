@@ -18,7 +18,7 @@
         "role": {
           "type": "string",
           "description": "Defines the account's role and permissions (e.g., Super-admin, Member).",
-          "enum": ["Super-admin", "Admin", "Developer", "Member"]
+          "enum": ["Super-admin", "Admin", "Developer", "Member", "AI-admin"]
         },
         "verificationStatus": {
           "type": "string",
@@ -50,6 +50,10 @@
         "accountId": {
           "type": "string",
           "description": "The ID of the Account that owns this Member ID. (Relationship: Account 1:N Member)"
+        },
+        "uplineMemberId": {
+          "type": "string",
+          "description": "The ID of the member directly above this one in the hierarchy (optional)."
         },
         "username": {
             "type": "string",

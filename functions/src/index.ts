@@ -27,24 +27,45 @@ const db = getFirestore();
 export const onUserCreate = auth.user().onCreate(async (user) => {
     const accountRef = db.collection("accounts").doc(user.uid);
     const profileRef = db.collection("accounts").doc(user.uid).collection("profile").doc(user.uid);
+    const memberDocRef = doc(db, 'members', user.uid);
 
     try {
         const isSuperAdmin = user.email === 'mesy.universe@gmail.com';
+        const isAiAdmin = user.email === 'ai.admin@mesy.universe'; // <-- Added AI Admin check
+
+        let role = 'Member';
+        let level = 0;
+        let verificationStatus = 'unverified';
+        let uplineMemberId = null;
+
+        if (isSuperAdmin) {
+            role = 'Super-admin';
+            level = 50;
+            verificationStatus = 'verified';
+        } else if (isAiAdmin) {
+            role = 'AI-admin';
+            level = 50;
+            verificationStatus = 'verified';
+            // Find Super-admin to set as upline
+            const superAdminQuery = await db.collection('accounts').where('email', '==', 'mesy.universe@gmail.com').limit(1).get();
+            if (!superAdminQuery.empty) {
+                uplineMemberId = superAdminQuery.docs[0].id;
+            }
+        }
 
         // Create the main account document
         await accountRef.set({
             id: user.uid,
             email: user.email,
-            role: isSuperAdmin ? 'Super-admin' : 'Member',
-            verificationStatus: 'unverified',
+            role: role,
+            verificationStatus: verificationStatus,
             createdAt: new Date().toISOString(),
         });
-        
+
         // Create the user's private profile document
         await profileRef.set({
             accountId: user.uid,
             id: user.uid,
-            // Pre-fill with any available data, otherwise empty strings
             firstname: user.displayName?.split(' ')[0] || '',
             lastname: user.displayName?.split(' ').slice(1).join(' ') || '',
             phoneNumber: {
@@ -52,8 +73,20 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
                 number: user.phoneNumber || ''
             }
         });
+        
+        // Create the first Member ID document for this user in the global collection
+        await memberDocRef.set({
+            id: user.uid,
+            accountId: user.uid,
+            username: user.email?.split('@')[0] || `user_${user.uid.substring(0,5)}`,
+            nickname: user.displayName || user.email?.split('@')[0],
+            level: level,
+            uplineMemberId: uplineMemberId,
+            createdAt: new Date().toISOString(),
+        });
 
-        logger.log(`Successfully created account and profile for user ${user.uid}`);
+
+        logger.log(`Successfully created account, profile, and member ID for user ${user.uid} with role ${role}`);
         
     } catch (error) {
         logger.error(`Failed to create account structure for user ${user.uid}:`, error);
