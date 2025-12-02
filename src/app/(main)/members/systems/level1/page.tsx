@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel1Members = () => {
   const members = [];
-  for (let i = 1000; i <= 1999; i++) {
-    const downlines = 1000 + (i - 1000); // Downline grows from 1000
+  // Loop from Member ID 48002 up to and including 49001
+  for (let i = 48002; i <= 49001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -56,8 +57,6 @@ const formatCurrency = (value: number) => value.toFixed(2);
 // --- Component ---
 
 export default function MemberSystemLevel1Page() {
-  // In a real application, you would fetch which IDs are claimed from Firestore.
-  // For this UI-focused implementation, we'll simulate it.
   const level1Members = React.useMemo(() => generateLevel1Members(), []);
   
   const defaultAvatar = PlaceHolderImages.find(p => p.id === 'default-avatar');
@@ -69,7 +68,7 @@ export default function MemberSystemLevel1Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 1 Members Database (1,000-1,999)
+                Level 1 Members Database (48,002-49,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 1. Activate your purchased ID to claim your slot.

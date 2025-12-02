@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel0Members = () => {
   const members = [];
-  for (let i = 1; i <= 999; i++) {
-    const downlines = 1000 - i;
+  // Loop from Member ID 49002 up to and including 50001
+  for (let i = 49002; i <= 50001; i++) {
+    const downlines = 50001 - i;
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -69,7 +70,7 @@ export default function MemberSystemLevel0Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 0 Members Database (1-999)
+                Level 0 Members Database (49,002-50,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 0. Activate your purchased ID to claim your slot and start your journey.
