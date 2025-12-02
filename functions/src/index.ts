@@ -1,3 +1,4 @@
+
 /**
  * Import function triggers from their respective submodules:
  *
@@ -62,10 +63,14 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
             role = 'AI-admin';
             level = 50;
             verificationStatus = 'verified';
-            // Find Super-admin to set as upline
-            const superAdminQuery = await db.collection('accounts').where('email', '==', 'mesy.universe@gmail.com').limit(1).get();
-            if (!superAdminQuery.empty) {
-                uplineMemberId = superAdminQuery.docs[0].id;
+            // Find Super-admin's member document to set as upline
+            const superAdminAccountQuery = await db.collection('accounts').where('email', '==', 'mesy.universe@gmail.com').limit(1).get();
+            if (!superAdminAccountQuery.empty) {
+                const superAdminAccountId = superAdminAccountQuery.docs[0].id;
+                const superAdminMemberQuery = await db.collection('members').where('accountId', '==', superAdminAccountId).limit(1).get();
+                if(!superAdminMemberQuery.empty) {
+                    uplineMemberId = superAdminMemberQuery.docs[0].id;
+                }
             }
         }
 
@@ -82,6 +87,7 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
         });
 
         // 2. Create the user's private profile document
+        // The form data is not directly available here. We rely on the `user` object from Auth.
         batch.set(profileRef, {
             accountId: user.uid,
             id: user.uid,
@@ -113,6 +119,7 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
         logger.error(`Failed to create account structure for user ${user.uid}:`, error);
     }
 });
+
 
 /**
  * Cloud Function that triggers when a user is deleted from Firebase Authentication.
@@ -182,3 +189,5 @@ export const computeEngineProxy = onCall((request) => {
     message: `Successfully received request to start a Compute Engine job of type '${jobType}'.`,
   };
 });
+
+    

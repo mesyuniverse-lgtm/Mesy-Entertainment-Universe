@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Chrome, User as UserIcon } from "lucide-react"
+import { Chrome } from "lucide-react"
 import { useAuth, useFirestore } from "@/firebase";
 import {
   createUserWithEmailAndPassword,
@@ -16,12 +16,10 @@ import {
   signInWithRedirect,
   getRedirectResult,
   UserCredential,
-  signInAnonymously,
-  sendEmailVerification,
   User,
   updateProfile
 } from "firebase/auth";
-import { doc, setDoc, serverTimestamp } from "firebase/firestore";
+import { doc, setDoc, serverTimestamp, collection } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
@@ -90,58 +88,16 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   });
 
   const handleSuccessfulAuth = async (user: User, data?: z.infer<typeof signupSchema>) => {
+    // For sign-ups, we need to update the profile and create firestore documents.
     if (action === 'signup' && data) {
       const displayName = `${data.firstname} ${data.lastname}`.trim();
       await updateProfile(user, { displayName });
-
-      const accountDocRef = doc(firestore, "accounts", user.uid);
-      const isSuperAdmin = data.email === 'mesy.universe@gmail.com';
-
-      await setDoc(accountDocRef, {
-        id: user.uid,
-        email: user.email,
-        role: isSuperAdmin ? 'Super-admin' : 'Member',
-        verificationStatus: isSuperAdmin ? 'verified' : 'unverified',
-        createdAt: serverTimestamp(),
-      }, { merge: true });
-
-      // This is for private KYC-style data
-      const userProfileDocRef = doc(firestore, `accounts/${user.uid}/profile`, user.uid);
-      await setDoc(userProfileDocRef, {
-        accountId: user.uid,
-        firstname: data.firstname,
-        lastname: data.lastname,
-        dob: `${data.birthYear}-${data.birthMonth}-${data.birthDay}`,
-        gender: data.gender,
-        phoneNumber: {
-            countryCode: "+66",
-            number: data.phoneNumber,
-        }
-      });
-      
-      // Create the first Member ID for this account automatically
-      const memberDocRef = doc(firestore, `accounts/${user.uid}/members`, user.uid);
-      await setDoc(memberDocRef, {
-        id: user.uid,
-        accountId: user.uid,
-        username: data.username,
-        nickname: data.nickname || data.username,
-        level: isSuperAdmin ? 50 : 0,
-      });
-
-
-      if (!isSuperAdmin) {
-        await sendEmailVerification(user);
-        toast({
+      // The rest of the document creation is now handled by the `onUserCreate` Cloud Function.
+      // The function will read the `user.displayName` to get the name.
+       toast({
           title: "Welcome, New Member!",
           description: "Please check your email to verify your account.",
         });
-      } else {
-         toast({
-          title: "Welcome, Super Admin!",
-          description: "Your account has been created with administrative privileges.",
-        });
-      }
     }
     router.push(redirectPath || '/dashboard');
   };
@@ -152,7 +108,9 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     getRedirectResult(auth)
       .then((result) => {
         if (result) {
-          handleSuccessfulAuth(result.user);
+          // For Google Sign-in, we just need to handle the successful auth.
+          // The onUserCreate cloud function will handle document creation.
+          router.push(redirectPath || '/dashboard');
         }
         setIsLoading(false);
       })
@@ -216,6 +174,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
       if (action === 'signup') {
         const signupData = data as z.infer<typeof signupSchema>;
         userCredential = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
+        // Pass the form data to handleSuccessfulAuth
         await handleSuccessfulAuth(userCredential.user, signupData);
       } else {
         const loginData = data as z.infer<typeof loginSchema>;
@@ -234,14 +193,11 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     setIsLoading(true);
     try {
       const provider = new GoogleAuthProvider();
-      // Use signInWithRedirect for a better experience on all devices.
       await signInWithRedirect(auth, provider);
     } catch (error: any) {
       handleAuthError(error);
-      setIsLoading(false); // Only set loading to false if redirect fails immediately.
+      setIsLoading(false);
     }
-    // Note: setIsLoading(false) is not called here because the page will redirect.
-    // It is handled in the `getRedirectResult` useEffect.
   }
   
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
@@ -396,3 +352,5 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
     </div>
   )
 }
+
+    
