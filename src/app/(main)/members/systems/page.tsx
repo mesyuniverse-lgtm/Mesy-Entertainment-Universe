@@ -1,11 +1,13 @@
 
 'use client';
 
-import React from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Database, Trophy, ShoppingCart } from 'lucide-react';
+import { ArrowRight, Database, Trophy, ShoppingCart, Search, UserCheck, Star } from 'lucide-react';
 import Link from 'next/link';
+import { Input } from '@/components/ui/input';
+import { membershipData } from '@/lib/data';
 
 const levelSections = [
     {
@@ -368,9 +370,38 @@ const levelSections = [
 ];
 
 export default function MemberSystemPage() {
+    const [searchId, setSearchId] = useState('');
+    const [searchedMember, setSearchedMember] = useState<{level: number, downlines: number, income: number, fee: number, netIncome: number} | null>(null);
+
+    const handleSearch = () => {
+        // In a real app, you would fetch this data from Firestore based on the searchId
+        // For now, we simulate a result.
+        const memberIdNum = parseInt(searchId);
+        if(!isNaN(memberIdNum) && memberIdNum > 0 && memberIdNum <= 50001) {
+            const downlines = 50001 - memberIdNum;
+            const income = downlines * 1;
+            const fee = income * 0.03;
+            const netIncome = income - fee;
+            
+            const levelInfo = membershipData.find(l => downlines < l.members);
+            const level = levelInfo ? levelInfo.level -1 : 50;
+
+            setSearchedMember({
+                level,
+                downlines,
+                income,
+                fee,
+                netIncome
+            });
+        } else {
+            setSearchedMember(null);
+            // Optionally, show a toast notification for invalid ID
+        }
+    }
+
 
   return (
-    <div className="p-4 sm:p-6 lg:p-8 space-y-6">
+    <div className="p-4 sm:p-6 lg:p-8 space-y-8">
       <Card className="bg-card/50 border-primary/20">
         <CardHeader className="flex flex-col sm:flex-row items-start justify-between gap-4">
           <div>
@@ -378,7 +409,7 @@ export default function MemberSystemPage() {
               Members Database
             </CardTitle>
             <CardDescription>
-              Select a level to view the corresponding member database and activation status.
+              Select a level to view the corresponding member database or check your own status.
             </CardDescription>
           </div>
            <Button asChild>
@@ -388,10 +419,59 @@ export default function MemberSystemPage() {
                 </Link>
             </Button>
         </CardHeader>
-        <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      </Card>
+      
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-1 space-y-6">
+            <Card>
+                <CardHeader>
+                    <CardTitle className="flex items-center gap-2"><UserCheck /> Check Your Status</CardTitle>
+                    <CardDescription>Enter your Member ID to see your current level and income potential.</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex gap-2">
+                        <Input 
+                            type="number"
+                            placeholder="Enter Your Member ID..."
+                            value={searchId}
+                            onChange={(e) => setSearchId(e.target.value)}
+                        />
+                        <Button onClick={handleSearch}><Search className="w-4 h-4"/></Button>
+                    </div>
+                    {searchedMember && (
+                         <Card className="bg-secondary/50">
+                            <CardHeader>
+                                <CardTitle className="text-center text-primary text-4xl">{searchedMember.level}</CardTitle>
+                                <CardDescription className="text-center">Current Level</CardDescription>
+                            </CardHeader>
+                            <CardContent className="space-y-2 text-sm">
+                                <div className="flex justify-between">
+                                    <span className="text-muted-foreground">Downline Count:</span>
+                                    <span className="font-semibold">{searchedMember.downlines.toLocaleString()}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-muted-foreground">Gross Income (USD):</span>
+                                    <span className="font-mono">${searchedMember.income.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-muted-foreground">Service Fee (3%):</span>
+                                    <span className="font-mono text-red-400">-${searchedMember.fee.toFixed(2)}</span>
+                                </div>
+                                <div className="flex justify-between font-bold text-primary">
+                                    <span>Net Income (USD):</span>
+                                    <span className="font-mono">${searchedMember.netIncome.toFixed(2)}</span>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
+                </CardContent>
+            </Card>
+        </div>
+
+        <div className="lg:col-span-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {levelSections.map((section) => (
-                    <Card key={section.level} className="group bg-secondary/50 border-border/50 hover:border-primary/40 transition-all">
+                    <Card key={section.level} className="group bg-card/80 border-border/50 hover:border-primary/40 transition-all">
                         <CardHeader>
                             <div className="flex justify-between items-start">
                                 <div>
@@ -414,8 +494,9 @@ export default function MemberSystemPage() {
                     </Card>
                 ))}
             </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }
+
