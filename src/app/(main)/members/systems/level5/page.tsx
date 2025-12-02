@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel5Members = () => {
   const members = [];
-  for (let i = 5000; i <= 5999; i++) {
-    const downlines = 5000 + (i - 5000); // Downline grows from 5000
+  // Loop from Member ID 45002 up to and including 46001
+  for (let i = 45002; i <= 46001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -67,7 +68,7 @@ export default function MemberSystemLevel5Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 5 Members Database (5,000-5,999)
+                Level 5 Members Database (45,002-46,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 5. Activate your purchased ID to claim your slot.
