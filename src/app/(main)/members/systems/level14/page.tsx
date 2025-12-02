@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel14Members = () => {
   const members = [];
-  for (let i = 14000; i <= 14999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 35002 up to and including 36001
+  for (let i = 35002; i <= 36001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -67,7 +68,7 @@ export default function MemberSystemLevel14Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 14 Members Database (14,000-14,999)
+                Level 14 Members Database (35,002-36,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 14. Activate your purchased ID to claim your slot.
