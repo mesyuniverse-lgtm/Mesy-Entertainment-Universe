@@ -2,8 +2,8 @@
 
 import React from 'react';
 import Image from 'next/image';
-import { useFirebase, useDoc, useMemoFirebase } from '@/firebase';
-import { doc } from 'firebase/firestore';
+import { useFirebase, useDoc, useCollection, useMemoFirebase } from '@/firebase';
+import { doc, collection, query, where, limit } from 'firebase/firestore';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils';
 // Define clear types for our data
 type MemberData = {
   nickname?: string;
+  username?: string;
   avatar?: string;
   // other member fields
 };
@@ -27,13 +28,20 @@ type ProfileData = {
 
 export default function ProfilePage() {
   const { user, isUserLoading, firestore } = useFirebase();
-  
-  // Memoize the document reference for the primary Member document.
-  // We assume the main Member ID is the same as the user's UID for simplicity.
-  const memberDocRef = useMemoFirebase(() => {
+
+  // Query to get the first member document associated with the account
+  const memberQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
-    return doc(firestore, `accounts/${user.uid}/members`, user.uid);
+    return query(
+        collection(firestore, 'members'),
+        where('accountId', '==', user.uid),
+        limit(1)
+    );
   }, [user, firestore]);
+
+  const { data: memberCollection, isLoading: isMemberLoading } = useCollection<MemberData>(memberQuery);
+  const memberData = memberCollection?.[0]; // Get the first member from the result array
+
 
   // Memoize the document reference for the private user profile document.
   const profileDocRef = useMemoFirebase(() => {
@@ -41,11 +49,10 @@ export default function ProfilePage() {
     return doc(firestore, `accounts/${user.uid}/profile`, user.uid);
   }, [user, firestore]);
 
-  const { data: memberData, isLoading: isMemberLoading } = useDoc<MemberData>(memberDocRef);
   const { data: profileData, isLoading: isProfileLoading } = useDoc<ProfileData>(profileDocRef);
 
   const isLoading = isUserLoading || isMemberLoading || isProfileLoading;
-  
+
   const coverImage = PlaceHolderImages.find(p => p.id === 'fantasy-landscape-1');
 
   // Unified loading skeleton
@@ -68,7 +75,7 @@ export default function ProfilePage() {
   if (isLoading) {
     return renderSkeleton();
   }
-  
+
   const lifeEvents = [
       { year: '2022', text: 'ได้เริ่มงานใหม่ที่ Past times' },
       { year: '2020', text: 'ได้เริ่มงานใหม่ที่ Sonya\'z Divaparadises' },
@@ -85,7 +92,7 @@ export default function ProfilePage() {
       { label: 'รายละเอียดเกี่ยวกับตัวคุณ', active: false },
       { label: 'เหตุการณ์ในชีวิต', active: true },
   ];
-  
+
   // Combine data safely, providing fallbacks
   const displayName = memberData?.nickname || `${profileData?.firstname || ''} ${profileData?.lastname || ''}`.trim() || user?.displayName || 'User';
   const avatarUrl = memberData?.avatar || user?.photoURL || PlaceHolderImages.find(p => p.id === 'default-avatar')?.imageUrl || '';
