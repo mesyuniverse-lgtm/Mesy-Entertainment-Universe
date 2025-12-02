@@ -28,20 +28,21 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel4Members = () => {
   const members = [];
-  // Loop from Member ID 46002 up to and including 47001
-  for (let i = 46002; i <= 47001; i++) {
-    // This calculation results in a downline range of 4000-4999
-    const downlines = 51001 - i;
+  // Loop to generate 1000 members, starting from memberId 46002
+  for (let i = 0; i < 1000; i++) {
+    const memberId = 46002 + i;
+    // This calculation ensures downlines are in the range 4000-4999, descending
+    const downlines = 4999 - i;
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
 
     members.push({
-      id: i.toString(),
+      id: memberId.toString(),
       isClaimed: false, // All are initially unclaimed
-      displayName: `Avatar No.${i}`,
+      displayName: `Avatar No.${memberId}`,
       email: 'waiting for member...',
-      memberId: i,
+      memberId: memberId,
       level: 4,
       downlineCount: downlines,
       income,
@@ -49,9 +50,9 @@ const generateLevel4Members = () => {
       netIncome,
     });
   }
-  // We want to show the highest downline count first, so we reverse the array
-  return members.reverse();
+  return members;
 };
+
 
 // --- Helper Functions ---
 const formatCurrency = (value: number) => value.toFixed(2);
