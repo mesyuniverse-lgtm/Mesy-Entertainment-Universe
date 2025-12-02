@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel31Members = () => {
   const members = [];
-  for (let i = 31000; i <= 31999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 18002 up to and including 19001
+  for (let i = 18002; i <= 19001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -67,7 +68,7 @@ export default function MemberSystemLevel31Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 31 Members Database (31,000-31,999)
+                Level 31 Members Database (18,002-19,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 31. Activate your purchased ID to claim your slot.
