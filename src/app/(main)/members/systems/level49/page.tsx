@@ -28,8 +28,8 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel49Members = () => {
   const members = [];
-  for (let i = 49000; i <= 49999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  for (let i = 2; i <= 999; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -67,7 +67,7 @@ export default function MemberSystemLevel49Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 49 Members Database (49,000-49,999)
+                Level 49 Members Database (2-999)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 49. Activate your purchased ID to claim your slot.
