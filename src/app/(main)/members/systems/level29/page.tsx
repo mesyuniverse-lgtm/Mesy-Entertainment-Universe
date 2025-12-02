@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel29Members = () => {
   const members = [];
-  for (let i = 29000; i <= 29999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 20002 up to and including 21001
+  for (let i = 20002; i <= 21001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -50,6 +51,7 @@ const generateLevel29Members = () => {
   return members;
 };
 
+
 // --- Helper Functions ---
 const formatCurrency = (value: number) => value.toFixed(2);
 
@@ -67,7 +69,7 @@ export default function MemberSystemLevel29Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 29 Members Database (29,000-29,999)
+                Level 29 Members Database (20,002-21,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 29. Activate your purchased ID to claim your slot.
