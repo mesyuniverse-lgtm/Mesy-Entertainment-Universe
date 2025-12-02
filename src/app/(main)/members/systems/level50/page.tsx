@@ -40,7 +40,7 @@ const level50Data = {
 const hallOfFame = [
   {
     rank: 1,
-    displayName: 'mesy.universe',
+    displayName: 'Mesy.universe.1',
     memberId: '1',
     dateAchieved: '2025-01-01',
     avatarId: 'fighter-character',
