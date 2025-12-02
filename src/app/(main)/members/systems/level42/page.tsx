@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel42Members = () => {
   const members = [];
-  for (let i = 42000; i <= 42999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 7002 up to and including 8001
+  for (let i = 7002; i <= 8001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -50,6 +51,7 @@ const generateLevel42Members = () => {
   return members;
 };
 
+
 // --- Helper Functions ---
 const formatCurrency = (value: number) => value.toFixed(2);
 
@@ -67,7 +69,7 @@ export default function MemberSystemLevel42Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 42 Members Database (42,000-42,999)
+                Level 42 Members Database (7,002-8,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 42. Activate your purchased ID to claim your slot.
