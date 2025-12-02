@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel25Members = () => {
   const members = [];
-  for (let i = 25000; i <= 25999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 24002 up to and including 25001
+  for (let i = 24002; i <= 25001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -50,6 +51,7 @@ const generateLevel25Members = () => {
   return members;
 };
 
+
 // --- Helper Functions ---
 const formatCurrency = (value: number) => value.toFixed(2);
 
@@ -67,7 +69,7 @@ export default function MemberSystemLevel25Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 25 Members Database (25,000-25,999)
+                Level 25 Members Database (24,002-25,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 25. Activate your purchased ID to claim your slot.
