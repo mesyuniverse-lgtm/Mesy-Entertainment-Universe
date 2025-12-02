@@ -4,7 +4,7 @@
 import React from 'react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, Database, Trophy } from 'lucide-react';
+import { ArrowRight, Database, Trophy, ShoppingCart } from 'lucide-react';
 import Link from 'next/link';
 
 const levelSections = [
@@ -372,13 +372,21 @@ export default function MemberSystemPage() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 space-y-6">
       <Card className="bg-card/50 border-primary/20">
-        <CardHeader>
-          <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-            Members Database
-          </CardTitle>
-          <CardDescription>
-            Select a level to view the corresponding member database and activation status.
-          </CardDescription>
+        <CardHeader className="flex flex-col sm:flex-row items-start justify-between gap-4">
+          <div>
+            <CardTitle className="text-2xl font-bold text-primary tracking-wider">
+              Members Database
+            </CardTitle>
+            <CardDescription>
+              Select a level to view the corresponding member database and activation status.
+            </CardDescription>
+          </div>
+           <Button asChild>
+                <Link href="/members/systems/purchase">
+                    <ShoppingCart className="mr-2 h-4 w-4" />
+                    Purchase Member ID
+                </Link>
+            </Button>
         </CardHeader>
         <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
