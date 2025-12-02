@@ -1,29 +1,31 @@
 'use client';
 
-import React from 'react';
+import React, { useMemo } from 'react';
 import Image from 'next/image';
 import { useFirebase, useDoc, useCollection, useMemoFirebase } from '@/firebase';
 import { doc, collection, query, where, limit } from 'firebase/firestore';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Camera, Edit, PlusCircle, Briefcase, MoreHorizontal } from 'lucide-react';
+import { Camera, Edit, MoreHorizontal, User, Mail, Smartphone, Badge } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { cn } from '@/lib/utils';
+import { Badge as UiBadge } from '@/components/ui/badge'; // Renamed to avoid conflict
 
 // Define clear types for our data
 type MemberData = {
+  id: string;
   nickname?: string;
   username?: string;
   avatar?: string;
-  // other member fields
+  level?: number;
+  downlines?: number;
 };
 
 type ProfileData = {
   firstname?: string;
   lastname?: string;
-  // other private profile fields
+  phoneNumber?: { number: string };
 };
 
 export default function ProfilePage() {
@@ -57,17 +59,38 @@ export default function ProfilePage() {
 
   // Unified loading skeleton
   const renderSkeleton = () => (
-    <div className="p-4">
-        <div className="w-full max-w-7xl mx-auto">
-        <Skeleton className="h-[250px] md:h-[400px] w-full rounded-b-lg" />
-        <div className="px-4 md:px-8">
-            <div className="flex -mt-12 md:-mt-20">
-            <Skeleton className="h-32 w-32 md:h-44 md:w-44 rounded-full border-4 border-background" />
+    <div className="w-full">
+        <div className="max-w-7xl mx-auto">
+             <Card className="bg-card/80 border-0 rounded-none md:rounded-b-lg shadow-none">
+                <CardContent className="p-0">
+                    <Skeleton className="h-[250px] md:h-[400px] w-full rounded-b-lg" />
+                    <div className="px-4 md:px-8">
+                        <div className="flex flex-col md:flex-row gap-4 -mt-12 md:-mt-20">
+                             <Skeleton className="h-32 w-32 md:h-44 md:w-44 rounded-full border-4 border-background bg-background" />
+                             <div className="flex-1 pt-4 md:pt-24">
+                                <Skeleton className="h-8 w-64" />
+                                <Skeleton className="h-4 w-48 mt-2" />
+                            </div>
+                            <div className="flex items-end gap-2 pb-4">
+                                <Skeleton className="h-10 w-32" />
+                                <Skeleton className="h-10 w-24" />
+                            </div>
+                        </div>
+                        <hr className="my-4 border-border" />
+                        <div className="flex justify-between items-center">
+                            <div className="flex gap-1">
+                                <Skeleton className="h-10 w-20" />
+                                <Skeleton className="h-10 w-20" />
+                                <Skeleton className="h-10 w-20" />
+                            </div>
+                            <Skeleton className="h-10 w-10" />
+                        </div>
+                    </div>
+                </CardContent>
+             </Card>
+             <div className="p-4 md:p-8">
+                <Card className="bg-card/80"><CardContent className="p-4"><Skeleton className="h-40 w-full" /></CardContent></Card>
             </div>
-            <Skeleton className="h-8 w-64 mt-4" />
-            <Skeleton className="h-4 w-48 mt-2" />
-            <div className="h-px bg-border my-4" />
-        </div>
         </div>
     </div>
   );
@@ -76,25 +99,9 @@ export default function ProfilePage() {
     return renderSkeleton();
   }
 
-  const lifeEvents = [
-      { year: '2022', text: 'ได้เริ่มงานใหม่ที่ Past times' },
-      { year: '2020', text: 'ได้เริ่มงานใหม่ที่ Sonya\'z Divaparadises' },
-      { year: '2020', text: 'ได้เริ่มงานใหม่ที่ ทำงานอิสระ' },
-      { year: '2020', text: 'ออกจากงานที่ Siam Bayshore Resort & Spa, Pattaya' },
-  ];
-
-  const aboutSections = [
-      { label: 'ภาพรวม', active: false },
-      { label: 'ที่ทำงานและการศึกษา', active: false },
-      { label: 'สถานที่ที่เคยอาศัยอยู่', active: false },
-      { label: 'ข้อมูลติดต่อและข้อมูลพื้นฐาน', active: false },
-      { label: 'ครอบครัวและการคบหา', active: false },
-      { label: 'รายละเอียดเกี่ยวกับตัวคุณ', active: false },
-      { label: 'เหตุการณ์ในชีวิต', active: true },
-  ];
-
   // Combine data safely, providing fallbacks
   const displayName = memberData?.nickname || `${profileData?.firstname || ''} ${profileData?.lastname || ''}`.trim() || user?.displayName || 'User';
+  const username = memberData?.username || user?.email?.split('@')[0] || 'username';
   const avatarUrl = memberData?.avatar || user?.photoURL || PlaceHolderImages.find(p => p.id === 'default-avatar')?.imageUrl || '';
   const fallbackChar = displayName?.charAt(0)?.toUpperCase() || 'U';
 
@@ -118,7 +125,7 @@ export default function ProfilePage() {
               <div className="absolute bottom-4 right-4">
                 <Button variant="secondary">
                   <Camera className="mr-2 h-4 w-4" />
-                  แก้ไขรูปภาพหน้าปก
+                  Edit Cover Photo
                 </Button>
               </div>
             </div>
@@ -135,14 +142,12 @@ export default function ProfilePage() {
                 <div className="flex-1 pt-4 md:pt-24">
                   <h1 className="text-3xl font-bold">{displayName}</h1>
                   <p className="text-muted-foreground">
-                    ผู้ติดตาม 5.1 พัน คน • กำลังติดตาม 2.1 พัน คน
+                    @{username}
                   </p>
-                  {/* Follower avatars would go here */}
                 </div>
                 <div className="flex items-end gap-2 pb-4">
-                  <Button className="bg-blue-600 hover:bg-blue-700">แดชบอร์ดมืออาชีพ</Button>
-                  <Button variant="secondary"><Edit className="mr-2 h-4 w-4"/>แก้ไข</Button>
-                  <Button variant="secondary">ลงโฆษณา</Button>
+                  <Button className="bg-blue-600 hover:bg-blue-700">Professional Dashboard</Button>
+                  <Button variant="secondary"><Edit className="mr-2 h-4 w-4"/>Edit</Button>
                 </div>
               </div>
               
@@ -151,12 +156,10 @@ export default function ProfilePage() {
               {/* Profile Navigation */}
               <div className="flex justify-between items-center">
                  <div className="flex gap-1">
-                    <Button variant="ghost" className="text-foreground font-semibold">โพสต์</Button>
-                    <Button variant="ghost" className="bg-primary/10 text-primary font-semibold">เกี่ยวกับ</Button>
+                    <Button variant="ghost" className="text-foreground font-semibold">Posts</Button>
+                    <Button variant="ghost" className="bg-primary/10 text-primary font-semibold">About</Button>
                     <Button variant="ghost" className="text-muted-foreground font-semibold">Reels</Button>
-                    <Button variant="ghost" className="text-muted-foreground font-semibold">รูปภาพ</Button>
-                    <Button variant="ghost" className="text-muted-foreground font-semibold">กลุ่ม</Button>
-                    <Button variant="ghost" className="text-muted-foreground font-semibold">เพิ่มเติม</Button>
+                    <Button variant="ghost" className="text-muted-foreground font-semibold">Photos</Button>
                  </div>
                  <Button variant="secondary" size="icon"><MoreHorizontal /></Button>
               </div>
@@ -165,57 +168,37 @@ export default function ProfilePage() {
         </Card>
         
         {/* About Section Content */}
-        <div className="p-4 md:p-8 grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <div className="lg:col-span-1">
-                <Card className="bg-card/80">
-                    <CardContent className="p-4">
-                        <h2 className="text-xl font-bold mb-4">เกี่ยวกับ</h2>
-                        <nav>
-                            <ul>
-                                {aboutSections.map(section => (
-                                    <li key={section.label}>
-                                        <a href="#" className={cn(
-                                            "block p-2 rounded-md font-semibold",
-                                            section.active ? 'bg-primary/10 text-primary' : 'hover:bg-secondary'
-                                        )}>
-                                            {section.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </nav>
-                    </CardContent>
-                </Card>
-            </div>
-            <div className="lg:col-span-2">
-                <Card className="bg-card/80">
-                    <CardContent className="p-4">
-                        <h2 className="text-xl font-bold mb-4">เหตุการณ์ในชีวิต</h2>
-                         <Button variant="secondary" className="w-full mb-6">
-                            <PlusCircle className="mr-2 h-4 w-4" />
-                            เพิ่มเหตุการณ์ในชีวิต
-                         </Button>
-                         <div className="space-y-6">
-                            {lifeEvents.map((event, index) => (
-                                <div key={index} className="flex items-start gap-4">
-                                    <div className="text-sm font-semibold text-muted-foreground">{event.year}</div>
-                                    <div className="flex-1">
-                                        <div className="flex items-center gap-3">
-                                            <div className="p-2 bg-secondary rounded-full">
-                                                <Briefcase className="h-5 w-5 text-muted-foreground" />
-                                            </div>
-                                            <p>{event.text}</p>
-                                        </div>
-                                    </div>
-                                    <Button variant="ghost" size="icon"><MoreHorizontal /></Button>
-                                </div>
-                            ))}
-                         </div>
-                    </CardContent>
-                </Card>
-            </div>
+        <div className="p-4 md:p-8">
+             <Card className="bg-card/80">
+                <CardHeader>
+                    <CardTitle>About</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div className="flex items-center gap-4">
+                        <User className="w-5 h-5 text-muted-foreground" />
+                        <p>{`${profileData?.firstname || ''} ${profileData?.lastname || ''}`.trim()}</p>
+                    </div>
+                     <div className="flex items-center gap-4">
+                        <Mail className="w-5 h-5 text-muted-foreground" />
+                        <p>{user?.email}</p>
+                    </div>
+                    {profileData?.phoneNumber?.number && (
+                        <div className="flex items-center gap-4">
+                            <Smartphone className="w-5 h-5 text-muted-foreground" />
+                            <p>{profileData.phoneNumber.number}</p>
+                        </div>
+                    )}
+                    {memberData && (
+                        <div className="flex items-center gap-4">
+                            <UiBadge variant="secondary">Level {memberData.level}</UiBadge>
+                            <UiBadge variant="outline">Downline: {(memberData.downlines || 0).toLocaleString()}</UiBadge>
+                        </div>
+                    )}
+                </CardContent>
+            </Card>
         </div>
       </div>
     </div>
   );
 }
+
