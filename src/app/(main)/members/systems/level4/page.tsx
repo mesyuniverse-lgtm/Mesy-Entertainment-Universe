@@ -28,10 +28,10 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel4Members = () => {
   const members = [];
-  // Downline range: 4,000 - 4,999
-  // Member ID range: 45002 - 46001 (50001 - 46001 = 4000; 50001 - 45002 = 4999)
-  for (let i = 45002; i <= 46001; i++) {
-    const downlines = 50001 - i; // Downline count decreases as Member ID increases
+  // Loop from Member ID 46002 up to and including 47001
+  for (let i = 46002; i <= 47001; i++) {
+    // This calculation results in a downline range of 4000-4999
+    const downlines = 51001 - i;
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -49,7 +49,8 @@ const generateLevel4Members = () => {
       netIncome,
     });
   }
-  return members;
+  // We want to show the highest downline count first, so we reverse the array
+  return members.reverse();
 };
 
 // --- Helper Functions ---
