@@ -3,7 +3,7 @@
 
 import { useState, useMemo, useEffect } from 'react';
 import { useFirebase, useDoc, useCollection, useMemoFirebase } from '@/firebase';
-import { doc, collection, query, orderBy } from 'firebase/firestore';
+import { doc, collection, query, where, orderBy } from 'firebase/firestore';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -20,6 +20,13 @@ interface Member {
   level: number;
   avatar?: string;
   downlines?: number;
+  sequentialMemberId?: string;
+}
+
+interface AccountProfile {
+    firstname?: string;
+    lastname?: string;
+    phoneNumber?: { number: string };
 }
 
 export default function AccountMemberIdPage() {
@@ -32,25 +39,21 @@ export default function AccountMemberIdPage() {
     return doc(firestore, `accounts/${user.uid}/profile`, user.uid);
   }, [user, firestore]);
 
-  const { data: accountProfile, isLoading: isAccountProfileLoading } = useDoc(accountProfileRef);
-  
-  // Fetch account data (public)
-  const accountRef = useMemoFirebase(() => {
-    if (!user || !firestore) return null;
-    return doc(firestore, "accounts", user.uid);
-  }, [user, firestore]);
-  const { data: accountData, isLoading: isAccountDataLoading } = useDoc(accountRef);
-
+  const { data: accountProfile, isLoading: isAccountProfileLoading } = useDoc<AccountProfile>(accountProfileRef);
 
   // Fetch all member IDs for this account
   const membersQuery = useMemoFirebase(() => {
     if (!user || !firestore) return null;
-    return query(collection(firestore, `accounts/${user.uid}/members`), orderBy('createdAt', 'asc'));
+    return query(
+        collection(firestore, 'members'), 
+        where('accountId', '==', user.uid), 
+        orderBy('createdAt', 'asc')
+    );
   }, [user, firestore]);
 
   const { data: members, isLoading: areMembersLoading } = useCollection<Member>(membersQuery);
 
-  const isLoading = isUserLoading || isAccountProfileLoading || areMembersLoading || isAccountDataLoading;
+  const isLoading = isUserLoading || isAccountProfileLoading || areMembersLoading;
 
   const memberSlots: (Member | null)[] = useMemo(() => {
     const slots = Array(5).fill(null);
@@ -64,7 +67,7 @@ export default function AccountMemberIdPage() {
     return slots;
   }, [members]);
 
-  const selectedMember = memberSlots[selectedMemberIndex];
+  const selectedMember = members && members.length > 0 ? members[selectedMemberIndex] : null;
 
   const calculateIncome = (downlines: number) => {
     const grossIncome = downlines * 1; // Assuming 1 USD per downline
@@ -85,8 +88,6 @@ export default function AccountMemberIdPage() {
     return <LoadingSkeleton />;
   }
   
-  const accountProfileData = accountProfile as any;
-
   return (
     <div className="relative flex h-screen w-full items-center justify-center overflow-hidden bg-black text-white p-4">
       {bgImage && (
@@ -109,10 +110,10 @@ export default function AccountMemberIdPage() {
                 <div className="bg-black/40 backdrop-blur-sm p-4 rounded-lg border border-white/10 space-y-3">
                     <h3 className="text-xl font-bold text-green-400">Activated</h3>
                     <div className="text-sm space-y-2">
-                        <p className='flex items-center gap-2'>Account Name: <span className='text-muted-foreground'>{accountProfileData?.firstname} {accountProfileData?.lastname}</span></p>
+                        <p className='flex items-center gap-2'>Account Name: <span className='text-muted-foreground'>{accountProfile?.firstname} {accountProfile?.lastname}</span></p>
                         <p className='flex items-center gap-2'>Account ID: <span className='text-muted-foreground truncate'>{user?.uid}</span> <CheckCircle className='w-4 h-4 text-green-400'/></p>
                         <p className='flex items-center gap-2'>Email: <span className='text-muted-foreground'>{user?.email}</span> <CheckCircle className='w-4 h-4 text-green-400'/></p>
-                        <p className='flex items-center gap-2'>Tel: <span className='text-muted-foreground'>{accountProfileData?.phoneNumber?.number}</span> <CheckCircle className='w-4 h-4 text-green-400'/></p>
+                        <p className='flex items-center gap-2'>Tel: <span className='text-muted-foreground'>{accountProfile?.phoneNumber?.number}</span> <CheckCircle className='w-4 h-4 text-green-400'/></p>
                         <p className='flex items-center gap-2'>PayMent <CheckCircle className='w-4 h-4 text-green-400'/></p>
                     </div>
                     <hr className="border-white/10"/>
@@ -121,7 +122,7 @@ export default function AccountMemberIdPage() {
                         {selectedMember ? (
                           <div className='text-xs space-y-1 pl-4'>
                             <p>MemberName: <span className='font-bold text-base'>{selectedMember.nickname}</span></p>
-                            <p>MemberID: <span className='text-muted-foreground'>{selectedMember.id}</span></p>
+                            <p>MemberID: <span className='text-muted-foreground'>{selectedMember.sequentialMemberId || selectedMember.id}</span></p>
                             <p>Level: <span className='font-bold'>{selectedMember.level}</span></p>
                             <p>Downline: <span className='font-bold'>{(selectedMember.downlines || 0).toLocaleString()}</span></p>
                             <div className='pt-2 mt-2 border-t border-white/10'>
@@ -190,7 +191,7 @@ export default function AccountMemberIdPage() {
                                 <span>{member.nickname}</span>
                                 <span className='px-2 py-0.5 rounded-md bg-purple-600 text-xs font-semibold'>Lv.{member.level}</span>
                               </p>
-                              <p className='text-xs text-muted-foreground truncate'>MemberID: {member.id}</p>
+                              <p className='text-xs text-muted-foreground truncate'>MemberID: {member.sequentialMemberId || member.id}</p>
                           </div>
                        </button>
                     )

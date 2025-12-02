@@ -81,7 +81,7 @@ export default function GetMemberIdPage() {
     // In a real scenario, payment would be processed here.
     // For now, we simulate success and create the Member ID document.
     
-    const newMemberRef = doc(collection(firestore, `accounts/${user.uid}/members`));
+    const newMemberRef = doc(collection(firestore, 'members'));
     const memberId = newMemberRef.id;
     const newMemberData = {
       id: memberId,
@@ -91,7 +91,6 @@ export default function GetMemberIdPage() {
       level: 0,
       createdAt: serverTimestamp(),
       avatar: avatarImage?.imageUrl || '', // Store avatar image url
-      downlines: 0
     };
 
     setDoc(newMemberRef, newMemberData)

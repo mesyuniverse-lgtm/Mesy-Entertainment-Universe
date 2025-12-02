@@ -46,7 +46,7 @@ export default function UserProfilePage({
         setIsLoading(true);
         setError(null);
         // We query the 'members' collection group to find the username across all accounts
-        const membersRef = collectionGroup(firestore, 'members');
+        const membersRef = collection(firestore, 'members');
         const q = query(
           membersRef,
           where('username', '==', params.username),

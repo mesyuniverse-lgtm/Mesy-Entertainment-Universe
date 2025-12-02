@@ -8,9 +8,9 @@
  */
 
 import {initializeApp} from "firebase-admin/app";
-import {getFirestore, FieldValue} from "firebase-admin/firestore";
+import {getFirestore} from "firebase-admin/firestore";
 import * as logger from "firebase-functions/logger";
-import {auth} from "firebase-functions";
+import {auth, firestore} from "firebase-functions";
 import { onCall } from "firebase-functions/v2/https";
 
 // Export Genkit flows
@@ -22,12 +22,54 @@ const db = getFirestore();
 
 /**
  * Cloud Function that triggers when a new user is created in Firebase Authentication.
- * It generates a sequential, human-readable account ID (e.g., account.1, account.2)
- * and saves it to the user's account document in Firestore.
+ * It creates the corresponding 'account' and 'profile' documents in Firestore.
  */
 export const onUserCreate = auth.user().onCreate(async (user) => {
-    const counterRef = db.collection("counters").doc("accounts");
-    const userAccountRef = db.collection("accounts").doc(user.uid);
+    const accountRef = db.collection("accounts").doc(user.uid);
+    const profileRef = db.collection("accounts").doc(user.uid).collection("profile").doc(user.uid);
+
+    try {
+        const isSuperAdmin = user.email === 'mesy.universe@gmail.com';
+
+        // Create the main account document
+        await accountRef.set({
+            id: user.uid,
+            email: user.email,
+            role: isSuperAdmin ? 'Super-admin' : 'Member',
+            verificationStatus: 'unverified',
+            createdAt: new Date().toISOString(),
+        });
+        
+        // Create the user's private profile document
+        await profileRef.set({
+            accountId: user.uid,
+            id: user.uid,
+            // Pre-fill with any available data, otherwise empty strings
+            firstname: user.displayName?.split(' ')[0] || '',
+            lastname: user.displayName?.split(' ').slice(1).join(' ') || '',
+            phoneNumber: {
+                countryCode: '',
+                number: user.phoneNumber || ''
+            }
+        });
+
+        logger.log(`Successfully created account and profile for user ${user.uid}`);
+        
+    } catch (error) {
+        logger.error(`Failed to create account structure for user ${user.uid}:`, error);
+    }
+});
+
+
+/**
+ * Cloud Function that triggers when a new Member ID is created in the global 'members' collection.
+ * It generates a globally sequential, human-readable member ID (e.g., member.1, member.2)
+ * and saves it back to the member's document.
+ */
+export const onMemberCreate = firestore.document('members/{memberId}').onCreate(async (snap, context) => {
+    const { memberId } = context.params;
+    const memberRef = db.collection("members").doc(memberId);
+    const counterRef = db.collection("counters").doc("members");
 
     try {
         const sequentialId = await db.runTransaction(async (transaction) => {
@@ -36,21 +78,21 @@ export const onUserCreate = auth.user().onCreate(async (user) => {
             let nextId = 1;
             if (counterDoc.exists) {
                 const data = counterDoc.data();
-                if (data && typeof data.lastAccountId === 'number') {
-                    nextId = data.lastAccountId + 1;
+                if (data && typeof data.lastMemberId === 'number') {
+                    nextId = data.lastMemberId + 1;
                 }
             }
             
-            transaction.set(counterRef, { lastAccountId: nextId }, { merge: true });
+            transaction.set(counterRef, { lastMemberId: nextId }, { merge: true });
             
-            return `account.${nextId}`;
+            return `member.${nextId}`;
         });
 
-        await userAccountRef.set({ sequentialAccountId: sequentialId }, { merge: true });
-        logger.log(`Successfully assigned sequential ID '${sequentialId}' to user ${user.uid}`);
+        await memberRef.update({ sequentialMemberId: sequentialId });
+        logger.log(`Successfully assigned sequential ID '${sequentialId}' to member ${memberId}`);
         
     } catch (error) {
-        logger.error(`Failed to generate sequential ID for user ${user.uid}:`, error);
+        logger.error(`Failed to generate sequential ID for member ${memberId}:`, error);
     }
 });
 
@@ -66,10 +108,12 @@ export const onUserDelete = auth.user().onDelete(async (user) => {
   logger.log(`Account for ${user.email} (${user.uid}) deleted. Deleting all account data from Firestore.`);
 
   try {
+    // Note: Deleting associated 'member' documents would require a more complex query
+    // and is omitted here for simplicity. A production app would need to handle this.
     await db.recursiveDelete(accountDocRef);
-    logger.log(`Successfully deleted Firestore data and all subcollections for account: ${user.uid}`);
+    logger.log(`Successfully deleted Firestore account data for user: ${user.uid}`);
   } catch (error) {
-    logger.error(`Error deleting Firestore data for account: ${user.uid}`, error);
+    logger.error(`Error deleting Firestore data for user: ${user.uid}`, error);
   }
 });
 

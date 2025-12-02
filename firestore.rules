@@ -2,194 +2,110 @@
  * @fileOverview Firestore Security Rules for the Mesy Entertainment Universe platform.
  *
  * Core Philosophy:
- * This ruleset enforces a strict user-ownership model. The primary data is organized under an `accounts`
- * collection, where each document key is the user's Firebase Auth UID. All user-specific data,
- * including their multiple 'Member' identities, profiles, wallets, etc., are stored in subcollections.
- * This ensures that a user can only ever access data nested under their own account ID.
+ * This ruleset enforces a strict user-ownership model for accounts and a global model for members.
+ * - The `accounts` collection is private to each user.
+ * - The `members` collection is global, but write access to a member document is restricted to the account owner.
  *
  * Data Structure:
- * - `accounts/{accountId}`: The root document for a user's account.
- * - `accounts/{accountId}/members/{memberId}`: Data for each of the user's up to 5 digital identities.
- * - `accounts/{accountId}/profile/{profileId}`: Private KYC information for the account.
- * - Global data (quests, rewards, stores) resides in top-level collections.
+ * - `accounts/{accountId}`: The root document for a user's account, only accessible by the owner.
+ * - `members/{memberId}`: Globally unique member identities. Each contains an `accountId` linking to its owner.
+ * - Public data (quests, rewards, stores) resides in top-level collections with appropriate rules.
  *
  * Key Security Decisions:
  * - A user can only access documents and subcollections under `/accounts/{request.auth.uid}`.
- * - Listing operations on the 'accounts' collection are allowed for any signed-in user to enable the global member overview page.
- * - Data validation is limited to enforcing ownership and relational integrity during creation.
+ * - A user can only write to a `members/{memberId}` document if the document's `accountId` matches their UID.
+ * - Public read is allowed on `members` for profile pages.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
     /**
-     * @description Rules for the /accounts/{accountId} collection. This is the root for all user data.
-     * Access is strictly limited to the owner of the account for single document reads/writes,
-     * but listing is allowed for any authenticated user.
+     * Helper functions
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAccountOwner(accountId) {
+      return isSignedIn() && request.auth.uid == accountId;
+    }
+
+    /**
+     * Rules for the /accounts/{accountId} collection. This is the root for all private user data.
+     * Access is strictly limited to the owner of the account.
      */
     match /accounts/{accountId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
+      allow read, write: if isAccountOwner(accountId);
 
-      function isOwner(accountId) {
-        return isSignedIn() && request.auth.uid == accountId;
-      }
-
-      function isExistingOwner(accountId) {
-        return isOwner(accountId) && resource != null;
-      }
-
-      // Allow owner to read their own account document.
-      allow get: if isOwner(accountId);
-      // Allow any signed-in user to list accounts for the member overview page.
-      allow list: if isSignedIn();
-      // Allow owner to create their own account document.
-      allow create: if isOwner(accountId) && request.resource.data.id == accountId;
-      // Allow owner to update their own account document.
-      allow update: if isExistingOwner(accountId) && request.resource.data.id == resource.data.id;
-      // Allow owner to delete their own account document.
-      allow delete: if isExistingOwner(accountId);
-
-      /**
-       * @description Rules for the /accounts/{accountId}/profile/{profileId} subcollection.
-       * Contains private KYC data, only accessible by the account owner.
-       */
       match /profile/{profileId} {
-        allow read, write: if isOwner(accountId);
+        allow read, write: if isAccountOwner(accountId);
       }
 
-      /**
-       * @description Rules for the /accounts/{accountId}/members/{memberId} subcollection.
-       * Contains data for each of the user's digital identities (up to 5).
-       * Public read is allowed for profile pages, but writing is restricted to the owner.
-       */
-      match /members/{memberId} {
-        // Allow public read for profile pages.
-        allow get: if true;
-        // Collection group queries for usernames need list access. Allow for any authenticated user.
-        allow list: if isSignedIn();
-        // Only the owner can create, update, or delete their own member documents.
-        allow write: if isOwner(accountId);
-        
-        /**
-         * @description Rules for the downline of a specific member identity.
-         */
-        match /downline/{downlineMemberId} {
-          allow read, write: if isOwner(accountId);
-        }
-
-        /**
-         * @description Rules for the wallet of a specific member identity.
-         */
-        match /wallet/{walletId} {
-          allow read, write: if isOwner(accountId);
-          
-           /**
-            * @description Rules for wallet transactions.
-            */
-          match /transactions/{transactionId} {
-              allow read, write: if isOwner(accountId);
-          }
-        }
-        
-        /**
-         * @description Rules for AI sessions of a specific member identity.
-         */
-        match /ai_sessions/{sessionId} {
-            allow read, write: if isOwner(accountId);
-        }
-      }
-
-      /**
-       * @description Rules for account-wide notifications.
-       */
       match /notifications/{notificationId} {
-        allow read, write: if isOwner(accountId);
+        allow read, write: if isAccountOwner(accountId);
+      }
+    }
+
+    /**
+     * Rules for the global /members/{memberId} collection.
+     * Anyone can read public member data.
+     * Only the owning account can create or modify a member document.
+     */
+    match /members/{memberId} {
+      // Public read access for profile pages
+      allow get: if true;
+      allow list: if isSignedIn();
+
+      // Allow create only if the accountId in the new data matches the user's UID.
+      allow create: if isSignedIn() && request.resource.data.accountId == request.auth.uid;
+      
+      // Allow update/delete only if the existing document's accountId matches the user's UID.
+      allow update, delete: if isSignedIn() && get(/databases/$(database)/documents/members/$(memberId)).data.accountId == request.auth.uid;
+      
+      match /downline/{downlineMemberId} {
+         // Only the upline member (owner of the parent member document) can manage their downline.
+         allow read, write: if isSignedIn() && get(/databases/$(database)/documents/members/$(memberId)).data.accountId == request.auth.uid;
+      }
+      
+      match /wallet/{walletId} {
+        allow read, write: if isSignedIn() && get(/databases/$(database)/documents/members/$(memberId)).data.accountId == request.auth.uid;
+          
+        match /transactions/{transactionId} {
+          allow read, write: if isSignedIn() && get(/databases/$(database)/documents/members/$(memberId)).data.accountId == request.auth.uid;
+        }
+      }
+      
+      match /ai_sessions/{sessionId} {
+         allow read, write: if isSignedIn() && get(/databases/$(database)/documents/members/$(memberId)).data.accountId == request.auth.uid;
       }
     }
     
     /**
-     * @description Rules for the /mesy-members/{memberId} collection. Allows any authenticated member to read, but write is restricted.
-     * @path /mesy-members/{memberId}
-     * @allow (read) Any signed-in member can read the list of MESY members.
-     * @deny (write) Writes are currently disabled from the client for security. Should be handled by backend/admin processes.
-     * @principle Public read, restricted write for special member data.
+     * Rules for the /counters/{counterId} collection.
+     * This is only accessible from backend functions, not from the client.
      */
-    match /mesy-members/{memberId} {
-        function isSignedIn() {
-          return request.auth != null;
-        }
-        
-        allow read: if isSignedIn();
-        allow write: if false; // Restricted to admin/server-side operations
+    match /counters/{counterId} {
+      allow read, write: if false;
     }
 
     /**
-     * @description Rules for the /quests/{questId} collection. Allows anyone to read quests, but only authorized users can create, update, or delete them.
-     * @path /quests/{questId}
-     * @allow (get) Anyone can read a quest.
-     * @allow (list) Anyone can list quests.
-     * @deny (create) Only authorized users (e.g., admins) should be able to create quests.
-     * @deny (update) Only authorized users (e.g., admins) should be able to update quests.
-     * @deny (delete) Only authorized users (e.g., admins) should be able to delete quests.
-     * @principle Public read, restricted write.
+     * Publicly readable collections with restricted writes.
      */
     match /quests/{questId} {
-      allow get: if true;
-      allow list: if true;
-      allow create: if false; // TODO: Add admin role check
-      allow update: if false; // TODO: Add admin role check
-      allow delete: if false; // TODO: Add admin role check
+      allow read: if true;
+      allow write: if false; // Should be admin-only
     }
 
-    /**
-     * @description Rules for the /rewards/{rewardId} collection. Allows anyone to read rewards, but only authorized users can create, update, or delete them.
-     * @path /rewards/{rewardId}
-     * @allow (get) Anyone can read a reward.
-     * @allow (list) Anyone can list rewards.
-     * @deny (create) Only authorized users (e.g., admins) should be able to create rewards.
-     * @deny (update) Only authorized users (e.g., admins) should be able to update rewards.
-     * @deny (delete) Only authorized users (e.g., admins) should be able to delete rewards.
-     * @principle Public read, restricted write.
-     */
     match /rewards/{rewardId} {
-      allow get: if true;
-      allow list: if true;
-      allow create: if false; // TODO: Add admin role check
-      allow update: if false; // TODO: Add admin role check
-      allow delete: if false; // TODO: Add admin role check
+      allow read: if true;
+      allow write: if false; // Should be admin-only
     }
-
-    /**
-     * @description Rules for the /stores/{storeId} collection. Allows anyone to read stores, but only the store owner can create, update, or delete them.
-     * @path /stores/{storeId}
-     * @allow (get) Anyone can read a store.
-     * @allow (list) Anyone can list stores.
-     * @allow (create) Only the store owner can create a store, and the ownerId must match the authenticated user's UID.
-     * @allow (update) Only the store owner can update a store.
-     * @allow (delete) Only the store owner can delete a store.
-     * @deny (create) User cannot create a store for another owner.
-     * @principle Public read, owner-only write.
-     */
+    
     match /stores/{storeId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(ownerId) {
-        return isSignedIn() && request.auth.uid == ownerId;
-      }
-
-      function isExistingOwner(ownerId) {
-        return isOwner(ownerId) && resource != null;
-      }
-
-      allow get: if true;
-      allow list: if true;
+      allow read: if true;
       allow create: if isSignedIn() && request.resource.data.ownerId == request.auth.uid;
-      allow update: if isExistingOwner(resource.data.ownerId);
-      allow delete: if isExistingOwner(resource.data.ownerId);
+      allow update, delete: if isSignedIn() && get(/databases/$(database)/documents/stores/$(storeId)).data.ownerId == request.auth.uid;
     }
   }
 }
