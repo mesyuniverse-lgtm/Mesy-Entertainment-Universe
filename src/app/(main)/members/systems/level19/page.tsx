@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel19Members = () => {
   const members = [];
-  for (let i = 19000; i <= 19999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 30002 up to and including 31001
+  for (let i = 30002; i <= 31001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -67,7 +68,7 @@ export default function MemberSystemLevel19Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 19 Members Database (19,000-19,999)
+                Level 19 Members Database (30,002-31,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 19. Activate your purchased ID to claim your slot.
