@@ -28,8 +28,9 @@ import { Input } from '@/components/ui/input';
 
 const generateLevel18Members = () => {
   const members = [];
-  for (let i = 18000; i <= 18999; i++) {
-    const downlines = i; // Downline count matches the ID for this level
+  // Loop from Member ID 31002 up to and including 32001
+  for (let i = 31002; i <= 32001; i++) {
+    const downlines = 50001 - i; // Downline count decreases as Member ID increases
     const income = downlines * 1;
     const fee = income * 0.03;
     const netIncome = income - fee;
@@ -50,6 +51,7 @@ const generateLevel18Members = () => {
   return members;
 };
 
+
 // --- Helper Functions ---
 const formatCurrency = (value: number) => value.toFixed(2);
 
@@ -67,7 +69,7 @@ export default function MemberSystemLevel18Page() {
           <div className="flex items-start justify-between">
             <div>
               <CardTitle className="text-2xl font-bold text-primary tracking-wider">
-                Level 18 Members Database (18,000-18,999)
+                Level 18 Members Database (31,002-32,001)
               </CardTitle>
               <CardDescription>
                 This system displays all pre-defined Member ID slots for Level 18. Activate your purchased ID to claim your slot.
