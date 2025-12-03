@@ -63,7 +63,7 @@ export default function AiAdminLayout({
 
   // A simple role check - in a real app, this would be more robust
   // For now, we'll assume the super-admin can also access this.
-  if (user && user.email !== 'mesy.universe@gmail.com') {
+  if (user && user.email !== 'mesy.universe@gmail.com' && user.email !== 'ai.admin@mesy.universe') {
       if(typeof window !== 'undefined') router.push('/dashboard');
       return null;
   }
