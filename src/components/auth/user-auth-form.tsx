@@ -16,7 +16,8 @@ import {
   signInWithRedirect,
   getRedirectResult,
   User,
-  updateProfile
+  updateProfile,
+  UserCredential
 } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { useToast } from "@/hooks/use-toast";
@@ -31,6 +32,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
     action: "login" | "signup";
     redirectPath?: string;
+    role?: 'Super-admin' | 'Member';
 }
 
 const loginSchema = z.object({
@@ -57,7 +59,7 @@ const signupSchema = z.object({
 });
 
 
-export function UserAuthForm({ className, action, redirectPath, ...props }: UserAuthFormProps) {
+export function UserAuthForm({ className, action, redirectPath, role = 'Member', ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const auth = useAuth();
   const firestore = useFirestore();
@@ -89,20 +91,34 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
   const handleSuccessfulAuth = async (user: User) => {
     if (!firestore) return;
 
-    // Check user role from Firestore
     try {
         const accountDocRef = doc(firestore, 'accounts', user.uid);
         const accountDocSnap = await getDoc(accountDocRef);
 
         if (accountDocSnap.exists()) {
             const accountData = accountDocSnap.data();
-            const role = accountData.role;
+            const userRole = accountData.role;
 
             if (role === 'Super-admin') {
+                if (userRole === 'Super-admin') {
+                     router.push(redirectPath || '/sup-dashboard');
+                     return;
+                } else {
+                    auth?.signOut();
+                    toast({
+                      variant: "destructive",
+                      title: "Access Denied",
+                      description: "You are not authorized to access the Super-Admin panel.",
+                    });
+                    return;
+                }
+            }
+            
+            if (userRole === 'Super-admin') {
                 router.push('/sup-dashboard');
                 return;
             }
-            if (role === 'AI-admin') {
+            if (userRole === 'AI-admin') {
                 router.push('/ai-admin/dashboards');
                 return;
             }
@@ -111,7 +127,6 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         console.error("Error fetching user role, proceeding with default redirect.", error);
     }
     
-    // Default redirection for Members
     if (action === 'signup') {
          toast({
           title: "Welcome, New Member!",
@@ -187,6 +202,16 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         return;
     }
 
+    if (role === 'Super-admin' && data.email !== 'mesy.universe@gmail.com') {
+      toast({
+        variant: "destructive",
+        title: "Access Denied",
+        description: "You are not a Super-Admin."
+      });
+      setIsLoading(false);
+      return;
+    }
+
     try {
       let userCredential: UserCredential;
       if (action === 'signup') {
@@ -198,7 +223,6 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
         const loginData = data as z.infer<typeof loginSchema>;
         userCredential = await signInWithEmailAndPassword(auth, loginData.email, loginData.password);
       }
-      // handleSuccessfulAuth will now handle redirection
       await handleSuccessfulAuth(userCredential.user);
 
     } catch (error: any) {
@@ -358,7 +382,7 @@ export function UserAuthForm({ className, action, redirectPath, ...props }: User
           </div>
       </div>
       
-      <Button variant="outline" type="button" disabled={isLoading} onClick={onGoogleSignIn} className="w-full">
+      <Button variant="outline" type="button" disabled={isLoading || role === 'Super-admin'} onClick={onGoogleSignIn} className="w-full">
           {isLoading ? (
           <svg className="animate-spin -ml-1 mr-3 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
               <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>

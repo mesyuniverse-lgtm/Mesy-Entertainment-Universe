@@ -25,7 +25,19 @@ export default function LoginPage() {
         </Link>
       </p>
       <div className="space-y-4 pt-4">
-        <Button variant="secondary" className="w-full">Super-Admin Sign in</Button>
+         <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+          <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+          <span className="bg-background px-2 text-muted-foreground">
+              Or Sign In As
+          </span>
+          </div>
+      </div>
+        <Button variant="secondary" className="w-full" asChild>
+            <Link href="/superadmin-login">Super-Admin</Link>
+        </Button>
         <div className="grid grid-cols-3 gap-2">
             <Button variant="secondary">Admin</Button>
             <Button variant="secondary">Teams</Button>
