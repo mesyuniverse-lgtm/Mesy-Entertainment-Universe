@@ -12,6 +12,10 @@ export function initializeFirebase() {
   const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
 
   if (typeof window !== 'undefined') {
+    // Ensure the reCAPTCHA placeholder is handled.
+    // This should be set to `true` for production with a proper site key.
+    (window as any).FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+
     // Pass your reCAPTCHA v3 site key (public key) to activate(). Make sure
     // this key is from the correct project.
     initializeAppCheck(app, {
