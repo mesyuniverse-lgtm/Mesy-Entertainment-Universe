@@ -1,3 +1,8 @@
+
+
+'use client';
+
+import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -11,7 +16,6 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ArrowRight, CheckCircle } from 'lucide-react';
-import { cn } from '@/lib/utils';
 
 export default function WelcomePage() {
   const slideshowImages = PlaceHolderImages.filter((img) =>

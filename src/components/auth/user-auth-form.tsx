@@ -61,9 +61,9 @@ const signupSchema = z.object({
 
 export function UserAuthForm({ className, action, redirectPath, role = 'Member', ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
+  const router = useRouter();
   const auth = useAuth();
   const firestore = useFirestore();
-  const router = useRouter();
   const { toast } = useToast();
 
   const formSchema = action === 'login' ? loginSchema : signupSchema;
@@ -396,3 +396,5 @@ export function UserAuthForm({ className, action, redirectPath, role = 'Member',
     </div>
   )
 }
+
+    
