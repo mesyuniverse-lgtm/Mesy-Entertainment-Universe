@@ -1,188 +1,176 @@
-
-
 'use client';
 
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { ArrowRight, Bot, Code, Gamepad2, HandCoins, Users, Mic, Star, Store, Palette, Wallet, Shield } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from '@/components/ui/carousel';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ArrowRight, CheckCircle } from 'lucide-react';
+import Autoplay from "embla-carousel-autoplay";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { membershipData } from '@/lib/data';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+
+const features = [
+    {
+      icon: <Users className="w-8 h-8 text-primary" />,
+      title: "Socialive Platform",
+      description: "A complete social ecosystem with live streaming, friends, followers, groups, and a dynamic timeline for member interaction.",
+    },
+    {
+      icon: <Mic className="w-8 h-8 text-primary" />,
+      title: "Entertainment Hub",
+      description: "Discover and promote music, movies, and games. A central hub for all forms of entertainment and artist showcases.",
+    },
+    {
+      icon: <Bot className="w-8 h-8 text-primary" />,
+      title: "AI Hub & Creation Tools",
+      description: "Leverage powerful generative AI to create avatars, images, video content, and even code with our integrated Genkit SDK.",
+    },
+];
+
+function formatCurrency(value: number) {
+  return value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 
 export default function WelcomePage() {
-  const slideshowImages = PlaceHolderImages.filter((img) =>
-    img.id.startsWith('fantasy-landscape')
-  ).slice(0, 10);
+  const slideshowImages = PlaceHolderImages.filter(i => i.id.startsWith('fantasy-landscape-'));
 
-  const featureCards = [
-    {
-      title: 'Social Live',
-      description: 'Connect in public and private rooms. Share your moments.',
-      image: PlaceHolderImages.find((img) => img.id === 'feature-1'),
-    },
-    {
-      title: 'AI Hub',
-      description: 'Unleash creativity with our powerful AI content generators.',
-      image: PlaceHolderImages.find((img) => img.id === 'feature-2'),
-    },
-    {
-      title: 'Shopping Hub',
-      description: 'Discover unique products and enjoy exclusive cashback rewards.',
-      image: PlaceHolderImages.find((img) => img.id === 'feature-3'),
-    },
-  ];
-  
   return (
-    <div className="flex flex-col items-center">
-      <section className="relative w-full h-[70vh] md:h-[85vh] flex items-center justify-center text-center text-white overflow-hidden">
-        <Image
-          src={PlaceHolderImages.find((img) => img.id === 'fantasy-landscape-5')?.imageUrl || ''}
-          alt={PlaceHolderImages.find((img) => img.id === 'fantasy-landscape-5')?.description || ''}
-          data-ai-hint={PlaceHolderImages.find((img) => img.id === 'fantasy-landscape-5')?.imageHint || ''}
-          fill
-          className="object-cover"
-          priority
-        />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="relative z-10 p-4">
-          <h1 className="text-4xl md:text-7xl font-bold tracking-tighter mb-4" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>
-            Enter the MESY Universe
-          </h1>
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-white/90 mb-8" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.7)'}}>
-            A fantasy entertainment platform where creativity and community collide in a ceremonial journey.
-          </p>
-          <Button size="lg" asChild className="text-lg h-12 px-8">
-            <Link href="/the-gate">
-              Let's Startup <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </Button>
-        </div>
-      </section>
-
-      <section className="w-full py-16 md:py-24 bg-background">
-        <div className="container px-10">
-          <Carousel
-            opts={{
-              align: 'start',
-              loop: true,
-            }}
-            className="w-full"
-          >
-            <CarouselContent>
-              {slideshowImages.map((image, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3">
-                  <div className="p-1">
-                    <Card className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
-                      <CardContent className="p-0">
+    <div>
+      {/* Hero Section with Slideshow */}
+      <section className="relative h-[70vh] w-full text-white">
+        <Carousel
+            className="w-full h-full"
+            plugins={[ Autoplay({ delay: 5000, stopOnInteraction: false }) ]}
+            opts={{ loop: true }}
+        >
+            <CarouselContent className="h-full">
+                {slideshowImages.map((image) => (
+                    <CarouselItem key={image.id} className="h-full">
                         <Image
-                          src={image.imageUrl}
-                          alt={image.description}
-                          data-ai-hint={image.imageHint}
-                          width={600}
-                          height={400}
-                          className="w-full h-auto object-cover aspect-[3/2] transition-transform duration-300 hover:scale-105"
+                            src={image.imageUrl}
+                            alt={image.description}
+                            fill
+                            className="object-cover"
+                            priority
                         />
-                      </CardContent>
-                    </Card>
-                  </div>
-                </CarouselItem>
-              ))}
+                    </CarouselItem>
+                ))}
             </CarouselContent>
-            <CarouselPrevious className="hidden sm:flex" />
-            <CarouselNext className="hidden sm:flex" />
-          </Carousel>
-        </div>
-      </section>
-
-      <section id="features" className="w-full py-16 md:py-24 bg-secondary/40">
-        <div className="container">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-5xl font-bold">Platform Features</h2>
-            <p className="max-w-3xl mx-auto mt-4 text-muted-foreground">
-              Explore a universe of possibilities designed for creators and fans.
+        </Carousel>
+        <div className="absolute inset-0 bg-black/60" />
+        <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-4">
+            <h1 className="text-4xl md:text-6xl font-bold font-headline tracking-tight mb-4" style={{textShadow: '2px 2px 8px rgba(0,0,0,0.7)'}}>
+                Welcome to MESY Universe
+            </h1>
+            <p className="max-w-3xl mx-auto text-lg md:text-xl text-primary-foreground/90 mb-8" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.7)'}}>
+                A new dimension of social entertainment, powered by creativity and community.
             </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {featureCards.map((feature, index) => (
-              <Card key={index} className="bg-card hover:shadow-lg transition-shadow duration-300 transform hover:-translate-y-2">
-                <CardHeader className="p-0">
-                  {feature.image && (
-                     <Image
-                        src={feature.image.imageUrl}
-                        alt={feature.image.description}
-                        data-ai-hint={feature.image.imageHint}
-                        width={400}
-                        height={300}
-                        className="rounded-t-lg w-full h-auto object-cover aspect-video"
-                      />
-                  )}
-                </CardHeader>
-                <CardContent className="p-6">
-                  <CardTitle className="pb-2">{feature.title}</CardTitle>
-                  <CardDescription>{feature.description}</CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          <div className="text-center mt-12">
-            <Button asChild variant="link" className="text-accent-foreground text-lg hover:text-primary">
-                <Link href="/features">See All Features <ArrowRight className="ml-2 h-5 w-5" /></Link>
+            <Button size="lg" className="h-12 px-8 text-lg" asChild>
+                <Link href="/signup">Let's Startup <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
-          </div>
-        </div>
-      </section>
-
-      <section id="member-plan" className="w-full py-16 md:py-24 bg-background">
-        <div className="container grid md:grid-cols-2 gap-12 items-center">
-            <div>
-                <h2 className="text-3xl md:text-5xl font-bold">Unlock Your Potential</h2>
-                <p className="max-w-2xl mt-4 text-muted-foreground text-lg">
-                    Join our ceremonial membership to gain exclusive access, earn rewards, and become part of our growing universe.
-                </p>
-                <ul className="mt-6 space-y-4">
-                    <li className="flex items-center gap-3">
-                        <CheckCircle className="h-6 w-6 text-primary" />
-                        <span className="text-lg">Climb 50 levels of membership</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                        <CheckCircle className="h-6 w-6 text-primary" />
-                        <span className="text-lg">Earn income from your downline</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                        <CheckCircle className="h-6 w-6 text-primary" />
-                        <span className="text-lg">Access exclusive content and tools</span>
-                    </li>
-                </ul>
-                <div className="mt-8 flex gap-4">
-                    <Button size="lg" asChild>
-                        <Link href="/signup">Join Now</Link>
-                    </Button>
-                    <Button size="lg" asChild variant="outline">
-                        <Link href="/member-plan">Learn More</Link>
-                    </Button>
-                </div>
-            </div>
-            <div className="relative aspect-video rounded-lg overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-300">
-                <Image
-                    src={PlaceHolderImages.find((img) => img.id === 'member-plan-video')?.imageUrl || ''}
-                    alt="Member plan video"
-                    data-ai-hint={PlaceHolderImages.find((img) => img.id === 'member-plan-video')?.imageHint || ''}
-                    fill
-                    className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
-            </div>
         </div>
       </section>
       
+      {/* Features Section */}
+      <section className="py-16 md:py-24 bg-background">
+        <div className="container">
+            <div className="text-center mb-12">
+                <h2 className="text-3xl md:text-5xl font-bold">What is MESY?</h2>
+                <p className="max-w-3xl mx-auto mt-4 text-muted-foreground">
+                    An interconnected ecosystem of powerful features designed for creativity, community, and commerce.
+                </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {features.map((feature, index) => (
+                    <Card key={index} className="flex flex-col text-center items-center bg-card/50 border-border/50 hover:border-primary/50 hover:bg-card transition-all duration-300 transform hover:-translate-y-1 shadow-lg hover:shadow-primary/20">
+                       <CardHeader className="items-center">
+                          <div className="p-4 bg-primary/10 rounded-full mb-4">
+                              {feature.icon}
+                          </div>
+                          <CardTitle>{feature.title}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <p className="text-muted-foreground">{feature.description}</p>
+                        </CardContent>
+                    </Card>
+                ))}
+            </div>
+            <div className="text-center mt-12">
+                <Button variant="outline" asChild>
+                    <Link href="/features">See All Features <ArrowRight className="ml-2 h-4 w-4" /></Link>
+                </Button>
+            </div>
+        </div>
+      </section>
+
+      {/* Member Plan Section */}
+      <section className="py-16 md:py-24 bg-secondary/30">
+          <div className="container">
+              <div className="grid lg:grid-cols-2 gap-12 items-center">
+                  <div>
+                      <h2 className="text-3xl md:text-5xl font-bold">The Member Plan</h2>
+                      <p className="mt-4 text-muted-foreground text-lg">
+                          A ceremonial journey through 50 levels of membership, designed to reward growth, dedication, and community building. Your income potential grows with your network.
+                      </p>
+                      <Table className="mt-6">
+                          <TableHeader>
+                              <TableRow>
+                                  <TableHead>Level</TableHead>
+                                  <TableHead>Members</TableHead>
+                                  <TableHead className="text-right">Net Income (USD)</TableHead>
+                              </TableRow>
+                          </TableHeader>
+                          <TableBody>
+                              {membershipData.slice(0, 5).map((level) => (
+                                  <TableRow key={level.level}>
+                                      <TableCell className="font-medium">{level.level}</TableCell>
+                                      <TableCell>&lt; {level.members.toLocaleString()}</TableCell>
+                                      <TableCell className="text-right">${formatCurrency(level.netIncome)}</TableCell>
+                                  </TableRow>
+                              ))}
+                          </TableBody>
+                      </Table>
+                      <Button className="mt-6" asChild>
+                          <Link href="/member-plan">View Full Plan <ArrowRight className="ml-2 h-4 w-4"/></Link>
+                      </Button>
+                  </div>
+                  <div className="relative aspect-video rounded-lg overflow-hidden shadow-xl">
+                      <Image
+                          src={PlaceHolderImages.find((img) => img.id === 'member-plan-video')?.imageUrl || ''}
+                          alt="Member plan video"
+                          data-ai-hint="presentation video"
+                          fill
+                          className="object-cover"
+                      />
+                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent flex items-end justify-center p-4">
+                          <h3 className="text-2xl font-bold text-white" style={{textShadow: '1px 1px 4px rgba(0,0,0,0.9)'}}>The MESY Vision</h3>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </section>
+
+      {/* Chronicle Section */}
+      <section className="py-16 md:py-24 bg-background">
+          <div className="container text-center">
+              <h2 className="text-3xl md:text-5xl font-bold">Chronicle: The Journey</h2>
+              <p className="max-w-3xl mx-auto mt-4 text-muted-foreground">
+                  Follow our development roadmap, see what we've accomplished, and get a glimpse of the future we're building together.
+              </p>
+              <Button className="mt-8" variant="outline" asChild>
+                  <Link href="/chronicle">Explore the Roadmap <ArrowRight className="ml-2 h-4 w-4"/></Link>
+              </Button>
+          </div>
+      </section>
+
     </div>
   );
 }

@@ -1,13 +1,19 @@
-
 'use client';
 
 import { useEffect } from 'react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
 
 export default function RootPage() {
-  useEffect(() => {
-    redirect('/welcome');
-  }, []);
+  const router = useRouter();
 
-  return null; 
+  useEffect(() => {
+    router.replace('/welcome');
+  }, [router]);
+
+  return (
+    <div className="flex h-screen w-full items-center justify-center bg-background">
+      <Loader2 className="h-12 w-12 animate-spin text-primary" />
+    </div>
+  );
 }

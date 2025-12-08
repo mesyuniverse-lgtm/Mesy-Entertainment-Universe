@@ -3,13 +3,13 @@
     {
       "id": "fantasy-castle-1",
       "description": "A majestic fantasy castle on a mountain.",
-      "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZmFudGFzeSUyMGNhc3RsZXxlbnwwfHx8fDE3NjEwNzU4OTR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZmFudGFzeSUyMGNhc3RsZXxlbnwwfHx8fDE3NjEwNzU4OTR8MA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "fantasy castle"
     },
     {
       "id": "enchanted-forest-1",
       "description": "An enchanted forest with glowing mushrooms.",
-      "imageUrl": "https://images.unsplash.com/photo-1620752288761-b94d8553ccc3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxlbmNoYW50ZWQlMjBmb3Jlc3R8ZW58MHx8fHwxNzYxMDYyNTUwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1620752288761-b94d8553ccc3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxlbmNoYW50ZWQlMjBmb3Jlc3R8ZW58MHx8fHwxNzYxMDYyNTUwfDA&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "enchanted forest"
     },
     {
@@ -32,9 +32,9 @@
     },
     {
       "id": "fantasy-landscape-2",
-      "description": "A wedding couple celebrating their marriage.",
-      "imageUrl": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3ZWRkaW5nJTIwY291cGxlfGVufDB8fHx8MTc2MTA4ODAwOXww&ixlib.rb-4.1.0&q=80&w=1080",
-      "imageHint": "wedding couple"
+      "description": "A stunning waterfall in a lush, green valley.",
+      "imageUrl": "https://images.unsplash.com/photo-1547036322-a965706511a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxmYW50YXN5JTIwd2F0ZXJmYWxsfGVufDB8fHx8MTc2MzA5NTk5MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "fantasy waterfall"
     },
     {
       "id": "fantasy-landscape-3",
@@ -59,6 +59,30 @@
       "description": "A beautiful fantasy landscape with a sky city.",
       "imageUrl": "https://images.unsplash.com/photo-1600178503558-5ecdf7f854ea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxza3klMjBjaXR5fGVufDB8fHx8MTc2MDk2NjY4Mnww&ixlib.rb-4.1.0&q=80&w=1080",
       "imageHint": "sky city"
+    },
+    {
+      "id": "fantasy-landscape-7",
+      "description": "Desert landscape with massive rock formations.",
+      "imageUrl": "https://images.unsplash.com/photo-1549480017-d76466a43058?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxmYW50YXN5JTIwZGVzZXJ0fGVufDB8fHx8MTc2MzA5NjE5Mnww&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageHint": "fantasy desert"
+    },
+    {
+      "id": "fantasy-landscape-8",
+      "description": "A bioluminescent jungle at night.",
+      "imageUrl": "https://images.unsplash.com/photo-1662648753238-51639d48b111?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxiaW9sdW1pbmVzY2VudCUyMGp1bmdsZXxlbnwwfHx8fDE3NjMwOTYyMzJ8MA&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageHint": "bioluminescent jungle"
+    },
+    {
+      "id": "fantasy-landscape-9",
+      "description": "A futuristic city with flying vehicles.",
+      "imageUrl": "https://images.unsplash.com/photo-1517994112540-009c4775629e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmdXR1cmlzdGljJTIwY2l0eXxlbnwwfHx8fDE3NjMwOTYyNjV8MA&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageHint": "futuristic city"
+    },
+    {
+      "id": "fantasy-landscape-10",
+      "description": "An underwater city with glowing architecture.",
+      "imageUrl": "https://images.unsplash.com/photo-1681758503855-662582fdd08a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx1bmRlcndhdGVyJTIwY2l0eXxlbnwwfHx8fDE3NjMwOTYzMDJ8MA&ixlib.rb-4.1.0&q=80&w=1080",
+      "imageHint": "underwater city"
     },
     {
       "id": "socialive-preview",
