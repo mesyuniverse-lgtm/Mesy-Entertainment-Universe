@@ -15,7 +15,7 @@ const navLinks = [
   { href: '/member-plan', label: 'Member Plan' },
   { href: '/features', label: 'Features' },
   { href: '/chronicle', label: 'Chronicle' },
-  { href: '/home', label: 'Let\'s Startup' },
+  { href: '/developers', label: 'Developers' },
 ];
 
 export default function Header() {
