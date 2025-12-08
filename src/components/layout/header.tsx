@@ -44,7 +44,7 @@ export default function Header() {
         </nav>
         <div className="flex flex-1 items-center justify-end space-x-4">
           <Button asChild>
-            <Link href="/signup">Get Started</Link>
+            <Link href="/the-gate">Get Started</Link>
           </Button>
 
           <Sheet>

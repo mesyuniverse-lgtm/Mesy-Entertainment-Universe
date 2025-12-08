@@ -74,7 +74,7 @@ export default function WelcomePage() {
                 A new dimension of social entertainment, powered by creativity and community.
             </p>
             <Button size="lg" className="h-12 px-8 text-lg" asChild>
-                <Link href="/signup">Let's Startup <ArrowRight className="ml-2 h-5 w-5" /></Link>
+                <Link href="/the-gate">Let's Startup <ArrowRight className="ml-2 h-5 w-5" /></Link>
             </Button>
         </div>
       </section>
